@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"testing"
+	"time"
 )
 
 type CommonResponse struct {
@@ -98,4 +100,12 @@ func isZero(v interface{}) (bool, error) {
 		return false, fmt.Errorf("type is not comparable: %v", t)
 	}
 	return v == reflect.Zero(t).Interface(), nil
+}
+
+func TimeFromString(t *testing.T, datetime string) time.Time {
+	dt, err := time.Parse("2006-01-02T15:04:05Z", datetime)
+	if err != nil {
+		t.Errorf("error when parsing time: %s", err)
+	}
+	return dt
 }

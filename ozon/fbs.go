@@ -2,6 +2,7 @@ package ozon
 
 import (
 	"net/http"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -15,14 +16,14 @@ type ListUnprocessedShipmentsParams struct {
 }
 
 type ListUnprocessedShipmentsFilter struct {
-	CutoffFrom         string  `json:"cutoff_from"`
-	CutoffTo           string  `json:"cutoff_to"`
-	DeliveringDateFrom string  `json:"delivering_date_from"`
-	DeliveringDateTo   string  `json:"delivering_date_to"`
-	DeliveryMethodId   []int64 `json:"deliveryMethodId"`
-	ProviderId         []int64 `json:"provider_id"`
-	Status             string  `json:"status"`
-	WarehouseId        []int64 `json:"warehouse_id"`
+	CutoffFrom         time.Time `json:"cutoff_from"`
+	CutoffTo           time.Time `json:"cutoff_to"`
+	DeliveringDateFrom time.Time `json:"delivering_date_from"`
+	DeliveringDateTo   time.Time `json:"delivering_date_to"`
+	DeliveryMethodId   []int64   `json:"deliveryMethodId"`
+	ProviderId         []int64   `json:"provider_id"`
+	Status             string    `json:"status"`
+	WarehouseId        []int64   `json:"warehouse_id"`
 }
 
 type ListUnprocessedShipmentsWith struct {
@@ -50,18 +51,18 @@ type ListUnprocessedShipmentsPosting struct {
 	} `json:"addressee"`
 
 	AnalyticsData struct {
-		City                 string `json:"city"`
-		DeliveryDateBegin    string `json:"delivery_date_begin"`
-		DeliveryDateEnd      string `json:"delivery_date_end"`
-		DeliveryType         string `json:"delivery_type"`
-		IsLegal              bool   `json:"is_legal"`
-		IsPremium            bool   `json:"is_premium"`
-		PaymentTypeGroupName string `json:"payment_type_group_name"`
-		Region               string `json:"region"`
-		TPLProvider          string `json:"tpl_provider"`
-		TPLProviderId        int64  `json:"tpl_provider_id"`
-		Warehouse            string `json:"warehouse"`
-		WarehouseId          int64  `json:"warehouse_id"`
+		City                 string    `json:"city"`
+		DeliveryDateBegin    time.Time `json:"delivery_date_begin"`
+		DeliveryDateEnd      time.Time `json:"delivery_date_end"`
+		DeliveryType         string    `json:"delivery_type"`
+		IsLegal              bool      `json:"is_legal"`
+		IsPremium            bool      `json:"is_premium"`
+		PaymentTypeGroupName string    `json:"payment_type_group_name"`
+		Region               string    `json:"region"`
+		TPLProvider          string    `json:"tpl_provider"`
+		TPLProviderId        int64     `json:"tpl_provider_id"`
+		Warehouse            string    `json:"warehouse"`
+		WarehouseId          int64     `json:"warehouse_id"`
 	} `json:"analytics_data"`
 
 	Barcodes struct {
@@ -85,7 +86,7 @@ type ListUnprocessedShipmentsPosting struct {
 			Comment         string  `json:"comment"`
 			Country         string  `json:"country"`
 			District        string  `json:"district"`
-			Latitude        float64 `json:'latitude"`
+			Latitude        float64 `json:"latitude"`
 			Longitude       float64 `json:"longitude"`
 			ProviderPVZCode string  `json:"provider_pvz_code"`
 			PVZCode         int64   `json:"pvz_code"`
@@ -99,7 +100,8 @@ type ListUnprocessedShipmentsPosting struct {
 		Phone         string `json:"phone"`
 	} `json:"customer"`
 
-	DeliveringDate string `json:"delivering_date"`
+	DeliveringDate time.Time `json:"delivering_date"`
+
 	DeliveryMethod struct {
 		Id            int64  `json:"id"`
 		Name          string `json:"name"`
@@ -125,9 +127,9 @@ type ListUnprocessedShipmentsPosting struct {
 			OldPrice                float64             `json:"old_price"`
 			Payout                  float64             `json:"payout"`
 			Picking                 struct {
-				Amount float64 `json:"amount"`
-				Moment string  `json:"moment"`
-				Tag    string  `json:"tag"`
+				Amount float64   `json:"amount"`
+				Moment time.Time `json:"moment"`
+				Tag    string    `json:"tag"`
 			} `json:"picking"`
 			Price                float64 `json:"price"`
 			ProductId            int64   `json:"product_id"`
@@ -137,16 +139,16 @@ type ListUnprocessedShipmentsPosting struct {
 		} `json:"products"`
 	}
 
-	InProccessAt        string `json:"in_process_at"`
-	IsExpress           bool   `json:"is_express"`
-	IsMultibox          bool   `json:"is_multibox"`
-	MultiBoxQuantity    int32  `json:"multi_box_qty"`
-	OrderId             int64  `json:"order_id"`
-	OrderNumber         string `json:"order_number"`
-	ParentPostingNumber string `json:"parent_posting_number"`
-	PostingNumber       string `json:"posting_number"`
+	InProccessAt        time.Time `json:"in_process_at"`
+	IsExpress           bool      `json:"is_express"`
+	IsMultibox          bool      `json:"is_multibox"`
+	MultiBoxQuantity    int32     `json:"multi_box_qty"`
+	OrderId             int64     `json:"order_id"`
+	OrderNumber         string    `json:"order_number"`
+	ParentPostingNumber string    `json:"parent_posting_number"`
+	PostingNumber       string    `json:"posting_number"`
 
-	Products struct {
+	Products []struct {
 		MandatoryMark []string `json:"mandatory_mark"`
 		Name          string   `json:"name"`
 		OfferId       string   `json:"offer_id"`
@@ -163,10 +165,10 @@ type ListUnprocessedShipmentsPosting struct {
 		ProductsRequiringRNPT          []string `json:"products_requiring_rnpt"`
 	} `json:"requirements"`
 
-	ShipmentDate       string `json:"shipment_date"`
-	Status             string `json:"status"`
-	TPLIntegrationType string `json:"tpl_integration_type"`
-	TrackingNumber     string `json:"tracking_number"`
+	ShipmentDate       time.Time `json:"shipment_date"`
+	Status             string    `json:"status"`
+	TPLIntegrationType string    `json:"tpl_integration_type"`
+	TrackingNumber     string    `json:"tracking_number"`
 }
 
 type MarketplaceServices struct {

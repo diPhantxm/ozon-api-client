@@ -19,8 +19,8 @@ func TestListUnprocessedShipments(t *testing.T) {
 			&ListUnprocessedShipmentsParams{
 				Direction: "ASC",
 				Filter: ListUnprocessedShipmentsFilter{
-					CutoffFrom: "2021-08-24T14:15:22Z",
-					CutoffTo:   "2021-08-31T14:15:22Z",
+					CutoffFrom: core.TimeFromString(t, "2021-08-24T14:15:22Z"),
+					CutoffTo:   core.TimeFromString(t, "2021-08-31T14:15:22Z"),
 					Status:     "awaiting_packaging",
 				},
 				Limit: 100,

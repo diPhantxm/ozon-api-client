@@ -82,9 +82,9 @@ func (c Client) Request(method string, path string, req, resp interface{}) (*Res
 	response.Data = resp
 	response.StatusCode = httpResp.StatusCode
 	if httpResp.StatusCode == http.StatusOK {
-		err = json.Unmarshal(body, &response)
-	} else {
 		err = json.Unmarshal(body, &response.Data)
+	} else {
+		err = json.Unmarshal(body, &response)
 	}
 	if err != nil {
 		return nil, err
