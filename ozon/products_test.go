@@ -52,7 +52,7 @@ func TestGetStocksInfo(t *testing.T) {
 			}`,
 		},
 		{
-			400,
+			http.StatusBadRequest,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetStocksInfoParams{
 				Limit:  100,
@@ -228,7 +228,7 @@ func TestGetProductDetails(t *testing.T) {
 			  }`,
 		},
 		{
-			400,
+			http.StatusBadRequest,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetProductDetailsParams{
 				ProductId: 137208233,
@@ -250,6 +250,143 @@ func TestGetProductDetails(t *testing.T) {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		resp, err := c.GetProductDetails(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUpdateStocks(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UpdateStocksParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UpdateStocksParams{
+				Stocks: []UpdateStocksStock{
+					{
+						OfferId:   "PG-2404С1",
+						ProductId: 55946,
+						Stock:     4,
+					},
+				},
+			},
+			`{
+				"result": [
+				  {
+					"product_id": 55946,
+					"offer_id": "PG-2404С1",
+					"updated": true,
+					"errors": []
+				  }
+				]
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.UpdateStocks(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestStocksInSellersWarehouse(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *StocksInSellersWarehouseParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&StocksInSellersWarehouseParams{
+				FBSSKU: []string{"123"},
+			},
+			`{
+				"result": [
+				  {
+					"fbs_sku": 12,
+					"present": 34,
+					"product_id": 548761,
+					"reserved": 5,
+					"warehouse_id": 156778,
+					"warehouse_name": "something"
+				  }
+				]
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.StocksInSellersWarehouse(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUpdatePrices(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UpdatePricesParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UpdatePricesParams{
+				Prices: []UpdatePricesPrice{
+					{
+						AutoActionEnabled: "UNKNOWN",
+						CurrencyCode:      "RUB",
+						MinPrice:          "800",
+						OldPrice:          "0",
+						Price:             "1448",
+						ProductId:         1386,
+					},
+				},
+			},
+			`{
+				"result": [
+				  {
+					"product_id": 1386,
+					"offer_id": "PH8865",
+					"updated": true,
+					"errors": []
+				  }
+				]
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.UpdatePrices(test.params)
 		if err != nil {
 			t.Error(err)
 		}
