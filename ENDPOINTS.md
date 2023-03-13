@@ -70,7 +70,7 @@
 - [ ] Possible certificate statuses
 
 ## Warehouses
-- [ ] List of warehouses
+- [x] List of warehouses
 - [ ] List of delivery methods for a warehouse
 
 ## Polygons
