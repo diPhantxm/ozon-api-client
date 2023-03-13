@@ -76,7 +76,7 @@ type FBSPosting struct {
 		CancelReasonId           int64  `json:"cancel_reason_id"`
 		CancellationInitiator    string `json:"cancellation_initiator"`
 		CancellationType         string `json:"cancellation_type"`
-		CancelledAfterShip       bool   `json:"cancellation_after_ship"`
+		CancelledAfterShip       bool   `json:"cancelled_after_ship"`
 	} `json:"cancellation"`
 
 	Customer FBSCustomer `json:"customer"`
@@ -93,12 +93,11 @@ type FBSPosting struct {
 	} `json:"delivery_method"`
 
 	FinancialData struct {
-		ClusterFrom     string              `json:"cluster_from"`
-		ClusterTo       string              `json:"cluster_to"`
-		PostingServices MarketplaceServices `json:"posting_services"`
-
-		Products []FinancialDataProduct `json:"products"`
-	}
+		ClusterFrom     string                 `json:"cluster_from"`
+		ClusterTo       string                 `json:"cluster_to"`
+		PostingServices MarketplaceServices    `json:"posting_services"`
+		Products        []FinancialDataProduct `json:"products"`
+	} `json:"financial_data"`
 
 	InProccessAt        time.Time `json:"in_process_at"`
 	IsExpress           bool      `json:"is_express"`
@@ -279,7 +278,7 @@ type GetFBSShipmentsListResponse struct {
 		HasNext bool `json:"has_next"`
 
 		// Shipment details
-		Postings FBSPosting `json:"postings"`
+		Postings []FBSPosting `json:"postings"`
 	} `json:"result"`
 }
 
