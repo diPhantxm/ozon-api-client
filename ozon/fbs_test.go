@@ -20,8 +20,8 @@ func TestListUnprocessedShipments(t *testing.T) {
 			&ListUnprocessedShipmentsParams{
 				Direction: "ASC",
 				Filter: ListUnprocessedShipmentsFilter{
-					CutoffFrom: core.TimeFromString(t, "2021-08-24T14:15:22Z"),
-					CutoffTo:   core.TimeFromString(t, "2021-08-31T14:15:22Z"),
+					CutoffFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-08-24T14:15:22Z"),
+					CutoffTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-08-31T14:15:22Z"),
 					Status:     "awaiting_packaging",
 				},
 				Limit: 100,
@@ -178,8 +178,8 @@ func TestGetFBSShipmentsList(t *testing.T) {
 			&GetFBSShipmentsListParams{
 				Direction: "ASC",
 				Filter: GetFBSShipmentsListFilter{
-					Since:  core.TimeFromString(t, "2021-11-01T00:00:00.000Z"),
-					To:     core.TimeFromString(t, "2021-12-01T23:59:59.000Z"),
+					Since:  core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-01T00:00:00.000Z"),
+					To:     core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-12-01T23:59:59.000Z"),
 					Status: "awaiting_packaging",
 				},
 				Limit:  100,

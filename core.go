@@ -102,8 +102,8 @@ func isZero(v interface{}) (bool, error) {
 	return v == reflect.Zero(t).Interface(), nil
 }
 
-func TimeFromString(t *testing.T, datetime string) time.Time {
-	dt, err := time.Parse("2006-01-02T15:04:05Z", datetime)
+func TimeFromString(t *testing.T, format, datetime string) time.Time {
+	dt, err := time.Parse(format, datetime)
 	if err != nil {
 		t.Errorf("error when parsing time: %s", err)
 	}
