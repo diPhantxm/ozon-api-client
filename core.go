@@ -83,6 +83,10 @@ func getDefaultValues(v interface{}) (map[string]string, error) {
 func buildRawQuery(req *http.Request, v interface{}) (string, error) {
 	query := req.URL.Query()
 
+	if v == nil {
+		return query.Encode(), nil
+	}
+
 	values, err := getDefaultValues(v)
 	if err != nil {
 		return "", err
