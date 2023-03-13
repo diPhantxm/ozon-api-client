@@ -152,7 +152,7 @@ type GetFBOShipmentsListResponse struct {
 
 // Returns a list of shipments for a specified period of time. You can additionally filter the shipments by their status
 func (c Client) GetFBOShipmentsList(params *GetFBOShipmentsListParams) (*GetFBOShipmentsListResponse, error) {
-	url := "/v1/product/import/prices"
+	url := "/v2/posting/fbo/list"
 
 	resp := &GetFBOShipmentsListResponse{}
 

@@ -5,6 +5,8 @@ A Ozon API client written in Golang
 
 Read full [documentation](https://docs.ozon.ru/api/seller/en/#tag/Introduction)
 
+You can check [list of supported endpoints](ENDPOINTS.md)
+
 ## How to start
 Just add dependency to your project and you're ready to go.
 ```bash
