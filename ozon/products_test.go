@@ -396,3 +396,203 @@ func TestUpdatePrices(t *testing.T) {
 		}
 	}
 }
+
+func TestUpdateQuantityStockProducts(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UpdateQuantityStockProductsParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UpdateQuantityStockProductsParams{
+				Stocks: []UpdateQuantityStockProductsStock{
+					{
+						OfferId:     "PH11042",
+						ProductId:   313455276,
+						Stock:       100,
+						WarehouseId: 22142605386000,
+					},
+				},
+			},
+			`{
+				"result": [
+				  {
+					"warehouse_id": 22142605386000,
+					"product_id": 118597312,
+					"offer_id": "PH11042",
+					"updated": true,
+					"errors": []
+				  }
+				]
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.UpdateQuantityStockProducts(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestCreateOrUpdateProduct(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreateOrUpdateProductParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreateOrUpdateProductParams{
+				Items: []CreateOrUpdateProductItem{
+					{
+						Attributes: []CreateOrUpdateAttribute{
+							{
+								ComplexId: 0,
+								Id:        5076,
+								Values: []CreateOrUpdateAttributeValue{
+									{
+										DictionaryValueId: 971082156,
+										Value:             "Стойка для акустической системы",
+									},
+								},
+							},
+							{
+								ComplexId: 0,
+								Id:        9048,
+								Values: []CreateOrUpdateAttributeValue{
+									{
+										Value: "Комплект защитных плёнок для X3 NFC. Темный хлопок",
+									},
+								},
+							},
+							{
+								ComplexId: 0,
+								Id:        8229,
+								Values: []CreateOrUpdateAttributeValue{
+									{
+										DictionaryValueId: 95911,
+										Value:             "Комплект защитных плёнок для X3 NFC. Темный хлопок",
+									},
+								},
+							},
+							{
+								ComplexId: 0,
+								Id:        85,
+								Values: []CreateOrUpdateAttributeValue{
+									{
+										DictionaryValueId: 5060050,
+										Value:             "Samsung",
+									},
+								},
+							},
+							{
+								ComplexId: 0,
+								Id:        10096,
+								Values: []CreateOrUpdateAttributeValue{
+									{
+										DictionaryValueId: 61576,
+										Value:             "серый",
+									},
+								},
+							},
+						},
+						Barcode:       "112772873170",
+						CategoryId:    17033876,
+						CurrencyCode:  "RUB",
+						Depth:         10,
+						DimensionUnit: "mm",
+						Height:        250,
+						Name:          "Комплект защитных плёнок для X3 NFC. Темный хлопок",
+						OfferId:       "143210608",
+						OldPrice:      "1100",
+						PremiumPrice:  "900",
+						Price:         "1000",
+						VAT:           "0.1",
+						Weight:        100,
+						WeightUnit:    "g",
+						Width:         150,
+					},
+				},
+			},
+			`{
+				"result": {
+				  "task_id": 172549793
+				}
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.CreateOrUpdateProduct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetListOfProducts(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetListOfProductsParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetListOfProductsParams{
+				Filter: GetListOfProductsFilter{
+					OfferId:    []string{"136748"},
+					ProductId:  []int64{223681945},
+					Visibility: "ALL",
+				},
+				LastId: "",
+				Limit:  100,
+			},
+			`{
+				"result": {
+				  "items": [
+					{
+					  "product_id": 223681945,
+					  "offer_id": "136748"
+					}
+				  ],
+				  "total": 1,
+				  "last_id": "bnVсbA=="
+				}
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.GetListOfProducts(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

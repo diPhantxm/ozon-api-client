@@ -108,15 +108,7 @@ type FBSPosting struct {
 	ParentPostingNumber string    `json:"parent_posting_number"`
 	PostingNumber       string    `json:"posting_number"`
 
-	Products []struct {
-		MandatoryMark []string `json:"mandatory_mark"`
-		Name          string   `json:"name"`
-		OfferId       string   `json:"offer_id"`
-		CurrencyCode  string   `json:"currency_code"`
-		Price         string   `json:"price"`
-		Quantity      int32    `json:"quantity"`
-		SKU           int64    `json:"sku"`
-	} `json:"products"`
+	Products []PostingProduct `json:"products"`
 
 	Requirements struct {
 		ProductsRequiringGTD           []string `json:"products_requiring_gtd"`
@@ -129,6 +121,16 @@ type FBSPosting struct {
 	Status             string    `json:"status"`
 	TPLIntegrationType string    `json:"tpl_integration_type"`
 	TrackingNumber     string    `json:"tracking_number"`
+}
+
+type PostingProduct struct {
+	MandatoryMark []string `json:"mandatory_mark"`
+	Name          string   `json:"name"`
+	OfferId       string   `json:"offer_id"`
+	CurrencyCode  string   `json:"currency_code"`
+	Price         string   `json:"price"`
+	Quantity      int32    `json:"quantity"`
+	SKU           int64    `json:"sku"`
 }
 
 type FBSCustomer struct {
@@ -291,6 +293,75 @@ func (c Client) GetFBSShipmentsList(params *GetFBSShipmentsListParams) (*GetFBSS
 	url := "/v3/posting/fbs/list"
 
 	resp := &GetFBSShipmentsListResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type PackOrderParams struct {
+	// List of packages. Each package contains a list of shipments that the order was divided into
+	Packages []PackOrderPackage `json:"packages"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Additional information
+	With PackOrderWith `json:"with"`
+}
+
+type PackOrderPackage struct {
+	Products []PackOrderPackageProduct `json:"products"`
+}
+
+type PackOrderPackageProduct struct {
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Product items quantity
+	Quantity int32 `json:"quantity"`
+}
+
+type PackOrderWith struct {
+	// Pass true to get additional information
+	AdditionalData bool `json:"additional_data"`
+}
+
+type PackOrderResponse struct {
+	core.CommonResponse
+
+	// Additional information about shipments
+	AdditionalData []struct {
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// List of products in the shipment
+		Products []PostingProduct `json:"products"`
+	} `json:"additional_data"`
+
+	// Order packaging result
+	Result []string `json:"result"`
+}
+
+// Divides the order into shipments and changes its status to awaiting_deliver.
+//
+// Each element of the packages may contain several instances of the products. One instance of the products is one shipment. Each element of the products is a product included into the shipment.
+//
+// It is necessary to split the order if:
+//
+// the products do not fit in one package,
+// the products cannot be put in one package.
+// Differs from /v2/posting/fbs/ship by the presence of the field exemplar_info in the request.
+//
+// If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value is_gtd_absent = true
+func (c Client) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
+	url := "/v4/posting/fbs/ship"
+
+	resp := &PackOrderResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {

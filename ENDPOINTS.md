@@ -6,12 +6,12 @@
 - [ ] Characteristics value directory
 
 ## Uploading and updating products
-- [ ] Create or update a product
+- [x] Create or update a product
 - [ ] Get the product import status
 - [ ] Create a product by Ozon ID
 - [ ] Upload and update product images
 - [ ] Check products images uploading status
-- [ ] List of products
+- [x] List of products
 - [x] Product details
 - [ ] Get products' content rating by SKU
 - [ ] Get a list of products by identifiers
@@ -86,7 +86,7 @@
 - [ ] Validate labeling codes
 - [ ] Check and save product items data
 - [ ] Get product items check statuses
-- [ ] Pack the order (version 4)
+- [x] Pack the order (version 4)
 
 ## FBS and rFBS
 - [x] List of unprocessed shipments (version 3)
@@ -97,7 +97,6 @@
 - [ ] Set the manufacturing country
 - [ ] Specify number of boxes for multi-box shipments
 - [ ] Get drop-off point restrictions
-- [ ] Pack the order (version 3)
 - [ ] Partial pack the order
 - [ ] Create an acceptance and transfer certificate and a waybill
 - [ ] Status of acceptance and transfer certificate and waybill

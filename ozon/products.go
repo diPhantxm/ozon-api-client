@@ -616,3 +616,238 @@ func (c Client) UpdatePrices(params *UpdatePricesParams) (*UpdatePricesResponse,
 
 	return resp, nil
 }
+
+type CreateOrUpdateProductParams struct {
+	// Data array
+	Items []CreateOrUpdateProductItem `json:"items"`
+}
+
+// Data array
+type CreateOrUpdateProductItem struct {
+	// Array with the product characteristics. The characteristics depend on category.
+	// You can view them in Help Center or via API
+	Attributes []CreateOrUpdateAttribute `json:"attributes"`
+
+	// Product barcode
+	Barcode string `json:"barcode"`
+
+	// Category identifier
+	CategoryId int64 `json:"category_id"`
+
+	// Marketing color.
+	//
+	// Pass the link to the image in the public cloud storage. The image format is JPG
+	ColorImage string `json:"color_image"`
+
+	// Array of characteristics that have nested attributes
+	ComplexAttributes []CreateOrUpdateComplexAttribute `json:"complex_attributes"`
+
+	// Package depth
+	Depth int32 `json:"depth"`
+
+	// Dimensions measurement units:
+	//   - mm — millimeters,
+	//   - cm — centimeters,
+	//   - in — inches
+	DimensionUnit string `json:"dimension_unit"`
+
+	// Geo-restrictions. Pass a list consisting of name values received in the response of the /v1/products/geo-restrictions-catalog-by-filter method
+	GeoNames []string `json:"geo_names"`
+
+	// Package height
+	Height int32 `json:"height"`
+
+	// Array of images, up to 15 files. The images are displayed on the site in the same order as they are in the array.
+	//
+	// The first one will be set as the main image for the product if the primary_image parameter is not specified.
+	//
+	// If you use the primary_image parameter, the maximum number of images is 14. If the primary_image parameter is not specified, you can upload up to 15 images.
+	//
+	// Pass links to images in the public cloud storage. The image format is JPG or PNG
+	Images []string `json:"images"`
+
+	// Link to main product image
+	PrimaryImage string `json:"primary_image"`
+
+	// Array of 360 images—up to 70 files.
+	//
+	// Pass links to images in the public cloud storage. The image format is JPG
+	Images360 []string `json:"images_360"`
+
+	// Product name. Up to 500 characters
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system.
+	//
+	// The maximum length of a string is 50 characters
+	OfferId string `json:"offer_id"`
+
+	// Currency of your prices. The passed value must be the same as the one set in the personal account settings.
+	// By default, the passed value is RUB, Russian ruble.
+	//
+	// For example, if your currency set in the settings is yuan, pass the value CNY, otherwise an error will be returned
+	CurrencyCode string `json:"currency_code"`
+
+	// Price before discounts. Displayed strikethrough on the product description page. Specified in rubles. The fractional part is separated by decimal point, up to two digits after the decimal point.
+	//
+	// If you specified the old_price before and updated the price parameter you should update the old_price too
+	OldPrice string `json:"old_price"`
+
+	// List of PDF files
+	PDFList []CreateOrUpdateProductPDF `json:"pdf_list"`
+
+	// Price for customers with an Ozon Premium subscription
+	PremiumPrice string `json:"premium_price"`
+
+	// Product price including discounts. This value is shown on the product description card.
+	// If there are no discounts on the product, specify the old_price value
+	Price string `json:"price"`
+
+	// Default: "IS_CODE_SERVICE"
+	// Service type. Pass one of the values in upper case:
+	//   - IS_CODE_SERVICE,
+	//   - IS_NO_CODE_SERVICE
+	ServiceType string `json:"service_type"`
+
+	// VAT rate for the product:
+	//   - 0 — not subject to VAT,
+	//   - 0.1 — 10%,
+	//   - 0.2 — 20%
+	VAT string `json:"vat"`
+
+	// Product weight with the package. The limit value is 1000 kilograms or a corresponding converted value in other measurement units
+	Weight int32 `json:"weight"`
+
+	// Weight measurement units:
+	//   - g—grams,
+	//   - kg—kilograms,
+	//   - lb—pounds
+	WeightUnit string `json:"weight_unit"`
+
+	// Package width
+	Width int32 `json:"width"`
+}
+
+// Array with the product characteristics. The characteristics depend on category.
+// You can view them in Help Center or via API
+type CreateOrUpdateAttribute struct {
+	// Identifier of the characteristic that supports nested properties.
+	// For example, the "Processor" characteristic has nested characteristics "Manufacturer", "L2 Cache", and others.
+	// Each of the nested characteristics can have multiple value variants
+	ComplexId int64 `json:"complex_id"`
+
+	// Characteristic identifier
+	Id int64 `json:"id"`
+
+	Values []CreateOrUpdateAttributeValue `json:"values"`
+}
+
+type CreateOrUpdateAttributeValue struct {
+	// Directory identifier
+	DictionaryValueId int64 `json:"dictrionary_value_id"`
+
+	// Value from the directory
+	Value string `json:"value"`
+}
+
+type CreateOrUpdateComplexAttribute struct {
+	Attributes []CreateOrUpdateAttribute `json:"attributes"`
+}
+
+type CreateOrUpdateProductPDF struct {
+	// Storage order index
+	Index int64 `json:"index"`
+
+	// File name
+	Name string `json:"name"`
+
+	// File address
+	URL string `json:"url"`
+}
+
+type CreateOrUpdateProductResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Number of task for products upload
+		TaskId int64 `json:"task_id"`
+	} `json:"result"`
+}
+
+// This method allows you to create products and update their details
+func (c Client) CreateOrUpdateProduct(params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
+	url := "/v2/product/import"
+
+	resp := &CreateOrUpdateProductResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetListOfProductsParams struct {
+	// Filter by product
+	Filter GetListOfProductsFilter `json:"filter"`
+
+	// Identifier of the last value on the page. Leave this field blank in the first request.
+	//
+	// To get the next values, specify last_id from the response of the previous request
+	LastId string `json:"last_id"`
+
+	// Number of values per page. Minimum is 1, maximum is 1000
+	Limit int64 `json:"limit"`
+}
+
+type GetListOfProductsFilter struct {
+	// Filter by the offer_id parameter. You can pass a list of values in this parameter
+	OfferId []string `json:"offer_id"`
+
+	// Filter by the product_id parameter. You can pass a list of values in this parameter
+	ProductId []int64 `json:"product_id"`
+
+	// Filter by product visibility
+	Visibility string `json:"visibility"`
+}
+
+type GetListOfProductsResponse struct {
+	core.CommonResponse
+
+	// Result
+	Result struct {
+		// Products list
+		Items []struct {
+			// Product identifier in the seller's system
+			OfferId string `json:"offer_id"`
+
+			// Product ID
+			ProductId int64 `json:"product_id"`
+		} `json:"items"`
+
+		// Identifier of the last value on the page.
+		//
+		// To get the next values, specify the recieved value in the next request in the last_id parameter
+		LastId string `json:"last_id"`
+
+		// Total number of products
+		Total int32 `json:"total"`
+	} `json:"result"`
+}
+
+func (c Client) GetListOfProducts(params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
+	url := "/v2/product/list"
+
+	resp := &GetListOfProductsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

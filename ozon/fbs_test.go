@@ -262,3 +262,51 @@ func TestGetFBSShipmentsList(t *testing.T) {
 		}
 	}
 }
+
+func TestPackOrder(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *PackOrderParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&PackOrderParams{
+				Packages: []PackOrderPackage{
+					{
+						Products: []PackOrderPackageProduct{
+							{
+								ProductId: 185479045,
+								Quantity:  1,
+							},
+						},
+					},
+				},
+				PostingNumber: "89491381-0072-1",
+				With: PackOrderWith{
+					AdditionalData: true,
+				},
+			},
+			`{
+				"result": [
+				  "89491381-0072-1"
+				]
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.PackOrder(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
