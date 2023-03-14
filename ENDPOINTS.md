@@ -170,9 +170,9 @@
 - [x] Stocks and products report (version 2)
 
 ## Finance
-- [ ] Report on sold products
+- [x] Report on sold products
 - [ ] Transactions list (version 3)
-- [ ] Total transactions sum
+- [x] Total transactions sum
 
 ## Seller rating
 - [x] Get information on current seller ratings

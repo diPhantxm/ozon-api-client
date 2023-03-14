@@ -29,6 +29,7 @@ func (r Response) CopyCommonResponse(rhs *CommonResponse) {
 	rhs.Code = r.Code
 	rhs.Details = r.Details
 	rhs.StatusCode = r.StatusCode
+	rhs.Message = r.Message
 }
 
 func getDefaultValues(v interface{}) (map[string]string, error) {
