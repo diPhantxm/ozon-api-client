@@ -174,7 +174,7 @@ func (c Client) GetSellerRatingInfoForPeriod(params *GetSellerRatingInfoForPerio
 
 	resp := &GetSellerRatingInfoPeriodResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {
 		return nil, err
 	}

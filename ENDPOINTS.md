@@ -37,7 +37,7 @@
 - [ ] Set a discount on a markdown product
 
 ## Promotions
-- [ ] Available promotions
+- [x] Available promotions
 - [ ] Products that can participate in a promotion
 - [ ] Products in a promotion
 - [ ] Add products to promotion
