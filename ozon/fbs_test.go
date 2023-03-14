@@ -14,6 +14,7 @@ func TestListUnprocessedShipments(t *testing.T) {
 		params     *ListUnprocessedShipmentsParams
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -149,6 +150,16 @@ func TestListUnprocessedShipments(t *testing.T) {
 				}
 			}`,
 		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListUnprocessedShipmentsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
 	}
 
 	for _, test := range tests {
@@ -172,6 +183,7 @@ func TestGetFBSShipmentsList(t *testing.T) {
 		params     *GetFBSShipmentsListParams
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -247,6 +259,16 @@ func TestGetFBSShipmentsList(t *testing.T) {
 				}
 			}`,
 		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetFBSShipmentsListParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
 	}
 
 	for _, test := range tests {
@@ -270,6 +292,7 @@ func TestPackOrder(t *testing.T) {
 		params     *PackOrderParams
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -293,6 +316,16 @@ func TestPackOrder(t *testing.T) {
 				"result": [
 				  "89491381-0072-1"
 				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&PackOrderParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
 			}`,
 		},
 	}

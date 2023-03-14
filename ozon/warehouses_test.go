@@ -13,6 +13,7 @@ func TestGetListOfWarehouses(t *testing.T) {
 		headers    map[string]string
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -39,6 +40,15 @@ func TestGetListOfWarehouses(t *testing.T) {
 					"is_rfbs": true
 				  }
 				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
 			}`,
 		},
 	}

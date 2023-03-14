@@ -13,6 +13,7 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 		headers    map[string]string
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -41,6 +42,15 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 				"premium": true
 			}`,
 		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
 	}
 
 	for _, test := range tests {
@@ -64,6 +74,7 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 		params     *GetSellerRatingInfoForPeriodParams
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -106,6 +117,16 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 					"warning_threshold": 3
 				  }
 				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetSellerRatingInfoForPeriodParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
 			}`,
 		},
 	}

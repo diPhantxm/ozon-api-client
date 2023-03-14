@@ -14,6 +14,7 @@ func TestGetAnalyticsData(t *testing.T) {
 		params     *GetAnalyticsDataParams
 		response   string
 	}{
+		// Test ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -41,6 +42,16 @@ func TestGetAnalyticsData(t *testing.T) {
 				"timestamp": "2021-11-25 15:19:21"
 			}`,
 		},
+		{
+			// Test No Client-Id or Api-Key
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetAnalyticsDataParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
 	}
 
 	for _, test := range tests {
@@ -64,6 +75,7 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 		params     *GetStocksOnWarehousesParams
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -86,6 +98,16 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 					}
 				  ]
 				}
+			}`,
+		}, 
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetStocksOnWarehousesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
 			}`,
 		},
 	}

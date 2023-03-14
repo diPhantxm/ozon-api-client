@@ -14,6 +14,7 @@ func TestGetFBOShipmentsList(t *testing.T) {
 		params     *GetFBOShipmentsListParams
 		response   string
 	}{
+		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -113,6 +114,16 @@ func TestGetFBOShipmentsList(t *testing.T) {
 					"additional_data": []
 				  }
 				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetFBOShipmentsListParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
 			}`,
 		},
 	}
