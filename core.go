@@ -46,8 +46,6 @@ func getDefaultValues(v interface{}) (map[string]string, error) {
 	vType := reflect.TypeOf(v).Elem()
 	vValue := reflect.ValueOf(v).Elem()
 
-	//re := regexp.MustCompile(`default:*`)
-
 	for i := 0; i < vType.NumField(); i++ {
 		field := vType.Field(i)
 		tag := field.Tag.Get("json")

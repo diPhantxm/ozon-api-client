@@ -17,3 +17,23 @@ jobs:
 
     - name: Unit Tests
       run: go test -v ./...
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.19'
+      - name: Setup
+        run: |
+          go install github.com/mattn/goveralls@latest
+      - name: Test
+        run: |
+          go test -v ./... -parallel=10 -covermode=count -coverprofile=coverage.out
+      - name: Send coverage
+        env:
+          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          goveralls -coverprofile=coverage.out -service=github
