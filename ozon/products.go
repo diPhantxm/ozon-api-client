@@ -347,10 +347,7 @@ type GetProductDetailsResponseItemError struct {
 	AttributeName string `json:"attribute_name"`
 
 	// Additional fields for error description
-	OptionalDescriptionElements struct {
-		// Additional field for error description
-		PropertyName string `json:"property_name"`
-	} `json:"optional_description_elements"`
+	OptionalDescriptionElements map[string]string `json:"optional_description_elements"`
 }
 
 // Get product details

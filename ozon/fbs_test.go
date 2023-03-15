@@ -343,3 +343,74 @@ func TestPackOrder(t *testing.T) {
 		}
 	}
 }
+
+func TestValidateLabelingCodes(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ValidateLabelingCodesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ValidateLabelingCodesParams{
+				PostingNumber: "23281294-0063-2",
+				Products: []ValidateLabelingCodesProduct{
+					{
+						Exemplars: []ValidateLabelingCodesExemplar{
+							{
+								GTD:           "",
+								MandatoryMark: "010290000151642731tVMohkbfFgunB",
+							},
+						},
+						ProductId: 476925391,
+					},
+				},
+			},
+			`{
+				"result": {
+				  "products": [
+					{
+					  "product_id": 476925391,
+					  "exemplars": [
+						{
+						  "mandatory_mark": "010290000151642731tVMohkbfFgunB",
+						  "gtd": "",
+						  "valid": true,
+						  "errors": []
+						}
+					  ],
+					  "valid": true,
+					  "error": ""
+					}
+				  ]
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ValidateLabelingCodesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ValidateLabelingCodes(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

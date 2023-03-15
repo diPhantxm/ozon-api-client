@@ -375,3 +375,84 @@ func (c FBS) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
 
 	return resp, nil
 }
+
+type ValidateLabelingCodesParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Products list
+	Products []ValidateLabelingCodesProduct `json:"products"`
+}
+
+type ValidateLabelingCodesProduct struct {
+	// Product items data
+	Exemplars []ValidateLabelingCodesExemplar `json:"exemplars"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+}
+
+type ValidateLabelingCodesExemplar struct {
+	// Сustoms cargo declaration (CCD) number
+	GTD string `json:"gtd"`
+
+	// Mandatory “Chestny ZNAK” labeling
+	MandatoryMark string `json:"mandatory_mark"`
+
+	// Product batch registration number
+	RNPT string `json:"rnpt"`
+}
+
+type ValidateLabelingCodesResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Products list
+		Products []struct {
+			// Error code
+			Error string `json:"error"`
+
+			// Product items data
+			Exemplars []struct {
+				// Product item validation errors
+				Errors []string `json:"errors"`
+
+				// Сustoms cargo declaration (CCD) number
+				GTD string `json:"gtd"`
+
+				// Mandatory “Chestny ZNAK” labeling
+				MandatoryMark string `json:"mandatory_mark"`
+
+				// Check result. true if the labeling code of product item meets the requirements
+				Valid bool `json:"valid"`
+
+				// Product batch registration number
+				RNPT string `json:"rnpt"`
+			} `json:"exemplars"`
+
+			// Product identifier
+			ProductId int64 `json:"product_id"`
+
+			// Check result. true if the labeling codes of all product items meet the requirements
+			Valid bool `json:"valid"`
+		} `json:"products"`
+	} `json:"result"`
+}
+
+// Method for checking whether labeling codes meet the "Chestny ZNAK" system requirements on length and symbols.
+//
+// If you don't have the customs cargo declaration (CCD) number, you don't have to specify it
+func (c FBS) ValidateLabelingCodes(params *ValidateLabelingCodesParams) (*ValidateLabelingCodesResponse, error) {
+	url := "/v4/fbs/posting/product/exemplar/validate"
+
+	resp := &ValidateLabelingCodesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
