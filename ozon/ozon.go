@@ -22,6 +22,7 @@ type Client struct {
 	rating     *Rating
 	warehouses *Warehouses
 	returns    *Returns
+	reports    *Reports
 }
 
 func (c Client) Analytics() *Analytics {
@@ -60,6 +61,10 @@ func (c Client) Returns() *Returns {
 	return c.returns
 }
 
+func (c Client) Reports() *Reports {
+	return c.reports
+}
+
 func NewClient(clientId, apiKey string) *Client {
 	coreClient := core.NewClient(DefaultAPIBaseUrl, map[string]string{
 		"Client-Id": clientId,
@@ -77,6 +82,7 @@ func NewClient(clientId, apiKey string) *Client {
 		rating:     &Rating{client: coreClient},
 		warehouses: &Warehouses{client: coreClient},
 		returns:    &Returns{client: coreClient},
+		reports:    &Reports{client: coreClient},
 	}
 }
 
@@ -94,5 +100,6 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 		rating:     &Rating{client: coreClient},
 		warehouses: &Warehouses{client: coreClient},
 		returns:    &Returns{client: coreClient},
+		reports:    &Reports{client: coreClient},
 	}
 }

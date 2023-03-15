@@ -128,8 +128,8 @@
 - [ ] ETGB customs declarations
 
 ## Returns
-- [ ] Get information about FBO returns (version 3)
-- [ ] Get information about FBS returns
+- [x] Get information about FBO returns (version 3)
+- [x] Get information about FBS returns
 
 ## Cancellations
 - [ ] Get information about a rFBS cancellation request
@@ -153,7 +153,7 @@
 
 ## Reports
 - [ ] Report details
-- [ ] Reports list
+- [x] Reports list
 - [ ] Products report
 - [ ] Prices report
 - [ ] Stocks report
