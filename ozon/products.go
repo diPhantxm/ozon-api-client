@@ -883,7 +883,7 @@ type GetProductsRatingBySKUResponse struct {
 				Description string `json:"description"`
 
 				// Indication that the condition is met
-				Fulfilled bool `json:'fulfilled"`
+				Fulfilled bool `json:"fulfilled"`
 
 				// Condition identifier
 				Key string `json:"key"`
