@@ -1,7 +1,7 @@
 # Ozon Seller API Client
 A Ozon Seller API client written in Golang
 
-[![Coverage Status](https://coveralls.io/repos/github/diPhantxm/ozon-api-client/badge.svg?branch=master)](https://coveralls.io/github/diPhantxm/ozon-api-client?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/diPhantxm/ozon-api-client/badge.svg)](https://coveralls.io/github/diPhantxm/ozon-api-client)
 ![example workflow](https://github.com/diPhantxm/ozon-api-client/actions/workflows/tests.yml/badge.svg)
 
 [Ozon](https://ozon.ru) is a marketplace for small and medium enterprises to launch and grow their businesses in Russia.
