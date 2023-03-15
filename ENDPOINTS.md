@@ -13,7 +13,7 @@
 - [ ] Check products images uploading status
 - [x] List of products
 - [x] Product details
-- [ ] Get products' content rating by SKU
+- [x] Get products' content rating by SKU
 - [ ] Get a list of products by identifiers
 - [ ] Get a description of the product characteristics
 - [ ] Get product description

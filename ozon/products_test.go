@@ -644,3 +644,230 @@ func TestGetListOfProducts(t *testing.T) {
 		}
 	}
 }
+
+func TestGetProductsRatingBySKU(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductsRatingBySKUParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductsRatingBySKUParams{
+				SKUs: []int64{179737222},
+			},
+			`{
+				"products": [
+				  {
+					"sku": 179737222,
+					"rating": 42.5,
+					"groups": [
+					  {
+						"key": "media",
+						"name": "Медиа",
+						"rating": 70,
+						"weight": 25,
+						"conditions": [
+						  {
+							"key": "media_images_2",
+							"description": "Добавлено 2 изображения",
+							"fulfilled": true,
+							"cost": 50
+						  },
+						  {
+							"key": "media_images_3",
+							"description": "Добавлено 3 изображения и более",
+							"fulfilled": true,
+							"cost": 20
+						  },
+						  {
+							"key": "media_image_3d",
+							"description": "Добавлено 3D-изображение",
+							"fulfilled": false,
+							"cost": 15
+						  },
+						  {
+							"key": "media_video",
+							"description": "Добавлено видео",
+							"fulfilled": false,
+							"cost": 15
+						  }
+						],
+						"improve_attributes": [
+						  {
+							"id": 4074,
+							"name": "Код ролика на YouTube"
+						  },
+						  {
+							"id": 4080,
+							"name": "3D-изображение"
+						  }
+						],
+						"improve_at_least": 2
+					  },
+					  {
+						"key": "important_attributes",
+						"name": "Важные атрибуты",
+						"rating": 50,
+						"weight": 30,
+						"conditions": [
+						  {
+							"key": "important_2",
+							"description": "Заполнено 2 атрибута и более",
+							"fulfilled": true,
+							"cost": 50
+						  },
+						  {
+							"key": "important_50_percent",
+							"description": "Заполнено более 50% атрибутов",
+							"fulfilled": false,
+							"cost": 25
+						  },
+						  {
+							"key": "important_70_percent",
+							"description": "Заполнено более 70% атрибутов",
+							"fulfilled": false,
+							"cost": 25
+						  }
+						],
+						"improve_attributes": [
+						  {
+							"id": 4385,
+							"name": "Гарантийный срок"
+						  },
+						  {
+							"id": 4389,
+							"name": "Страна-изготовитель"
+						  },
+						  {
+							"id": 8513,
+							"name": "Количество в упаковке, шт"
+						  },
+						  {
+							"id": 8590,
+							"name": "Макс. диагональ, дюймы"
+						  },
+						  {
+							"id": 8591,
+							"name": "Мин. диагональ, дюймы"
+						  },
+						  {
+							"id": 9336,
+							"name": "Модель браслета/умных часов"
+						  },
+						  {
+							"id": 11046,
+							"name": "Покрытие"
+						  },
+						  {
+							"id": 11047,
+							"name": "Прозрачность покрытия"
+						  },
+						  {
+							"id": 11048,
+							"name": "Дополнительные свойства покрытия"
+						  },
+						  {
+							"id": 11049,
+							"name": "Вид стекла"
+						  },
+						  {
+							"id": 11603,
+							"name": "Размер циферблата"
+						  }
+						],
+						"improve_at_least": 6
+					  },
+					  {
+						"key": "other_attributes",
+						"name": "Остальные атрибуты",
+						"rating": 0,
+						"weight": 25,
+						"conditions": [
+						  {
+							"key": "other_2",
+							"description": "Заполнено 2 атрибута и более",
+							"fulfilled": false,
+							"cost": 50
+						  },
+						  {
+							"key": "other_50_percent",
+							"description": "Заполнено более 50% атрибутов",
+							"fulfilled": false,
+							"cost": 50
+						  }
+						],
+						"improve_attributes": [
+						  {
+							"id": 4382,
+							"name": "Размеры, мм"
+						  }
+						],
+						"improve_at_least": 1
+					  },
+					  {
+						"key": "text",
+						"name": "Текстовое описание",
+						"rating": 50,
+						"weight": 20,
+						"conditions": [
+						  {
+							"key": "text_annotation_100_chars",
+							"description": "Аннотация более 100 знаков",
+							"fulfilled": true,
+							"cost": 25
+						  },
+						  {
+							"key": "text_annotation_500_chars",
+							"description": "Аннотация более 500 знаков",
+							"fulfilled": true,
+							"cost": 25
+						  },
+						  {
+							"key": "text_rich",
+							"description": "Заполнен Rich-контент",
+							"fulfilled": false,
+							"cost": 100
+						  }
+						],
+						"improve_attributes": [
+						  {
+							"id": 11254,
+							"name": "Rich-контент JSON"
+						  }
+						],
+						"improve_at_least": 1
+					  }
+					]
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductsRatingBySKUParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.GetProductsRatingBySKU(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

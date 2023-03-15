@@ -851,3 +851,78 @@ func (c Client) GetListOfProducts(params *GetListOfProductsParams) (*GetListOfPr
 
 	return resp, nil
 }
+
+type GetProductsRatingBySKUParams struct {
+	// List of product SKUs for which content rating should be returned
+	SKUs []int64 `json:"skus"`
+}
+
+type GetProductsRatingBySKUResponse struct {
+	core.CommonResponse
+
+	// Products' content rating
+	Products []struct{
+		// Product identifier in the Ozon system, SKU
+		SKU int64 `json:"sku"`
+
+		// Product content rating: 0 to 100
+		Rating float64 `json:"rating"`
+
+		// Groups of characteristics that make up the content rating
+		Groups []struct{
+			// List of conditions that increase the product content rating
+			Conditions []struct{
+				// Number of content rating points that the condition gives
+				Cost float64 `json:"cost"`
+
+				// Condition description
+				Description string `json:"description"`
+
+				// Indication that the condition is met
+				Fulfilled bool `json:'fulfilled"`
+
+				// Condition identifier
+				Key string `json:"key"`
+			} `json:"conditions"`
+
+			// Number of attributes you need to fill in to get the maximum score in this characteristics group
+			ImproveAtLeast int32 `json:"improve_at_least"`
+
+			// List of attributes that can increase the product content rating
+			ImproveAttributes []struct{
+				// Attribute identifier
+				Id int64 `json:"id"`
+
+				// Attribute name
+				Name string `json:"name"`
+			} `json:"improve_attributes"`
+
+			// Group identifier
+			Key string `json:"key"`
+
+			// Group name
+			Name string `json:"name"`
+
+			// Rating in the group
+			Rating float64 `json:"rating"`
+
+			// Percentage influence of group characteristics on the content rating
+			Weight float64 `json:"weight"`
+		} `json:"groups"`
+	} `json:"products"`
+}
+
+// Method for getting products' content rating and recommendations on how to increase it
+func (c Client) GetProductsRatingBySKU(params *GetProductsRatingBySKUParams) (*GetProductsRatingBySKUResponse, error) {
+	url := "/v1/product/rating-by-sku"
+
+	resp := &GetProductsRatingBySKUResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
