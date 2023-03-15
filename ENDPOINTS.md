@@ -71,7 +71,7 @@
 
 ## Warehouses
 - [x] List of warehouses
-- [ ] List of delivery methods for a warehouse
+- [x] List of delivery methods for a warehouse
 
 ## Polygons
 - [ ] Create delivery polygon

@@ -2,6 +2,7 @@ package ozon
 
 import (
 	"net/http"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -80,6 +81,94 @@ func (c Client) GetListOfWarehouses() (*GetListOfWarehousesResponse, error) {
 	url := "/v1/warehouse/list"
 
 	resp := &GetListOfWarehousesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetListOfDeliveryMethodsParams struct {
+	// Search filter for delivery methods
+	Filter GetListOfDeliveryMethodsFilter `json:"filter"`
+
+	// Number of items in a response. Maximum is 50, minimum is 1
+	Limit int64 `json:"limit"`
+
+	// Number of elements that will be skipped in the response.
+	// For example, if offset=10, the response will start with the 11th element found
+	Offset int64 `json:"offset"`
+}
+
+type GetListOfDeliveryMethodsFilter struct {
+	// Delivery service identifier
+	ProviderId int64 `json:"provider_id"`
+
+	// Delivery method status:
+	//   - NEW—created
+	//   - EDITED—being edited
+	//   - ACTIVE—active
+	//   - DISABLED—inactive
+	Status string `json:"status"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type GetListOfDeliveryMethodsResponse struct {
+	core.CommonResponse
+
+	// Indication that only part of delivery methods was returned in the response:
+	//   - true — make a request with a new offset parameter value for getting the rest of delivery methods;
+	//   - false — all delivery methods were returned
+	HasNext bool `json:"has_next"`
+
+	// Method result
+	Result []struct {
+		// Company identifier
+		CompanyId int64 `json:"company_id"`
+
+		// Date and time of delivery method creation
+		CreatedAt time.Time `json:"created_at"`
+
+		// Time before an order must be packaged
+		Cutoff string `json:"cutoff"`
+
+		// Delivery method identifier
+		Id int64 `json:"id"`
+
+		// Delivery method name
+		Name string `json:"name"`
+
+		// Delivery service identifier
+		ProviderId int64 `json:"provider_id"`
+
+		// Delivery method status:
+		//   - NEW—created,
+		//   - EDITED—being edited,
+		//   - ACTIVE—active,
+		//   - DISABLED—inactive
+		Status string `json:"status"`
+
+		// Order delivery service identifier
+		TemplateId int64 `json:"template_id"`
+
+		// Date and time when the delivery method was last updated
+		UpdatedAt time.Time `json:"updated_at"`
+
+		// Warehouse identifier
+		WarehouseId int64 `json:"warehouse_id"`
+	} `json:"result"`
+}
+
+// This methods allows you to get list of all delivery methods that can be applied for this warehouse
+func (c Client) GetListOfDeliveryMethods(params *GetListOfDeliveryMethodsParams) (*GetListOfDeliveryMethodsResponse, error) {
+	url := "/v1/delivery-method/list"
+
+	resp := &GetListOfDeliveryMethodsResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, nil, resp)
 	if err != nil {
