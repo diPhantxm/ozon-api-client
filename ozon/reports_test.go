@@ -77,3 +77,55 @@ func TestGetList(t *testing.T) {
 		}
 	}
 }
+
+func TestGetReportDetails(t *testing.T) {
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetReportDetailsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetReportDetailsParams{
+				
+			},
+			`{
+				"result": {
+				  "code": "257bf213-ca57-405c-8edf-41d2ce22decf",
+				  "status": "success",
+				  "error": "",
+				  "file": "https://storage.yandexcloud.net/ozon.reports/95/c1/95c1ae93320294cb.csv",
+				  "report_type": "seller_products",
+				  "params": {},
+				  "created_at": "2021-11-25T14:54:55.688260Z"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetReportDetailsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().GetReportDetails(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

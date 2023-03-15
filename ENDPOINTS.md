@@ -152,7 +152,7 @@
 - [ ] Delete the proforma invoice link
 
 ## Reports
-- [ ] Report details
+- [x] Report details
 - [x] Reports list
 - [ ] Products report
 - [ ] Prices report
