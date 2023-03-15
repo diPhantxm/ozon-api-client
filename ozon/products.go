@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type Products struct {
+	client *core.Client
+}
+
 type GetStocksInfoParams struct {
 	// Identifier of the last value on the page. Leave this field blank in the first request.
 	//
@@ -72,7 +76,7 @@ type GetStocksInfoResponse struct {
 // * how many items are available,
 //
 // * how many are reserved by customers.
-func (c Client) GetStocksInfo(params *GetStocksInfoParams) (*GetStocksInfoResponse, error) {
+func (c Products) GetStocksInfo(params *GetStocksInfoParams) (*GetStocksInfoResponse, error) {
 	url := "/v3/product/info/stocks"
 
 	resp := &GetStocksInfoResponse{}
@@ -350,7 +354,7 @@ type GetProductDetailsResponseItemError struct {
 }
 
 // Get product details
-func (c Client) GetProductDetails(params *GetProductDetailsParams) (*GetProductDetailsResponse, error) {
+func (c Products) GetProductDetails(params *GetProductDetailsParams) (*GetProductDetailsResponse, error) {
 	url := "/v2/product/info"
 
 	resp := &GetProductDetailsResponse{}
@@ -411,7 +415,7 @@ type UpdateStocksResponse struct {
 // With one request you can change the availability for 100 products. You can send up to 80 requests in a minute.
 //
 // Availability can only be set after the product status has been changed to processed.
-func (c Client) UpdateStocks(params *UpdateStocksParams) (*UpdateStocksResponse, error) {
+func (c Products) UpdateStocks(params *UpdateStocksParams) (*UpdateStocksResponse, error) {
 	url := "/v1/product/import/stocks"
 
 	resp := &UpdateStocksResponse{}
@@ -481,7 +485,7 @@ type UpdateQuantityStockProductsResponse struct {
 // Availability can only be set after the product status has been changed to processed.
 //
 // Bulky products stock can only be updated in the warehouses for bulky products.
-func (c Client) UpdateQuantityStockProducts(params *UpdateQuantityStockProductsParams) (*UpdateQuantityStockProductsResponse, error) {
+func (c Products) UpdateQuantityStockProducts(params *UpdateQuantityStockProductsParams) (*UpdateQuantityStockProductsResponse, error) {
 	url := "/v2/products/stocks"
 
 	resp := &UpdateQuantityStockProductsResponse{}
@@ -530,7 +534,7 @@ type StocksInSellersWarehouseResponse struct {
 }
 
 // Get stocks in seller's warehouse
-func (c Client) StocksInSellersWarehouse(params *StocksInSellersWarehouseParams) (*StocksInSellersWarehouseResponse, error) {
+func (c Products) StocksInSellersWarehouse(params *StocksInSellersWarehouseParams) (*StocksInSellersWarehouseResponse, error) {
 	url := "/v1/product/info/stocks-by-warehouse/fbs"
 
 	resp := &StocksInSellersWarehouseResponse{}
@@ -603,7 +607,7 @@ type UpdatePricesResponse struct {
 // To reset old_price or premium_price set these parameters to 0.
 //
 // A new price must differ from the old one by at least 5%.
-func (c Client) UpdatePrices(params *UpdatePricesParams) (*UpdatePricesResponse, error) {
+func (c Products) UpdatePrices(params *UpdatePricesParams) (*UpdatePricesResponse, error) {
 	url := "/v1/product/import/prices"
 
 	resp := &UpdatePricesResponse{}
@@ -776,7 +780,7 @@ type CreateOrUpdateProductResponse struct {
 }
 
 // This method allows you to create products and update their details
-func (c Client) CreateOrUpdateProduct(params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
+func (c Products) CreateOrUpdateProduct(params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
 	url := "/v2/product/import"
 
 	resp := &CreateOrUpdateProductResponse{}
@@ -838,7 +842,7 @@ type GetListOfProductsResponse struct {
 	} `json:"result"`
 }
 
-func (c Client) GetListOfProducts(params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
+func (c Products) GetListOfProducts(params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
 	url := "/v2/product/list"
 
 	resp := &GetListOfProductsResponse{}
@@ -861,7 +865,7 @@ type GetProductsRatingBySKUResponse struct {
 	core.CommonResponse
 
 	// Products' content rating
-	Products []struct{
+	Products []struct {
 		// Product identifier in the Ozon system, SKU
 		SKU int64 `json:"sku"`
 
@@ -869,9 +873,9 @@ type GetProductsRatingBySKUResponse struct {
 		Rating float64 `json:"rating"`
 
 		// Groups of characteristics that make up the content rating
-		Groups []struct{
+		Groups []struct {
 			// List of conditions that increase the product content rating
-			Conditions []struct{
+			Conditions []struct {
 				// Number of content rating points that the condition gives
 				Cost float64 `json:"cost"`
 
@@ -889,7 +893,7 @@ type GetProductsRatingBySKUResponse struct {
 			ImproveAtLeast int32 `json:"improve_at_least"`
 
 			// List of attributes that can increase the product content rating
-			ImproveAttributes []struct{
+			ImproveAttributes []struct {
 				// Attribute identifier
 				Id int64 `json:"id"`
 
@@ -913,7 +917,7 @@ type GetProductsRatingBySKUResponse struct {
 }
 
 // Method for getting products' content rating and recommendations on how to increase it
-func (c Client) GetProductsRatingBySKU(params *GetProductsRatingBySKUParams) (*GetProductsRatingBySKUResponse, error) {
+func (c Products) GetProductsRatingBySKU(params *GetProductsRatingBySKUParams) (*GetProductsRatingBySKUResponse, error) {
 	url := "/v1/product/rating-by-sku"
 
 	resp := &GetProductsRatingBySKUResponse{}

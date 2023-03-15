@@ -57,7 +57,7 @@ func TestGetAnalyticsData(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetAnalyticsData(test.params)
+		resp, err := c.Analytics().GetAnalyticsData(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -99,7 +99,7 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 				  ]
 				}
 			}`,
-		}, 
+		},
 		// Test No Client-Id or Api-Key
 		{
 			http.StatusUnauthorized,
@@ -115,7 +115,7 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetStocksOnWarehouses(test.params)
+		resp, err := c.Analytics().GetStocksOnWarehouses(test.params)
 		if err != nil {
 			t.Error(err)
 		}

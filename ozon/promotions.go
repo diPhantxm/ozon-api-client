@@ -6,6 +6,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type Promotions struct {
+	client *core.Client
+}
+
 type GetAvailablePromotionsResponse struct {
 	core.CommonResponse
 
@@ -65,7 +69,7 @@ type GetAvailablePromotionsResponse struct {
 	} `json:"result"`
 }
 
-func (c Client) GetAvailablePromotions() (*GetAvailablePromotionsResponse, error) {
+func (c Promotions) GetAvailablePromotions() (*GetAvailablePromotionsResponse, error) {
 	url := "/v1/actions"
 
 	resp := &GetAvailablePromotionsResponse{}

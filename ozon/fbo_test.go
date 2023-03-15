@@ -131,7 +131,7 @@ func TestGetFBOShipmentsList(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetFBOShipmentsList(test.params)
+		resp, err := c.FBO().GetFBOShipmentsList(test.params)
 		if err != nil {
 			t.Error(err)
 		}

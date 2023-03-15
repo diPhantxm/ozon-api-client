@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type Analytics struct {
+	client *core.Client
+}
+
 type GetAnalyticsDataParams struct {
 	// Date from which the data will be in the report
 	DateFrom time.Time `json:"date_from"`
@@ -90,7 +94,7 @@ type GetAnalyticsDataResponse struct {
 }
 
 // Specify the period and metrics that are required. The response will contain analytical data grouped by the `dimensions` parameter.
-func (c Client) GetAnalyticsData(params *GetAnalyticsDataParams) (*GetAnalyticsDataResponse, error) {
+func (c Analytics) GetAnalyticsData(params *GetAnalyticsDataParams) (*GetAnalyticsDataResponse, error) {
 	url := "/v1/analytics/data"
 
 	resp := &GetAnalyticsDataResponse{}
@@ -152,7 +156,7 @@ type GetStocksOnWarehousesResponse struct {
 }
 
 // Report on stocks and products movement at Ozon warehouses
-func (c Client) GetStocksOnWarehouses(params *GetStocksOnWarehousesParams) (*GetStocksOnWarehousesResponse, error) {
+func (c Analytics) GetStocksOnWarehouses(params *GetStocksOnWarehousesParams) (*GetStocksOnWarehousesResponse, error) {
 	url := "/v2/analytics/stock_on_warehouses"
 
 	resp := &GetStocksOnWarehousesResponse{}

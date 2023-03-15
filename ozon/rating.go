@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type Rating struct {
+	client *core.Client
+}
+
 type GetCurrentSellerRatingInfoResponse struct {
 	core.CommonResponse
 
@@ -80,7 +84,7 @@ type GetCurrentSellerRatingInfoResponse struct {
 	} `json:"groups"`
 }
 
-func (c Client) GetCurrentSellerRatingInfo() (*GetCurrentSellerRatingInfoResponse, error) {
+func (c Rating) GetCurrentSellerRatingInfo() (*GetCurrentSellerRatingInfoResponse, error) {
 	url := "/v1/rating/summary"
 
 	resp := &GetCurrentSellerRatingInfoResponse{}
@@ -169,7 +173,7 @@ type GetSellerRatingInfoPeriodResponse struct {
 	} `json:"ratings"`
 }
 
-func (c Client) GetSellerRatingInfoForPeriod(params *GetSellerRatingInfoForPeriodParams) (*GetSellerRatingInfoPeriodResponse, error) {
+func (c Rating) GetSellerRatingInfoForPeriod(params *GetSellerRatingInfoForPeriodParams) (*GetSellerRatingInfoPeriodResponse, error) {
 	url := "/v1/rating/history"
 
 	resp := &GetSellerRatingInfoPeriodResponse{}

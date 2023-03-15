@@ -165,7 +165,7 @@ func TestListUnprocessedShipments(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.ListUnprocessedShipments(test.params)
+		resp, err := c.FBS().ListUnprocessedShipments(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -274,7 +274,7 @@ func TestGetFBSShipmentsList(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetFBSShipmentsList(test.params)
+		resp, err := c.FBS().GetFBSShipmentsList(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -333,7 +333,7 @@ func TestPackOrder(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.PackOrder(test.params)
+		resp, err := c.FBS().PackOrder(test.params)
 		if err != nil {
 			t.Error(err)
 		}

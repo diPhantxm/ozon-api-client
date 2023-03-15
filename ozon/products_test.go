@@ -67,7 +67,7 @@ func TestGetStocksInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetStocksInfo(test.params)
+		resp, err := c.Products().GetStocksInfo(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -231,7 +231,7 @@ func TestGetProductDetails(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetProductDetails(test.params)
+		resp, err := c.Products().GetProductDetails(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -288,7 +288,7 @@ func TestUpdateStocks(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.UpdateStocks(test.params)
+		resp, err := c.Products().UpdateStocks(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -341,7 +341,7 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.StocksInSellersWarehouse(test.params)
+		resp, err := c.Products().StocksInSellersWarehouse(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -401,7 +401,7 @@ func TestUpdatePrices(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.UpdatePrices(test.params)
+		resp, err := c.Products().UpdatePrices(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -460,7 +460,7 @@ func TestUpdateQuantityStockProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.UpdateQuantityStockProducts(test.params)
+		resp, err := c.Products().UpdateQuantityStockProducts(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -575,7 +575,7 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.CreateOrUpdateProduct(test.params)
+		resp, err := c.Products().CreateOrUpdateProduct(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -634,7 +634,7 @@ func TestGetListOfProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetListOfProducts(test.params)
+		resp, err := c.Products().GetListOfProducts(test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -861,7 +861,7 @@ func TestGetProductsRatingBySKU(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetProductsRatingBySKU(test.params)
+		resp, err := c.Products().GetProductsRatingBySKU(test.params)
 		if err != nil {
 			t.Error(err)
 		}

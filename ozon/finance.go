@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type Finance struct {
+	client *core.Client
+}
+
 type ReportOnSoldProductsParams struct {
 	// Time period in the `YYYY-MM` format
 	Date string `json:"date"`
@@ -141,7 +145,7 @@ type ReportOnSoldProductsResponse struct {
 // Returns information on products sold and returned within a month. Canceled or non-purchased products are not included.
 //
 // Report is returned no later than the 5th day of the next month
-func (c Client) ReportOnSoldProducts(params *ReportOnSoldProductsParams) (*ReportOnSoldProductsResponse, error) {
+func (c Finance) ReportOnSoldProducts(params *ReportOnSoldProductsParams) (*ReportOnSoldProductsResponse, error) {
 	url := "/v1/finance/realization"
 
 	resp := &ReportOnSoldProductsResponse{}
@@ -229,7 +233,7 @@ type GetTotalTransactionsSumResponse struct {
 }
 
 // Returns total sums for transactions for specified period
-func (c Client) GetTotalTransactionsSum(params *GetTotalTransactionsSumParams) (*GetTotalTransactionsSumResponse, error) {
+func (c Finance) GetTotalTransactionsSum(params *GetTotalTransactionsSumParams) (*GetTotalTransactionsSumResponse, error) {
 	url := "/v3/finance/transaction/totals"
 
 	resp := &GetTotalTransactionsSumResponse{}

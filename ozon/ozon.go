@@ -12,19 +12,80 @@ const (
 
 type Client struct {
 	client *core.Client
+
+	analytics  *Analytics
+	fbo        *FBO
+	fbs        *FBS
+	finance    *Finance
+	products   *Products
+	promotions *Promotions
+	rating     *Rating
+	warehouses *Warehouses
+}
+
+func (c Client) Analytics() *Analytics {
+	return c.analytics
+}
+
+func (c Client) FBO() *FBO {
+	return c.fbo
+}
+
+func (c Client) FBS() *FBS {
+	return c.fbs
+}
+
+func (c Client) Finance() *Finance {
+	return c.finance
+}
+
+func (c Client) Products() *Products {
+	return c.products
+}
+
+func (c Client) Promotions() *Promotions {
+	return c.promotions
+}
+
+func (c Client) Rating() *Rating {
+	return c.rating
+}
+
+func (c Client) Warehouses() *Warehouses {
+	return c.warehouses
 }
 
 func NewClient(clientId, apiKey string) *Client {
+	coreClient := core.NewClient(DefaultAPIBaseUrl, map[string]string{
+		"Client-Id": clientId,
+		"Api-Key":   apiKey,
+	})
+
 	return &Client{
-		client: core.NewClient(DefaultAPIBaseUrl, map[string]string{
-			"Client-Id": clientId,
-			"Api-Key":   apiKey,
-		}),
+		client:     coreClient,
+		analytics:  &Analytics{client: coreClient},
+		fbo:        &FBO{client: coreClient},
+		fbs:        &FBS{client: coreClient},
+		finance:    &Finance{client: coreClient},
+		products:   &Products{client: coreClient},
+		promotions: &Promotions{client: coreClient},
+		rating:     &Rating{client: coreClient},
+		warehouses: &Warehouses{client: coreClient},
 	}
 }
 
 func NewMockClient(handler http.HandlerFunc) *Client {
+	coreClient := core.NewMockClient(handler)
+
 	return &Client{
-		client: core.NewMockClient(handler),
+		client:     coreClient,
+		analytics:  &Analytics{client: coreClient},
+		fbo:        &FBO{client: coreClient},
+		fbs:        &FBS{client: coreClient},
+		finance:    &Finance{client: coreClient},
+		products:   &Products{client: coreClient},
+		promotions: &Promotions{client: coreClient},
+		rating:     &Rating{client: coreClient},
+		warehouses: &Warehouses{client: coreClient},
 	}
 }

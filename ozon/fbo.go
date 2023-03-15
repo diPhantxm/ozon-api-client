@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type FBO struct {
+	client *core.Client
+}
+
 type GetFBOShipmentsListParams struct {
 	// Sorting direction
 	Direction string `json:"dir"`
@@ -151,7 +155,7 @@ type GetFBOShipmentsListResponse struct {
 }
 
 // Returns a list of shipments for a specified period of time. You can additionally filter the shipments by their status
-func (c Client) GetFBOShipmentsList(params *GetFBOShipmentsListParams) (*GetFBOShipmentsListResponse, error) {
+func (c FBO) GetFBOShipmentsList(params *GetFBOShipmentsListParams) (*GetFBOShipmentsListResponse, error) {
 	url := "/v2/posting/fbo/list"
 
 	resp := &GetFBOShipmentsListResponse{}

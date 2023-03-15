@@ -54,7 +54,7 @@ func TestGetAvailablePromotions(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetAvailablePromotions()
+		resp, err := c.Promotions().GetAvailablePromotions()
 		if err != nil {
 			t.Error(err)
 		}

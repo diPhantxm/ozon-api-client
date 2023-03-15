@@ -56,7 +56,7 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetCurrentSellerRatingInfo()
+		resp, err := c.Rating().GetCurrentSellerRatingInfo()
 		if err != nil {
 			t.Error(err)
 		}
@@ -134,7 +134,7 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetSellerRatingInfoForPeriod(test.params)
+		resp, err := c.Rating().GetSellerRatingInfoForPeriod(test.params)
 		if err != nil {
 			t.Error(err)
 		}

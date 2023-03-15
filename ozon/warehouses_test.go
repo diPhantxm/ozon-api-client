@@ -56,7 +56,7 @@ func TestGetListOfWarehouses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetListOfWarehouses()
+		resp, err := c.Warehouses().GetListOfWarehouses()
 		if err != nil {
 			t.Error(err)
 		}
@@ -118,7 +118,7 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.GetListOfDeliveryMethods(test.params)
+		resp, err := c.Warehouses().GetListOfDeliveryMethods(test.params)
 		if err != nil {
 			t.Error(err)
 		}

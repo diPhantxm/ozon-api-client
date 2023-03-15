@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type Warehouses struct {
+	client *core.Client
+}
+
 type GetListOfWarehousesResponse struct {
 	core.CommonResponse
 
@@ -76,8 +80,8 @@ type GetListOfWarehousesResponse struct {
 	} `json:"resulCommonResponse"`
 }
 
-// You do not need to specify any parameters in the request. Your company will be identified by the Client ID
-func (c Client) GetListOfWarehouses() (*GetListOfWarehousesResponse, error) {
+// You do not need to specify any parameters in the request. Your company will be identified by the Warehouses ID
+func (c Warehouses) GetListOfWarehouses() (*GetListOfWarehousesResponse, error) {
 	url := "/v1/warehouse/list"
 
 	resp := &GetListOfWarehousesResponse{}
@@ -165,7 +169,7 @@ type GetListOfDeliveryMethodsResponse struct {
 }
 
 // This methods allows you to get list of all delivery methods that can be applied for this warehouse
-func (c Client) GetListOfDeliveryMethods(params *GetListOfDeliveryMethodsParams) (*GetListOfDeliveryMethodsResponse, error) {
+func (c Warehouses) GetListOfDeliveryMethods(params *GetListOfDeliveryMethodsParams) (*GetListOfDeliveryMethodsResponse, error) {
 	url := "/v1/delivery-method/list"
 
 	resp := &GetListOfDeliveryMethodsResponse{}

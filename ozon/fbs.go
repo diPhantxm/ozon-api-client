@@ -7,6 +7,10 @@ import (
 	core "github.com/diphantxm/ozon-api-client"
 )
 
+type FBS struct {
+	client *core.Client
+}
+
 type ListUnprocessedShipmentsParams struct {
 	Direction string                         `json:"dir"`
 	Filter    ListUnprocessedShipmentsFilter `json:"filter"`
@@ -190,7 +194,7 @@ type FinancialDataProduct struct {
 	TotalDiscountValue   float64 `json:"total_discount_value"`
 }
 
-func (c Client) ListUnprocessedShipments(params *ListUnprocessedShipmentsParams) (*ListUnprocessedShipmentsResponse, error) {
+func (c FBS) ListUnprocessedShipments(params *ListUnprocessedShipmentsParams) (*ListUnprocessedShipmentsResponse, error) {
 	url := "/v3/posting/fbs/unfulfilled/list"
 
 	resp := &ListUnprocessedShipmentsResponse{}
@@ -289,7 +293,7 @@ type GetFBSShipmentsListResponse struct {
 // You can filter shipments by their status. The list of available statuses is specified in the description of the filter.status parameter.
 //
 // The true value of the has_next parameter in the response means there is not the entire array of shipments in the response. To get information on the remaining shipments, make a new request with a different offset value.
-func (c Client) GetFBSShipmentsList(params *GetFBSShipmentsListParams) (*GetFBSShipmentsListResponse, error) {
+func (c FBS) GetFBSShipmentsList(params *GetFBSShipmentsListParams) (*GetFBSShipmentsListResponse, error) {
 	url := "/v3/posting/fbs/list"
 
 	resp := &GetFBSShipmentsListResponse{}
@@ -358,7 +362,7 @@ type PackOrderResponse struct {
 // Differs from /v2/posting/fbs/ship by the presence of the field exemplar_info in the request.
 //
 // If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value is_gtd_absent = true
-func (c Client) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
+func (c FBS) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
 	url := "/v4/posting/fbs/ship"
 
 	resp := &PackOrderResponse{}
