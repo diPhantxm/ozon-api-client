@@ -69,12 +69,66 @@ type GetAvailablePromotionsResponse struct {
 	} `json:"result"`
 }
 
+// A method for getting a list of promotions that you can participate in
 func (c Promotions) GetAvailablePromotions() (*GetAvailablePromotionsResponse, error) {
 	url := "/v1/actions"
 
 	resp := &GetAvailablePromotionsResponse{}
 
 	response, err := c.client.Request(http.MethodGet, url, nil, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type AddProductToPromotionParams struct {
+	// Promotion identifier
+	ActionId float64 `json:"action_id"`
+
+	// Products list
+	Products []AddProductToPromotionProduct `json:"products"`
+}
+
+type AddProductToPromotionProduct struct {
+	// Product identifier
+	ProductId float64 `json:"produt_id"`
+
+	// Promotional product price
+	ActionPrice float64 `json:"action_price"`
+
+	// Number of product units in a stock discount type promotion
+	Stock float64 `json:"stock"`
+}
+
+type AddProductToPromotionResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// List of product identifiers that were added to the promotion
+		ProductIds []float64 `json:"product_ids"`
+
+		// List of products that weren't added to the promotion
+		Rejected []struct {
+			// Product identifier
+			ProductId float64 `json:"product_id"`
+
+			// Reason why the product wasn't added to the promotion
+			Reason string `json:"reason"`
+		} `json:"rejected"`
+	} `json:"result"`
+}
+
+// A method for adding products to an available promotion
+func (c Promotions) AddToPromotion(params *AddProductToPromotionParams) (*AddProductToPromotionResponse, error) {
+	url := "/v1/actions/products/activate"
+
+	resp := &AddProductToPromotionResponse{}
+
+	response, err := c.client.Request(http.MethodGet, url, params, resp)
 	if err != nil {
 		return nil, err
 	}

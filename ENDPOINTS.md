@@ -40,7 +40,7 @@
 - [x] Available promotions
 - [ ] Products that can participate in a promotion
 - [ ] Products in a promotion
-- [ ] Add products to promotion
+- [x] Add products to promotion
 - [ ] Remove products from promotion
 - [ ] List of available Hot Sale promotions
 - [ ] List of products participating in the Hot Sale promotion
