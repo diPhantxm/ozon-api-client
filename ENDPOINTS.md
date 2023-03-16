@@ -160,7 +160,7 @@
 - [ ] Report on products movement
 - [ ] Returns report
 - [ ] Shipment report
-- [ ] Financial report
+- [x] Financial report
 - [ ] Issue a report on discounted products
 - [ ] Report on discounted products
 - [ ] List of reports on discounted products

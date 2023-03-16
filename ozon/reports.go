@@ -148,3 +148,80 @@ func (c Reports) GetReportDetails(params *GetReportDetailsParams) (*GetReportDet
 
 	return resp, nil
 }
+
+type GetFinancialReportParams struct {
+	// Report generation period
+	Date GetFinancialReportDatePeriod `json:"date"`
+
+	// Number of the page returned in the request
+	Page int64 `json:"page"`
+
+	// Number of items on the page
+	PageSize int64 `json:"page_size"`
+}
+
+type GetFinancialReportDatePeriod struct {
+	// Date from which the report is calculated
+	From time.Time `json:"from"`
+
+	// Date up to which the report is calculated
+	To time.Time `json:"to"`
+}
+
+type GetFinancialReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Reports list
+		CashFlows []struct {
+			// Period data
+			Period struct {
+				// Period identifier
+				Id int64 `json:"id"`
+
+				// Period start
+				Begin time.Time `json:"begin"`
+
+				// Period end
+				End time.Time `json:"end"`
+			} `json:"period"`
+
+			// Sum of sold products prices
+			OrdersAmount float64 `json:"order_amount"`
+
+			// Sum of returned products prices
+			ReturnsAmount float64 `json:"returns_amount"`
+
+			// Ozon sales commission
+			CommissionAmount float64 `json:"commission_amount"`
+
+			// Additional services cost
+			ServicesAmount float64 `json:"services_amount"`
+
+			// Logistic services cost
+			ItemDeliveryAndReturnAmount float64 `json:"item_delivery_and_return_amount"`
+
+			// Code of the currency used to calculate the commissions
+			CurrencyCode string `json:"currency_code"`
+		} `json:"cash_flows"`
+
+		// Number of pages with reports
+		PageCount int64 `json:"page_count"`
+	} `json:"result"`
+}
+
+// Returns information about a created report by its identifier
+func (c Reports) GetFinancial(params *GetFinancialReportParams) (*GetFinancialReportResponse, error) {
+	url := "/v1/finance/cash-flow-statement/list"
+
+	resp := &GetFinancialReportResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
