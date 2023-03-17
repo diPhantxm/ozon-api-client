@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetAvailablePromotions(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -66,6 +68,8 @@ func TestGetAvailablePromotions(t *testing.T) {
 }
 
 func TestAddToPromotion(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string

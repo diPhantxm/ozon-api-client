@@ -8,6 +8,8 @@ import (
 )
 
 func TestListUnprocessedShipments(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -177,6 +179,8 @@ func TestListUnprocessedShipments(t *testing.T) {
 }
 
 func TestGetFBSShipmentsList(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -286,6 +290,8 @@ func TestGetFBSShipmentsList(t *testing.T) {
 }
 
 func TestPackOrder(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -345,6 +351,8 @@ func TestPackOrder(t *testing.T) {
 }
 
 func TestValidateLabelingCodes(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string

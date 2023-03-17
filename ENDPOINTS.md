@@ -154,8 +154,7 @@
 ## Reports
 - [x] Report details
 - [x] Reports list
-- [ ] Products report
-- [ ] Prices report
+- [x] Products report
 - [ ] Stocks report
 - [ ] Report on products movement
 - [ ] Returns report

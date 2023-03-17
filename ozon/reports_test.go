@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetList(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -79,6 +81,8 @@ func TestGetList(t *testing.T) {
 }
 
 func TestGetReportDetails(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -128,7 +132,9 @@ func TestGetReportDetails(t *testing.T) {
 	}
 }
 
-func TestGetFinancial(t *testing.T) {
+func TestGetFinancialReport(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -184,6 +190,98 @@ func TestGetFinancial(t *testing.T) {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		resp, err := c.Reports().GetFinancial(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetProductsReport(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductsReportParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductsReportParams{},
+			`{
+				"result": {
+				  "code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductsReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().GetProducts(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetStocksReport(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetStocksReportParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetStocksReportParams{},
+			`{
+				"result": {
+				  "code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetStocksReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().GetStocks(test.params)
 		if err != nil {
 			t.Error(err)
 		}

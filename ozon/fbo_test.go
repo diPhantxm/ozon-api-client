@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetFBOShipmentsList(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string

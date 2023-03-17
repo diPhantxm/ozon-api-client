@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetCurrentRatingInfo(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -68,6 +70,8 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 }
 
 func TestGetRatingInfoForPeriod(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string

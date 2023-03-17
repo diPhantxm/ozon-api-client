@@ -225,3 +225,82 @@ func (c Reports) GetFinancial(params *GetFinancialReportParams) (*GetFinancialRe
 
 	return resp, nil
 }
+
+type GetProductsReportParams struct {
+	// Default: "DEFAULT"
+	// Response language:
+	//   - RU — Russian
+	//   - EN — English
+	Language string `json:"language" default:"DEFAULT"`
+
+	// Product identifier in the seller's system
+	OfferId []string `json:"offer_id"`
+
+	// Search by record content, checks for availability
+	Search string `json:"search"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU []int64 `json:"sku"`
+
+	// Default: "ALL"
+	// Filter by product visibility
+	Visibility string `json:"visibility" default:"ALL"`
+}
+
+type GetProductsReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Unique report identifier
+		Code string `json:"code"`
+	} `json:"result"`
+}
+
+// Method for getting a report with products data. For example, Ozon ID, number of products, prices, status
+func (c Reports) GetProducts(params *GetProductsReportParams) (*GetProductsReportResponse, error) {
+	url := "/v1/report/products/create"
+
+	resp := &GetProductsReportResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetStocksReportParams struct {
+	// Default: "DEFAULT"
+	// Response language:
+	//   - RU — Russian
+	//   - EN — English
+	Language string `json:"language" default:"DEFAULT"`
+}
+
+type GetStocksReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Unique report identifier
+		Code string `json:"code"`
+	} `json:"result"`
+}
+
+// Report with information about the number of available and reserved products in stock
+func (c Reports) GetStocks(params *GetStocksReportParams) (*GetStocksReportResponse, error) {
+	url := "/v1/report/stock/create"
+
+	resp := &GetStocksReportResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

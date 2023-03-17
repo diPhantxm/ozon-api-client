@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetFBOReturns(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -71,6 +73,8 @@ func TestGetFBOReturns(t *testing.T) {
 }
 
 func TestGetFBSReturns(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string

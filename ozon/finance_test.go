@@ -8,6 +8,8 @@ import (
 )
 
 func TestReportOnSoldProducts(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode   int
 		headers      map[string]string
@@ -106,6 +108,8 @@ func TestReportOnSoldProducts(t *testing.T) {
 }
 
 func TestGetTotalTransactionsSum(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode   int
 		headers      map[string]string

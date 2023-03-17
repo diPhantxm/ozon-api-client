@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetListOfWarehouses(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -68,6 +70,8 @@ func TestGetListOfWarehouses(t *testing.T) {
 }
 
 func TestGetListOfDeliveryMethods(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string

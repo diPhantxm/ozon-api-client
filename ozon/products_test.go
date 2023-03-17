@@ -8,6 +8,8 @@ import (
 )
 
 func TestGetStocksInfo(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -79,6 +81,8 @@ func TestGetStocksInfo(t *testing.T) {
 }
 
 func TestGetProductDetails(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -243,6 +247,8 @@ func TestGetProductDetails(t *testing.T) {
 }
 
 func TestUpdateStocks(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -300,6 +306,8 @@ func TestUpdateStocks(t *testing.T) {
 }
 
 func TestStocksInSellersWarehouse(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -353,6 +361,8 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 }
 
 func TestUpdatePrices(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -413,6 +423,8 @@ func TestUpdatePrices(t *testing.T) {
 }
 
 func TestUpdateQuantityStockProducts(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -472,6 +484,8 @@ func TestUpdateQuantityStockProducts(t *testing.T) {
 }
 
 func TestCreateOrUpdateProduct(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -587,6 +601,8 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 }
 
 func TestGetListOfProducts(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -646,6 +662,8 @@ func TestGetListOfProducts(t *testing.T) {
 }
 
 func TestGetProductsRatingBySKU(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
