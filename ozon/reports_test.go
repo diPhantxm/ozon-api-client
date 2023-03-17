@@ -291,3 +291,154 @@ func TestGetStocksReport(t *testing.T) {
 		}
 	}
 }
+
+func TestGetProductsMovementReport(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductsMovementReportParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductsMovementReportParams{
+				DateFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2020-08-01T14:15:22Z"),
+				DateTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2020-08-01T14:15:22Z"),
+			},
+			`{
+				"result": {
+				  "code": "h56f4917-1346-4e64-9d90-с6e736c1e07c"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductsMovementReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().GetProductsMovement(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetReturnsReport(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetReturnsReportParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetReturnsReportParams{
+				Filter: GetReturnsReportsFilter{
+					DeliverySchema: "fbs",
+				},
+			},
+			`{
+				"result": {
+				  "code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetReturnsReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().GetReturns(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetShipmentReport(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetShipmentReportParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetShipmentReportParams{
+				Filter: GetShipmentReportFilter{
+					DeliverySchema:  []string{"fbs", "fbo", "crossborder"},
+					ProcessedAtFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-09-02T17:10:54.861Z"),
+					ProcessedAtTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-02T17:10:54.861Z"),
+				},
+			},
+			`{
+				"result": {
+				  "code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetShipmentReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().GetShipment(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

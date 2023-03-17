@@ -155,10 +155,10 @@
 - [x] Report details
 - [x] Reports list
 - [x] Products report
-- [ ] Stocks report
-- [ ] Report on products movement
-- [ ] Returns report
-- [ ] Shipment report
+- [x] Stocks report
+- [x] Report on products movement
+- [x] Returns report
+- [x] Shipment report
 - [x] Financial report
 - [ ] Issue a report on discounted products
 - [ ] Report on discounted products

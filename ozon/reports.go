@@ -304,3 +304,168 @@ func (c Reports) GetStocks(params *GetStocksReportParams) (*GetStocksReportRespo
 
 	return resp, nil
 }
+
+type GetProductsMovementReportParams struct {
+	// Date from which the data will be in the report
+	DateFrom time.Time `json:"date_from"`
+
+	// Date up to which the data will be in the report
+	DateTo time.Time `json:"date_to"`
+
+	// Default: "DEFAULT"
+	// Response language:
+	//   - RU — Russian
+	//   - EN — English
+	Language string `json:"language" default:"DEFAULT"`
+}
+
+type GetProductsMovementReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Unique report identifier
+		Code string `json:"code"`
+	} `json:"result"`
+}
+
+// Report with complete information on products, as well as the number of products with statuses:
+//   - products with defects or in inventory,
+//   - products in transit between the fulfillment centers,
+//   - products in delivery,
+//   - products to be sold
+func (c Reports) GetProductsMovement(params *GetProductsMovementReportParams) (*GetProductsMovementReportResponse, error) {
+	url := "/v1/report/products/movement/create"
+
+	resp := &GetProductsMovementReportResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetReturnsReportParams struct {
+	// Filter
+	Filter GetReturnsReportsFilter `json:"filter"`
+
+	// Default: "DEFAULT"
+	// Response language:
+	//   - RU — Russian
+	//   - EN — English
+	Language string `json:"language" default:"DEFAULT"`
+}
+
+type GetReturnsReportsFilter struct {
+	// Order delivery scheme: fbs — delivery from seller's warehouse
+	DeliverySchema string `json:"delivery_schema"`
+
+	// Order identifier
+	OrderId int64 `json:"order_id"`
+
+	// Order status
+	Status string `json:"status"`
+}
+
+type GetReturnsReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Unique report identifier
+		Code string `json:"code"`
+	} `json:"result"`
+}
+
+// The report contains information about returned products that were accepted from the customer, ready for pickup, or delivered to the seller.
+//
+// The method is only suitable for orders shipped from the seller's warehouse
+func (c Reports) GetReturns(params *GetReturnsReportParams) (*GetReturnsReportResponse, error) {
+	url := "/v1/report/returns/create"
+
+	resp := &GetReturnsReportResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetShipmentReportParams struct {
+	// Filter
+	Filter GetShipmentReportFilter `json:"filter"`
+
+	// Default: "DEFAULT"
+	// Response language:
+	//   - RU — Russian
+	//   - EN — English
+	Language string `json:"language"`
+}
+
+type GetShipmentReportFilter struct {
+	// Cancellation reason identifier
+	CancelReasonId []int64 `json:"cancel_reason_id"`
+
+	// Work scheme: FBO or FBS.
+	//
+	// To get an FBO scheme report, pass fbo in this parameter. For an FBS scheme report pass fbs
+	DeliverySchema []string `json:"delivery_schema"`
+
+	// Product identifier
+	OfferId string `json:"offer_id"`
+
+	// Order processing start date and time
+	ProcessedAtFrom time.Time `json:"processed_at_from"`
+
+	// Time when the order appeared in your personal account
+	ProcessedAtTo time.Time `json:"processed_at_to"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU []int64 `json:"sku"`
+
+	// Status text
+	StatusAlias []string `json:"status_alias"`
+
+	// Numerical status
+	Statuses []int64 `json:"statused"`
+
+	// Product name
+	Title string `json:"title"`
+}
+
+type GetShipmentReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Unique report identifier
+		Code string `json:"code"`
+	} `json:"result"`
+}
+
+// Shipment report with orders details:
+//   - order statuses
+//   - processing start date
+//   - order numbers
+//   - shipment numbers
+//   - shipment costs
+//   - shipments contents
+func (c Reports) GetShipment(params *GetShipmentReportParams) (*GetShipmentReportResponse, error) {
+	url := "/v1/report/postings/create"
+
+	resp := &GetShipmentReportResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
