@@ -1089,3 +1089,192 @@ func (c FBS) ChangeStatusToSendBySeller(params *ChangeStatusToParams) (*ChangeSt
 
 	return resp, nil
 }
+
+type PassShipmentToShippingParams struct {
+	// Shipment identifier
+	PostingNumber []string `json:"posting_number"`
+}
+
+type PassShipmentToShippingResponse struct {
+	core.CommonResponse
+
+	// Request processing result. true, if the request was executed without errors
+	Result bool `json:"result"`
+}
+
+// Transfers disputed orders to shipping. The shipment status will change to `awaiting_deliver`
+func (c FBS) PassShipmentToShipping(params *PassShipmentToShippingParams) (*PassShipmentToShippingResponse, error) {
+	url := "/v2/posting/fbs/awaiting-delivery"
+
+	resp := &PassShipmentToShippingResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CancelShipmentParams struct {
+	// Shipment cancellation reason identifier
+	CancelReasonId int64 `json:"cancel_reason_id"`
+
+	// Additional information on cancellation. If `cancel_reason_id` = 402, the parameter is required
+	CancelReasonMessage string `json:"cancel_reason_message"`
+
+	// Shipment identifier
+	PostingNumber string `json:"posting_number"`
+}
+
+type CancelShipmentResponse struct {
+	core.CommonResponse
+
+	// Request processing result. true, if the request was executed without errors
+	Result bool `json:"result"`
+}
+
+// Change shipment status to cancelled.
+//
+// If you are using the rFBS scheme, you have the following cancellation reason identifiers (cancel_reason_id) available:
+//   - 352 — product is out of stock;
+//   - 400 — only defective products left;
+//   - 401 — cancellation from arbitration;
+//   - 402 — other reason;
+//   - 665 — the customer did not pick the order;
+//   - 666 — delivery is not available in the region;
+//   - 667 — order was lost by the delivery service.
+// For presumably delivered orders only the last 3 reasons are available.
+//
+// If cancel_reason_id parameter value is 402, fill the cancel_reason_message field
+func (c FBS) CancelShipment(params *CancelShipmentParams) (*CancelShipmentResponse, error) {
+	url := "/v2/posting/fbs/cancel"
+
+	resp := &CancelShipmentResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CreateActParams struct {
+	// Number of package units.
+	//
+	// Use this parameter if you have trusted acceptance enabled and ship orders by package units.
+	// If you do not have trusted acceptance enabled, skip it
+	ContainersCount int32 `json:"containers_count"`
+
+	// Delivery method identifier
+	DeliveryMethodId int64 `json:"delivery_method_id"`
+
+	// Shipping date.
+	//
+	// To make documents printing available before the shipping day,
+	// enable Printing the acceptance certificate in advance in your personal account under the method settings.
+	// The time for packaging (packaging SLA) should be more than 13 hours
+	DepartureDate time.Time `json:"departure_date"`
+}
+
+type CreateActResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Document generation task number
+		Id int64 `json:"id"`
+	} `json:"result"`
+}
+
+// Launches the procedure for generating the transfer documents: acceptance and transfer certificate and the waybill.
+//
+// To generate and receive transfer documents, transfer the shipment to the `awaiting_deliver` status
+func (c FBS) CreateAct(params *CreateActParams) (*CreateActResponse, error) {
+	url := "/v2/posting/fbs/act/create"
+
+	resp := &CreateActResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetLabelingParams struct {
+	// Task identifier for labeling generation from the /v1/posting/fbs/package-label/create method response
+	TaskId int64 `json:"task_id"`
+}
+
+type GetLabelingResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Error code
+		Error string `json:"error"`
+
+		// Link to a labeling file
+		FileUrl string `json:"file_url"`
+
+		// Status of labeling generation:
+		//   - pending — task is in the queue.
+		//   - in_progress — being generated.
+		//   - completed — labeling file is ready.
+		//   - error — error occurred during file generation
+		Status string `json:"status"`
+	} `json:"result"`
+}
+
+// Method for getting labeling after using the /v1/posting/fbs/package-label/create method
+func (c FBS) GetLabeling(params *GetLabelingParams) (*GetLabelingResponse, error) {
+	url := "/v1/posting/fbs/package-label/get"
+
+	resp := &GetLabelingResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type PrintLabelingParams struct {
+	// Shipment identifier
+	PostingNumber []string `json:"posting_number"`
+}
+
+type PrintLabelingResponse struct {
+	core.CommonResponse
+
+	// Order content
+	Content string `json:"content"`
+}
+
+// Generates a PDF file with a labeling for the specified shipments. You can pass a maximum of 20 identifiers in one request.
+// If an error occurs for at least one shipment, the labeling will not be generated for all shipments in the request.
+//
+// We recommend requesting the label 45-60 seconds after the shipments were packed.
+//
+// The next postings are not ready error means that the label is not ready. Try again later
+func (c FBS) PrintLabeling(params *PrintLabelingParams) (*PrintLabelingResponse, error) {
+	url := "/v2/posting/fbs/package-label"
+
+	resp := &PrintLabelingResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

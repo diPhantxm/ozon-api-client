@@ -98,21 +98,21 @@
 - [ ] Specify number of boxes for multi-box shipments
 - [ ] Get drop-off point restrictions
 - [ ] Partial pack the order
-- [ ] Create an acceptance and transfer certificate and a waybill
+- [x] Create an acceptance and transfer certificate and a waybill
 - [ ] Status of acceptance and transfer certificate and waybill
 - [ ] Available freights list
 - [ ] Get acceptance and transfer certificate and waybill
 - [ ] Generating status of digital acceptance and transfer certificate and waybill
 - [ ] Get digital shipment certificate
-- [ ] Print the labeling
+- [x] Print the labeling
 - [ ] Create a task to generate labeling
-- [ ] Get a labeling file
+- [x] Get a labeling file
 - [ ] Package unit labels
 - [ ] Open a dispute over a shipment
-- [ ] Pass the shipment to shipping
+- [x] Pass the shipment to shipping
 - [ ] Shipment cancellation reasons
 - [ ] Shipments cancellation reasons
-- [ ] Cancel the shipment
+- [x] Cancel the shipment
 - [ ] Add weight for bulk products in a shipment
 - [ ] Cancel sending some products in the shipment
 - [x] List of shipment certificates
