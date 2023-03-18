@@ -116,13 +116,13 @@
 - [ ] Add weight for bulk products in a shipment
 - [ ] Cancel sending some products in the shipment
 - [x] List of shipment certificates
-- [ ] Sign shipment certificates
+- [x] Sign shipment certificates
 - [ ] List of shipments in the certificate
 - [x] Change the status to "Delivering"
 - [x] Add tracking numbers
-- [ ] Change the status to "Last Mile"
-- [ ] Change the status to "Delivered"
-- [ ] Change status to "Sent by seller"
+- [x] Change the status to "Last Mile"
+- [x] Change the status to "Delivered"
+- [x] Change status to "Sent by seller"
 - [ ] Dates available for delivery reschedule
 - [ ] Reschedule shipment delivery date
 - [ ] ETGB customs declarations

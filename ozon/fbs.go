@@ -813,42 +813,6 @@ func (c FBS) GetShipmentDataByIdentifier(params *GetShipmentDataByIdentifierPara
 	return resp, nil
 }
 
-type ChangeStatusToDeliveringParams struct {
-	// Shipment identifier
-	PostingNumber []string `json:"posting_number"`
-}
-
-type ChangeStatusToDeliveringResponse struct {
-	core.CommonResponse
-
-	// Method result
-	Result []struct {
-		// Error when processing the request
-		Error []string `json:"error"`
-
-		// Shipment number
-		PostingNumber string `json:"posting_number"`
-
-		// If the request is executed without errors — true
-		Result bool `json:"result"`
-	} `json:"result"`
-}
-
-// Changes the shipment status to "Delivering" if a third-party delivery service is being used
-func (c FBS) ChangeStatusToDelivering(params *ChangeStatusToDeliveringParams) (*ChangeStatusToDeliveringResponse, error) {
-	url := "/v2/fbs/posting/delivering"
-
-	resp := &ChangeStatusToDeliveringResponse{}
-
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
 type AddTrackingNumbersParams struct {
 	// An array with shipment identifier—tracking number pairs
 	TrackingNumbers []FBSTrackingNumbersParams `json:"tracking_numbers"`
@@ -1003,6 +967,119 @@ func (c FBS) ListOfShipmentCertificates(params *ListOfShipmentCertificatesParams
 	url := "/v2/posting/fbs/act/list"
 
 	resp := &ListOfShipmentCertificatesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type SignShipmentCertificateParams struct {
+	// Certificate identifier
+	Id int64 `json:"id"`
+
+	// Type of shipment certificate:
+	//   - act_of_mismatch — discrepancy certificate,
+	//   - act_of_excess — surplus certificate
+	DocType string `json:"doc_type"`
+}
+
+type SignShipmentCertificateResponse struct {
+	core.CommonResponse
+
+	// Request processing
+	Result string `json:"result"`
+}
+
+// Signs shipment certificates electronically via the electronic documents (ED) system of Ozon logistics
+func (c FBS) SignShipmentCertificate(params *SignShipmentCertificateParams) (*SignShipmentCertificateResponse, error) {
+	url := "/v2/posting/fbs/digital/act/document-sign"
+
+	resp := &SignShipmentCertificateResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ChangeStatusToParams struct {
+	// Shipment identifier
+	PostingNumber []string `json:"posting_number"`
+}
+
+type ChangeStatusToResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct {
+		// Error when processing the request
+		Error []string `json:"error"`
+
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// If the request is executed without errors — true
+		Result bool `json:"result"`
+	} `json:"result"`
+}
+
+// Changes the shipment status to "Delivering" if a third-party delivery service is being used
+func (c FBS) ChangeStatusToDelivering(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+	url := "/v2/fbs/posting/delivering"
+
+	resp := &ChangeStatusToResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Changes the shipment status to "Last mile" if a third-party delivery service is being used
+func (c FBS) ChangeStatusToLastMile(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+	url := "/v2/fbs/posting/last-mile"
+
+	resp := &ChangeStatusToResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Changes the shipment status to "Delivered" if a third-party delivery service is being used
+func (c FBS) ChangeStatusToDelivered(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+	url := "/v2/fbs/posting/delivered"
+
+	resp := &ChangeStatusToResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Change shipment status to "Sent by seller". Status is only available to sellers with a first mile selling from abroad
+func (c FBS) ChangeStatusToSendBySeller(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+	url := "/v2/fbs/posting/sent-by-seller"
+
+	resp := &ChangeStatusToResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {
