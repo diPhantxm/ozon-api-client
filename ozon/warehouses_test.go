@@ -66,6 +66,17 @@ func TestGetListOfWarehouses(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].WarehouseId == 0 {
+					t.Errorf("Warehouse id cannot be 0")
+				}
+				if resp.Result[0].Name == "" {
+					t.Errorf("Name cannot be empty")
+				}
+			}
+		}
 	}
 }
 
@@ -129,6 +140,23 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].Id == 0 {
+					t.Errorf("Id cannot be 0")
+				}
+				if resp.Result[0].Name == "" {
+					t.Errorf("Name cannot be empty")
+				}
+				if resp.Result[0].Status == "" {
+					t.Errorf("Status cannot be empty")
+				}
+				if resp.Result[0].WarehouseId == 0 {
+					t.Errorf("Warehouse id cannot be 0")
+				}
+			}
 		}
 	}
 }

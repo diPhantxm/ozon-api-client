@@ -64,6 +64,17 @@ func TestGetAvailablePromotions(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].Id == 0 {
+					t.Errorf("Id cannot be 0")
+				}
+				if resp.Result[0].ActionType == "" {
+					t.Errorf("Action type cannot be empty")
+				}
+			}
+		}
 	}
 }
 
@@ -121,6 +132,12 @@ func TestAddToPromotion(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.ProductIds) != len(test.params.Products) {
+				t.Errorf("Length of products in response and request must be equal")
+			}
 		}
 	}
 }

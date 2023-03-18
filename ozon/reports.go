@@ -39,41 +39,44 @@ type GetReportsListResponse struct {
 
 	// Method result
 	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
+		// Array with generated reports
+		Reports []struct {
+			// Unique report identifier
+			Code string `json:"code"`
 
-		// Report creation date
-		CreatedAt time.Time `json:"created_at"`
+			// Report creation date
+			CreatedAt time.Time `json:"created_at"`
 
-		// Error code when generating the report
-		Error string `json:"error"`
+			// Error code when generating the report
+			Error string `json:"error"`
 
-		// Link to CSV file
-		File string `json:"file"`
+			// Link to CSV file
+			File string `json:"file"`
 
-		// Array with the filters specified when the seller created the report
-		Params struct {
-		} `json:"params"`
+			// Array with the filters specified when the seller created the report
+			Params struct {
+			} `json:"params"`
 
-		// Report type:
-		//   - SELLER_PRODUCTS — products report,
-		//   - SELLER_TRANSACTIONS — transactions report,
-		//   - SELLER_PRODUCT_PRICES — product prices report,
-		//   - SELLER_STOCK — stocks report,
-		//   - SELLER_PRODUCT_MOVEMENT — products movement report,
-		//   - SELLER_RETURNS — returns report,
-		//   - SELLER_POSTINGS — shipments report,
-		//   - SELLER_FINANCE — financial report
-		ReportType string `json:"report_type"`
+			// Report type:
+			//   - SELLER_PRODUCTS — products report,
+			//   - SELLER_TRANSACTIONS — transactions report,
+			//   - SELLER_PRODUCT_PRICES — product prices report,
+			//   - SELLER_STOCK — stocks report,
+			//   - SELLER_PRODUCT_MOVEMENT — products movement report,
+			//   - SELLER_RETURNS — returns report,
+			//   - SELLER_POSTINGS — shipments report,
+			//   - SELLER_FINANCE — financial report
+			ReportType string `json:"report_type"`
 
-		// Report generation status
-		//   - `success`
-		//   - `failed`
-		Status string `json:"status"`
+			// Report generation status
+			//   - `success`
+			//   - `failed`
+			Status string `json:"status"`
+		} `json:"reports"`
+
+		// Total number of reports
+		Total int32 `json:"total"`
 	} `json:"result"`
-
-	// Total number of reports
-	Total int32 `json:"total"`
 }
 
 // Returns the list of reports that have been generated before
@@ -136,7 +139,7 @@ type GetReportDetailsResponse struct {
 
 // Returns information about a created report by its identifier
 func (c Reports) GetReportDetails(params *GetReportDetailsParams) (*GetReportDetailsResponse, error) {
-	url := "/v1/report/list"
+	url := "/v1/report/info"
 
 	resp := &GetReportDetailsResponse{}
 

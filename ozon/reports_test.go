@@ -77,6 +77,15 @@ func TestGetList(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if int(resp.Result.Total) != len(resp.Result.Reports) {
+			t.Errorf("Amount of reports (%d) is not equal to total (%d)", len(resp.Result.Reports), resp.Result.Total)
+		}
+		if len(resp.Result.Reports) > 0 {
+			if resp.Result.Reports[0].Status == "" {
+				t.Errorf("Status must be 'success' or 'failed'")
+			}
+		}
 	}
 }
 
@@ -128,6 +137,12 @@ func TestGetReportDetails(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Status == "" {
+				t.Errorf("Status must be 'success' or 'failed'")
+			}
 		}
 	}
 }
@@ -197,6 +212,14 @@ func TestGetFinancialReport(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.CashFlows) > 0 {
+				if resp.Result.CashFlows[0].CurrencyCode == "" {
+					t.Errorf("Currency Code cannot be empty")
+				}
+			}
+		}
 	}
 }
 
@@ -243,6 +266,12 @@ func TestGetProductsReport(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Code == "" {
+				t.Errorf("Code cannot be empty")
+			}
+		}
 	}
 }
 
@@ -288,6 +317,12 @@ func TestGetStocksReport(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Code == "" {
+				t.Errorf("Code cannot be empty")
+			}
 		}
 	}
 }
@@ -338,6 +373,12 @@ func TestGetProductsMovementReport(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+		
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Code == "" {
+				t.Errorf("Code cannot be empty")
+			}
+		}
 	}
 }
 
@@ -387,6 +428,12 @@ func TestGetReturnsReport(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+		
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Code == "" {
+				t.Errorf("Code cannot be empty")
+			}
 		}
 	}
 }
@@ -439,6 +486,12 @@ func TestGetShipmentReport(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+		
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Code == "" {
+				t.Errorf("Code cannot be empty")
+			}
 		}
 	}
 }

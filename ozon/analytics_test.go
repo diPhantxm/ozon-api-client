@@ -127,5 +127,11 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Rows) > int(test.params.Limit) {
+				t.Errorf("Length of rows is bigger than limit")
+			}
+		}
 	}
 }

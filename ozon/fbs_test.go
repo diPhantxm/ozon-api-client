@@ -347,6 +347,10 @@ func TestPackOrder(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if len(resp.Result) != len(test.params.Packages) {
+			t.Errorf("Length of packages in request and response are not equal")
+		}
 	}
 }
 
@@ -419,6 +423,17 @@ func TestValidateLabelingCodes(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Products) != len(test.params.Products) {
+				t.Errorf("Length of products in request and response are not equal")
+			}
+			if len(resp.Result.Products) > 0 {
+				if resp.Result.Products[0].ProductId != test.params.Products[0].ProductId {
+					t.Errorf("Product ids in request and response are not equal")
+				}
+			}
 		}
 	}
 }

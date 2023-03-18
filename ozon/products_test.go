@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -76,6 +77,20 @@ func TestGetStocksInfo(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Items) > int(test.params.Limit) {
+				t.Errorf("Amount of items in response cannot be bigger than limit")
+			}
+			if len(resp.Result.Items) > 0 {
+				if resp.Result.Items[0].ProductId == 0 {
+					t.Errorf("Product id cannot be 0")
+				}
+				if resp.Result.Items[0].OfferId == "" {
+					t.Errorf("Offer id cannot be empty")
+				}
+			}
 		}
 	}
 }
@@ -243,6 +258,21 @@ func TestGetProductDetails(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Id != test.params.ProductId {
+				t.Errorf("Id of product in response is not equal product_id in request")
+			}
+			if resp.Result.OfferId == "" {
+				t.Errorf("Offer id cannot be empty")
+			}
+			if resp.Result.CategoryId == 0 {
+				t.Errorf("Category id cannot be 0")
+			}
+			if resp.Result.CurrencyCode == "" {
+				t.Errorf("Currency code cannot be empty")
+			}
+		}
 	}
 }
 
@@ -302,6 +332,20 @@ func TestUpdateStocks(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.Stocks) {
+				t.Errorf("Length of stocks in request and response are not equal")
+			}
+			if len(resp.Result) > 0 {
+				if resp.Result[0].OfferId != test.params.Stocks[0].OfferId {
+					t.Errorf("Offer ids in request and response are not equal")
+				}
+				if resp.Result[0].ProductId != test.params.Stocks[0].ProductId {
+					t.Errorf("Product ids in request and response are not equal")
+				}
+			}
+		}
 	}
 }
 
@@ -356,6 +400,17 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.FBSSKU) {
+				t.Errorf("Length of skus in request and response must be equal")
+			}
+			if len(resp.Result) > 0 {
+				if fmt.Sprint(resp.Result[0].FBSSKU) == test.params.FBSSKU[0] {
+					t.Errorf("fbs sku in request and response are not equal")
+				}
+			}
 		}
 	}
 }
@@ -419,6 +474,17 @@ func TestUpdatePrices(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.Prices) {
+				t.Errorf("Length of prices in request and response are not equal")
+			}
+			if len(resp.Result) > 0 {
+				if resp.Result[0].ProductId != test.params.Prices[0].ProductId {
+					t.Errorf("Product ids in request and response are not equal")
+				}
+			}
+		}
 	}
 }
 
@@ -439,7 +505,7 @@ func TestUpdateQuantityStockProducts(t *testing.T) {
 				Stocks: []UpdateQuantityStockProductsStock{
 					{
 						OfferId:     "PH11042",
-						ProductId:   313455276,
+						ProductId:   118597312,
 						Stock:       100,
 						WarehouseId: 22142605386000,
 					},
@@ -479,6 +545,23 @@ func TestUpdateQuantityStockProducts(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.Stocks) {
+				t.Errorf("Length of stocks in request and response are not equal")
+			}
+			if len(resp.Result) > 0 {
+				if resp.Result[0].Offerid != test.params.Stocks[0].OfferId {
+					t.Errorf("Offer ids in request and response are not equal")
+				}
+				if resp.Result[0].ProductId != test.params.Stocks[0].ProductId {
+					t.Errorf("Product ids in request and response are not equal")
+				}
+				if resp.Result[0].WarehouseId != test.params.Stocks[0].WarehouseId {
+					t.Errorf("Warehouse ids in request and response are not equal")
+				}
+			}
 		}
 	}
 }
@@ -597,6 +680,12 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.TaskId == 0 {
+				t.Errorf("Task id cannot be 0")
+			}
+		}
 	}
 }
 
@@ -657,6 +746,23 @@ func TestGetListOfProducts(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Items) != int(resp.Result.Total) {
+				t.Errorf("Length of items is not equal total")
+			}
+			if resp.Result.Total > int32(test.params.Limit) {
+				t.Errorf("Length of items is bigger than limit")
+			}
+			if len(resp.Result.Items) > 0 {
+				if resp.Result.Items[0].OfferId == "" {
+					t.Errorf("Offer id cannot be empty")
+				}
+				if resp.Result.Items[0].ProductId == 0 {
+					t.Errorf("Product id cannot be 0")
+				}
+			}
 		}
 	}
 }
@@ -886,6 +992,17 @@ func TestGetProductsRatingBySKU(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Products) != len(test.params.SKUs) {
+				t.Errorf("Length of products in response is not equal length of skus in request")
+			}
+			if len(resp.Products) > 0 {
+				if resp.Products[0].SKU != test.params.SKUs[0] {
+					t.Errorf("SKU in request and response are not equal")
+				}
+			}
 		}
 	}
 }

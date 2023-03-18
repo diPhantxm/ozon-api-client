@@ -32,15 +32,15 @@ func TestGetFBOReturns(t *testing.T) {
 				"returns": [
 				  {
 					"accepted_from_customer_moment": "2019-08-24T14:15:22Z",
-					"company_id": 0,
+					"company_id": 123456789,
 					"current_place_name": "my-place",
 					"dst_place_name": "that-place",
-					"id": 0,
+					"id": 123456789,
 					"is_opened": true,
 					"posting_number": "some number",
 					"return_reason_name": "ripped",
 					"returned_to_ozon_moment": "2019-08-24T14:15:22Z",
-					"sku": 0,
+					"sku": 123456789,
 					"status_name": "delivering"
 				  }
 				]
@@ -68,6 +68,20 @@ func TestGetFBOReturns(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Returns) > 0 {
+				if resp.Returns[0].Id == 0 {
+					t.Errorf("Id cannot be 0")
+				}
+				if resp.Returns[0].CompanyId == 0 {
+					t.Errorf("Company id cannot be 0")
+				}
+				if resp.Returns[0].SKU == 0 {
+					t.Errorf("SKU cannot be 0")
+				}
+			}
 		}
 	}
 }
@@ -151,6 +165,26 @@ func TestGetFBSReturns(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if int(resp.Result.Count) != len(resp.Result.Returns) {
+				t.Errorf("Count must equal to length of returns")
+			}
+			if len(resp.Result.Returns) > 0 {
+				if resp.Result.Returns[0].Id == 0 {
+					t.Errorf("Id cannot be 0")
+				}
+				if resp.Result.Returns[0].ProductId == 0 {
+					t.Errorf("Product id cannot be 0")
+				}
+				if resp.Result.Returns[0].SKU == 0 {
+					t.Errorf("SKU cannot be 0")
+				}
+				if resp.Result.Returns[0].Status == "" {
+					t.Errorf("Status cannot be empty")
+				}
+			}
 		}
 	}
 }

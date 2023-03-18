@@ -66,6 +66,14 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Groups) > 0 {
+				if len(resp.Groups[0].Items) == 0 {
+					t.Errorf("Length of items in a group cannot be 0")
+				}
+			}
+		}
 	}
 }
 
@@ -145,6 +153,14 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Ratings) > 0 {
+				if resp.Ratings[0].Rating == "" {
+					t.Errorf("Rating system cannot be empty")
+				}
+			}
 		}
 	}
 }
