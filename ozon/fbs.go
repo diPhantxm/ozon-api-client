@@ -69,39 +69,17 @@ type FBSPosting struct {
 		WarehouseId          int64     `json:"warehouse_id"`
 	} `json:"analytics_data"`
 
-	Barcodes struct {
-		LowerBarcode string `json:"lower_barcode"`
-		UpperBarcode string `json:"upper_barcode"`
-	} `json:"barcodes"`
+	Barcodes FBSBarcode `json:"barcodes"`
 
-	Cancellation struct {
-		AffectCancellationRating bool   `json:"affect_cancellation_rating"`
-		CancelReason             string `json:"cancel_reason"`
-		CancelReasonId           int64  `json:"cancel_reason_id"`
-		CancellationInitiator    string `json:"cancellation_initiator"`
-		CancellationType         string `json:"cancellation_type"`
-		CancelledAfterShip       bool   `json:"cancelled_after_ship"`
-	} `json:"cancellation"`
+	Cancellation FBSCancellation `json:"cancellation"`
 
 	Customer FBSCustomer `json:"customer"`
 
 	DeliveringDate time.Time `json:"delivering_date"`
 
-	DeliveryMethod struct {
-		Id            int64  `json:"id"`
-		Name          string `json:"name"`
-		TPLProvider   string `json:"tpl_provider"`
-		TPLProviderId int64  `json:"tpl_provider_id"`
-		Warehouse     string `json:"warehouse"`
-		WarehouseId   int64  `json:"warehouse_id"`
-	} `json:"delivery_method"`
+	DeliveryMethod FBSDeliveryMethod `json:"delivery_method"`
 
-	FinancialData struct {
-		ClusterFrom     string                 `json:"cluster_from"`
-		ClusterTo       string                 `json:"cluster_to"`
-		PostingServices MarketplaceServices    `json:"posting_services"`
-		Products        []FinancialDataProduct `json:"products"`
-	} `json:"financial_data"`
+	FinancialData FBSFinancialData `json:"financial_data"`
 
 	InProccessAt        time.Time `json:"in_process_at"`
 	IsExpress           bool      `json:"is_express"`
@@ -114,17 +92,49 @@ type FBSPosting struct {
 
 	Products []PostingProduct `json:"products"`
 
-	Requirements struct {
-		ProductsRequiringGTD           []string `json:"products_requiring_gtd"`
-		ProductsRequiringCountry       []string `json:"products_requiring_country"`
-		ProductsRequiringMandatoryMark []string `json:"products_requiring_mandatory_mark"`
-		ProductsRequiringRNPT          []string `json:"products_requiring_rnpt"`
-	} `json:"requirements"`
+	Requirements FBSRequirements `json:"requirements"`
 
 	ShipmentDate       time.Time `json:"shipment_date"`
 	Status             string    `json:"status"`
 	TPLIntegrationType string    `json:"tpl_integration_type"`
 	TrackingNumber     string    `json:"tracking_number"`
+}
+
+type FBSBarcode struct {
+	LowerBarcode string `json:"lower_barcode"`
+	UpperBarcode string `json:"upper_barcode"`
+}
+
+type FBSCancellation struct {
+	AffectCancellationRating bool   `json:"affect_cancellation_rating"`
+	CancelReason             string `json:"cancel_reason"`
+	CancelReasonId           int64  `json:"cancel_reason_id"`
+	CancellationInitiator    string `json:"cancellation_initiator"`
+	CancellationType         string `json:"cancellation_type"`
+	CancelledAfterShip       bool   `json:"cancelled_after_ship"`
+}
+
+type FBSDeliveryMethod struct {
+	Id            int64  `json:"id"`
+	Name          string `json:"name"`
+	TPLProvider   string `json:"tpl_provider"`
+	TPLProviderId int64  `json:"tpl_provider_id"`
+	Warehouse     string `json:"warehouse"`
+	WarehouseId   int64  `json:"warehouse_id"`
+}
+
+type FBSFinancialData struct {
+	ClusterFrom     string                 `json:"cluster_from"`
+	ClusterTo       string                 `json:"cluster_to"`
+	PostingServices MarketplaceServices    `json:"posting_services"`
+	Products        []FinancialDataProduct `json:"products"`
+}
+
+type FBSRequirements struct {
+	ProductsRequiringGTD           []string `json:"products_requiring_gtd"`
+	ProductsRequiringCountry       []string `json:"products_requiring_country"`
+	ProductsRequiringMandatoryMark []string `json:"products_requiring_mandatory_mark"`
+	ProductsRequiringRNPT          []string `json:"products_requiring_rnpt"`
 }
 
 type PostingProduct struct {
@@ -491,13 +501,7 @@ type GetShipmentDataByBarcodeResponse struct {
 		} `json:"analytics_data"`
 
 		// Shipment barcodes
-		Barcodes struct {
-			// Lower barcode on the shipment label
-			Lower string `json:"lower_barcode"`
-
-			// Upper barcode on the shipment label
-			Upper string `json:"upper_barcode"`
-		} `json:"barcodes"`
+		Barcodes FBSBarcode `json:"barcodes"`
 
 		// Cancellation reason identifier
 		CancelReasonId int64 `json:"cancel_reason_id"`
@@ -544,11 +548,261 @@ type GetShipmentDataByBarcodeResponse struct {
 	} `json:"result"`
 }
 
-// Methof for getting shipments data by barcode
+// Method for getting shipments data by barcode
 func (c FBS) GetShipmentDataByBarcode(params *GetShipmentDataByBarcodeParams) (*GetShipmentDataByBarcodeResponse, error) {
 	url := "/v2/posting/fbs/get-by-barcode"
 
 	resp := &GetShipmentDataByBarcodeResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetShipmentDataByIdentifierParams struct {
+	// Shipment identifier
+	PostingNumber string `json:"posting_number"`
+
+	// Additional fields that should be added to the response
+	With GetShipmentDataByIdentifierWith `json:"with"`
+}
+
+type GetShipmentDataByIdentifierWith struct {
+	// Add analytics data to the response
+	AnalyticsData bool `json:"analytics_data"`
+
+	// Add the shipment barcodes to the response
+	Barcodes bool `json:"barcodes"`
+
+	// Add financial data to the response
+	FinancialData bool `json:"financial_data"`
+
+	// Add data on products and their instances to the response
+	ProductExemplars bool `json:"product_exemplars"`
+
+	// Add related shipment numbers to the response.
+	// Related shipments are ones into which the parent shipment was split during packaging
+	RelatedPostings bool `json:"related_postings"`
+
+	// Transliterate the return values
+	Translit bool `json:"translit"`
+}
+
+type GetShipmentDataByIdentifierResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Additional Data Key-Value
+		AdditionalData []struct {
+			// Key
+			Key string `json:"key"`
+
+			// value
+			Value string `json:"value"`
+		} `json:"additional_data"`
+
+		// Recipient details
+		Addressee struct {
+			// Recipient name
+			Name string `json:"name"`
+
+			// Recipient phone number
+			Phone string `json:"phone"`
+		} `json:"addressee"`
+
+		// Analytics data
+		AnalyticsData struct {
+			// Delivery city
+			City string `json:"city"`
+
+			// Delivery start date and time
+			DeliveryDateBegin time.Time `json:"delivery_date_begin"`
+
+			// Delivery end date and time
+			DeliveryDateEnd time.Time `json:"delivery_date_end"`
+
+			// Delivery method
+			DeliveryType string `json:"delivery_type"`
+
+			// Indication that the recipient is a legal entity:
+			//   - true — a legal entity,
+			//   - false — a natural person
+			IsLegal bool `json:"is_legal"`
+
+			// Premium subscription availability
+			IsPremium bool `json:"is_premium"`
+
+			// Payment method
+			PaymentTypeGroupName string `json:"payment_type_group_name"`
+
+			// Delivery region
+			Region string `json:"region"`
+
+			// Delivery service
+			TPLProvider string `json:"tpl_provider"`
+
+			// Delivery service identifier
+			TPLProviderId int64 `json:"tpl_provider_id"`
+
+			// Order shipping warehouse name
+			Warehouse string `json:"warehouse"`
+
+			// Warehouse identifier
+			WarehouseId int64 `json:"warehouse_id"`
+		} `json:"analytics_data"`
+
+		// Shipment barcodes
+		Barcodes FBSBarcode `json:"barcodes"`
+
+		// Cancellation details
+		Cancellation FBSCancellation `json:"calcellation"`
+
+		// Courier information
+		Courier struct {
+			// Car model
+			CarModel string `json:"car_model"`
+
+			// Car number
+			CarNumber string `json:"car_number"`
+
+			// Courier's full name
+			Name string `json:"name"`
+
+			// Courier's phone number
+			Phone string `json:"phone"`
+		} `json:"courier"`
+
+		// Customer details
+		Customer FBSCustomer `json:"customer"`
+
+		// Date when the shipment was transferred for delivery
+		DeliveringDate time.Time `json:"delivering_date"`
+
+		// Delivery method
+		DeliveryMethod FBSDeliveryMethod `json:"delivery_method"`
+
+		// Delivery cost
+		DeliveryPrice string `json:"delivery_type"`
+
+		// Data on the product cost, discount amount, payout and commission
+		FinancialData FBSFinancialData `json:"financial_date"`
+
+		// Start date and time of shipment processing
+		InProcessAt time.Time `json:"in_process_at"`
+
+		// If Ozon Express fast delivery was used—true
+		IsExpress bool `json:"is_express"`
+
+		// Indication that there is a multi-box product in the shipment and you need to pass the number of boxes for it:
+		//   - true — before packaging pass the number of boxes using the /v3/posting/multiboxqty/set method.
+		//   - false — you packed the shipment specifying the number of boxes in the multi_box_qty parameter, or there is no multi-box product in the shipment
+		IsMultibox bool `json:"is_multibox"`
+
+		// Number of boxes in which the product is packed
+		MultiBoxQuantity int32 `json:"multi_box_qty"`
+
+		// Order identifier to which the shipment belongs
+		OrderId int64 `json:"order_id"`
+
+		// Order number to which the shipment belongs
+		OrderNumber string `json:"order_number"`
+
+		// Number of the parent shipment which split resulted in the current shipment
+		ParentPostingNumber string `json:"parent_posting_number"`
+
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// Information on products and their instances.
+		//
+		// The response contains the field product_exemplars, if the attribute with.product_exemplars = true is passed in the request
+		ProductExemplars struct {
+			// Products
+			Products []struct {
+				// Product identifier in the Ozon system, SKU
+				SKU int64 `json:"sku"`
+
+				// Array of exemplars
+				Exemplars []struct {
+					// Mandatory “Chestny ZNAK” labeling
+					MandatoryMark string `json:"mandatory_mark"`
+
+					// Сustoms cargo declaration (CCD) number
+					GTD string `json:"gtd"`
+
+					// Indication that a сustoms cargo declaration (CCD) number hasn't been specified
+					IsGTDAbsest bool `json:"is_gtd_absent"`
+
+					// Product batch registration number
+					RNPT string `json:"rnpt"`
+
+					// Indication that a product batch registration number hasn't been specified
+					IsRNPTAbsent bool `json:"is_rnpt_absent"`
+				} `json:"exemplars"`
+			} `json:"products"`
+		} `json:"product_exemplars"`
+
+		// Array of products in the shipment
+		Products []struct {
+			PostingProduct
+
+			// Product dimensions
+			Dimensions struct {
+				// Package height
+				Height string `json:"height"`
+
+				// Product length
+				Length string `json:"length"`
+
+				// Weight of product in the package
+				Weight string `json:"weight"`
+
+				// Package width
+				Width string `json:"width"`
+			} `json:"dimensions"`
+		} `json:"products"`
+
+		// Delivery service status
+		ProviderStatus string `json:"provider_status"`
+
+		// Related shipments
+		RelatedPostings struct {
+			RelatedPostingNumbers []string `json:"related_posting_numbers"`
+		} `json:"related_postings"`
+
+		// Array of Ozon Product IDs (SKU) for which you need to pass the customs cargo declaration (CCD) number, the manufacturing country,
+		// product batch registration number, or "Chestny ZNAK" labeling to change the shipment status to the next one
+		Requirements FBSRequirements `json:"requirements"`
+
+		// Date and time before which the shipment must be packaged.
+		// If the shipment is not packaged by this date, it will be canceled automatically
+		ShipmentDate time.Time `json:"shipment_date"`
+
+		// Shipment status
+		Status string `json:"status"`
+
+		// Type of integration with the delivery service:
+		//   - ozon — delivery by the Ozon logistics.
+		//   - aggregator — delivery by a third-party service, Ozon registers the order.
+		//   - 3pl_tracking — delivery by a third-party service, the seller registers the order.
+		//   - non_integrated — delivery by the seller
+		TPLIntegrationType string `json:"tpl_integration_type"`
+
+		// Shipment tracking number
+		TrackingNumber string `json:"tracking_number"`
+	} `json:"result"`
+}
+
+// Method for getting shipment details by identifier
+func (c FBS) GetShipmentDataByIdentifier(params *GetShipmentDataByIdentifierParams) (*GetShipmentDataByIdentifierResponse, error) {
+	url := "/v3/posting/fbs/get"
+
+	resp := &GetShipmentDataByIdentifierResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {

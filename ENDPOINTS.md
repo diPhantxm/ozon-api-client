@@ -91,7 +91,7 @@
 ## FBS and rFBS
 - [x] List of unprocessed shipments (version 3)
 - [x] Shipments list (version 3)
-- [ ] Get shipment details by identifier (version 3)
+- [x] Get shipment details by identifier (version 3)
 - [x] Get shipment data by barcode
 - [ ] List of manufacturing countries
 - [ ] Set the manufacturing country
