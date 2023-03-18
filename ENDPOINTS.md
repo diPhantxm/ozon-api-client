@@ -95,29 +95,29 @@
 - [x] Get shipment data by barcode
 - [x] List of manufacturing countries
 - [x] Set the manufacturing country
-- [ ] Specify number of boxes for multi-box shipments
+- [x] Specify number of boxes for multi-box shipments
 - [x] Get drop-off point restrictions
 - [x] Partial pack the order
 - [x] Create an acceptance and transfer certificate and a waybill
-- [ ] Status of acceptance and transfer certificate and waybill
+- [x] Status of acceptance and transfer certificate and waybill
 - [x] Available freights list
 - [x] Get acceptance and transfer certificate and waybill
-- [ ] Generating status of digital acceptance and transfer certificate and waybill
-- [ ] Get digital shipment certificate
+- [x] Generating status of digital acceptance and transfer certificate and waybill
+- [x] Get digital shipment certificate
 - [x] Print the labeling
 - [x] Create a task to generate labeling
 - [x] Get a labeling file
-- [ ] Package unit labels
-- [ ] Open a dispute over a shipment
+- [x] Package unit labels
+- [x] Open a dispute over a shipment
 - [x] Pass the shipment to shipping
-- [ ] Shipment cancellation reasons
-- [ ] Shipments cancellation reasons
+- [x] Shipment cancellation reasons
+- [x] Shipments cancellation reasons
 - [x] Cancel the shipment
-- [ ] Add weight for bulk products in a shipment
-- [ ] Cancel sending some products in the shipment
+- [x] Add weight for bulk products in a shipment
+- [x] Cancel sending some products in the shipment
 - [x] List of shipment certificates
 - [x] Sign shipment certificates
-- [ ] List of shipments in the certificate
+- [x] List of shipments in the certificate
 - [x] Change the status to "Delivering"
 - [x] Add tracking numbers
 - [x] Change the status to "Last Mile"
@@ -125,7 +125,7 @@
 - [x] Change status to "Sent by seller"
 - [x] Dates available for delivery reschedule
 - [x] Reschedule shipment delivery date
-- [ ] ETGB customs declarations
+- [x] ETGB customs declarations
 
 ## Returns
 - [x] Get information about FBO returns (version 3)

@@ -1822,3 +1822,707 @@ func TestAvailableFreightsList(t *testing.T) {
 		}
 	}
 }
+
+func TestGenerateAct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GenerateActParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GenerateActParams{
+				Id: 123,
+			},
+			`{
+				"id": 421,
+				"status": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GenerateActParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().GenerateAct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetDigitalAct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetDigitalActParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetDigitalActParams{
+				Id:      900000250859000,
+				DocType: "act_of_acceptance",
+			},
+			`{
+				"content": "string",
+				"name": "string",
+				"type": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetDigitalActParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().GetDigitalAct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Content == "" {
+				t.Errorf("Content cannot be empty")
+			}
+		}
+	}
+}
+
+func TestPackageUnitLabels(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *PackageUnitLabelsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&PackageUnitLabelsParams{
+				Id: 295662811,
+			},
+			`{
+				"content": "string",
+				"name": "string",
+				"type": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&PackageUnitLabelsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().PackageUnitLabel(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Content == "" {
+				t.Errorf("Content cannot be empty")
+			}
+		}
+	}
+}
+
+func TestOpenDisputeOverShipment(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *OpenDisputeOverShipmentParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&OpenDisputeOverShipmentParams{
+				PostingNumber: []string{"33920143-1195-1"},
+			},
+			`{
+				"result": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&OpenDisputeOverShipmentParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().OpenDisputeOverShipment(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestShipmentCancellationReasons(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ShipmentCancellationReasonsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ShipmentCancellationReasonsParams{
+				RelatedPostingNumbers: []string{"73837363-0010-3"},
+			},
+			`{
+				"result": [
+				  {
+					"posting_number": "73837363-0010-3",
+					"reasons": [
+					  {
+						"id": 352,
+						"title": "The goods ran out at the seller's warehouse",
+						"type_id": "seller"
+					  },
+					  {
+						"id": 400,
+						"title": "Only defective goods remained",
+						"type_id": "seller"
+					  },
+					  {
+						"id": 402,
+						"title": "Other (seller's fault)",
+						"type_id": "seller"
+					  }
+					]
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ShipmentCancellationReasonsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ShipmentCancellationReasons(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.RelatedPostingNumbers) {
+				t.Errorf("Length of postings numbers in request and response are not equal")
+			}
+			if len(resp.Result) > 0 {
+				if resp.Result[0].PostingNumber != test.params.RelatedPostingNumbers[0] {
+					t.Errorf("Posting number in request and response are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestShipmentsCancellationReasons(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"result": [
+				  {
+					"id": 352,
+					"title": "The goods ran out at the seller's warehouse",
+					"type_id": "seller",
+					"is_available_for_cancellation": true
+				  },
+				  {
+					"id": 400,
+					"title": "Only defective goods remained",
+					"type_id": "seller",
+					"is_available_for_cancellation": true
+				  },
+				  {
+					"id": 401,
+					"title": "Seller rejects arbitration",
+					"type_id": "seller",
+					"is_available_for_cancellation": false
+				  },
+				  {
+					"id": 402,
+					"title": "Other (seller's fault)",
+					"type_id": "seller",
+					"is_available_for_cancellation": true
+				  },
+				  {
+					"id": 665,
+					"title": "The buyer did not pick up the order",
+					"type_id": "seller",
+					"is_available_for_cancellation": false
+				  },
+				  {
+					"id": 666,
+					"title": "Return from the delivery service: there is no delivery to the specified region",
+					"type_id": "seller",
+					"is_available_for_cancellation": false
+				  },
+				  {
+					"id": 667,
+					"title": "Order lost by delivery service",
+					"type_id": "seller",
+					"is_available_for_cancellation": false
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ShipmentsCancellationReasons()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].Id == 0 {
+					t.Errorf("Id cannot be 0")
+				}
+				if resp.Result[0].TypeId == "" {
+					t.Errorf("Type id cannot be empty")
+				}
+			}
+		}
+	}
+}
+
+func TestAddWeightForBulkProduct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *AddWeightForBulkProductParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&AddWeightForBulkProductParams{
+				Items: AddWeightForBulkProductItem{
+					SKU:        1231428352,
+					WeightReal: []float64{0.3},
+				},
+				PostingNumber: "33920158-0006-1",
+			},
+			`{
+				"result": "33920158-0006-1"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&AddWeightForBulkProductParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().AddWeightForBulkProduct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result != test.params.PostingNumber {
+				t.Errorf("Posting numbers in request and response are not equal")
+			}
+		}
+	}
+}
+
+func TestCancelSending(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CancelSendingParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CancelSendingParams{
+				PostingNumber:       "33920113-1231-1",
+				CancelReasonId:      352,
+				CancelReasonMessage: "Product is out of stock",
+				Items: []CancelSendingItem{
+					{
+						Quantity: 5,
+						SKU:      150587396,
+					},
+				},
+			},
+			`{
+				"result": ""
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CancelSendingParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().CancelSending(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestListShipmentInCertificate(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListShipmentInCertificateParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListShipmentInCertificateParams{
+				Id: 900000250859000,
+			},
+			`{
+				"result": [
+				  {
+					"id": 0,
+					"multi_box_qty": 0,
+					"posting_number": "string",
+					"status": "string",
+					"seller_error": "string",
+					"updated_at": "2019-08-24T14:15:22Z",
+					"created_at": "2019-08-24T14:15:22Z",
+					"products": [
+					  {
+						"name": "string",
+						"offer_id": "string",
+						"price": "string",
+						"quantity": 0,
+						"sku": 0
+					  }
+					]
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListShipmentInCertificateParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ListShipmentInCertificate(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestSpecifyNumberOfBoxes(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *SpecifyNumberOfBoxesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&SpecifyNumberOfBoxesParams{
+				PostingNumber: "string",
+			},
+			`{
+				"result": {
+				  "result": true
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&SpecifyNumberOfBoxesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().SpecifyNumberOfBoxes(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestStatusOfAct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *StatusOfActParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&StatusOfActParams{
+				Id: 900000250859000,
+			},
+			`{
+				"result": {
+				  "result": true
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&StatusOfActParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().StatusOfAct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestETGBCustomsDeclarations(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ETGBCustomsDeclarationsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ETGBCustomsDeclarationsParams{
+				Date: ETGBCustomsDeclarationsDate{
+					From: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-02-13T12:13:16.818Z"),
+					To:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-02-13T12:13:16.818Z"),
+				},
+			},
+			`{
+				"result": [
+				  {
+					"posting_number": "string",
+					"etgb": {
+					  "number": "string",
+					  "date": "string",
+					  "url": "string"
+					}
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ETGBCustomsDeclarationsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ETGBCustomsDeclarations(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

@@ -1648,7 +1648,7 @@ type AvailableFreightsListResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct{
+	Result []struct {
 		// Freight identifier (document generation task number)
 		CarriageId int64 `json:"carriage_id"`
 
@@ -1668,7 +1668,7 @@ type AvailableFreightsListResponse struct {
 		DeliveryMethodName string `json:"delivery_method_name"`
 
 		// Errors list
-		Errors []struct{
+		Errors []struct {
 			// Error code
 			Code string `json:"code"`
 
@@ -1715,6 +1715,524 @@ func (c FBS) AvailableFreightsList(params *AvailableFreightsListParams) (*Availa
 	url := "/v1/posting/carriage-available/list"
 
 	resp := &AvailableFreightsListResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GenerateActParams struct {
+	// Document generation task number (freight identifier) received from the POST `/v2/posting/fbs/act/create` method
+	Id int64 `json:"id"`
+}
+
+type GenerateActResponse struct {
+	core.CommonResponse
+
+	// Document generation task number
+	Id int64 `json:"id"`
+
+	// Documents generation status:
+	//   - FORMING—in process,
+	//   - FORMED—generated successfully,
+	//   - CONFIRMED—signed by Ozon,
+	//   - CONFIRMED_WITH_MISMATCH—signed by Ozon with mismatches,
+	//   - NOT_FOUND—documents are not found,
+	//   - UNKNOWN_ERROR—unknown error
+	Status string `json:"status"`
+}
+
+// Get current status of generating digital acceptance and transfer certificate and waybill
+func (c FBS) GenerateAct(params *GenerateActParams) (*GenerateActResponse, error) {
+	url := "/v2/posting/fbs/digital/act/check-status"
+
+	resp := &GenerateActResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetDigitalActParams struct {
+	// Document generation task number (freight identifier) received from the POST `/v2/posting/fbs/act/create` method
+	Id int64 `json:"id"`
+
+	// Type of shipment certificate:
+	//   - act_of_acceptance — acceptance certificate,
+	//   - act_of_mismatch — discrepancy certificate,
+	//   - act_of_excess — surplus certificate
+	DocType string `json:"doc_type"`
+}
+
+type GetDigitalActResponse struct {
+	core.CommonResponse
+
+	// File content in binary format
+	Content string `json:"content"`
+
+	// File name
+	Name string `json:"name"`
+
+	// File type
+	Type string `json:"type"`
+}
+
+// Specify the type of a certificate in the doc_type parameter: `act_of_acceptance`, `act_of_mismatch`, `act_of_excess`
+func (c FBS) GetDigitalAct(params *GetDigitalActParams) (*GetDigitalActResponse, error) {
+	url := "/v2/posting/fbs/digital/act/get-pdf"
+
+	resp := &GetDigitalActResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type PackageUnitLabelsParams struct {
+	// Document generation task number (freight identifier) received from the POST `/v2/posting/fbs/act/create` method.
+	Id int64 `json:"id"`
+}
+
+type PackageUnitLabelsResponse struct {
+	core.CommonResponse
+
+	// Content
+	Content string `json:"content"`
+
+	// Name
+	Name string `json:"name"`
+
+	// Type
+	Type string `json:"type"`
+}
+
+// Method creates package unit labels
+func (c FBS) PackageUnitLabel(params *PackageUnitLabelsParams) (*PackageUnitLabelsResponse, error) {
+	url := "/v2/posting/fbs/act/get-container-labels"
+
+	resp := &PackageUnitLabelsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type OpenDisputeOverShipmentParams struct {
+	// Shipment identifier
+	PostingNumber []string `json:"posting_number"`
+}
+
+type OpenDisputeOverShipmentResponse struct {
+	core.CommonResponse
+
+	// Request processing result. true, if the request was executed without errors
+	Result bool `json:"result"`
+}
+
+// If the shipment has been handed over for delivery, but has not been scanned at the sorting center, you can open a dispute.
+// Opened dispute will put the shipment into the `arbitration` status
+func (c FBS) OpenDisputeOverShipment(params *OpenDisputeOverShipmentParams) (*OpenDisputeOverShipmentResponse, error) {
+	url := "/v2/posting/fbs/arbitration"
+
+	resp := &OpenDisputeOverShipmentResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ShipmentCancellationReasonsParams struct {
+	// Shipment numbers
+	RelatedPostingNumbers []string `json:"related_posting_numbers"`
+}
+
+type ShipmentCancellationReasonsResponse struct {
+	core.CommonResponse
+
+	// Request result
+	Result []struct {
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// Information about cancellation reasons
+		Reasons []struct {
+			// Cancellation reasons
+			Id int64 `json:"id"`
+
+			// Reason description
+			Title string `json:"title"`
+
+			// Shipment cancellation initiator
+			TypeId string `json:"type_id"`
+		} `json:"reasons"`
+	} `json:"result"`
+}
+
+// Returns a list of cancellation reasons for particular shipments
+func (c FBS) ShipmentCancellationReasons(params *ShipmentCancellationReasonsParams) (*ShipmentCancellationReasonsResponse, error) {
+	url := "/v1/posting/fbs/cancel-reason"
+
+	resp := &ShipmentCancellationReasonsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ShipmentsCancellationReasonsResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct {
+		// Cancellation reason
+		Id int64 `json:"id"`
+
+		// Shipment cancellation result. true if the request is available for cancellation
+		IsAvailableForCancellation bool `json:"is_available_for_cancellation"`
+
+		// Category name
+		Title string `json:"title"`
+
+		// Shipment cancellation initiator:
+		//   - buyer
+		//   - seller
+		TypeId string `json:"type_id"`
+	} `json:"result"`
+}
+
+// Returns a list of cancellation reasons for particular shipments
+func (c FBS) ShipmentsCancellationReasons() (*ShipmentsCancellationReasonsResponse, error) {
+	url := "/v2/posting/fbs/cancel-reason/list"
+
+	resp := &ShipmentsCancellationReasonsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type AddWeightForBulkProductParams struct {
+	// Products information
+	Items AddWeightForBulkProductItem `json:"items"`
+
+	// Shipment identifier
+	PostingNumber string `json:"posting_number"`
+}
+
+type AddWeightForBulkProductItem struct {
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// List with weights of the products in the posting
+	WeightReal []float64 `json:"weightReal"`
+}
+
+type AddWeightForBulkProductResponse struct {
+	core.CommonResponse
+
+	// Shipment identifier
+	Result string `json:"result"`
+}
+
+// Add weight for bulk products in a shipment
+func (c FBS) AddWeightForBulkProduct(params *AddWeightForBulkProductParams) (*AddWeightForBulkProductResponse, error) {
+	url := "/v2/posting/fbs/product/change"
+
+	resp := &AddWeightForBulkProductResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CancelSendingParams struct {
+	// Product shipping cancellation reason identifier
+	CancelReasonId int64 `json:"cancel_reason_id"`
+
+	// Additional information on cancellation. Required parameter
+	CancelReasonMessage string `json:"cancel_reason_message"`
+
+	// Products information
+	Items []CancelSendingItem `json:"items"`
+
+	// Shipment identifier
+	PostingNumber string `json:"posting_number"`
+}
+
+type CancelSendingItem struct {
+	// Number of products in the shipment
+	Quantity int32 `json:"quantity"`
+
+	// Product identifier in the seller's system
+	SKU int64 `json:"sku"`
+}
+
+type CancelSendingResponse struct {
+	core.CommonResponse
+
+	// Shipment number
+	Result string `json:"result"`
+}
+
+// Use this method if you cannot send some of the products from the shipment
+func (c FBS) CancelSending(params *CancelSendingParams) (*CancelSendingResponse, error) {
+	url := "/v2/posting/fbs/product/cancel"
+
+	resp := &CancelSendingResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListShipmentInCertificateParams struct {
+	// Certificate identifier
+	Id int64 `json:"id"`
+}
+
+type ListShipmentInCertificateResponse struct {
+	core.CommonResponse
+
+	// Information about shipments
+	Result []struct {
+		// Certificate identifier
+		Id int64 `json:"id"`
+
+		// Number of boxes in which the product is packed
+		MultiBoxQuantity int32 `json:"multi_box_qty"`
+
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// Shipment status
+		Status string `json:"status"`
+
+		// Error code explanation
+		SellerError string `json:"seller_error"`
+
+		// Shipment record update date and time
+		UpdatedAt time.Time `json:"update_at"`
+
+		// Shipment record creation date and time
+		CreatedAt time.Time `json:"created_at"`
+
+		// List of products in the shipment
+		Products []struct {
+			// Product name
+			Name string `json:"name"`
+
+			// Product identifier in the seller's system
+			OfferId string `json:"offer_id"`
+
+			// Product price
+			Price string `json:"price"`
+
+			// Product number in the shipment
+			Quantity int32 `json:"quantity"`
+
+			// Product identifier in the Ozon system, SKU
+			SKU int64 `json:"sku"`
+		} `json:"products"`
+	} `json:"result"`
+}
+
+// Returns a list of shipments in the certificate by certificate identifier
+func (c FBS) ListShipmentInCertificate(params *ListShipmentInCertificateParams) (*ListShipmentInCertificateResponse, error) {
+	url := "/v2/posting/fbs/act/get-postings"
+
+	resp := &ListShipmentInCertificateResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type SpecifyNumberOfBoxesParams struct {
+	// Multi-box shipment identifier
+	PostingNumber string `json:"posting_number"`
+
+	// Number of boxes in which the product is packed
+	MultiBoxQuantity int64 `json:"multi_box_qty"`
+}
+
+type SpecifyNumberOfBoxesResponse struct {
+	core.CommonResponse
+
+	// Result of transferring the boxes number
+	Result struct {
+		// Possible values:
+		//   - true — the number is successfully passed.
+		//   - false — an error occurred while passing the number. Please try again
+		Result bool `json:"result"`
+	} `json:"result"`
+}
+
+// Method for passing the number of boxes for multi-box shipments when working under the rFBS Aggregator scheme (using the Ozon partner delivery)
+func (c FBS) SpecifyNumberOfBoxes(params *SpecifyNumberOfBoxesParams) (*SpecifyNumberOfBoxesResponse, error) {
+	url := "/v3/posting/multiboxqty/set"
+
+	resp := &SpecifyNumberOfBoxesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type StatusOfActParams struct {
+	// Document generation task number (freight identifier) received from the POST `/v2/posting/fbs/act/create` method
+	Id int64 `json:"id"`
+}
+
+type StatusOfActResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Acceptance and transfer certificate and a waybill type.
+		//
+		// If the value is ozon_digital,
+		// use the `/v2/posting/fbs/digital/act/check-status` and `/v2/posting/fbs/digital/act/get-pdf` methods for getting digital acceptance
+		// and transfer certificate and waybill
+		ActType string `json:"act_type"`
+
+		// List with numbers of shipments that are included in the acceptance and transfer certificate.
+		// You should hand these shipments over today
+		AddedToAct []string `json:"added_to_act"`
+
+		// List with numbers of shipments that are not included in the acceptance and transfer certificate.
+		// You should hand these shipments over in the next shipping
+		RemovedFromAct []string `json:"removed_from_act"`
+
+		// Request status:
+		//
+		//   - in_process — documents generation in process, please wait.
+		//   - ready — documents are ready for downloading.
+		//   - error — error occured during document geneartion process. Send a request again.
+		//   - cancelled — documents generation was canceled. Send a request again.
+		//   - The next postings are not ready — error occured, shipmants are not included in the shipping. Wait and check request results again. If you see the error again, contact our support team
+		Status string `json:"status"`
+
+		// Indication of a partial freight. true if the freigth is partial.
+		//
+		// Partial freigt means that the shipment was splitted into several parts and
+		// for each of them you need to generate separate acceptance and transfer certificates
+		IsPartial bool `json:"is_partial"`
+
+		// Indication that there are shipments subject to shipping that are not in the current freight. true if there are such shipments.
+		//
+		// If there are such shipments, create a new acceptance and transfer certificate
+		// using the `/v2/posting/fbs/act/create` method and check the creation status. Create acts until this field returns false
+		HasPostingsForNextCarriage bool `json:"has_postings_for_next_carriage"`
+
+		// Serial number of the partial freight
+		PartialSum int64 `json:"partial_sum"`
+	} `json:"result"`
+}
+
+// If you are not connected to electronic document circulation (EDC),
+// the method returns status of generating an acceptance and transfer certificate and a waybill.
+//
+// If you are connected to EDC, the method returns status of generating a waybill only
+func (c FBS) StatusOfAct(params *StatusOfActParams) (*StatusOfActResponse, error) {
+	url := "/v2/posting/fbs/act/check-status"
+
+	resp := &StatusOfActResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ETGBCustomsDeclarationsParams struct {
+	// Filter by period of declaration creation
+	Date ETGBCustomsDeclarationsDate `json:"date"`
+}
+
+type ETGBCustomsDeclarationsDate struct {
+	// Start date
+	From time.Time `json:"from"`
+
+	// End date
+	To time.Time `json:"to"`
+}
+
+type ETGBCustomsDeclarationsResponse struct {
+	core.CommonResponse
+
+	// Request result
+	Result []struct {
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// Declaration information
+		ETGB struct {
+			// Number
+			Number string `json:"number"`
+
+			// Creation date
+			Date string `json:"date"`
+
+			// Link to file.
+			//
+			// If the field is empty and you need the file, contact Ozon support
+			URL string `json:"url"`
+		} `json:"etgb"`
+	} `json:"result"`
+}
+
+// Method for getting Elektronik Ticaret Gümrük Beyannamesi (ETGB) customs declarations for sellers from Turkey
+func (c FBS) ETGBCustomsDeclarations(params *ETGBCustomsDeclarationsParams) (*ETGBCustomsDeclarationsResponse, error) {
+	url := "/v1/posting/global/etgb"
+
+	resp := &ETGBCustomsDeclarationsResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {
