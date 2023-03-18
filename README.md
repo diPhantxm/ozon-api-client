@@ -35,7 +35,7 @@ func main() {
 	client := ozon.NewClient("my-client-id", "my-api-key")
 
 	// Send request with parameters
-	resp, err := client.GetProductDetails(&ozon.GetProductDetailsParams{
+	resp, err := client.Products().GetProductDetails(&ozon.GetProductDetailsParams{
 		ProductId: 123456789,
 	})
 	if err != nil || resp.StatusCode != http.StatusOK {
