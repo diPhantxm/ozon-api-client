@@ -369,7 +369,7 @@ type PackOrderResponse struct {
 //
 // the products do not fit in one package,
 // the products cannot be put in one package.
-// Differs from /v2/posting/fbs/ship by the presence of the field exemplar_info in the request.
+// Differs from /v2/posting/fbs/ship by the presence of the field `exemplar_info` in the request.
 //
 // If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value is_gtd_absent = true
 func (c FBS) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
@@ -424,22 +424,7 @@ type ValidateLabelingCodesResponse struct {
 			Error string `json:"error"`
 
 			// Product items data
-			Exemplars []struct {
-				// Product item validation errors
-				Errors []string `json:"errors"`
-
-				// Сustoms cargo declaration (CCD) number
-				GTD string `json:"gtd"`
-
-				// Mandatory “Chestny ZNAK” labeling
-				MandatoryMark string `json:"mandatory_mark"`
-
-				// Check result. true if the labeling code of product item meets the requirements
-				Valid bool `json:"valid"`
-
-				// Product batch registration number
-				RNPT string `json:"rnpt"`
-			} `json:"exemplars"`
+			Exemplars []FBSProductExemplar `json:"exemplars"`
 
 			// Product identifier
 			ProductId int64 `json:"product_id"`
@@ -1442,6 +1427,294 @@ func (c FBS) GetProductItemsCheckStatuses(params *GetProductItemsCheckStatusesPa
 	url := "/v4/fbs/posting/product/exemplar/status"
 
 	resp := &GetProductItemsCheckStatusesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type RescheduleShipmentDeliveryDateParams struct {
+	// New delivery date period
+	NewTimeslot RescheduleShipmentDeliveryDateTimeslot `json:"new_timeslot"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type RescheduleShipmentDeliveryDateTimeslot struct {
+	// Period start date
+	DeliveryDateBegin time.Time `json:"delivery_date_begin"`
+
+	// Period end date
+	DeliveryDateEnd time.Time `json:"delivery_date_end"`
+}
+
+type RescheduleShipmentDeliveryDateResponse struct {
+	core.CommonResponse
+
+	// true, if the date was changed
+	Result bool `json:"result"`
+}
+
+// You can change the delivery date of a shipment up to two times
+func (c FBS) RescheduleShipmentDeliveryDate(params *RescheduleShipmentDeliveryDateParams) (*RescheduleShipmentDeliveryDateResponse, error) {
+	url := "/v1/posting/fbs/timeslot/set"
+
+	resp := &RescheduleShipmentDeliveryDateResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type DateAvailableForDeliveryScheduleParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type DateAvailableForDeliveryScheduleResponse struct {
+	core.CommonResponse
+
+	// Number of delivery date reschedules made
+	AvailableChangecount int64 `json:"available_change_count"`
+
+	// Period of dates available for reschedule
+	DeliveryInterval struct {
+		// Period start date
+		Begin time.Time `json:"begin"`
+
+		// Period end date
+		End time.Time `json:"end"`
+	} `json:"delivery_interval"`
+
+	// Number of delivery date reschedules left
+	RemainingChangeCount int64 `json:"remaining_change_count"`
+}
+
+// Method for getting the dates and number of times available for delivery reschedule
+func (c FBS) DateAvailableForDeliverySchedule(params *DateAvailableForDeliveryScheduleParams) (*DateAvailableForDeliveryScheduleResponse, error) {
+	url := "/v1/posting/fbs/timeslot/change-restrictions"
+
+	resp := &DateAvailableForDeliveryScheduleResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListManufacturingCountriesParams struct {
+	// Filtering by line
+	NameSearch string `json:"name_search"`
+}
+
+type ListManufacturingCountriesResponse struct {
+	core.CommonResponse
+
+	// List of manufacturing countries and their ISO codes
+	Result []struct {
+		// Country name in Russian
+		Name string `json:"name"`
+
+		// Country ISO code
+		CountriISOCode string `json:"country_iso_code"`
+	} `json:"result"`
+}
+
+// Method for getting a list of available manufacturing countries and their ISO codes
+func (c FBS) ListManufacturingCountries(params *ListManufacturingCountriesParams) (*ListManufacturingCountriesResponse, error) {
+	url := "/v2/posting/fbs/product/country/list"
+
+	resp := &ListManufacturingCountriesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type SetManufacturingCountryParams struct {
+	// Shipment identifier
+	PostingNumber string `json:"posting_number"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Country ISO code from the `/v2/posting/fbs/product/country/list` method response
+	CountryISOCode string `json:"country_iso_code"`
+}
+
+type SetManufacturingCountryResponse struct {
+	core.CommonResponse
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Indication that you need to pass the сustoms cargo declaration (CCD) number for the product and shipment
+	IsGTDNeeded bool `json:"is_gtd_needed"`
+}
+
+// The method to set the manufacturing country to the product if it hasn't been specified
+func (c FBS) SetManufacturingCountry(params *SetManufacturingCountryParams) (*SetManufacturingCountryResponse, error) {
+	url := "/v2/posting/fbs/product/country/set"
+
+	resp := &SetManufacturingCountryResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type PartialPackOrderParams struct {
+	// Shipment ID
+	PostingNumber string `json:"posting_number"`
+
+	// Array of products
+	Products []PartialPackOrderProduct `json:"products"`
+}
+
+type PartialPackOrderProduct struct {
+	// Data array on product items
+	ExemplarInfo []FBSProductExemplar `json:"exemplar_info"`
+
+	// FBS product identifier in the Ozon system, SKU
+	ProductId int64 `json:"product_id"`
+
+	// Product quantity
+	Quantity int32 `json:"quantity"`
+}
+
+type PartialPackOrderResponse struct {
+	core.CommonResponse
+
+	// Additional data about shipments
+	AdditionalData []struct {
+		// Shipment identifier
+		PostingNumber string `json:"posting_number"`
+
+		// List of products in the shipment
+		Products []PostingProduct `json:"products"`
+	} `json:"additional_data"`
+
+	// Identifiers of shipments that were created after package
+	Result []string `json:"result"`
+}
+
+// If you pass to the request a part of the products from the shipment, the primary shipment will split into two parts.
+// The primary unassembled shipment will contain some of the products that were not passed to the request.
+//
+// The status of the original shipment will only change when the split shipments status changes
+func (c FBS) PartialPackOrder(params *PartialPackOrderParams) (*PartialPackOrderResponse, error) {
+	url := "/v3/posting/fbs/ship/package"
+
+	resp := &PartialPackOrderResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type AvailableFreightsListParams struct {
+	// Filter by delivery method identifier
+	DeliveryMethodId int64 `json:"delivery_method_id"`
+
+	// Shipping date. The default value is current date
+	DepartureDate time.Time `json:"departure_date"`
+}
+
+type AvailableFreightsListResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct{
+		// Freight identifier (document generation task number)
+		CarriageId int64 `json:"carriage_id"`
+
+		// Number of shipments in the freight
+		CarriagePostingsCount int32 `json:"carriage_postings_count"`
+
+		// Freight status for requested delivery method and shipping date
+		CarriageStatus string `json:"carriage_status"`
+
+		// Date and time before a shipment must be packaged
+		CutoffAt time.Time `json:"cutoff_at"`
+
+		// Delivery method identifier
+		DeliveryMethodId int64 `json:"delivery_method_id"`
+
+		// Delivery method name
+		DeliveryMethodName string `json:"delivery_method_name"`
+
+		// Errors list
+		Errors []struct{
+			// Error code
+			Code string `json:"code"`
+
+			// Error type:
+			//   - warning
+			//   - critical
+			Status string `json:"status"`
+		} `json:"errors"`
+
+		// First mile type
+		FirstMileType string `json:"first_mile_type"`
+
+		// Trusted acceptance attribute. true if trusted acceptance is enabled in the warehouse
+		HasEntrustedAcceptance bool `json:"has_entrusted_acceptance"`
+
+		// Number of shipments to be packaged
+		MandatoryPostingsCount int32 `json:"mandatory_postings_count"`
+
+		// Number of already packaged shipments
+		MandatoryPackagedCount int32 `json:"mandatory_packaged_count"`
+
+		// Delivery service icon link
+		TPLProviderIconURL string `json:"tpl_provider_icon_url"`
+
+		// Delivery service name
+		TPLProviderName string `json:"tpl_provider_name"`
+
+		// Warehouse city
+		WarehouseCity string `json:"warehouse_city"`
+
+		// Warehouse identifier
+		WarehouseId int64 `json:"warehouse_id"`
+
+		// Warehouse name
+		WarehouseName string `json:"warehouse_name"`
+
+		// Warehouse timezone
+		WarehouseTimezone string `json:"warehouse_timezone"`
+	} `json:"result"`
+}
+
+// Method for getting freights that require printing acceptance and transfer certificates and a waybill
+func (c FBS) AvailableFreightsList(params *AvailableFreightsListParams) (*AvailableFreightsListResponse, error) {
+	url := "/v1/posting/carriage-available/list"
+
+	resp := &AvailableFreightsListResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {

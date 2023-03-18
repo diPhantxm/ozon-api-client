@@ -93,14 +93,14 @@
 - [x] Shipments list (version 3)
 - [x] Get shipment details by identifier (version 3)
 - [x] Get shipment data by barcode
-- [ ] List of manufacturing countries
-- [ ] Set the manufacturing country
+- [x] List of manufacturing countries
+- [x] Set the manufacturing country
 - [ ] Specify number of boxes for multi-box shipments
 - [x] Get drop-off point restrictions
-- [ ] Partial pack the order
+- [x] Partial pack the order
 - [x] Create an acceptance and transfer certificate and a waybill
 - [ ] Status of acceptance and transfer certificate and waybill
-- [ ] Available freights list
+- [x] Available freights list
 - [x] Get acceptance and transfer certificate and waybill
 - [ ] Generating status of digital acceptance and transfer certificate and waybill
 - [ ] Get digital shipment certificate
@@ -123,8 +123,8 @@
 - [x] Change the status to "Last Mile"
 - [x] Change the status to "Delivered"
 - [x] Change status to "Sent by seller"
-- [ ] Dates available for delivery reschedule
-- [ ] Reschedule shipment delivery date
+- [x] Dates available for delivery reschedule
+- [x] Reschedule shipment delivery date
 - [ ] ETGB customs declarations
 
 ## Returns

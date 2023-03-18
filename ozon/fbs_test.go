@@ -1463,3 +1463,362 @@ func TestGetProductItemsCheckStatuses(t *testing.T) {
 		}
 	}
 }
+
+func TestRescheduleShipmentDeliveryDate(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *RescheduleShipmentDeliveryDateParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&RescheduleShipmentDeliveryDateParams{
+				PostingNumber: "23281294-0063-2",
+				NewTimeslot: RescheduleShipmentDeliveryDateTimeslot{
+					DeliveryDateBegin: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-03-03T11:07:00.381Z"),
+					DeliveryDateEnd:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-03-03T11:07:00.381Z"),
+				},
+			},
+			`{
+				"result": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&RescheduleShipmentDeliveryDateParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().RescheduleShipmentDeliveryDate(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestDateAvailableForDeliverySchedule(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *DateAvailableForDeliveryScheduleParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&DateAvailableForDeliveryScheduleParams{
+				PostingNumber: "23281294-0063-2",
+			},
+			`{
+				"available_change_count": 0,
+				"delivery_interval": {
+				  "begin": "2019-08-24T14:15:22Z",
+				  "end": "2019-08-24T14:15:22Z"
+				},
+				"remaining_change_count": 0
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&DateAvailableForDeliveryScheduleParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().DateAvailableForDeliverySchedule(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestListManufactoruingCountries(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListManufacturingCountriesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListManufacturingCountriesParams{
+				NameSearch: "some name",
+			},
+			`{
+				"result": [
+				  {
+					"name": "Алжир",
+					"country_iso_code": "DZ"
+				  },
+				  {
+					"name": "Ангилья",
+					"country_iso_code": "AI"
+				  },
+				  {
+					"name": "Виргинские Острова (Великобритания)",
+					"country_iso_code": "VG"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListManufacturingCountriesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ListManufacturingCountries(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].Name == "" {
+					t.Errorf("Name cannot be empty")
+				}
+				if resp.Result[0].CountriISOCode == "" {
+					t.Errorf("ISO code cannot be empty")
+				}
+			}
+		}
+	}
+}
+
+func TestSetManufacturingCountry(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *SetManufacturingCountryParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&SetManufacturingCountryParams{
+				PostingNumber:  "57195475-0050-3",
+				ProductId:      180550365,
+				CountryISOCode: "NO",
+			},
+			`{
+				"product_id": 180550365,
+				"is_gtd_needed": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&SetManufacturingCountryParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().SetManufacturingCountry(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.ProductId != test.params.ProductId {
+				t.Errorf("Product ids in request and response are not equal")
+			}
+		}
+	}
+}
+
+func TestPartialPackOrder(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *PartialPackOrderParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&PartialPackOrderParams{
+				PostingNumber: "48173252-0034-4",
+				Products: []PartialPackOrderProduct{
+					{
+						ExemplarInfo: []FBSProductExemplar{
+							{
+								MandatoryMark: "mark",
+								GTD:           "gtd",
+								IsGTDAbsest:   true,
+							},
+						},
+						ProductId: 247508873,
+						Quantity:  1,
+					},
+				},
+			},
+			`{
+				"result": [
+				  "48173252-0034-9"
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&PartialPackOrderParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().PartialPackOrder(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestAvailableFreightsList(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *AvailableFreightsListParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&AvailableFreightsListParams{
+				DeliveryMethodId: 0,
+				DepartureDate:    core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+			},
+			`{
+				"result": [
+				  {
+					"carriage_id": 0,
+					"carriage_postings_count": 0,
+					"carriage_status": "string",
+					"cutoff_at": "2019-08-24T14:15:22Z",
+					"delivery_method_id": 0,
+					"delivery_method_name": "string",
+					"errors": [
+					  {
+						"code": "string",
+						"status": "string"
+					  }
+					],
+					"first_mile_type": "string",
+					"has_entrusted_acceptance": true,
+					"mandatory_postings_count": 0,
+					"mandatory_packaged_count": 0,
+					"tpl_provider_icon_url": "string",
+					"tpl_provider_name": "string",
+					"warehouse_city": "string",
+					"warehouse_id": 0,
+					"warehouse_name": "string",
+					"warehouse_timezone": "string"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&AvailableFreightsListParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().AvailableFreightsList(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
