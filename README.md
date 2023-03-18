@@ -11,6 +11,8 @@ Read full [documentation](https://docs.ozon.ru/api/seller/en/#tag/Introduction)
 You can check [list of supported endpoints](ENDPOINTS.md)
 
 ## How to start
+Get Client-Id and Api-Key in your seller profile [here](https://seller.ozon.ru/app/settings/api-keys?locale=en)
+
 Just add dependency to your project and you're ready to go.
 ```bash
 go get github.com/diphantxm/ozon-api-client
