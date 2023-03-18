@@ -112,7 +112,7 @@ type GetStocksOnWarehousesParams struct {
 	// Number of values per page.
 	//
 	// Default is 100
-	Limit int64 `json:"limit"`
+	Limit int64 `json:"limit" default:"100"`
 
 	// Number of elements that will be skipped in the response. For example, if `offset=10`, the response will start with the 11th element found
 	Offset int64 `json:"offset"`

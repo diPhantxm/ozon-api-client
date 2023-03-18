@@ -31,7 +31,7 @@ type GetReportsListParams struct {
 	//   - SELLER_RETURNS — returns report,
 	//   - SELLER_POSTINGS — shipments report,
 	//   - SELLER_FINANCE — financial report
-	ReportType string `json:"report_type"`
+	ReportType string `json:"report_type" default:"ALL"`
 }
 
 type GetReportsListResponse struct {
@@ -408,7 +408,7 @@ type GetShipmentReportParams struct {
 	// Response language:
 	//   - RU — Russian
 	//   - EN — English
-	Language string `json:"language"`
+	Language string `json:"language" default:"DEFAULT"`
 }
 
 type GetShipmentReportFilter struct {

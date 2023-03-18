@@ -456,3 +456,105 @@ func (c FBS) ValidateLabelingCodes(params *ValidateLabelingCodesParams) (*Valida
 
 	return resp, nil
 }
+
+type GetShipmentDataByBarcodeParams struct {
+	// Shipment barcode
+	Barcode string `json:"barcode"`
+}
+
+type GetShipmentDataByBarcodeResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Analytical data
+		AnalyticsData struct {
+			// Delivery city
+			City string `json:"city"`
+
+			// Delivery method
+			DeliveryType string `json:"delivery_type"`
+
+			// Indication that the recipient is a legal entity:
+			//   - true — a legal entity
+			//   - false — a natural person
+			IsLegal bool `json:"is_legal"`
+
+			// Premium subscription availability
+			IsPremium bool `json:"is_premium"`
+
+			// Payment method
+			PaymentTypeGroupName string `json:"payment_type_group_name"`
+
+			// Delivery region
+			Region string `json:"region"`
+		} `json:"analytics_data"`
+
+		// Shipment barcodes
+		Barcodes struct {
+			// Lower barcode on the shipment label
+			Lower string `json:"lower_barcode"`
+
+			// Upper barcode on the shipment label
+			Upper string `json:"upper_barcode"`
+		} `json:"barcodes"`
+
+		// Cancellation reason identifier
+		CancelReasonId int64 `json:"cancel_reason_id"`
+
+		// Date and time when the shipment was created
+		CreatedAt time.Time `json:"created_at"`
+
+		// Financial data
+		FinancialData struct {
+			// Identifier of the cluster, where the shipment is sent from
+			ClusterFrom string `json:"cluster_from"`
+
+			// Identifier of the cluster, where the shipment is delivered to
+			ClusterTo string `json:"cluster_to"`
+
+			// Services
+			PostingServices []MarketplaceServices `json:"posting_services"`
+
+			// Products list
+			Products []FinancialDataProduct `json:"products"`
+		} `json:"financial_data"`
+
+		// Start date and time of shipment processing
+		InProcessAt time.Time `json:"in_process_at"`
+
+		// Order identifier to which the shipment belongs
+		OrderId int64 `json:"order_id"`
+
+		// Order number to which the shipment belongs
+		OrderNumber string `json:"order_number"`
+
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// List of products in the shipment
+		Products []PostingProduct `json:"products"`
+
+		// Date and time before which the shipment must be packaged.
+		// If the shipment is not packaged by this date, it will be canceled automatically
+		ShipmentDate time.Time `json:"shipment_date"`
+
+		// Shipment status
+		Status string `json:"status"`
+	} `json:"result"`
+}
+
+// Methof for getting shipments data by barcode
+func (c FBS) GetShipmentDataByBarcode(params *GetShipmentDataByBarcodeParams) (*GetShipmentDataByBarcodeResponse, error) {
+	url := "/v2/posting/fbs/get-by-barcode"
+
+	resp := &GetShipmentDataByBarcodeResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

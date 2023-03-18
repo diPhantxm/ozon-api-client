@@ -708,7 +708,7 @@ type CreateOrUpdateProductItem struct {
 	// Service type. Pass one of the values in upper case:
 	//   - IS_CODE_SERVICE,
 	//   - IS_NO_CODE_SERVICE
-	ServiceType string `json:"service_type"`
+	ServiceType string `json:"service_type" default:"IS_CODE_SERVICE"`
 
 	// VAT rate for the product:
 	//   - 0 — not subject to VAT,

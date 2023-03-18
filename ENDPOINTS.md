@@ -92,7 +92,7 @@
 - [x] List of unprocessed shipments (version 3)
 - [x] Shipments list (version 3)
 - [ ] Get shipment details by identifier (version 3)
-- [ ] Get shipment data by barcode
+- [x] Get shipment data by barcode
 - [ ] List of manufacturing countries
 - [ ] Set the manufacturing country
 - [ ] Specify number of boxes for multi-box shipments

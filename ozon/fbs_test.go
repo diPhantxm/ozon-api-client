@@ -437,3 +437,114 @@ func TestValidateLabelingCodes(t *testing.T) {
 		}
 	}
 }
+
+func TestGetShipmentDataByBarcode(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetShipmentDataByBarcodeParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetShipmentDataByBarcodeParams{
+				Barcode: "20325804886000",
+			},
+			`{
+				"result": {
+				  "posting_number": "57195475-0050-3",
+				  "order_id": 438764970,
+				  "order_number": "57195475-0050",
+				  "status": "awaiting_packaging",
+				  "delivery_method": {
+					"id": 18114520187000,
+					"name": "Ozon Логистика самостоятельно, Москва",
+					"warehouse_id": 18114520187000,
+					"warehouse": "Москва основной",
+					"tpl_provider_id": 24,
+					"tpl_provider": "Ozon Логистика"
+				  },
+				  "tracking_number": "",
+				  "tpl_integration_type": "ozon",
+				  "in_process_at": "2021-11-20T09:14:16Z",
+				  "shipment_date": "2021-11-23T10:00:00Z",
+				  "delivering_date": null,
+				  "provider_status": "",
+				  "delivery_price": "",
+				  "cancellation": {
+					"cancel_reason_id": 0,
+					"cancel_reason": "",
+					"cancellation_type": "",
+					"cancelled_after_ship": false,
+					"affect_cancellation_rating": false,
+					"cancellation_initiator": ""
+				  },
+				  "customer": null,
+				  "addressee": null,
+				  "products": [
+					{
+					  "price": "279.0000",
+					  "offer_id": "250-7898-1",
+					  "name": "Кофе ароматизированный \"Шоколадный апельсин\" 250 гр",
+					  "sku": 180550365,
+					  "quantity": 1,
+					  "mandatory_mark": [],
+					  "dimensions": {
+						"height": "40.00",
+						"length": "240.00",
+						"weight": "260",
+						"width": "140.00"
+					  }
+					}
+				  ],
+				  "barcodes": null,
+				  "analytics_data": null,
+				  "financial_data": null,
+				  "additional_data": [],
+				  "is_express": false,
+				  "requirements": {
+					"products_requiring_gtd": [],
+					"products_requiring_country": []
+				  },
+				  "product_exemplars": null
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetShipmentDataByBarcodeParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().GetShipmentDataByBarcode(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.OrderId == 0 {
+				t.Errorf("Order id cannot be 0")
+			}
+			if resp.Result.Status == "" {
+				t.Errorf("Status cannot be empty")
+			}
+		}
+	}
+}
