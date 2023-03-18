@@ -1214,3 +1214,252 @@ func TestPrintLabeling(t *testing.T) {
 		}
 	}
 }
+
+func TestCreateTaskForGeneratingLabel(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreateTaskForGeneratingLabelParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreateTaskForGeneratingLabelParams{
+				PostingNumber: []string{"48173252-0034-4"},
+			},
+			`{
+				"result": {
+				  "task_id": 5819327210249
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CreateTaskForGeneratingLabelParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().CreateTaskForGeneratingLabel(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.TaskId == 0 {
+				t.Errorf("Task id cannot be 0")
+			}
+		}
+	}
+}
+
+func TestGetDropOffPointRestrictions(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetDropOffPointRestrictionsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetDropOffPointRestrictionsParams{
+				PostingNumber: "48173252-0034-4",
+			},
+			`{
+				"result": {
+				  "posting_number": "48173252-0034-4",
+				  "max_posting_weight": 0,
+				  "min_posting_weight": 0,
+				  "width": 0,
+				  "length": 0,
+				  "height": 0,
+				  "max_posting_price": 0,
+				  "min_posting_price": 0
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetDropOffPointRestrictionsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().GetDropOffPointRestrictions(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.PostingNumber != test.params.PostingNumber {
+				t.Errorf("Posting numbers in request and response are not equal")
+			}
+		}
+	}
+}
+
+func TestCheckProductItemsData(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CheckProductItemsDataParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CheckProductItemsDataParams{
+				PostingNumber: "48173252-0034-4",
+				Products: CheckProductItemsDataProduct{
+					Exemplars: []FBSProductExemplar{
+						{
+							IsGTDAbsest:   true,
+							MandatoryMark: "010290000151642731tVMohkbfFgunB",
+						},
+					},
+					ProductId: 476925391,
+				},
+			},
+			`{
+				"result": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CheckProductItemsDataParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().CheckproductItemsData(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetProductItemsCheckStatuses(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductItemsCheckStatusesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductItemsCheckStatusesParams{
+				PostingNumber: "23281294-0063-2",
+			},
+			`{
+				"posting_number": "23281294-0063-2",
+				"products": [
+				  {
+					"product_id": 476925391,
+					"exemplars": [
+					  {
+						"mandatory_mark": "010290000151642731tVMohkbfFgunB",
+						"gtd": "",
+						"is_gtd_absent": true,
+						"mandatory_mark_check_status": "passed",
+						"mandatory_mark_error_codes": [],
+						"gtd_check_status": "passed",
+						"gtd_error_codes": []
+					  }
+					]
+				  }
+				],
+				"status": "ship_available"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductItemsCheckStatusesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().GetProductItemsCheckStatuses(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+		if resp.StatusCode == http.StatusOK {
+			if resp.PostingNumber != test.params.PostingNumber {
+				t.Errorf("Posting numbers in request and response are not equal")
+			}
+			if resp.Status == "" {
+				t.Errorf("Status cannot be empty")
+			}
+			if len(resp.Products) > 0 {
+				if resp.Products[0].ProductId == 0 {
+					t.Errorf("Product id cannot be 0")
+				}
+				if len(resp.Products[0].Exemplars) > 0 {
+					if resp.Products[0].Exemplars[0].MandatoryMark == "" {
+						t.Errorf("Mandatory mark cannot be empty")
+					}
+				}
+			}
+		}
+	}
+}

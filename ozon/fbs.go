@@ -728,22 +728,7 @@ type GetShipmentDataByIdentifierResponse struct {
 				SKU int64 `json:"sku"`
 
 				// Array of exemplars
-				Exemplars []struct {
-					// Mandatory “Chestny ZNAK” labeling
-					MandatoryMark string `json:"mandatory_mark"`
-
-					// Сustoms cargo declaration (CCD) number
-					GTD string `json:"gtd"`
-
-					// Indication that a сustoms cargo declaration (CCD) number hasn't been specified
-					IsGTDAbsest bool `json:"is_gtd_absent"`
-
-					// Product batch registration number
-					RNPT string `json:"rnpt"`
-
-					// Indication that a product batch registration number hasn't been specified
-					IsRNPTAbsent bool `json:"is_rnpt_absent"`
-				} `json:"exemplars"`
+				Exemplars []FBSProductExemplar `json:"exemplars"`
 			} `json:"products"`
 		} `json:"product_exemplars"`
 
@@ -796,6 +781,23 @@ type GetShipmentDataByIdentifierResponse struct {
 		// Shipment tracking number
 		TrackingNumber string `json:"tracking_number"`
 	} `json:"result"`
+}
+
+type FBSProductExemplar struct {
+	// Mandatory “Chestny ZNAK” labeling
+	MandatoryMark string `json:"mandatory_mark"`
+
+	// Сustoms cargo declaration (CCD) number
+	GTD string `json:"gtd"`
+
+	// Indication that a сustoms cargo declaration (CCD) number hasn't been specified
+	IsGTDAbsest bool `json:"is_gtd_absent"`
+
+	// Product batch registration number
+	RNPT string `json:"rnpt"`
+
+	// Indication that a product batch registration number hasn't been specified
+	IsRNPTAbsent bool `json:"is_rnpt_absent"`
 }
 
 // Method for getting shipment details by identifier
@@ -1269,6 +1271,177 @@ func (c FBS) PrintLabeling(params *PrintLabelingParams) (*PrintLabelingResponse,
 	url := "/v2/posting/fbs/package-label"
 
 	resp := &PrintLabelingResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CreateTaskForGeneratingLabelParams struct {
+	// Numbers of shipments that need labeling
+	PostingNumber []string `json:"posting_number"`
+}
+
+type CreateTaskForGeneratingLabelResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Task identifier for labeling generation
+		TaskId int64 `json:"task_id"`
+	} `json:"result"`
+}
+
+// Method for creating a task for asynchronous labeling generation.
+//
+// To get labels created as a result of the method, use the /v1/posting/fbs/package-label/get method
+func (c FBS) CreateTaskForGeneratingLabel(params *CreateTaskForGeneratingLabelParams) (*CreateTaskForGeneratingLabelResponse, error) {
+	url := "/v2/posting/fbs/package-label"
+
+	resp := &CreateTaskForGeneratingLabelResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetDropOffPointRestrictionsParams struct {
+	// The number of shipment for which you want to determine the restrictions
+	PostingNumber string `json:"posting_number"`
+}
+
+type GetDropOffPointRestrictionsResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// Maximum weight limit in grams
+		MaxPostingWeight float64 `json:"max_posting_weight"`
+
+		// Minimum weight limit in grams
+		MinPostingWeight float64 `json:"min_posting_weight"`
+
+		// Width limit in centimeters
+		Width float64 `json:"width"`
+
+		// Length limit in centimeters
+		Length float64 `json:"length"`
+
+		// Height limit in centimeters
+		Height float64 `json:"height"`
+
+		// Maximum shipment cost limit in rubles
+		MaxPostingPrice float64 `json:"max_posting_price"`
+
+		// Minimum shipment cost limit in rubles
+		MinPostingPrice float64 `json:"min_posting_price"`
+	} `json:"result"`
+}
+
+// Method for getting dimensions, weight, and other restrictions of the drop-off point by the shipment number.
+// The method is applicable only for the FBS scheme
+func (c FBS) GetDropOffPointRestrictions(params *GetDropOffPointRestrictionsParams) (*GetDropOffPointRestrictionsResponse, error) {
+	url := "/v1/posting/fbs/restrictions"
+
+	resp := &GetDropOffPointRestrictionsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CheckProductItemsDataParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	Products CheckProductItemsDataProduct `json:"products"`
+}
+
+type CheckProductItemsDataProduct struct {
+	// Product items data
+	Exemplars []FBSProductExemplar `json:"exemplars"`
+
+	// SKU, FBS product identifier in the Ozon system
+	ProductId int64 `json:"product_id"`
+}
+
+type CheckProductItemsDataResponse struct {
+	core.CommonResponse
+
+	// Method result. true if the request was processed successfully
+	Result bool `json:"result"`
+}
+
+// Asynchronous method:
+//   - for checking the availability of product items in the “Chestny ZNAK” labeling system
+//   - for saving product items data
+// To get the checks results, use the `/v4/fbs/posting/product/exemplar/status method`
+//
+// If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value `is_gtd_absent` = true
+//
+// If you have multiple identical products in a shipment, specify one `product_id` and `exemplars` array for each product in the shipment
+//
+// Always pass a complete set of product items data
+//
+// For example, you have 10 product items in your system.
+// You have passed them for checking and saving. Then they added another 60 product items to your system.
+// When you pass product items for checking and saving again, pass all of them: both old and newly added
+func (c FBS) CheckproductItemsData(params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
+	url := "/v4/fbs/posting/product/exemplar/set"
+
+	resp := &CheckProductItemsDataResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetProductItemsCheckStatusesParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type GetProductItemsCheckStatusesResponse struct {
+	core.CommonResponse
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Products list
+	Products []CheckProductItemsDataProduct `json:"products"`
+
+	// Product items check statuses and order collection availability:
+	//   - ship_available — order collection is available,
+	//   - ship_not_available — order collection is unavailable,
+	//   - validation_in_process — product items validation is in progress
+	Status string `json:"status"`
+}
+
+// Method for getting check statuses of product items that were passed in the `/fbs/posting/product/exemplar/set` method.
+// Also returns data on these product items.
+func (c FBS) GetProductItemsCheckStatuses(params *GetProductItemsCheckStatusesParams) (*GetProductItemsCheckStatusesResponse, error) {
+	url := "/v4/fbs/posting/product/exemplar/status"
+
+	resp := &GetProductItemsCheckStatusesResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {

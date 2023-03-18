@@ -83,9 +83,9 @@
 - [ ] Shipment details
 
 ## FBS and rFBS products labeling
-- [ ] Validate labeling codes
-- [ ] Check and save product items data
-- [ ] Get product items check statuses
+- [x] Validate labeling codes
+- [x] Check and save product items data
+- [x] Get product items check statuses
 - [x] Pack the order (version 4)
 
 ## FBS and rFBS
@@ -96,16 +96,16 @@
 - [ ] List of manufacturing countries
 - [ ] Set the manufacturing country
 - [ ] Specify number of boxes for multi-box shipments
-- [ ] Get drop-off point restrictions
+- [x] Get drop-off point restrictions
 - [ ] Partial pack the order
 - [x] Create an acceptance and transfer certificate and a waybill
 - [ ] Status of acceptance and transfer certificate and waybill
 - [ ] Available freights list
-- [ ] Get acceptance and transfer certificate and waybill
+- [x] Get acceptance and transfer certificate and waybill
 - [ ] Generating status of digital acceptance and transfer certificate and waybill
 - [ ] Get digital shipment certificate
 - [x] Print the labeling
-- [ ] Create a task to generate labeling
+- [x] Create a task to generate labeling
 - [x] Get a labeling file
 - [ ] Package unit labels
 - [ ] Open a dispute over a shipment
