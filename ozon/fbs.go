@@ -812,3 +812,203 @@ func (c FBS) GetShipmentDataByIdentifier(params *GetShipmentDataByIdentifierPara
 
 	return resp, nil
 }
+
+type ChangeStatusToDeliveringParams struct {
+	// Shipment identifier
+	PostingNumber []string `json:"posting_number"`
+}
+
+type ChangeStatusToDeliveringResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct {
+		// Error when processing the request
+		Error []string `json:"error"`
+
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// If the request is executed without errors — true
+		Result bool `json:"result"`
+	} `json:"result"`
+}
+
+// Changes the shipment status to "Delivering" if a third-party delivery service is being used
+func (c FBS) ChangeStatusToDelivering(params *ChangeStatusToDeliveringParams) (*ChangeStatusToDeliveringResponse, error) {
+	url := "/v2/fbs/posting/delivering"
+
+	resp := &ChangeStatusToDeliveringResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type AddTrackingNumbersParams struct {
+	// An array with shipment identifier—tracking number pairs
+	TrackingNumbers []FBSTrackingNumbersParams `json:"tracking_numbers"`
+}
+
+type FBSTrackingNumbersParams struct {
+	// Shipment identifier
+	PostingNumber string `json:"posting_number"`
+
+	// Shipment tracking number
+	TrackingNumber string `json:"tracking_number"`
+}
+
+type AddTrackingNumbersResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct {
+		// Error when processing the request
+		Error []string `json:"error"`
+
+		// Shipment number
+		PostingNumber string `json:"posting_number"`
+
+		// If the request is executed without errors — true
+		Result bool `json:"result"`
+	} `json:"result"`
+}
+
+// Add tracking numbers to shipments
+func (c FBS) AddTrackingNumbers(params *AddTrackingNumbersParams) (*AddTrackingNumbersResponse, error) {
+	url := "/v2/fbs/posting/tracking-number/set"
+
+	resp := &AddTrackingNumbersResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListOfShipmentCertificatesParams struct {
+	// Filter parameters
+	Filter ListOfShipmentCertificates `json:"filter"`
+
+	// Maximum number of certificates in the response
+	Limit int64 `json:"limit"`
+}
+
+type ListOfShipmentCertificates struct {
+	// Initial date of shipment creation
+	DateFrom string `json:"date_from"`
+
+	// Final date of shipment creation
+	DateTo string `json:"date_to"`
+
+	// Type of integration with the delivery service:
+	//   - ozon — delivery by the Ozon service,
+	//   - 3pl_tracking — delivery by the integrated service,
+	//   - non_integrated — delivery by a third-party service,
+	//   - aggregator — delivery by Ozon partner delivery
+	IntegrationType string `json:"integration_type"`
+
+	// Freight statuses
+	Status []string `json:"status"`
+}
+
+type ListOfShipmentCertificatesResponse struct {
+	core.CommonResponse
+
+	// Request result
+	Result []struct {
+		// Shipment identifier
+		Id int64 `json:"id"`
+
+		// Delivery method identifier
+		DeliveryMethodId int64 `json:"delivery_method_id"`
+
+		// Delivery method name
+		DeliveryMethodName string `json:"delivery_method_name"`
+
+		// Type of integration with the delivery service:
+		//   - ozon — delivery by the Ozon service,
+		//   - 3pl — delivery by the integrated service
+		IntegrationType string `json:"integration_type"`
+
+		// Number of package units
+		ContainersCount int32 `json:"container_count"`
+
+		// Shipping status
+		Status string `json:"status"`
+
+		// Shipping date
+		DepartureDate string `json:"departure_date"`
+
+		// Shipping record creation date
+		CreatedAt time.Time `json:"created_at"`
+
+		// Shipping record update date
+		UpdatedAt time.Time `json:"updated_at"`
+
+		// Acceptance certificate type for FBS sellers
+		ActType string `json:"act_type"`
+
+		// Indication of a partial freight. true if the freigth is partial.
+		//
+		// Partial freigt means that the shipment was splitted into several parts
+		// and for each of them you need to generate separate acts
+		IsPartial bool `json:"is_partial"`
+
+		// Indication that there are shipments subject to shipping that are not in the current freight.
+		// true if there are such shipments
+		HasPostingsForNextCarriage bool `json:"has_postings_for_next_carriage"`
+
+		// Serial number of the partial freight
+		PartialNum int64 `json:"partial_num"`
+
+		// Information about shipment certificates
+		RelatedDocs struct {
+			// Information about acceptance certificate
+			ActOfAcceptance FBSAct `json:"act_of_acceptance"`
+
+			// Information about discrepancy certificate
+			ActOfMismatch FBSAct `json:"act_of_mismatch"`
+
+			// Information about surplus certificate
+			ActOfExcess FBSAct `json:"act_of_excess"`
+		} `json:"related_docs"`
+	} `json:"result"`
+}
+
+type FBSAct struct {
+	// Certificate creation date
+	CreatedAt time.Time `json:"created_at"`
+
+	// Certificate status:
+	//   - FORMING — not ready yet
+	//   - FORMED — formed
+	//   - CONFIRMED — signed by Ozon
+	//   - CONFIRMED_WITH_MISMATCH — signed with discrepancies by Ozon
+	//   - ACCEPTED_BY_CARGO_PLACES — accepted by package units
+	//   - PRINTED_CARRIAGE — digital signature not required
+	//   - ERROR, UNKNOWN_ERROR — error
+	DocumentStatus string `json:"document_status"`
+}
+
+// Returns a list of shipment certificates allowing to filter them by time period, status, and integration type
+func (c FBS) ListOfShipmentCertificates(params *ListOfShipmentCertificatesParams) (*ListOfShipmentCertificatesResponse, error) {
+	url := "/v2/posting/fbs/act/list"
+
+	resp := &ListOfShipmentCertificatesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

@@ -667,3 +667,230 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 		}
 	}
 }
+
+func TestChangeStatusToDelivering(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ChangeStatusToDeliveringParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ChangeStatusToDeliveringParams{
+				PostingNumber: []string{"33920157-0018-1"},
+			},
+			`{
+				"result": [
+				  {
+					"error": [],
+					"posting_number": "33920157-0018-1",
+					"result": true
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ChangeStatusToDeliveringParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ChangeStatusToDelivering(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.PostingNumber) {
+				t.Errorf("Length of posting numbers in reqeust and response are not equal")
+			}
+			if len(resp.Result) > 0 {
+				if resp.Result[0].PostingNumber != test.params.PostingNumber[0] {
+					t.Errorf("Posting numbers in request and response are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestAddTrackingNumbers(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *AddTrackingNumbersParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&AddTrackingNumbersParams{
+				TrackingNumbers: []FBSTrackingNumbersParams{
+					{
+						PostingNumber:  "48173252-0033-2",
+						TrackingNumber: "123123123",
+					},
+				},
+			},
+			`{
+				"result": [
+				  {
+					"error": [],
+					"posting_number": "48173252-0033-2",
+					"result": true
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&AddTrackingNumbersParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().AddTrackingNumbers(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.TrackingNumbers) {
+				t.Errorf("Length of tracking numbers in reqeust and response are not equal")
+			}
+			if len(resp.Result) > 0 {
+				if resp.Result[0].PostingNumber != test.params.TrackingNumbers[0].PostingNumber {
+					t.Errorf("Posting numbers in request and response are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestListOfShipmentCertificates(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListOfShipmentCertificatesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListOfShipmentCertificatesParams{
+				Limit: 100,
+				Filter: ListOfShipmentCertificates{
+					DateFrom:        "2021-08-04",
+					DateTo:          "2022-08-04",
+					IntegrationType: "ozon",
+					Status:          []string{"delivered"},
+				},
+			},
+			`{
+				"result": [
+				  {
+					"id": 1234,
+					"delivery_method_id": 1234,
+					"delivery_method_name": "string",
+					"integration_type": "string",
+					"containers_count": 2,
+					"status": "string",
+					"departure_date": "string",
+					"created_at": "2019-08-24T14:15:22Z",
+					"updated_at": "2019-08-24T14:15:22Z",
+					"act_type": "string",
+					"is_partial": true,
+					"has_postings_for_next_carriage": true,
+					"partial_num": 0,
+					"related_docs": {
+					  "act_of_acceptance": {
+						"created_at": "2019-08-24T14:15:22Z",
+						"document_status": "string"
+					  },
+					  "act_of_mismatch": {
+						"created_at": "2019-08-24T14:15:22Z",
+						"document_status": "string"
+					  },
+					  "act_of_excess": {
+						"created_at": "2019-08-24T14:15:22Z",
+						"document_status": "string"
+					  }
+					}
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListOfShipmentCertificatesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().ListOfShipmentCertificates(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].Id == 0 {
+					t.Errorf("Id cannot be 0")
+				}
+				if resp.Result[0].Status == "" {
+					t.Errorf("Status cannot be empty")
+				}
+				if resp.Result[0].DeliveryMethodId == 0 {
+					t.Errorf("Delivery method id cannot be 0")
+				}
+			}
+		}
+	}
+}

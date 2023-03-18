@@ -115,11 +115,11 @@
 - [ ] Cancel the shipment
 - [ ] Add weight for bulk products in a shipment
 - [ ] Cancel sending some products in the shipment
-- [ ] List of shipment certificates
+- [x] List of shipment certificates
 - [ ] Sign shipment certificates
 - [ ] List of shipments in the certificate
-- [ ] Change the status to "Delivering"
-- [ ] Add tracking numbers
+- [x] Change the status to "Delivering"
+- [x] Add tracking numbers
 - [ ] Change the status to "Last Mile"
 - [ ] Change the status to "Delivered"
 - [ ] Change status to "Sent by seller"
