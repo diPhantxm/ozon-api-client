@@ -1283,7 +1283,7 @@ type GetDescriptionOfProductResponse struct {
 					// Product characteristic value
 					Value string `json:"value"`
 				} `json:"values"`
-			} `json:"attributes`
+			} `json:"attributes"`
 		} `json:"complex_attributes"`
 
 		// Depth
@@ -1705,6 +1705,296 @@ func (c Products) StatusOfUploadingActivationCodes(params *StatusOfUploadingActi
 	url := "/v1/product/upload_digital_codes/info"
 
 	resp := &StatusOfUploadingActivationCodesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetProductPriceInfoParams struct {
+	// Filter by product
+	Filter GetProductPriceInfoFilter `json:"filter"`
+
+	// Identifier of the last value on page.
+	//
+	// To get the next values, specify the recieved value in the next request in the `last_id` parameter
+	LastId string `json:"last_id"`
+
+	// Number of values per page. Minimum is 1, maximum is 1000
+	Limit int32 `json:"limit"`
+}
+
+type GetProductPriceInfoFilter struct {
+	// Filter by the `offer_id` parameter. It is possible to pass a list of values
+	OfferId []string `json:"offer_id"`
+
+	// Filter by the `product_id` parameter. It is possible to pass a list of up to 1000 values
+	ProductId []int64 `json:"product_id"`
+
+	// Filter by product visibility
+	Visibility string `json:"visibility" default:"ALL"`
+}
+
+type GetProductPriceInfoResponse struct {
+	core.CommonResponse
+
+	// Result
+	Result struct {
+		// Products list
+		Items []struct {
+			// Commissions information
+			Commissions struct {
+				// Last mile (FBO)
+				FBOLastMile float64 `json:"fbo_deliv_to_customer_amount"`
+
+				// Pipeline to (FBO)
+				FBOPipelineTo float64 `json:"fbo_direct_flow_trans_max_amount"`
+
+				// Pipeline from (FBO)
+				FBOPipelineFrom float64 `json:"fbo_direct_flow_trans_min_amount"`
+
+				// Order packaging fee (FBO)
+				FBOOrderPackagingFee float64 `json:"fbo_fulfillment_amount"`
+
+				// Return and cancellation fees (FBO)
+				FBOReturnCancellationFee float64 `json:"fbo_return_flow_amount"`
+
+				// Reverse logistics fee from (FBO)
+				FBOReverseLogisticsFeeFrom float64 `json:"fbo_return_flow_trans_min_amount"`
+
+				// Reverse logistics fee to (FBO)
+				FBOReverseLogisticsFeeTo float64 `json:"fbo_return_flow_trans_max_amount"`
+
+				// Last mile (FBS)
+				FBSLastMile float64 `json:"fbs_deliv_to_customer_amount"`
+
+				// Pipeline to (FBS)
+				FBSPipelineTo float64 `json:"fbs_direct_flow_trans_max_amount"`
+
+				// Pipeline from (FBS)
+				FBSPipelineFrom float64 `json:"fbs_direct_flow_trans_min_amount"`
+
+				// Shipment processing fee to (FBS)
+				FBSShipmentProcessingToFee float64 `json:"fbs_first_mile_min_amount"`
+
+				// Shipment processing fee from (FBS)
+				FBSShipmentProcessingFromFee float64 `json:"Shipment processing fee from (FBS)"`
+
+				// Return and cancellation fees, shipment processing (FBS)
+				FBSReturnCancellationProcessingFee float64 `json:"fbs_return_flow_amount"`
+
+				// Return and cancellation fees, pipeline to (FBS)
+				FBSReturnCancellationToFees float64 `json:"fbs_return_flow_trans_max_amount"`
+
+				// Return and cancellation fees, pipeline from (FBS)
+				FBSReturnCancellationFromFees float64 `json:"fbs_return_flow_trans_min_amount"`
+
+				// Sales commission percentage (FBO and FBS)
+				SalesCommissionRate float64 `json:"sales_percent"`
+			} `json:"commissions"`
+
+			// Promotions information
+			MarketingActions []struct {
+				// Seller's promotions. The parameters date_from, date_to, discount_value and title are specified for each seller's promotion
+				Actions []struct {
+					// Date and time when the seller's promotion starts
+					DateFrom time.Time `json:"date_from"`
+
+					// Date and time when the seller's promotion ends
+					DateTo time.Time `json:"date_to"`
+
+					// Discount on the seller's promotion
+					DiscountValue string `json:"discount_value"`
+
+					// Promotion name
+					Title string `json:"title"`
+				} `json:"actions"`
+
+				// Current period start date and time for all current promotions
+				CurrentPeriodFrom time.Time `json:"current_period_from"`
+
+				// Current period end date and time for all current promotions
+				CurrentPeriodTo time.Time `json:"current_period_to"`
+
+				// If a promotion can be applied to the product at the expense of Ozon, this field is set to true
+				OzonActionsExist bool `json:"ozon_actions_exist"`
+			} `json:"marketing_actions"`
+
+			// Seller product identifier
+			OfferId string `json:"offer_id"`
+
+			// Product price
+			Price struct {
+				// If promos auto-application is enabled, the value is true
+				AutoActionEnabled bool `json:"auto_action_enabled"`
+
+				// Currency of your prices. It matches the currency set in the personal account settings
+				CurrencyCode string `json:"currency_code"`
+
+				// Product price including all promotion discounts. This value will be indicated on the Ozon storefront
+				MarketingPrice string `json:"marketing_price"`
+
+				// Product price with seller's promotions applied
+				MarketingSellerPrice string `json:"marketing_seller_price"`
+
+				// Minimum price for similar products on Ozon
+				MinOzonPrice string `json:"min_ozon_price"`
+
+				// Minimum product price with all promotions applied
+				MinPrice string `json:"min_price"`
+
+				// Price before discounts. Displayed strikethrough on the product description page
+				OldPrice string `json:"old_price"`
+
+				// Price for customers with an Ozon Premium subscription
+				PremiumPrice string `json:"premium_price"`
+
+				// Product price including discounts. This value is shown on the product description page
+				Price string `json:"price"`
+
+				// Product price suggested by the system based on similar offers
+				RecommendedPrice string `json:"recommended_price"`
+
+				// Retailer price
+				RetailPrice string `json:"retail_price"`
+
+				// Product VAT rate
+				VAT string `json:"vat"`
+			} `json:"price"`
+
+			// Price index
+			PriceIndex string `json:"price_index"`
+
+			// Product identifier
+			ProductId int64 `json:"product_id"`
+
+			// Product volume weight
+			VolumeWeight float64 `json:"volume_weight"`
+		} `json:"items"`
+
+		// Identifier of the last value on page. Leave this field blank in the first request.
+		//
+		// To get the next values, specify last_id from the response of the previous request
+		LastId string `json:"last_id"`
+
+		// Products number in the list
+		Total int32 `json:"total"`
+	} `json:"result"`
+}
+
+// You can specify up to 1000 products in the request
+func (c Products) GetProductPriceInfo(params *GetProductPriceInfoParams) (*GetProductPriceInfoResponse, error) {
+	url := "/v4/product/info/prices"
+
+	resp := &GetProductPriceInfoResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetMarkdownInfoParams struct {
+	// Markdown products SKUs list
+	DiscountedSKUs []string `json:"discounted_skus"`
+}
+
+type GetMarkdownInfoResponse struct {
+	core.CommonResponse
+
+	// Information about the markdown and the main product
+	Items []struct{
+		// Comment on the damage reason
+		CommentReasonDamaged string `json:"comment_reason_damaged"`
+
+		// Product condition: new or used
+		Condition string `json:"condition"`
+
+		// Product condition on a 1 to 7 scale.
+		//   - 1 — satisfactory,
+		//   - 2 — good,
+		//   - 3 — very good,
+		//   - 4 — excellent,
+		//   - 5–7 — like new
+		ConditionEstimate string `json:"condition_estimate"`
+
+		// Product defects
+		Defects string `json:"defects"`
+
+		// Markdown product SKU
+		DiscountedSKU int64 `json:"discounted_sku"`
+
+		// Mechanical damage description
+		MechanicalDamage string `json:"mechanical_damage"`
+
+		// Packaging damage description
+		PackageDamage string `json:"package_damage"`
+
+		// Indication of package integrity damage
+		PackagingViolation string `json:"packaging_violation"`
+
+		// Damage reason
+		ReasonDamaged string `json:"reason_damaged"`
+
+		// Indication of repaired product
+		Repair string `json:"repair"`
+
+		// Indication that the product is incomplete
+		Shortage string `json:"shortage"`
+
+		// Main products SKU
+		SKU int64 `json:"sku"`
+
+		// Indication that the product has a valid warranty
+		WarrantyType string `json:"warranty_type"`
+	} `json:"items"`
+}
+
+// Get information about the markdown and the main product by the markdown product SKU
+//
+// A method for getting information about the condition and defects of a markdown product by its SKU.
+// The method also returns the SKU of the main product
+func (c Products) GetMarkdownInfo(params *GetMarkdownInfoParams) (*GetMarkdownInfoResponse, error) {
+	url := "/v1/product/info/discounted"
+
+	resp := &GetMarkdownInfoResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type SetDiscountOnMarkdownProductParams struct{
+	// Discount amount: from 3 to 99 percents
+	Discount int32 `json:"discount"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+}
+
+type SetDiscountOnMarkdownProductResponse struct{
+	core.CommonResponse
+
+	// Method result. true if the query was executed without errors
+	Result bool `json:"result"`
+}
+
+// A method for setting the discount percentage on markdown products sold under the FBS scheme
+func (c Products) SetDiscountOnMarkdownProduct(params *SetDiscountOnMarkdownProductParams) (*SetDiscountOnMarkdownProductResponse, error) {
+	url := "/v1/product/update/discount"
+
+	resp := &SetDiscountOnMarkdownProductResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {

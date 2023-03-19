@@ -32,9 +32,9 @@
 - [x] Information about product quantity
 - [x] Stocks in seller's warehouses (FBS и rFBS)
 - [x] Update prices
-- [ ] Get product price information
-- [ ] Get information about the markdown and the main product by the markdown product SKU
-- [ ] Set a discount on a markdown product
+- [x] Get product price information
+- [x] Get information about the markdown and the main product by the markdown product SKU
+- [x] Set a discount on a markdown product
 
 ## Promotions
 - [x] Available promotions

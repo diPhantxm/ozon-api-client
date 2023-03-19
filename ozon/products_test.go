@@ -2197,3 +2197,213 @@ func TestStatusOfUploadingActivationCodes(t *testing.T) {
 		}
 	}
 }
+
+func TestGetProductPriceInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductPriceInfoParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductPriceInfoParams{
+				Filter: GetProductPriceInfoFilter{
+					OfferId:    []string{"356792"},
+					ProductId:  []int64{243686911},
+					Visibility: "ALL",
+				},
+			},
+			`{
+				"result": {
+				  "items": [
+					{
+					  "product_id": 243686911,
+					  "offer_id": "356792",
+					  "price": {
+						"currency_code": "RUB",
+						"price": "499.0000",
+						"old_price": "579.0000",
+						"premium_price": "",
+						"recommended_price": "",
+						"retail_price": "",
+						"vat": "0.200000",
+						"min_ozon_price": "",
+						"marketing_price": "",
+						"marketing_seller_price": "",
+						"auto_action_enabled": true
+					  },
+					  "price_index": "0.00",
+					  "commissions": {
+						"sales_percent": 15,
+						"fbo_fulfillment_amount": 0,
+						"fbo_direct_flow_trans_min_amount": 31,
+						"fbo_direct_flow_trans_max_amount": 46.5,
+						"fbo_deliv_to_customer_amount": 14.75,
+						"fbo_return_flow_amount": 50,
+						"fbo_return_flow_trans_min_amount": 21.7,
+						"fbo_return_flow_trans_max_amount": 21.7,
+						"fbs_first_mile_min_amount": 0,
+						"fbs_first_mile_max_amount": 0,
+						"fbs_direct_flow_trans_min_amount": 41,
+						"fbs_direct_flow_trans_max_amount": 61.5,
+						"fbs_deliv_to_customer_amount": 60,
+						"fbs_return_flow_amount": 40,
+						"fbs_return_flow_trans_min_amount": 41,
+						"fbs_return_flow_trans_max_amount": 61.5
+					  },
+					  "marketing_actions": null,
+					  "volume_weight": 0
+					}
+				  ],
+				  "total": 1,
+				  "last_id": "ceVуbA=="
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductPriceInfoParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().GetProductPriceInfo(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetMarkdownInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetMarkdownInfoParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetMarkdownInfoParams{
+				DiscountedSKUs: []string{"635548518"},
+			},
+			`{
+				"items": [
+				  {
+					"discounted_sku": 635548518,
+					"sku": 320067758,
+					"condition_estimation": "4",
+					"packaging_violation": "",
+					"warranty_type": "",
+					"reason_damaged": "Механическое повреждение",
+					"comment_reason_damaged": "повреждена заводская упаковка",
+					"defects": "",
+					"mechanical_damage": "",
+					"package_damage": "",
+					"shortage": "",
+					"repair": "",
+					"condition": ""
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetMarkdownInfoParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().GetMarkdownInfo(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Items) > 0 {
+				if fmt.Sprint(resp.Items[0].DiscountedSKU) != test.params.DiscountedSKUs[0] {
+					t.Errorf("SKUs in reqest and resonse are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestSetDiscountOnMarkdownProductParams(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *SetDiscountOnMarkdownProductParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&SetDiscountOnMarkdownProductParams{
+				Discount:  0,
+				ProductId: 0,
+			},
+			`{
+				"result": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&SetDiscountOnMarkdownProductParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().SetDiscountOnMarkdownProduct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
