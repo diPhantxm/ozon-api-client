@@ -38,17 +38,17 @@
 
 ## Promotions
 - [x] Available promotions
-- [ ] Products that can participate in a promotion
-- [ ] Products in a promotion
+- [x] Products that can participate in a promotion
+- [x] Products in a promotion
 - [x] Add products to promotion
-- [ ] Remove products from promotion
-- [ ] List of available Hot Sale promotions
-- [ ] List of products participating in the Hot Sale promotion
-- [ ] Add products to the Hot Sale promotion
-- [ ] Remove product from the Hot Sale promotion
-- [ ] List of discount requests
-- [ ] Approve a discount request
-- [ ] Decline a discount request
+- [x] Remove products from promotion
+- [x] List of available Hot Sale promotions
+- [x] List of products participating in the Hot Sale promotion
+- [x] Add products to the Hot Sale promotion
+- [x] Remove product from the Hot Sale promotion
+- [x] List of discount requests
+- [x] Approve a discount request
+- [x] Decline a discount request
 
 ## Brand certificates
 - [ ] List of certified brands
