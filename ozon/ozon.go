@@ -13,16 +13,17 @@ const (
 type Client struct {
 	client *core.Client
 
-	analytics  *Analytics
-	fbo        *FBO
-	fbs        *FBS
-	finance    *Finance
-	products   *Products
-	promotions *Promotions
-	rating     *Rating
-	warehouses *Warehouses
-	returns    *Returns
-	reports    *Reports
+	analytics     *Analytics
+	fbo           *FBO
+	fbs           *FBS
+	finance       *Finance
+	products      *Products
+	promotions    *Promotions
+	rating        *Rating
+	warehouses    *Warehouses
+	returns       *Returns
+	reports       *Reports
+	cancellations *Cancellations
 }
 
 func (c Client) Analytics() *Analytics {
@@ -65,6 +66,10 @@ func (c Client) Reports() *Reports {
 	return c.reports
 }
 
+func (c Client) Cancellations() *Cancellations {
+	return c.cancellations
+}
+
 func NewClient(clientId, apiKey string) *Client {
 	coreClient := core.NewClient(DefaultAPIBaseUrl, map[string]string{
 		"Client-Id": clientId,
@@ -72,17 +77,18 @@ func NewClient(clientId, apiKey string) *Client {
 	})
 
 	return &Client{
-		client:     coreClient,
-		analytics:  &Analytics{client: coreClient},
-		fbo:        &FBO{client: coreClient},
-		fbs:        &FBS{client: coreClient},
-		finance:    &Finance{client: coreClient},
-		products:   &Products{client: coreClient},
-		promotions: &Promotions{client: coreClient},
-		rating:     &Rating{client: coreClient},
-		warehouses: &Warehouses{client: coreClient},
-		returns:    &Returns{client: coreClient},
-		reports:    &Reports{client: coreClient},
+		client:        coreClient,
+		analytics:     &Analytics{client: coreClient},
+		fbo:           &FBO{client: coreClient},
+		fbs:           &FBS{client: coreClient},
+		finance:       &Finance{client: coreClient},
+		products:      &Products{client: coreClient},
+		promotions:    &Promotions{client: coreClient},
+		rating:        &Rating{client: coreClient},
+		warehouses:    &Warehouses{client: coreClient},
+		returns:       &Returns{client: coreClient},
+		reports:       &Reports{client: coreClient},
+		cancellations: &Cancellations{client: coreClient},
 	}
 }
 
@@ -90,16 +96,17 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 	coreClient := core.NewMockClient(handler)
 
 	return &Client{
-		client:     coreClient,
-		analytics:  &Analytics{client: coreClient},
-		fbo:        &FBO{client: coreClient},
-		fbs:        &FBS{client: coreClient},
-		finance:    &Finance{client: coreClient},
-		products:   &Products{client: coreClient},
-		promotions: &Promotions{client: coreClient},
-		rating:     &Rating{client: coreClient},
-		warehouses: &Warehouses{client: coreClient},
-		returns:    &Returns{client: coreClient},
-		reports:    &Reports{client: coreClient},
+		client:        coreClient,
+		analytics:     &Analytics{client: coreClient},
+		fbo:           &FBO{client: coreClient},
+		fbs:           &FBS{client: coreClient},
+		finance:       &Finance{client: coreClient},
+		products:      &Products{client: coreClient},
+		promotions:    &Promotions{client: coreClient},
+		rating:        &Rating{client: coreClient},
+		warehouses:    &Warehouses{client: coreClient},
+		returns:       &Returns{client: coreClient},
+		reports:       &Reports{client: coreClient},
+		cancellations: &Cancellations{client: coreClient},
 	}
 }

@@ -472,3 +472,86 @@ func (c Reports) GetShipment(params *GetShipmentReportParams) (*GetShipmentRepor
 
 	return resp, nil
 }
+
+type IssueOnDiscountedProductsResponse struct {
+	core.CommonResponse
+
+	// Unique report identifier
+	Code string `json:"code"`
+}
+
+// Generates a report on discounted products in Ozon warehouses.
+// For example, Ozon can discount a product due to damage when delivering.
+//
+// Returns report identifier. To get the report, send the identifier in the request body of a method `/v1/report/discounted/info`
+func (c Reports) IssueOnDiscountedProducts() (*IssueOnDiscountedProductsResponse, error) {
+	url := "/v1/report/discounted/create"
+
+	resp := &IssueOnDiscountedProductsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ReportOnDiscountedProductsParams struct {
+	// Unique report identifier
+	Code string `json:"code"`
+}
+
+type ReportOnDiscountedProductsResponse struct {
+	core.CommonResponse
+
+	// Report information
+	Report struct {
+		// Report creation date
+		CreatedAt time.Time `json:"created_at"`
+
+		// Link to report file
+		File string `json:"file"`
+
+		// Report status:
+		//   - success — created
+		//   - pending — waiting to be processed
+		//   - processing — processed
+		//   - failed — generation error
+		Status string `json:"status"`
+
+		// Report generation error code
+		Error string `json:"error"`
+	} `json:"report"`
+}
+
+// By report identifier, returns information about the report generated earlier
+func (c Reports) ReportOnDiscountedProducts(params *ReportOnDiscountedProductsParams) (*ReportOnDiscountedProductsResponse, error) {
+	url := "/v1/report/discounted/info"
+
+	resp := &ReportOnDiscountedProductsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// By report identifier, returns information about the report generated earlier
+func (c Reports) ListReportsOnDiscountedProducts() (*ReportOnDiscountedProductsResponse, error) {
+	url := "/v1/report/discounted/list"
+
+	resp := &ReportOnDiscountedProductsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

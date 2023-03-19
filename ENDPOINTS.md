@@ -80,7 +80,7 @@
 
 ## FBO
 - [x] Shipments list
-- [ ] Shipment details
+- [x] Shipment details
 
 ## FBS and rFBS products labeling
 - [x] Validate labeling codes
@@ -132,10 +132,10 @@
 - [x] Get information about FBS returns
 
 ## Cancellations
-- [ ] Get information about a rFBS cancellation request
-- [ ] Get a list of rFBS cancellation requests
-- [ ] Approve a rFBS cancellation request
-- [ ] Reject a rFBS cancellation request
+- [x] Get information about a rFBS cancellation request
+- [x] Get a list of rFBS cancellation requests
+- [x] Approve a rFBS cancellation request
+- [x] Reject a rFBS cancellation request
 
 ## Chats with customers
 - [ ] Chats list
@@ -160,9 +160,9 @@
 - [x] Returns report
 - [x] Shipment report
 - [x] Financial report
-- [ ] Issue a report on discounted products
-- [ ] Report on discounted products
-- [ ] List of reports on discounted products
+- [x] Issue a report on discounted products
+- [x] Report on discounted products
+- [x] List of reports on discounted products
 
 ## Analytics
 - [x] Analytics data
@@ -170,7 +170,7 @@
 
 ## Finance
 - [x] Report on sold products
-- [ ] Transactions list (version 3)
+- [x] Transactions list (version 3)
 - [x] Total transactions sum
 
 ## Seller rating

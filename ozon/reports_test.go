@@ -373,7 +373,7 @@ func TestGetProductsMovementReport(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
-		
+
 		if resp.StatusCode == http.StatusOK {
 			if resp.Result.Code == "" {
 				t.Errorf("Code cannot be empty")
@@ -429,7 +429,7 @@ func TestGetReturnsReport(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
-		
+
 		if resp.StatusCode == http.StatusOK {
 			if resp.Result.Code == "" {
 				t.Errorf("Code cannot be empty")
@@ -487,11 +487,157 @@ func TestGetShipmentReport(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
-		
+
 		if resp.StatusCode == http.StatusOK {
 			if resp.Result.Code == "" {
 				t.Errorf("Code cannot be empty")
 			}
+		}
+	}
+}
+
+func TestIssueOnDiscountedProducts(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().IssueOnDiscountedProducts()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Code == "" {
+				t.Errorf("Code cannot be empty")
+			}
+		}
+	}
+}
+
+func TestReportOnDiscountedProducts(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ReportOnDiscountedProductsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ReportOnDiscountedProductsParams{
+				Code: "d55f4517-8347-4e24-9d93-d6e736c1c07c",
+			},
+			`{
+				"report": {
+				  "created_at": "2022-10-04T10:07:08.146Z",
+				  "error": "string",
+				  "file": "string",
+				  "status": "string"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ReportOnDiscountedProductsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().ReportOnDiscountedProducts(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestListReportsOnDiscountedProducts(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"reports": [
+				  {
+					"created_at": "2022-10-04T10:07:08.146Z",
+					"error": "string",
+					"file": "string",
+					"status": "string"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Reports().ListReportsOnDiscountedProducts()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 	}
 }

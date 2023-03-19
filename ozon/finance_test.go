@@ -174,3 +174,91 @@ func TestGetTotalTransactionsSum(t *testing.T) {
 		}
 	}
 }
+
+func TestListTransactions(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode   int
+		headers      map[string]string
+		params       *ListTransactionsParams
+		response     string
+		errorMessage string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListTransactionsParams{
+				Filter: ListTransactionsFilter{
+					Date: ListTransactionsFilterDate{
+						From: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-01T00:00:00.000Z"),
+						To:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-02T00:00:00.000Z"),
+					},
+					TransactionType: "ALL",
+				},
+				Page:     1,
+				PageSize: 1000,
+			},
+			`{
+				"result": {
+				  "operations": [
+					{
+					  "operation_id": 11401182187840,
+					  "operation_type": "MarketplaceMarketingActionCostOperation",
+					  "operation_date": "2021-11-01 00:00:00",
+					  "operation_type_name": "Услуги продвижения товаров",
+					  "delivery_charge": 0,
+					  "return_delivery_charge": 0,
+					  "accruals_for_sale": 0,
+					  "sale_commission": 0,
+					  "amount": -6.46,
+					  "type": "services",
+					  "posting": {
+						"delivery_schema": "",
+						"order_date": "",
+						"posting_number": "",
+						"warehouse_id": 0
+					  },
+					  "items": [],
+					  "services": []
+					}
+				  ],
+				  "page_count": 1,
+				  "row_count": 355
+				}
+			}`,
+			"",
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListTransactionsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+			"Client-Id and Api-Key headers are required",
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Finance().ListTransactions(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			if resp.Message != test.errorMessage {
+				t.Errorf("got wrong error message: got: %s, expected: %s", resp.Message, test.errorMessage)
+			}
+		}
+	}
+}

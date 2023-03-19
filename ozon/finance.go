@@ -246,3 +246,142 @@ func (c Finance) GetTotalTransactionsSum(params *GetTotalTransactionsSumParams) 
 
 	return resp, nil
 }
+
+type ListTransactionsParams struct{
+	// Filter
+	Filter ListTransactionsFilter `json:"filter"`
+
+	// Number of the page returned in the request
+	Page int64 `json:"page"`
+
+	// Number of items on the page
+	PageSize int64 `json:"page_size"`
+}
+
+type ListTransactionsFilter struct{
+	// Filter by date
+	Date ListTransactionsFilterDate `json:"date"`
+
+	// Operation type
+	OperationType string `json:"operation_type"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Transaction type
+	TransactionType string `json:"transaction_type"`
+}
+
+type ListTransactionsFilterDate struct{
+	// Period start.
+	// 
+	// Format: YYYY-MM-DDTHH:mm:ss.sssZ.
+	// Example: 2019-11-25T10:43:06.51
+	From time.Time `json:"from"`
+
+	// Period end.
+	// 
+	// Format: YYYY-MM-DDTHH:mm:ss.sssZ.
+	// Example: 2019-11-25T10:43:06.51
+	To time.Time `json:"to"`
+}
+
+type ListTransactionsResponse struct{
+	core.CommonResponse
+
+	// Method result
+	Result struct{
+		// Transactions infromation
+		Operations []struct{
+			// Cost of the products with seller's discounts applied
+			AccrualsForSale float64 `json:"accruals_for_sale"`
+
+			// Total transaction sum
+			Amount float64 `json:"amount"`
+
+			// Delivery cost for charges by rates that were in effect until February 1, 2021, and for charges for bulky products
+			DeliveryCharge float64 `json:"delivery_charge"`
+
+			// Product information
+			Items []struct{
+				// Product name
+				Name string `json:"name"`
+
+				// Product identifier in the Ozon system, SKU
+				SKU int64 `json:"sku"`
+			} `json:"items"`
+
+			// Operation date
+			OperationDate string `json:"operation_date"`
+
+			// Operation identifier
+			OperationId int64 `json:"operation_id"`
+
+			// Operation type
+			OperationType string `json:"operation_type"`
+
+			// Operation type name
+			OperationTypeName string `json:"operation_type_name"`
+
+			// Shipment information
+			Posting struct{
+				// Delivery scheme:
+				//   - FBO — delivery to Ozon warehouse
+				//   - FBS — delivery from seller's warehouse
+				//   - RFBS — delivery service of seller's choice
+				//   - Crossborder — delivery from abroad
+				DeliverySchema string `json:"delivery_schema"`
+
+				// Date the product was accepted for processing
+				OrderDate string `json:"order_date"`
+
+				// Shipment number
+				PostingNumber string `json:"posting_number"`
+
+				// Warehouse identifier
+				WarehouseId int64 `json:"warehouse_id"`
+			} `json:"posting"`
+
+			// Returns and cancellation cost for charges by rates that were in effect until February 1, 2021, and for charges for bulky products
+			ReturnDeliveryCharge float64 `json:"return_delivery_charge"`
+
+			// Sales commission or sales commission refund
+			SaleCommission float64 `json:"sale_commission"`
+
+			// Additional services
+			Services []struct{
+				// Service name
+				Name string `json:"name"`
+
+				// Price
+				Price float64 `json:"price"`
+			} `json:"services"`
+
+			// Transaction type
+			Type string `json:"type"`
+		} `json:"operations"`
+
+		// Number of pages
+		PageCount int64 `json:"page_count"`
+
+		// Number of products
+		RowCount int64 `json:"row_count"`
+	} `json:"result"`
+}
+
+// Returns detailed information on all accruals. The maximum period for which you can get information in one request is 1 month.
+// 
+// If you don't specify the posting_number in request, the response contains all shipments for the specified period or shipments of a certain type
+func (c Finance) ListTransactions(params *ListTransactionsParams) (*ListTransactionsResponse, error) {
+	url := "/v3/finance/transaction/list"
+
+	resp := &ListTransactionsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
