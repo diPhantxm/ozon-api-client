@@ -7,14 +7,14 @@
 
 ## Uploading and updating products
 - [x] Create or update a product
-- [ ] Get the product import status
-- [ ] Create a product by Ozon ID
-- [ ] Upload and update product images
-- [ ] Check products images uploading status
+- [x] Get the product import status
+- [x] Create a product by Ozon ID
+- [x] Upload and update product images
+- [x] Check products images uploading status
 - [x] List of products
 - [x] Product details
 - [x] Get products' content rating by SKU
-- [ ] Get a list of products by identifiers
+- [x] Get a list of products by identifiers
 - [ ] Get a description of the product characteristics
 - [ ] Get product description
 - [ ] Product range limit, limits on product creation and update

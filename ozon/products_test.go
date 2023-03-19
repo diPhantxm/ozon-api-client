@@ -1006,3 +1006,472 @@ func TestGetProductsRatingBySKU(t *testing.T) {
 		}
 	}
 }
+
+func TestGetProductImportStatus(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductImportStatusParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductImportStatusParams{
+				TaskId: 172549793,
+			},
+			`{
+				"result": {
+				  "items": [
+					{
+					  "offer_id": "143210608",
+					  "product_id": 137285792,
+					  "status": "imported",
+					  "errors": []
+					}
+				  ],
+				  "total": 1
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductImportStatusParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().GetProductImportStatus(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Items) > 0 {
+				if resp.Result.Items[0].ProductId == 0 {
+					t.Errorf("Product id cannot be 0")
+				}
+				if resp.Result.Items[0].OfferId == "" {
+					t.Errorf("Offer id cannot be empty")
+				}
+			}
+		}
+	}
+}
+
+func TestCreateProductByOzonID(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreateProductByOzonIDParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreateProductByOzonIDParams{
+				Items: []CreateProductsByOzonIDItem{
+					{
+						Name:         "string",
+						OfferId:      "91132",
+						OldPrice:     "2590",
+						Price:        "2300",
+						PremiumPrice: "2200",
+						CurrencyCode: "RUB",
+						SKU:          298789742,
+						VAT:          "0.1",
+					},
+				},
+			},
+			`{
+				"result": {
+				  "task_id": 176594213,
+				  "unmatched_sku_list": []
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CreateProductByOzonIDParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().CreateProductByOzonID(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUpdateProductImages(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UpdateProductImagesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UpdateProductImagesParams{
+				ColorImage: "string",
+				Images:     []string{"string"},
+				Images360:  []string{"string"},
+				ProductId:  12345,
+			},
+			`{
+				"result": {
+				  "pictures": [
+					{
+					  "is_360": true,
+					  "is_color": true,
+					  "is_primary": true,
+					  "product_id": 12345,
+					  "state": "string",
+					  "url": "string"
+					},
+					{
+						"is_360": false,
+						"is_color": true,
+						"is_primary": true,
+						"product_id": 12345,
+						"state": "string",
+						"url": "string"
+					  }
+				  ]
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&UpdateProductImagesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().UpdateProductImages(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Pictures) != len(test.params.Images)+len(test.params.Images360) {
+				t.Errorf("Amount of pictures in request and response are not equal")
+			}
+			if len(resp.Result.Pictures) > 0 {
+				if resp.Result.Pictures[0].ProductId != test.params.ProductId {
+					t.Errorf("Product ids in request and response are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestCheckImageUploadingStatus(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CheckImageUploadingStatusParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CheckImageUploadingStatusParams{
+				ProductId: []int64{123456},
+			},
+			`{
+				"result": {
+				  "pictures": [
+					{
+					  "is_360": true,
+					  "is_color": true,
+					  "is_primary": true,
+					  "product_id": 123456,
+					  "state": "string",
+					  "url": "string"
+					}
+				  ]
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CheckImageUploadingStatusParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().CheckImageUploadingStatus(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Pictures) > 0 {
+				if resp.Result.Pictures[0].ProductId != test.params.ProductId[0] {
+					t.Errorf("Product ids in request and response are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestListProductsByIDs(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListProductsByIDsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListProductsByIDsParams{
+				OfferId: []string{"010", "23"},
+			},
+			`{
+				"result": {
+				  "items": [
+					{
+					  "id": 78712196,
+					  "name": "Как выбрать детские музыкальные инструменты. Ксилофон, бубен, маракасы и другие инструменты для детей до 6 лет. Мастер-класс о раннем музыкальном развитии от Монтессори-педагога",
+					  "offer_id": "010",
+					  "barcode": "",
+					  "barcodes": [
+						"2335900005",
+						"7533900005"
+					  ],
+					  "buybox_price": "",
+					  "category_id": 93726157,
+					  "created_at": "2021-06-03T03:40:05.871465Z",
+					  "images": [],
+					  "has_discounted_item": true,
+					  "is_discounted": true,
+					  "discounted_stocks": {
+						"coming": 0,
+						"present": 0,
+						"reserved": 0
+					  },
+					  "currency_code": "RUB",
+					  "marketing_price": "",
+					  "min_price": "",
+					  "old_price": "1000.0000",
+					  "premium_price": "590.0000",
+					  "price": "690.0000",
+					  "recommended_price": "",
+					  "sources": [
+						{
+						  "is_enabled": true,
+						  "sku": 269628393,
+						  "source": "fbo"
+						},
+						{
+						  "is_enabled": true,
+						  "sku": 269628396,
+						  "source": "fbs"
+						}
+					  ],
+					  "state": "",
+					  "stocks": {
+						"coming": 0,
+						"present": 13,
+						"reserved": 0
+					  },
+					  "errors": [],
+					  "updated_at": "2023-02-09T06:46:44.152Z",
+					  "vat": "0.0",
+					  "visible": true,
+					  "visibility_details": {
+						"has_price": false,
+						"has_stock": true,
+						"active_product": false,
+						"reasons": {}
+					  },
+					  "price_index": "0.00",
+					  "images360": [],
+					  "is_kgt": false,
+					  "color_image": "",
+					  "primary_image": "https://cdn1.ozone.ru/s3/multimedia-y/6077810038.jpg",
+					  "status": {
+						"state": "price_sent",
+						"state_failed": "",
+						"moderate_status": "approved",
+						"decline_reasons": [],
+						"validation_state": "success",
+						"state_name": "Продается",
+						"state_description": "",
+						"is_failed": false,
+						"is_created": true,
+						"state_tooltip": "",
+						"item_errors": [],
+						"state_updated_at": "2021-07-26T04:50:08.486697Z"
+					  }
+					},
+					{
+					  "id": 76723583,
+					  "name": "Онлайн-курс по дрессировке собак \"Собака: инструкция по применению. Одинокий волк\"",
+					  "offer_id": "23",
+					  "barcode": "",
+					  "buybox_price": "",
+					  "category_id": 90635895,
+					  "created_at": "2021-05-26T20:26:07.565586Z",
+					  "images": [],
+					  "marketing_price": "",
+					  "min_price": "",
+					  "old_price": "12200.0000",
+					  "premium_price": "5490.0000",
+					  "price": "6100.0000",
+					  "recommended_price": "",
+					  "sources": [
+						{
+						  "is_enabled": true,
+						  "sku": 267684495,
+						  "source": "fbo"
+						},
+						{
+						  "is_enabled": true,
+						  "sku": 267684498,
+						  "source": "fbs"
+						}
+					  ],
+					  "state": "",
+					  "stocks": {
+						"coming": 0,
+						"present": 19,
+						"reserved": 0
+					  },
+					  "errors": [],
+					  "updated_at": "2023-02-09T06:46:44.152Z",
+					  "vat": "0.0",
+					  "visible": true,
+					  "visibility_details": {
+						"has_price": false,
+						"has_stock": true,
+						"active_product": false,
+						"reasons": {}
+					  },
+					  "price_index": "0.00",
+					  "images360": [],
+					  "is_kgt": false,
+					  "color_image": "",
+					  "primary_image": "https://cdn1.ozone.ru/s3/multimedia-v/6062554531.jpg",
+					  "status": {
+						"state": "price_sent",
+						"state_failed": "",
+						"moderate_status": "approved",
+						"decline_reasons": [],
+						"validation_state": "success",
+						"state_name": "Продается",
+						"state_description": "",
+						"is_failed": false,
+						"is_created": true,
+						"state_tooltip": "",
+						"item_errors": [],
+						"state_updated_at": "2021-05-31T12:35:09.714641Z"
+					  }
+					}
+				  ]
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListProductsByIDsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().ListProductsByIDs(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result.Items) != len(test.params.OfferId) {
+				t.Errorf("Amount of offer ids in request and response are not equal")
+			}
+			if len(resp.Result.Items) > 0 {
+				if resp.Result.Items[0].OfferId != test.params.OfferId[0] {
+					t.Errorf("Offer ids in request and response are not equal")
+				}
+			}
+		}
+	}
+}

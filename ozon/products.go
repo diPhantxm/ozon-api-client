@@ -105,225 +105,228 @@ type GetProductDetailsResponse struct {
 	core.CommonResponse
 
 	// Request results
-	Result struct {
-		// Barcode
-		Barcode string `json:"barcode"`
-
-		// All product barcodes
-		Barcodes []string `json:"barcodes"`
-
-		// Main offer price on Ozon.
-		//
-		// The field is deprecated. Returns an empty string ""
-		BuyboxPrice string `json:"buybox_price"`
-
-		// Category identifier
-		CategoryId int64 `json:"category_id"`
-
-		// Marketing color
-		ColorImage string `json:"color_image"`
-
-		// Commission fees details
-		Commissions []struct {
-			// Delivery cost
-			DeliveryAmount float64 `json:"deliveryAmount"`
-
-			// Minimum commission fee
-			MinValue float64 `json:"minValue"`
-
-			// Commission percentage
-			Percent float64 `json:"percent"`
-
-			// Return cost
-			ReturnAmount float64 `json:"returnAmount"`
-
-			// Sale scheme
-			SaleSchema string `json:"saleSchema"`
-
-			// Commission fee amount
-			Value float64 `json:"value"`
-		} `json:"commissions"`
-
-		// Date and time when the product was created
-		CreatedAt time.Time `json:"created_at"`
-
-		// SKU of the product that is sold from the Ozon warehouse (FBO)
-		FBOSKU int64 `json:"fbo_sku"`
-
-		// SKU of the product that is sold from the seller's warehouse (FBS and rFBS)
-		FBSSKU int64 `json:"fbs_sku"`
-
-		// Document generation task number
-		Id int64 `json:"id"`
-
-		// An array of links to images. The images in the array are arranged in the order of their arrangement on the site. If the `primary_image` parameter is not specified, the first image in the list is the main one for the product
-		Images []string `json:"images"`
-
-		// Main product image
-		PrimaryImage string `json:"primary_image"`
-
-		// Array of 360 images
-		Images360 []string `json:"images360"`
-
-		// true if the product has markdown equivalents at the Ozon warehouse
-		HasDiscountedItem bool `json:"has_discounted_item"`
-
-		// Indication of a markdown product:
-		//
-		// * true if the product was created by the seller as a markdown
-		//
-		// * false if the product is not markdown or was marked down by Ozon
-		IsDiscounted bool `json:"is_discounted"`
-
-		// Markdown products stocks
-		DiscountedStocks struct {
-			// Quantity of products to be supplied
-			Coming int32 `json:"coming"`
-
-			// Quantity of products in warehouse
-			Present int32 `json:"present"`
-
-			// Quantity of products reserved
-			Reserved int32 `json:"reserved"`
-		} `json:"discounted_stocks"`
-
-		// Indication of a bulky product
-		IsKGT bool `json:"is_kgt"`
-
-		// Indication of mandatory prepayment for the product:
-		//
-		// * true — to buy a product, you need to make a prepayment.
-		//
-		// * false—prepayment is not required
-		IsPrepayment bool `json:"is_prepayment"`
-
-		// If prepayment is possible, the value is true
-		IsPrepaymentAllowed bool `json:"is_prepayment_allowed"`
-
-		// Currency of your prices. It matches the currency set in the personal account settings
-		CurrencyCode string `json:"currency_code"`
-
-		// The price of the product including all promotion discounts. This value will be shown on the Ozon storefront
-		MarketingPrice string `json:"marketing_price"`
-
-		// Minimum price for similar products on Ozon.
-		//
-		// The field is deprecated. Returns an empty string ""
-		MinOzonPrice string `json:"min_ozon_price"`
-
-		// Minimum product price with all promotions applied
-		MinPrice string `json:"min_price"`
-
-		// Name
-		Name string `json:"name"`
-
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
-
-		// Price before discounts. Displayed strikethrough on the product description page
-		OldPrice string `json:"old_price"`
-
-		// Price for customers with an Ozon Premium subscription
-		PremiumPrice string `json:"premium_price"`
-
-		// Product price including discounts. This value is shown on the product description page
-		Price string `json:"price"`
-
-		// Price index. Learn more in Help Center
-		PriceIndex string `json:"price_idnex"`
-
-		// Product price suggested by the system based on similar offers
-		RecommendedPrice string `json:"recommended_price"`
-
-		// Product state description
-		Status struct {
-			// Product state
-			State string `json:"state"`
-
-			// Product state on the transition to which an error occurred
-			StateFailed string `json:"state_failed"`
-
-			// Moderation status
-			ModerateStatus string `json:"moderate_status"`
-
-			// Product decline reasons
-			DeclineReasons []string `json:"decline_reasons"`
-
-			// Validation status
-			ValidationsState string `json:"validation_state"`
-
-			// Product status name
-			StateName string `json:"state_name"`
-
-			// Product state description
-			StateDescription string `json:"state_description"`
-
-			// Indiction that there were errors while creating products
-			IsFailed bool `json:"is_failed"`
-
-			// Indiction that the product was created
-			IsCreated bool `json:"is_created"`
-
-			// Tooltips for the current product state
-			StateTooltip string `json:"state_tooltip"`
-
-			// Product loading errors
-			ItemErrors []GetProductDetailsResponseItemError `json:"item_errors"`
-
-			// The last time product state changed
-			StateUpdatedAt time.Time `json:"state_updated_at"`
-		} `json:"status"`
-
-		// Details about the sources of similar offers. Learn more in Help Сenter
-		Sources []struct {
-			// Indication that the source is taken into account when calculating the market value
-			IsEnabled bool `json:"is_enabled"`
-
-			// Product identifier in the Ozon system, SKU
-			SKU int64 `json:"sku"`
-
-			// Link to the source
-			Source string `json:"source"`
-		} `json:"sources"`
-
-		// Details about product stocks
-		Stocks struct {
-			// Supply expected
-			Coming int32 `json:"coming"`
-
-			// Currently at the warehouse
-			Present int32 `json:"present"`
-
-			// Reserved
-			Reserved int32 `json:"reserved"`
-		} `json:"stocks"`
-
-		// Date of the last product update
-		UpdatedAt time.Time `json:"updated_at"`
-
-		// Product VAT rate
-		VAT string `json:"vat"`
-
-		// Product visibility settings
-		VisibilityDetails struct {
-			// If the product is active, the value is true
-			ActiveProduct bool `json:"active_product"`
-
-			// If the price is set, the value is true
-			HasPrice bool `json:"has_price"`
-
-			// If there is stock at the warehouses, the value is true
-			HasStock bool `json:"has_stock"`
-		} `json:"visibility_details"`
-
-		// If the product is on sale, the value is true
-		Visible bool `json:"visible"`
-
-		// Product volume weight
-		VolumeWeight float64 `json:"volume_weights"`
-	} `json:"Result"`
+	Result ProductDetails `json:"Result"`
 }
 
+type ProductDetails struct {
+	// Barcode
+	Barcode string `json:"barcode"`
+
+	// All product barcodes
+	Barcodes []string `json:"barcodes"`
+
+	// Main offer price on Ozon.
+	//
+	// The field is deprecated. Returns an empty string ""
+	BuyboxPrice string `json:"buybox_price"`
+
+	// Category identifier
+	CategoryId int64 `json:"category_id"`
+
+	// Marketing color
+	ColorImage string `json:"color_image"`
+
+	// Commission fees details
+	Commissions []struct {
+		// Delivery cost
+		DeliveryAmount float64 `json:"deliveryAmount"`
+
+		// Minimum commission fee
+		MinValue float64 `json:"minValue"`
+
+		// Commission percentage
+		Percent float64 `json:"percent"`
+
+		// Return cost
+		ReturnAmount float64 `json:"returnAmount"`
+
+		// Sale scheme
+		SaleSchema string `json:"saleSchema"`
+
+		// Commission fee amount
+		Value float64 `json:"value"`
+	} `json:"commissions"`
+
+	// Date and time when the product was created
+	CreatedAt time.Time `json:"created_at"`
+
+	// SKU of the product that is sold from the Ozon warehouse (FBO)
+	FBOSKU int64 `json:"fbo_sku"`
+
+	// SKU of the product that is sold from the seller's warehouse (FBS and rFBS)
+	FBSSKU int64 `json:"fbs_sku"`
+
+	// Document generation task number
+	Id int64 `json:"id"`
+
+	// An array of links to images. The images in the array are arranged in the order of their arrangement on the site. If the `primary_image` parameter is not specified, the first image in the list is the main one for the product
+	Images []string `json:"images"`
+
+	// Main product image
+	PrimaryImage string `json:"primary_image"`
+
+	// Array of 360 images
+	Images360 []string `json:"images360"`
+
+	// true if the product has markdown equivalents at the Ozon warehouse
+	HasDiscountedItem bool `json:"has_discounted_item"`
+
+	// Indication of a markdown product:
+	//
+	// * true if the product was created by the seller as a markdown
+	//
+	// * false if the product is not markdown or was marked down by Ozon
+	IsDiscounted bool `json:"is_discounted"`
+
+	// Markdown products stocks
+	DiscountedStocks ProductDiscountedStocks `json:"discounted_stocks"`
+
+	// Indication of a bulky product
+	IsKGT bool `json:"is_kgt"`
+
+	// Indication of mandatory prepayment for the product:
+	//
+	// * true — to buy a product, you need to make a prepayment.
+	//
+	// * false—prepayment is not required
+	IsPrepayment bool `json:"is_prepayment"`
+
+	// If prepayment is possible, the value is true
+	IsPrepaymentAllowed bool `json:"is_prepayment_allowed"`
+
+	// Currency of your prices. It matches the currency set in the personal account settings
+	CurrencyCode string `json:"currency_code"`
+
+	// The price of the product including all promotion discounts. This value will be shown on the Ozon storefront
+	MarketingPrice string `json:"marketing_price"`
+
+	// Minimum price for similar products on Ozon.
+	//
+	// The field is deprecated. Returns an empty string ""
+	MinOzonPrice string `json:"min_ozon_price"`
+
+	// Minimum product price with all promotions applied
+	MinPrice string `json:"min_price"`
+
+	// Name
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Price before discounts. Displayed strikethrough on the product description page
+	OldPrice string `json:"old_price"`
+
+	// Price for customers with an Ozon Premium subscription
+	PremiumPrice string `json:"premium_price"`
+
+	// Product price including discounts. This value is shown on the product description page
+	Price string `json:"price"`
+
+	// Price index. Learn more in Help Center
+	PriceIndex string `json:"price_idnex"`
+
+	// Product price suggested by the system based on similar offers
+	RecommendedPrice string `json:"recommended_price"`
+
+	// Product state description
+	Status struct {
+		// Product state
+		State string `json:"state"`
+
+		// Product state on the transition to which an error occurred
+		StateFailed string `json:"state_failed"`
+
+		// Moderation status
+		ModerateStatus string `json:"moderate_status"`
+
+		// Product decline reasons
+		DeclineReasons []string `json:"decline_reasons"`
+
+		// Validation status
+		ValidationsState string `json:"validation_state"`
+
+		// Product status name
+		StateName string `json:"state_name"`
+
+		// Product state description
+		StateDescription string `json:"state_description"`
+
+		// Indiction that there were errors while creating products
+		IsFailed bool `json:"is_failed"`
+
+		// Indiction that the product was created
+		IsCreated bool `json:"is_created"`
+
+		// Tooltips for the current product state
+		StateTooltip string `json:"state_tooltip"`
+
+		// Product loading errors
+		ItemErrors []GetProductDetailsResponseItemError `json:"item_errors"`
+
+		// The last time product state changed
+		StateUpdatedAt time.Time `json:"state_updated_at"`
+	} `json:"status"`
+
+	// Details about the sources of similar offers. Learn more in Help Сenter
+	Sources []struct {
+		// Indication that the source is taken into account when calculating the market value
+		IsEnabled bool `json:"is_enabled"`
+
+		// Product identifier in the Ozon system, SKU
+		SKU int64 `json:"sku"`
+
+		// Link to the source
+		Source string `json:"source"`
+	} `json:"sources"`
+
+	// Details about product stocks
+	Stocks struct {
+		// Supply expected
+		Coming int32 `json:"coming"`
+
+		// Currently at the warehouse
+		Present int32 `json:"present"`
+
+		// Reserved
+		Reserved int32 `json:"reserved"`
+	} `json:"stocks"`
+
+	// Date of the last product update
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Product VAT rate
+	VAT string `json:"vat"`
+
+	// Product visibility settings
+	VisibilityDetails struct {
+		// If the product is active, the value is true
+		ActiveProduct bool `json:"active_product"`
+
+		// If the price is set, the value is true
+		HasPrice bool `json:"has_price"`
+
+		// If there is stock at the warehouses, the value is true
+		HasStock bool `json:"has_stock"`
+	} `json:"visibility_details"`
+
+	// If the product is on sale, the value is true
+	Visible bool `json:"visible"`
+
+	// Product volume weight
+	VolumeWeight float64 `json:"volume_weights"`
+}
+
+type ProductDiscountedStocks struct {
+	// Quantity of products to be supplied
+	Coming int32 `json:"coming"`
+
+	// Quantity of products in warehouse
+	Present int32 `json:"present"`
+
+	// Quantity of products reserved
+	Reserved int32 `json:"reserved"`
+}
 type GetProductDetailsResponseItemError struct {
 	// Error code
 	Code string `json:"code"`
@@ -918,6 +921,274 @@ func (c Products) GetProductsRatingBySKU(params *GetProductsRatingBySKUParams) (
 	url := "/v1/product/rating-by-sku"
 
 	resp := &GetProductsRatingBySKUResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetProductImportStatusParams struct {
+	// Importing products task code
+	TaskId int64 `json:"task_id"`
+}
+
+type GetProductImportStatusResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Product details
+		Items []struct {
+			// Product identifier in the seller's system.
+			//
+			// The maximum length of a string is 50 characters
+			OfferId string `json:"offer_id"`
+
+			// Product identifier
+			ProductId int64 `json:"product_id"`
+
+			// Product creation status. Product information is processed in queues. Possible parameter values:
+			//   - pending — product in the processing queue;
+			//   - imported — product loaded successfully;
+			//   - failed — product loaded with errors
+			Status string `json:"status"`
+
+			// Array of errors
+			Errors []struct {
+				GetProductDetailsResponseItemError
+
+				// Error technical description
+				Message string `json:"message"`
+			} `json:"errors"`
+		} `json:"items"`
+
+		// Product identifier in the seller's system
+		Total int32 `json:"total"`
+	} `json:"result"`
+}
+
+// Allows you to get the status of a product description page creation process
+func (c Products) GetProductImportStatus(params *GetProductImportStatusParams) (*GetProductImportStatusResponse, error) {
+	url := "/v1/product/import/info"
+
+	resp := &GetProductImportStatusResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CreateProductByOzonIDParams struct {
+	// Products details
+	Items []CreateProductsByOzonIDItem `json:"items"`
+}
+
+type CreateProductsByOzonIDItem struct {
+	// Product name. Up to 500 characters
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system.
+	//
+	// The maximum length of a string is 50 characters
+	OfferId string `json:"offer_id"`
+
+	// Price before discounts. Displayed strikethrough on the product description page. Specified in rubles.
+	// The fractional part is separated by decimal point, up to two digits after the decimal point
+	OldPrice string `json:"old_price"`
+
+	// Price for customers with an Ozon Premium subscription
+	PremiumPrice string `json:"premium_price"`
+
+	// Product price including discounts. This value is shown on the product description page.
+	// If there are no discounts, pass the old_price value in this parameter
+	Price string `json:"price"`
+
+	// Currency of your prices. The passed value must be the same as the one set in the personal account settings.
+	// By default, the passed value is RUB, Russian ruble.
+	//
+	// For example, if your currency set in the settings is yuan, pass the value CNY, otherwise an error will be returned
+	CurrencyCode string `json:"currency_code"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// VAT rate for the product:
+	//   - 0 — not subject to VAT,
+	//   - 0.1 — 10%,
+	//   - 0.2 — 20%
+	VAT string `json:"vat"`
+}
+
+type CreateProductByOzonIDResponse struct {
+	core.CommonResponse
+
+	// Products import task code
+	TaskId int64 `json:"task_id"`
+
+	// Products identifiers list
+	UnmatchedSKUList []int64 `json:"unmatched_sku_list"`
+}
+
+// Creates a product by the specified Ozon ID. The number of products is unlimited.
+//
+// It's not possible to update products using Ozon ID
+func (c Products) CreateProductByOzonID(params *CreateProductByOzonIDParams) (*CreateProductByOzonIDResponse, error) {
+	url := "/v1/product/import-by-sku"
+
+	resp := &CreateProductByOzonIDResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type UpdateProductImagesParams struct {
+	// Marketing color
+	ColorImage string `json:"color_image"`
+
+	// Array of links to images. The images in the array are arranged in the order of their arrangement on the site.
+	// The first image in the list is the main one for the product.
+	//
+	// Pass links to images in the public cloud storage. The image format is JPG
+	Images []string `json:"images"`
+
+	// Array of 360 images—up to 70 files
+	Images360 []string `json:"images360"`
+
+	// Product identfier
+	ProductId int64 `json:"product_id"`
+}
+
+type ProductInfoResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Pictures
+		Pictures []struct {
+			// Attribute of a 360 image
+			Is360 bool `json:"is_360"`
+
+			// Attribute of a marketing color
+			IsColor bool `json:"is_color"`
+
+			// Attribute of a marketing color
+			IsPrimary bool `json:"is_primary"`
+
+			// Product identifier
+			ProductId int64 `json:"product_id"`
+
+			// Image uploading status.
+			//
+			// If the `/v1/product/pictures/import` method was called, the response will always be imported—image not processed.
+			// To see the final status, call the `/v1/product/pictures/info` method after about 10 seconds.
+			//
+			// If you called the `/v1/product/pictures/info` method, one of the statuses will appear:
+			//   - uploaded — image uploaded;
+			//   - failed — image was not uploaded
+			State string `json:"state"`
+
+			// The link to the image in the public cloud storage. The image format is JPG or PNG
+			URL string `json:"url"`
+		} `json:"pictures"`
+	} `json:"result"`
+}
+
+// The method for uploading and updating product images.
+//
+// Each time you call the method, pass all the images that should be on the product description page.
+// For example, if you call a method and upload 10 images,
+// and then call the method a second time and load one imahe, then all 10 previous ones will be erased.
+//
+// To upload image, pass a link to it in a public cloud storage. The image format is JPG or PNG.
+//
+// Arrange the pictures in the images array as you want to see them on the site.
+// The first picture in the array will be the main one for the product.
+//
+// You can upload up to 15 pictures for each product.
+//
+// To upload 360 images, use the images360 field, and to upload a marketing color use color_image.
+//
+// If you want to add, remove, or replace some images, or change their order,
+// first get the details using `/v2/product/info` or `/v2/product/info/list` methods.
+// Using them you can get the current list of images and their order.
+// Copy the data from the images, images360, and color_image fields and make the necessary changes to it
+func (c Products) UpdateProductImages(params *UpdateProductImagesParams) (*ProductInfoResponse, error) {
+	url := "/v1/product/pictures/import"
+
+	resp := &ProductInfoResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CheckImageUploadingStatusParams struct {
+	// Product identifiers list
+	ProductId []int64 `json:"product_id"`
+}
+
+// Check products images uploading status
+func (c Products) CheckImageUploadingStatus(params *CheckImageUploadingStatusParams) (*ProductInfoResponse, error) {
+	url := "/v1/product/pictures/info"
+
+	resp := &ProductInfoResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListProductsByIDsParams struct {
+	// Product identifier in the seller's system
+	OfferId []string `json:"offer_id"`
+
+	// Product identifier
+	ProductId []int64 `json:"product_id"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU []int64 `json:"sku"`
+}
+
+type ListProductsByIDsResponse struct {
+	core.CommonResponse
+
+	// Request results
+	Result struct {
+		// Data array
+		Items []ProductDetails `json:"items"`
+	} `json:"result"`
+}
+
+// Method for getting an array of products by their identifiers.
+//
+// The request body must contain an array of identifiers of the same type. The response will contain an items array.
+//
+// For each shipment in the items array the fields match the ones recieved in the /v2/product/info method
+func (c Products) ListProductsByIDs(params *ListProductsByIDsParams) (*ListProductsByIDsResponse, error) {
+	url := "/v2/product/info/list"
+
+	resp := &ListProductsByIDsResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {
