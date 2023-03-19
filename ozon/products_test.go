@@ -1475,3 +1475,725 @@ func TestListProductsByIDs(t *testing.T) {
 		}
 	}
 }
+
+func TestGetDescriptionOfProduct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetDescriptionOfProductParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetDescriptionOfProductParams{
+				Filter: GetDescriptionOfProductFilter{
+					ProductId:  []int64{213761435},
+					Visibility: "ALL",
+				},
+				LastId: "okVsfA==«",
+				SortBy: "ASC",
+				Limit:  100,
+			},
+			`{
+				"result": [
+				  {
+					"id": 213761435,
+					"barcode": "",
+					"category_id": 17038062,
+					"name": "Пленка защитная для Xiaomi Redmi Note 10 Pro 5G",
+					"offer_id": "21470",
+					"height": 10,
+					"depth": 210,
+					"width": 140,
+					"dimension_unit": "mm",
+					"weight": 50,
+					"weight_unit": "g",
+					"images": [
+					  {
+						"file_name": "https://cdn1.ozone.ru/s3/multimedia-f/6190456071.jpg",
+						"default": true,
+						"index": 0
+					  },
+					  {
+						"file_name": "https://cdn1.ozone.ru/s3/multimedia-7/6190456099.jpg",
+						"default": false,
+						"index": 1
+					  },
+					  {
+						"file_name": "https://cdn1.ozone.ru/s3/multimedia-9/6190456065.jpg",
+						"default": false,
+						"index": 2
+					  }
+					],
+					"image_group_id": "",
+					"images360": [],
+					"pdf_list": [],
+					"attributes": [
+					  {
+						"attribute_id": 5219,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 970718176,
+							"value": "универсальный"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 11051,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 970736931,
+							"value": "Прозрачный"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 10100,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 0,
+							"value": "false"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 11794,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 970860783,
+							"value": "safe"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 9048,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 0,
+							"value": "Пленка защитная для Xiaomi Redmi Note 10 Pro 5G"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 5076,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 39638,
+							"value": "Xiaomi"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 9024,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 0,
+							"value": "21470"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 10015,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 0,
+							"value": "false"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 85,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 971034861,
+							"value": "Brand"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 9461,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 349824787,
+							"value": "Защитная пленка для смартфона"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 4180,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 0,
+							"value": "Пленка защитная для Xiaomi Redmi Note 10 Pro 5G"
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 4191,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 0,
+							"value": "Пленка предназначена для модели Xiaomi Redmi Note 10 Pro 5G. Защитная гидрогелевая пленка обеспечит защиту вашего смартфона от царапин, пыли, сколов и потертостей."
+						  }
+						]
+					  },
+					  {
+						"attribute_id": 8229,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 91521,
+							"value": "Защитная пленка"
+						  }
+						]
+					  }
+					],
+					"complex_attributes": [],
+					"color_image": "",
+					"last_id": ""
+				  }
+				],
+				"total": 1,
+				"last_id": "onVsfA=="
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetDescriptionOfProductParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().GetDescriptionOfProduct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) != len(test.params.Filter.ProductId) && len(resp.Result) != len(test.params.Filter.OfferId) {
+				t.Errorf("Amount of products in request and response are not equal")
+			}
+		}
+	}
+}
+
+func TestGetProductDescription(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductDescriptionParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductDescriptionParams{
+				OfferId:   "5",
+				ProductId: 73453843,
+			},
+			`{
+				"result": {
+				  "id": 73453843,
+				  "offer_id": "5",
+				  "name": "Онлайн курс по дрессировке собак \"Воспитанная собака за 3 недели\"",
+				  "description": "Экспресс-курс - это сокращённый вариант курса \"Собака: инструкция по применению\", дающий базовый минимум знаний, навыков, умений. Это оптимальный вариант для совершения первых шагов по воспитанию!<br/><br/>Что дает Экспресс-курс:<ul><li>Контакт с собакой </li></ul>К концу экспресс-курса дрессировки вы получаете воспитанного друга и соратника, который ориентируется на вас в любой ситуации.<ul><li>Уверенность в безопасности</li></ul>Благополучие собаки: больше не будет срывов с поводка, преследования кошек, попыток съесть что-либо на улице и т. д.<ul><li>Комфортная жизнь</li></ul>Принципиально другой уровень общения, без раздражения, криков и недовольства поведением животного."
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductDescriptionParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().GetProductDescription(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result.Id != test.params.ProductId {
+				t.Errorf("Product ids in request and response are not equal")
+			}
+			if resp.Result.OfferId != test.params.OfferId {
+				t.Errorf("Offer ids in request and response are not equal")
+			}
+		}
+	}
+}
+
+func TestGetProductRangeLimit(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"daily_create": {
+				  "limit": 0,
+				  "reset_at": "2019-08-24T14:15:22Z",
+				  "usage": 0
+				},
+				"daily_update": {
+				  "limit": 0,
+				  "reset_at": "2019-08-24T14:15:22Z",
+				  "usage": 0
+				},
+				"total": {
+				  "limit": 0,
+				  "usage": 0
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().GetProductRangeLimit()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestChangeProductIDs(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ChangeProductIDsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ChangeProductIDsParams{
+				UpdateOfferId: []ChangeProductIDsUpdateOffer{
+					{
+						NewOfferId: "new id",
+						OfferId:    "old id",
+					},
+				},
+			},
+			`{
+				"errors": [
+				  {
+					"message": "string",
+					"offer_id": "string"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ChangeProductIDsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().ChangeProductIDs(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestArchiveProduct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ArchiveProductParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ArchiveProductParams{
+				ProductId: []int64{125529926},
+			},
+			`{
+				"result": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ArchiveProductParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().ArchiveProduct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUnarchiveProduct(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ArchiveProductParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ArchiveProductParams{
+				ProductId: []int64{125529926},
+			},
+			`{
+				"result": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ArchiveProductParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().UnarchiveProduct(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestRemoveProductWithoutSKU(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *RemoveProductWithoutSKUParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&RemoveProductWithoutSKUParams{
+				Products: []RemoveProductWithoutSKUProduct{
+					{
+						OfferId: "033",
+					},
+				},
+			},
+			`{
+				"status": [
+				  {
+					"offer_id": "033",
+					"is_deleted": true,
+					"error": ""
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&RemoveProductWithoutSKUParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().RemoveProductWithoutSKU(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Status) > 0 {
+				if resp.Status[0].OfferId != test.params.Products[0].OfferId {
+					t.Errorf("Offer ids in request and response are not equal")
+				}
+			}
+		}
+	}
+}
+
+func TestListGeoRestrictions(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListGeoRestrictionsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListGeoRestrictionsParams{
+				Filter: ListGeoRestrictionsFilter{
+					OnlyVisible: true,
+				},
+				LastOrderNumber: 0,
+				Limit:           3,
+			},
+			`{
+				"restrictions": [
+				  {
+					"id": "world",
+					"name": "Весь Мир",
+					"is_visible": true,
+					"order_number": 1
+				  },
+				  {
+					"id": "42fb1c32-0cfe-5c96-9fb5-7f8e8449f28c",
+					"name": "Все города РФ",
+					"is_visible": true,
+					"order_number": 2
+				  },
+				  {
+					"id": "moscow",
+					"name": "Москва",
+					"is_visible": true,
+					"order_number": 3
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListGeoRestrictionsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().ListGeoRestrictions(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUploadActivationCodes(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UploadActivationCodesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UploadActivationCodesParams{
+				DigitalCodes: []string{"764282654334"},
+				ProductId:    73160317,
+			},
+			`{
+				"result": {
+				  "task_id": 172549811
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&UploadActivationCodesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().UploadActivationCodes(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestStatusOfUploadingActivationCodes(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *StatusOfUploadingActivationCodesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&StatusOfUploadingActivationCodesParams{
+				TaskId: 178574231,
+			},
+			`{
+				"result": {
+				  "status": "imported"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&StatusOfUploadingActivationCodesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Products().StatusOfUploadingActivationCodes(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

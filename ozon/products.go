@@ -1198,3 +1198,519 @@ func (c Products) ListProductsByIDs(params *ListProductsByIDsParams) (*ListProdu
 
 	return resp, nil
 }
+
+type GetDescriptionOfProductParams struct {
+	// Filter by product
+	Filter GetDescriptionOfProductFilter `json:"filter"`
+
+	// Identifier of the last value on the page. Leave this field blank in the first request.
+	//
+	// To get the next values, specify `last_id` from the response of the previous request
+	LastId string `json:"last_id"`
+
+	// Number of values per page. Minimum is 1, maximum is 1000
+	Limit int64 `json:"limit"`
+
+	// The parameter by which the products will be sorted
+	SortBy string `json:"sort_by"`
+
+	// Sorting direction
+	SortDirection string `json:"sort_direction"`
+}
+
+type GetDescriptionOfProductFilter struct {
+	// Filter by the `offer_id` parameter. It is possible to pass a list of values
+	OfferId []string `json:"offer_id"`
+
+	// Filter by the product_id parameter. It is possible to pass a list of values
+	ProductId []int64 `json:"product_id"`
+
+	// Filter by product visibility
+	Visibility string `json:"visibility"`
+}
+
+type GetDescriptionOfProductResponse struct {
+	core.CommonResponse
+
+	// Request results
+	Result []struct {
+		// Array of product characteristics
+		Attributes []struct {
+			// Characteristic identifier
+			AttributeId int64 `json:"attribute_id"`
+
+			// Identifier of the characteristic that supports nested properties.
+			// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
+			// Each of the nested characteristics can have multiple value variants
+			ComplexId int64 `json:"complex_id"`
+
+			// Array of characteristic values
+			Values []struct {
+				// Characteristic identifier in the dictionary
+				DictionaryValueId int64 `json:"dictionary_value_id"`
+
+				// Product characteristic value
+				Value string `json:"value"`
+			} `json:"values"`
+		} `json:"attributes"`
+
+		// Barcode
+		Barcode string `json:"barcode"`
+
+		// Category identifier
+		CategoryId int64 `json:"category_id"`
+
+		// Marketing color
+		ColorImage string `json:"color_image"`
+
+		// Array of nested characteristics
+		ComplexAttributes []struct {
+			// Array of product characteristics
+			Attributes []struct {
+				// Characteristic identifier
+				AttributeId int64 `json:"attribute_id"`
+
+				// Identifier of the characteristic that supports nested properties.
+				// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
+				// Each of the nested characteristics can have multiple value variants
+				ComplexId int64 `json:"complex_id"`
+
+				// Array of characteristic values
+				Values []struct {
+					// Characteristic identifier in the dictionary
+					DictionaryValueId int64 `json:"dictionary_value_id"`
+
+					// Product characteristic value
+					Value string `json:"value"`
+				} `json:"values"`
+			} `json:"attributes`
+		} `json:"complex_attributes"`
+
+		// Depth
+		Depth int32 `json:"depth"`
+
+		// Dimension measurement units:
+		//   - mm — millimeters,
+		//   - cm — centimeters,
+		//   - in — inches
+		DimensionUnit string `json:"dimension_unit"`
+
+		// Package height
+		Height int32 `json:"height"`
+
+		// Product characteristic identifier
+		Id int64 `json:"id"`
+
+		// Identifier for subsequent batch loading of images
+		ImageGroupId string `json:"image_group_id"`
+
+		// Array of links to product images
+		Images []struct {
+			Default  bool   `json:"default"`
+			FileName string `json:"file_name"`
+			Index    int64  `json:"index"`
+		} `json:"images"`
+
+		// Array of 360 images
+		Images360 []struct {
+			FileName string `json:"file_name"`
+			Index    int64  `json:"index"`
+		} `json:"images360"`
+
+		// Product name. Up to 500 characters
+		Name string `json:"name"`
+
+		// Product identifier in the seller's system
+		OfferId string `json:"offer_id"`
+
+		// Array of PDF files
+		PDFList []struct {
+			// Path to PDF file
+			FileName string `json:"file_name"`
+
+			// Storage order index
+			Index int64 `json:"index"`
+
+			// File name
+			Name string `json:"name"`
+		} `json:"pdf_list"`
+
+		// Weight of product in the package
+		Weight int32 `json:"weight"`
+
+		// Weight measurement unit
+		WeightUnit string `json:"weight_unit"`
+
+		// Package width
+		Width int32 `json:"width"`
+	} `json:"result"`
+
+	// Identifier of the last value on the page.
+	//
+	// To get the next values, specify the recieved value in the next request in the last_id parameter
+	LastId string `json:"last_id"`
+
+	// Number of products in the list
+	Total int32 `json:"total"`
+}
+
+// Returns a product characteristics description by product identifier. You can search for the product by `offer_id` or `product_id`
+func (c Products) GetDescriptionOfProduct(params *GetDescriptionOfProductParams) (*GetDescriptionOfProductResponse, error) {
+	url := "/v3/products/info/attributes"
+
+	resp := &GetDescriptionOfProductResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetProductDescriptionParams struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+}
+
+type GetProductDescriptionResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Description
+		Description string `json:"description"`
+
+		// Identifier
+		Id int64 `json:"id"`
+
+		// Name
+		Name string `json:"name"`
+
+		// Product identifier in the seller's system
+		OfferId string `json:"offer_id"`
+	} `json:"result"`
+}
+
+// Get product description
+func (c Products) GetProductDescription(params *GetProductDescriptionParams) (*GetProductDescriptionResponse, error) {
+	url := "/v1/product/info/description"
+
+	resp := &GetProductDescriptionResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetProductRangeLimitResponse struct {
+	core.CommonResponse
+
+	// Daily product creation limit
+	DailyCreate GetProductRangeLimitUploadQuota `json:"daily_create"`
+
+	// Daily product update limit
+	DailyUpdate GetProductRangeLimitUploadQuota `json:"daily_update"`
+
+	// Product range limit
+	Total struct {
+		// How many products you can create in your personal account
+		Limit int64 `json:"limit"`
+
+		// How many products you've already created
+		Usage int64 `json:"usage"`
+	} `json:"total"`
+}
+
+type GetProductRangeLimitUploadQuota struct {
+	// How many products you can create in one day
+	Limit int64 `json:"limit"`
+
+	// Counter reset time for the current day in UTC format
+	ResetAt time.Time `json:"reset_at"`
+
+	// How many products you've created in the current day
+	Usage int64 `json:"usage"`
+}
+
+// Method for getting information about the following limits:
+//   - Product range limit: how many products you can create in your personal account.
+//   - Products creation limit: how many products you can create per day.
+//   - Products update limit: how many products you can update per day.
+// If you have a product range limit and you exceed it, you won't be able to create new products
+func (c Products) GetProductRangeLimit() (*GetProductRangeLimitResponse, error) {
+	url := "/v4/product/info/limit"
+
+	resp := &GetProductRangeLimitResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, &struct{}{}, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ChangeProductIDsParams struct {
+	// List of pairs with new and old values of product identifiers
+	UpdateOfferId []ChangeProductIDsUpdateOffer `json:"update_offer_id"`
+}
+
+type ChangeProductIDsUpdateOffer struct {
+	// New product identifier
+	//
+	// The maximum length of a string is 50 characters
+	NewOfferId string `json:"new_offer_id"`
+
+	// Old product identifier
+	OfferId string `json:"offer_id"`
+}
+
+type ChangeProductIDsResponse struct {
+	core.CommonResponse
+
+	// Errors list
+	Errors []struct {
+		// Error message
+		Message string `json:"message"`
+
+		// Product identifier that wasn't changed
+		OfferId string `json:"offer_id"`
+	} `json:"errors"`
+}
+
+// Method for changing the offer_id linked to products. You can change multiple offer_id in this method.
+//
+// We recommend transmitting up to 250 values in an array
+func (c Products) ChangeProductIDs(params *ChangeProductIDsParams) (*ChangeProductIDsResponse, error) {
+	url := "/v1/product/update/offer-id"
+
+	resp := &ChangeProductIDsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ArchiveProductParams struct {
+	// Product identifier
+	ProductId []int64 `json:"product_id"`
+}
+
+type ArchiveProductResponse struct {
+	core.CommonResponse
+
+	// The result of processing the request. true if the request was executed without errors
+	Result bool `json:"result"`
+}
+
+// Archive product
+func (c Products) ArchiveProduct(params *ArchiveProductParams) (*ArchiveProductResponse, error) {
+	url := "/v1/product/archive"
+
+	resp := &ArchiveProductResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Unarchive product
+func (c Products) UnarchiveProduct(params *ArchiveProductParams) (*ArchiveProductResponse, error) {
+	url := "/v1/product/unarchive"
+
+	resp := &ArchiveProductResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type RemoveProductWithoutSKUParams struct {
+	// Product identifier
+	Products []RemoveProductWithoutSKUProduct `json:"products"`
+}
+
+type RemoveProductWithoutSKUProduct struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+}
+
+type RemoveProductWithoutSKUResponse struct {
+	core.CommonResponse
+
+	// Product processing status
+	Status []struct {
+		// Reason of the error that occurred while processing the request
+		Error string `json:"error"`
+
+		// If the request was executed without errors and the products were deleted, the value is true
+		IsDeleted bool `json:"is_deleted"`
+
+		// Product identifier in the seller's system
+		OfferId string `json:"offer_id"`
+	} `json:"status"`
+}
+
+// Remove a product without an SKU from the archive
+//
+// You can pass up to 500 identifiers in one request
+func (c Products) RemoveProductWithoutSKU(params *RemoveProductWithoutSKUParams) (*RemoveProductWithoutSKUResponse, error) {
+	url := "/v2/products/delete"
+
+	resp := &RemoveProductWithoutSKUResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListGeoRestrictionsParams struct {
+	// Filter. To get all geo-restrictions, leave names blank and specify true in the only_visible parameter
+	Filter ListGeoRestrictionsFilter `json:"filter"`
+
+	// Order number of geo-restriction from which to output data in the response.
+	//
+	// If you specify 23 in this parameter, the first item in the restrictions list will output order_number = 24.
+	// If you want to get all geo-restrictions, pass 0 in this parameter
+	LastOrderNumber int64 `json:"last_order_number"`
+
+	// Number of items in the response
+	Limit int64 `json:"limit"`
+}
+
+type ListGeoRestrictionsFilter struct {
+	// List with city names
+	Names []string `json:"names"`
+
+	// Value visibility. We recommend always passing true in this parameter
+	OnlyVisible bool `json:"only_visible"`
+}
+
+type ListGeoRestrictionsResponse struct {
+	core.CommonResponse
+
+	// Restrictions
+	Restrictions []struct {
+		// Geo-restriction identifier
+		Id string `json:"id"`
+
+		// Item visibility
+		IsVisible bool `json:"is_visible"`
+
+		// City name
+		Name string `json:"name"`
+
+		// Geo-restriction order number.
+		//
+		// If you specify 23 in the last_order_number parameter in the request,
+		// the first item in the restrictions list will have order_number = 24
+		OrderNumber int64 `json:"order_number"`
+	} `json:"restrictions"`
+}
+
+// Get a list of geo-restrictions for services
+func (c Products) ListGeoRestrictions(params *ListGeoRestrictionsParams) (*ListGeoRestrictionsResponse, error) {
+	url := "/v1/products/geo-restrictions-catalog-by-filter"
+
+	resp := &ListGeoRestrictionsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type UploadActivationCodesParams struct {
+	// Digital activation codes
+	DigitalCodes []string `json:"digital_codes"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+}
+
+type UploadActivationCodesResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Uploading digital code task identifier
+		TaskId int64 `json:"task_id"`
+	} `json:"result"`
+}
+
+// Upload activation codes when you upload service or digital products. Activation code is associated with the digital product card
+func (c Products) UploadActivationCodes(params *UploadActivationCodesParams) (*UploadActivationCodesResponse, error) {
+	url := "/v1/product/upload_digital_codes"
+
+	resp := &UploadActivationCodesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type StatusOfUploadingActivationCodesParams struct {
+	// Uploading activation codes task identifier that was received from the `/v1/product/upload_digital_codes` method
+	TaskId int64 `json:"task_id"`
+}
+
+type StatusOfUploadingActivationCodesResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result struct {
+		// Upload status:
+		//   - pending — products in queue for processing.
+		//   - imported — the product has been successfully uploaded.
+		//   - failed — the product was uploaded with errors
+		Status string `json:"status"`
+	} `json:"result"`
+}
+
+// Get status of uploading activation codes task for services and digital products
+func (c Products) StatusOfUploadingActivationCodes(params *StatusOfUploadingActivationCodesParams) (*StatusOfUploadingActivationCodesResponse, error) {
+	url := "/v1/product/upload_digital_codes/info"
+
+	resp := &StatusOfUploadingActivationCodesResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

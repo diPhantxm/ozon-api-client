@@ -15,16 +15,16 @@
 - [x] Product details
 - [x] Get products' content rating by SKU
 - [x] Get a list of products by identifiers
-- [ ] Get a description of the product characteristics
-- [ ] Get product description
-- [ ] Product range limit, limits on product creation and update
-- [ ] Change product identifiers from the seller's system
-- [ ] Archive a product
-- [ ] Unarchive a product
-- [ ] Remove a product without an SKU from the archive
-- [ ] Get a list of geo-restrictions for services
-- [ ] Upload activation codes for services and digital products
-- [ ] Status of uploading activation codes
+- [x] Get a description of the product characteristics
+- [x] Get product description
+- [x] Product range limit, limits on product creation and update
+- [x] Change product identifiers from the seller's system
+- [x] Archive a product
+- [x] Unarchive a product
+- [x] Remove a product without an SKU from the archive
+- [x] Get a list of geo-restrictions for services
+- [x] Upload activation codes for services and digital products
+- [x] Status of uploading activation codes
 
 ## Prices and Stocks
 - [x] Update stocks
