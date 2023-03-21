@@ -1,9 +1,9 @@
 # Supported Endpoints
 
 ## Ozon attributes and characteristics
-- [ ] Product category tree
-- [ ] Category characteristics list
-- [ ] Characteristics value directory
+- [x] Product category tree
+- [x] Category characteristics list
+- [x] Characteristics value directory
 
 ## Uploading and updating products
 - [x] Create or update a product
