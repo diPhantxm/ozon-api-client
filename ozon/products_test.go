@@ -2361,7 +2361,7 @@ func TestGetMarkdownInfo(t *testing.T) {
 	}
 }
 
-func TestSetDiscountOnMarkdownProductParams(t *testing.T) {
+func TestSetDiscountOnMarkdownProduct(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {

@@ -74,9 +74,9 @@
 - [x] List of delivery methods for a warehouse
 
 ## Polygons
-- [ ] Create delivery polygon
-- [ ] Link delivery method to a delivery polygon
-- [ ] Delete polygon
+- [x] Create delivery polygon
+- [x] Link delivery method to a delivery polygon
+- [x] Delete polygon
 
 ## FBO
 - [x] Shipments list

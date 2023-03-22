@@ -25,6 +25,7 @@ type Client struct {
 	reports       *Reports
 	cancellations *Cancellations
 	categories    *Categories
+	polygons      *Polygons
 }
 
 func (c Client) Analytics() *Analytics {
@@ -75,6 +76,10 @@ func (c Client) Categories() *Categories {
 	return c.categories
 }
 
+func (c Client) Polygons() *Polygons {
+	return c.polygons
+}
+
 func NewClient(clientId, apiKey string) *Client {
 	coreClient := core.NewClient(DefaultAPIBaseUrl, map[string]string{
 		"Client-Id": clientId,
@@ -95,6 +100,7 @@ func NewClient(clientId, apiKey string) *Client {
 		reports:       &Reports{client: coreClient},
 		cancellations: &Cancellations{client: coreClient},
 		categories:    &Categories{client: coreClient},
+		polygons:      &Polygons{client: coreClient},
 	}
 }
 
@@ -115,5 +121,6 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 		reports:       &Reports{client: coreClient},
 		cancellations: &Cancellations{client: coreClient},
 		categories:    &Categories{client: coreClient},
+		polygons:      &Polygons{client: coreClient},
 	}
 }
