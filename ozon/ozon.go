@@ -14,6 +14,7 @@ type Client struct {
 	client *core.Client
 
 	analytics     *Analytics
+	brands        *Brands
 	fbo           *FBO
 	fbs           *FBS
 	finance       *Finance
@@ -30,6 +31,10 @@ type Client struct {
 
 func (c Client) Analytics() *Analytics {
 	return c.analytics
+}
+
+func (c Client) Brands() *Brands {
+	return c.brands
 }
 
 func (c Client) FBO() *FBO {
@@ -89,6 +94,7 @@ func NewClient(clientId, apiKey string) *Client {
 	return &Client{
 		client:        coreClient,
 		analytics:     &Analytics{client: coreClient},
+		brands:        &Brands{client: coreClient},
 		fbo:           &FBO{client: coreClient},
 		fbs:           &FBS{client: coreClient},
 		finance:       &Finance{client: coreClient},
@@ -110,6 +116,7 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 	return &Client{
 		client:        coreClient,
 		analytics:     &Analytics{client: coreClient},
+		brands:        &Brands{client: coreClient},
 		fbo:           &FBO{client: coreClient},
 		fbs:           &FBS{client: coreClient},
 		finance:       &Finance{client: coreClient},

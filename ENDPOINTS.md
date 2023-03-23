@@ -51,7 +51,7 @@
 - [x] Decline a discount request
 
 ## Brand certificates
-- [ ] List of certified brands
+- [x] List of certified brands
 
 ## Quality certificates
 - [ ] List of accordance types (version 1)
