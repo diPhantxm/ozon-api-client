@@ -54,20 +54,19 @@
 - [x] List of certified brands
 
 ## Quality certificates
-- [ ] List of accordance types (version 1)
-- [ ] List of accordance types (version 2)
-- [ ] Directory of document types
-- [ ] List of certified categories
+- [x] List of accordance types (version 2)
+- [x] Directory of document types
+- [x] List of certified categories
 - [ ] Adding certificates for products
-- [ ] Link the certificate to the product
-- [ ] Delete certificate
-- [ ] Certificate information
-- [ ] Certificates list
-- [ ] Product statuses list
-- [ ] List of products associated with the certificate
-- [ ] Unbind products from a certificate
-- [ ] Possible certificate rejection reasons
-- [ ] Possible certificate statuses
+- [x] Link the certificate to the product
+- [x] Delete certificate
+- [x] Certificate information
+- [x] Certificates list
+- [x] Product statuses list
+- [x] List of products associated with the certificate
+- [x] Unbind products from a certificate
+- [x] Possible certificate rejection reasons
+- [x] Possible certificate statuses
 
 ## Warehouses
 - [x] List of warehouses
