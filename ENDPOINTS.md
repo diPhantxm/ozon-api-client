@@ -138,13 +138,13 @@
 - [x] Reject a rFBS cancellation request
 
 ## Chats with customers
-- [ ] Chats list
-- [ ] Send message
-- [ ] Send file
-- [ ] Chat history
-- [ ] Update chat
-- [ ] Create a new chat
-- [ ] Mark messages as read
+- [x] Chats list
+- [x] Send message
+- [x] Send file
+- [x] Chat history
+- [x] Update chat
+- [x] Create a new chat
+- [x] Mark messages as read
 
 ## Invoices
 - [x] Create or edit proforma invoice link
