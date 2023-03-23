@@ -147,9 +147,9 @@
 - [ ] Mark messages as read
 
 ## Invoices
-- [ ] Create or edit proforma invoice link
-- [ ] Get a proforma invoice link
-- [ ] Delete the proforma invoice link
+- [x] Create or edit proforma invoice link
+- [x] Get a proforma invoice link
+- [x] Delete the proforma invoice link
 
 ## Reports
 - [x] Report details
