@@ -85,7 +85,7 @@ func (c Reports) GetList(params *GetReportsListParams) (*GetReportsListResponse,
 
 	resp := &GetReportsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +143,7 @@ func (c Reports) GetReportDetails(params *GetReportDetailsParams) (*GetReportDet
 
 	resp := &GetReportDetailsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +220,7 @@ func (c Reports) GetFinancial(params *GetFinancialReportParams) (*GetFinancialRe
 
 	resp := &GetFinancialReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +266,7 @@ func (c Reports) GetProducts(params *GetProductsReportParams) (*GetProductsRepor
 
 	resp := &GetProductsReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -299,7 +299,7 @@ func (c Reports) GetStocks(params *GetStocksReportParams) (*GetStocksReportRespo
 
 	resp := &GetStocksReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -342,7 +342,7 @@ func (c Reports) GetProductsMovement(params *GetProductsMovementReportParams) (*
 
 	resp := &GetProductsMovementReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +391,7 @@ func (c Reports) GetReturns(params *GetReturnsReportParams) (*GetReturnsReportRe
 
 	resp := &GetReturnsReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -464,7 +464,7 @@ func (c Reports) GetShipment(params *GetShipmentReportParams) (*GetShipmentRepor
 
 	resp := &GetShipmentReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -489,7 +489,7 @@ func (c Reports) IssueOnDiscountedProducts() (*IssueOnDiscountedProductsResponse
 
 	resp := &IssueOnDiscountedProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -532,7 +532,7 @@ func (c Reports) ReportOnDiscountedProducts(params *ReportOnDiscountedProductsPa
 
 	resp := &ReportOnDiscountedProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -547,7 +547,7 @@ func (c Reports) ListReportsOnDiscountedProducts() (*ReportOnDiscountedProductsR
 
 	resp := &ReportOnDiscountedProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}

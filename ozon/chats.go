@@ -82,7 +82,7 @@ func (c Chats) List(params *ListChatsParams) (*ListChatsResponse, error) {
 
 	resp := &ListChatsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (c Chats) SendMessage(params *SendMessageParams) (*SendMessageResponse, err
 
 	resp := &SendMessageResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (c Chats) SendFile(params *SendFileParams) (*SendFileResponse, error) {
 
 	resp := &SendFileResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -214,7 +214,7 @@ func (c Chats) History(params *ChatHistoryParams) (*ChatHistoryResponse, error) 
 
 	resp := &ChatHistoryResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +320,7 @@ func (c Chats) Update(params *UpdateChatParams) (*UpdateChatResponse, error) {
 
 	resp := &UpdateChatResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -350,7 +350,7 @@ func (c Chats) Create(params *CreateNewChatParams) (*CreateNewChatResponse, erro
 
 	resp := &CreateNewChatResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +380,7 @@ func (c Chats) MarkAsRead(params *MarkAsReadParams) (*MarkAsReadResponse, error)
 
 	resp := &MarkAsReadResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

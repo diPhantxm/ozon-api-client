@@ -55,7 +55,7 @@ func TestRequest(t *testing.T) {
 		c := NewMockClient(NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		respStruct := &TestRequestResponse{}
-		resp, err := c.Request(http.MethodPost, "/", test.params, respStruct)
+		resp, err := c.Request(http.MethodPost, "/", test.params, respStruct, nil)
 
 		if err != nil {
 			t.Error(err)

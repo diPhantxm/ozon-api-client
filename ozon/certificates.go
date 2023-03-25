@@ -42,7 +42,7 @@ func (c Certificates) ListOfAccordanceTypes() (*ListOfAccordanceTypesResponse, e
 
 	resp := &ListOfAccordanceTypesResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp)
+	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (c Certificates) DirectoryOfDocumentTypes() (*DirectoryOfDocumentTypesRespo
 
 	resp := &DirectoryOfDocumentTypesResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp)
+	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (c Certificates) ListOfCertifiedCategories(params *ListOfCertifiedCategorie
 
 	resp := &ListOfCertifiedCategoriesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (c Certificates) LinkToProduct(params *LinkCertificateToProductParams) (*Li
 
 	resp := &LinkCertificateToProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +177,7 @@ func (c Certificates) Delete(params *DeleteCertificateParams) (*DeleteCertificat
 
 	resp := &DeleteCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (c Certificates) GetInfo(params *GetCertificateInfoParams) (*GetCertificate
 
 	resp := &GetCertificateInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -316,7 +316,7 @@ func (c Certificates) List(params *ListCertificatesParams) (*ListCertificatesRes
 
 	resp := &ListCertificatesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -343,7 +343,7 @@ func (c Certificates) ProductStatuses() (*ProductStatusesResponse, error) {
 
 	resp := &ProductStatusesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +391,7 @@ func (c Certificates) ListProductsForCertificate(params *ListProductsForCertific
 
 	resp := &ListProductsForCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -432,7 +432,7 @@ func (c Certificates) UnlinkFromProduct(params *UnlinkFromProductParams) (*Unlin
 
 	resp := &UnlinkFromProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -460,7 +460,7 @@ func (c Certificates) PossibleRejectReasons() (*PossibleRejectReasonsResponse, e
 
 	resp := &PossibleRejectReasonsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -487,7 +487,53 @@ func (c Certificates) PossibleStatuses() (*PossibleStatusesResponse, error) {
 
 	resp := &PossibleStatusesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type AddCertificatesForProductsParams struct {
+	// Array of certificates for the product. Valid extensions are jpg, jpeg, png, pdf
+	Files []byte `json:"files"`
+
+	// Certificate name. No more than 100 characters
+	Name string `json:"name"`
+
+	// Certificate number. No more than 100 characters
+	Number string `json:"number"`
+
+	// Certificate type. To get the list of types, use the GET `/v1/product/certificate/types` method
+	TypeCode string `json:"type_code"`
+
+	// Accordance type. To get the list of types, use the GET `/v1/product/certificate/accordance-types` method
+	AccordanceTypeCode string `json:"accordance_type_code"`
+
+	// Issue date of the certificate
+	IssueDate time.Time `json:"issue_date"`
+
+	// Expiration date of the certificate. Can be empty for permanent certificates
+	ExpireDate time.Time `json:"expire_date"`
+}
+
+type AddCertificatesForProductsResponse struct {
+	core.CommonResponse
+
+	Id int `json:"id"`
+}
+
+// Adding certificates for products
+func (c Certificates) AddForProducts(params *AddCertificatesForProductsParams) (*AddCertificatesForProductsResponse, error) {
+	url := "/v1/product/certificate/create"
+
+	resp := &AddCertificatesForProductsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, map[string]string{
+		"Content-Type": "multipart/form-data",
+	})
 	if err != nil {
 		return nil, err
 	}

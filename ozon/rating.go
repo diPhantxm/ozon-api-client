@@ -89,7 +89,7 @@ func (c Rating) GetCurrentSellerRatingInfo() (*GetCurrentSellerRatingInfoRespons
 
 	resp := &GetCurrentSellerRatingInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +178,7 @@ func (c Rating) GetSellerRatingInfoForPeriod(params *GetSellerRatingInfoForPerio
 
 	resp := &GetSellerRatingInfoPeriodResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

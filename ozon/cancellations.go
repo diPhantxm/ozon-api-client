@@ -82,7 +82,7 @@ func (c Cancellations) GetInfo(params *GetCancellationInfoParams) (*GetCancellat
 
 	resp := &GetCancellationInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ func (c Cancellations) List(params *ListCancellationsParams) (*ListCancellations
 
 	resp := &ListCancellationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (c Cancellations) Approve(params *ApproveRejectCancellationsParams) (*Appro
 
 	resp := &ApproveRejectCancellationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +197,7 @@ func (c Cancellations) Reject(params *ApproveRejectCancellationsParams) (*Approv
 
 	resp := &ApproveRejectCancellationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -57,7 +57,7 @@
 - [x] List of accordance types (version 2)
 - [x] Directory of document types
 - [x] List of certified categories
-- [ ] Adding certificates for products
+- [x] Adding certificates for products
 - [x] Link the certificate to the product
 - [x] Delete certificate
 - [x] Certificate information
