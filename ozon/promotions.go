@@ -76,7 +76,7 @@ func (c Promotions) GetAvailablePromotions() (*GetAvailablePromotionsResponse, e
 
 	resp := &GetAvailablePromotionsResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp)
+	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (c Promotions) AddToPromotion(params *AddProductToPromotionParams) (*AddPro
 
 	resp := &AddProductToPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, params, resp)
+	response, err := c.client.Request(http.MethodGet, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +192,7 @@ func (c Promotions) ProductsAvailableForPromotion(params *ProductsAvailableForPr
 
 	resp := &ProductsAvailableForPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (c Promotions) ProductsInPromotion(params *ProductsInPromotionParams) (*Pro
 
 	resp := &ProductsInPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -273,7 +273,7 @@ func (c Promotions) RemoveProduct(params *RemoveProductFromPromotionParams) (*Re
 
 	resp := &RemoveProductFromPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -321,7 +321,7 @@ func (c Promotions) ListHotSalePromotions() (*ListHotSalePromotionsResponse, err
 
 	resp := &ListHotSalePromotionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -381,7 +381,7 @@ func (c Promotions) ProductsAvailableForHotSalePromotion(params *ProductsAvailab
 
 	resp := &ProductsAvailableForHotSalePromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -430,7 +430,7 @@ func (c Promotions) AddProductsToHotSale(params *AddProductsToHotSaleParams) (*P
 
 	resp := &ProductsToHotSaleResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -453,7 +453,7 @@ func (c Promotions) RemoveProductsToHotSale(params *RemoveProductsToHotSaleParam
 
 	resp := &ProductsToHotSaleResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -591,7 +591,7 @@ func (c Promotions) ListDiscountRequests(params *ListDiscountRequestsParams) (*L
 
 	resp := &ListDiscountRequestsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -652,7 +652,7 @@ func (c Promotions) ApproveDiscountRequest(params *DiscountRequestParams) (*Disc
 
 	resp := &DiscountRequestResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -669,7 +669,7 @@ func (c Promotions) DeclineDiscountRequest(params *DiscountRequestParams) (*Disc
 
 	resp := &DiscountRequestResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

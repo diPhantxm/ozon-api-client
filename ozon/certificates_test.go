@@ -3,6 +3,7 @@ package ozon
 import (
 	"net/http"
 	"testing"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -643,6 +644,58 @@ func TestPossibleStatuses(t *testing.T) {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		resp, err := c.Certificates().PossibleStatuses()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestAddCertificatesForProducts(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *AddCertificatesForProductsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&AddCertificatesForProductsParams{
+				Files:              []byte{10, 15, 2, 0},
+				Name:               "Certificate name",
+				Number:             "10a-d5s9-4asdf2",
+				TypeCode:           "declaration",
+				AccordanceTypeCode: "gost",
+				IssueDate:          time.Now(),
+				ExpireDate:         time.Now(),
+			},
+			`{
+				"id": 50058
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&AddCertificatesForProductsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.Certificates().AddForProducts(test.params)
 		if err != nil {
 			t.Error(err)
 		}

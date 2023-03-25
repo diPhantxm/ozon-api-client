@@ -86,7 +86,7 @@ func (c Warehouses) GetListOfWarehouses() (*GetListOfWarehousesResponse, error) 
 
 	resp := &GetListOfWarehousesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func (c Warehouses) GetListOfDeliveryMethods(params *GetListOfDeliveryMethodsPar
 
 	resp := &GetListOfDeliveryMethodsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}

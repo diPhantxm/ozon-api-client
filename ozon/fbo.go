@@ -164,7 +164,7 @@ func (c FBO) GetShipmentsList(params *GetFBOShipmentsListParams) (*GetFBOShipmen
 
 	resp := &GetFBOShipmentsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +267,7 @@ func (c FBO) GetShipmentDetails(params *GetShipmentDetailsParams) (*GetShipmentD
 
 	resp := &GetShipmentDetailsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

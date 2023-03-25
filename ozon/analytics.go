@@ -99,7 +99,7 @@ func (c Analytics) GetAnalyticsData(params *GetAnalyticsDataParams) (*GetAnalyti
 
 	resp := &GetAnalyticsDataResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func (c Analytics) GetStocksOnWarehouses(params *GetStocksOnWarehousesParams) (*
 
 	resp := &GetStocksOnWarehousesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

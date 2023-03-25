@@ -30,7 +30,7 @@ func (c Polygons) CreateDelivery(params *CreateDeliveryPolygonParams) (*CreateDe
 
 	resp := &CreateDeliveryPolygonResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (c Polygons) Link(params *LinkDeliveryMethodToPolygonParams) (*LinkDelivery
 
 	resp := &LinkDeliveryMethodToPolygonResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func (c Polygons) Delete(params *DeletePolygonParams) (*DeletePolygonResponse, e
 
 	resp := &DeletePolygonResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

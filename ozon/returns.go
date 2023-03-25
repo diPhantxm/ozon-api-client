@@ -80,7 +80,7 @@ func (c Returns) GetFBOReturns(params *GetFBOReturnsParams) (*GetFBOReturnsRespo
 
 	resp := &GetFBOReturnsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -240,7 +240,7 @@ func (c Returns) GetFBSReturns(params *GetFBSReturnsParams) (*GetFBSReturnsRespo
 
 	resp := &GetFBSReturnsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

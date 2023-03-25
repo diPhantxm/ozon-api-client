@@ -45,7 +45,7 @@ func (c Brands) List(params *ListCertifiedBrandsParams) (*ListCertifiedBrandsRes
 
 	resp := &ListCertifiedBrandsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

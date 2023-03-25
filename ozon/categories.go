@@ -43,7 +43,7 @@ func (c Categories) Tree(params *GetProductTreeParams) (*GetProductTreeResponse,
 
 	resp := &GetProductTreeResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func (c Categories) Attributes(params *GetCategoryAttributesParams) (*GetCategor
 
 	resp := &GetCategoryAttributesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +184,7 @@ func (c Categories) AttributesDictionary(params *GetAttributeDictionaryParams) (
 
 	resp := &GetAttributeDictionaryResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

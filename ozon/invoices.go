@@ -31,7 +31,7 @@ func (c Invoices) CreateUpdate(params *CreateUpdateProformaLinkParams) (*CreateU
 
 	resp := &CreateUpdateProformaLinkResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (c Invoices) Get(params *GetProformaLinkParams) (*GetProformaLinkResponse, 
 
 	resp := &GetProformaLinkResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (c Invoices) Delete(params *DeleteProformaLinkParams) (*DeleteProformaLinkR
 
 	resp := &DeleteProformaLinkResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

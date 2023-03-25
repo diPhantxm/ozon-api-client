@@ -209,7 +209,7 @@ func (c FBS) ListUnprocessedShipments(params *ListUnprocessedShipmentsParams) (*
 
 	resp := &ListUnprocessedShipmentsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -308,7 +308,7 @@ func (c FBS) GetFBSShipmentsList(params *GetFBSShipmentsListParams) (*GetFBSShip
 
 	resp := &GetFBSShipmentsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +377,7 @@ func (c FBS) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
 
 	resp := &PackOrderResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -443,7 +443,7 @@ func (c FBS) ValidateLabelingCodes(params *ValidateLabelingCodesParams) (*Valida
 
 	resp := &ValidateLabelingCodesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -539,7 +539,7 @@ func (c FBS) GetShipmentDataByBarcode(params *GetShipmentDataByBarcodeParams) (*
 
 	resp := &GetShipmentDataByBarcodeResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -791,7 +791,7 @@ func (c FBS) GetShipmentDataByIdentifier(params *GetShipmentDataByIdentifierPara
 
 	resp := &GetShipmentDataByIdentifierResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -835,7 +835,7 @@ func (c FBS) AddTrackingNumbers(params *AddTrackingNumbersParams) (*AddTrackingN
 
 	resp := &AddTrackingNumbersResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -955,7 +955,7 @@ func (c FBS) ListOfShipmentCertificates(params *ListOfShipmentCertificatesParams
 
 	resp := &ListOfShipmentCertificatesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -987,7 +987,7 @@ func (c FBS) SignShipmentCertificate(params *SignShipmentCertificateParams) (*Si
 
 	resp := &SignShipmentCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1023,7 +1023,7 @@ func (c FBS) ChangeStatusToDelivering(params *ChangeStatusToParams) (*ChangeStat
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1038,7 +1038,7 @@ func (c FBS) ChangeStatusToLastMile(params *ChangeStatusToParams) (*ChangeStatus
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1053,7 +1053,7 @@ func (c FBS) ChangeStatusToDelivered(params *ChangeStatusToParams) (*ChangeStatu
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1068,7 +1068,7 @@ func (c FBS) ChangeStatusToSendBySeller(params *ChangeStatusToParams) (*ChangeSt
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1095,7 +1095,7 @@ func (c FBS) PassShipmentToShipping(params *PassShipmentToShippingParams) (*Pass
 
 	resp := &PassShipmentToShippingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1140,7 +1140,7 @@ func (c FBS) CancelShipment(params *CancelShipmentParams) (*CancelShipmentRespon
 
 	resp := &CancelShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1185,7 +1185,7 @@ func (c FBS) CreateAct(params *CreateActParams) (*CreateActResponse, error) {
 
 	resp := &CreateActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1225,7 +1225,9 @@ func (c FBS) GetLabeling(params *GetLabelingParams) (*GetLabelingResponse, error
 
 	resp := &GetLabelingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "application/pdf",
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -1257,7 +1259,9 @@ func (c FBS) PrintLabeling(params *PrintLabelingParams) (*PrintLabelingResponse,
 
 	resp := &PrintLabelingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "application/pdf",
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -1285,11 +1289,13 @@ type CreateTaskForGeneratingLabelResponse struct {
 //
 // To get labels created as a result of the method, use the /v1/posting/fbs/package-label/get method
 func (c FBS) CreateTaskForGeneratingLabel(params *CreateTaskForGeneratingLabelParams) (*CreateTaskForGeneratingLabelResponse, error) {
-	url := "/v2/posting/fbs/package-label"
+	url := "/v1/posting/fbs/package-label/create"
 
 	resp := &CreateTaskForGeneratingLabelResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "application/pdf",
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -1341,7 +1347,7 @@ func (c FBS) GetDropOffPointRestrictions(params *GetDropOffPointRestrictionsPara
 
 	resp := &GetDropOffPointRestrictionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1391,7 +1397,7 @@ func (c FBS) CheckproductItemsData(params *CheckProductItemsDataParams) (*CheckP
 
 	resp := &CheckProductItemsDataResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1428,7 +1434,7 @@ func (c FBS) GetProductItemsCheckStatuses(params *GetProductItemsCheckStatusesPa
 
 	resp := &GetProductItemsCheckStatusesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1466,7 +1472,7 @@ func (c FBS) RescheduleShipmentDeliveryDate(params *RescheduleShipmentDeliveryDa
 
 	resp := &RescheduleShipmentDeliveryDateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1505,7 +1511,7 @@ func (c FBS) DateAvailableForDeliverySchedule(params *DateAvailableForDeliverySc
 
 	resp := &DateAvailableForDeliveryScheduleResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1538,7 +1544,7 @@ func (c FBS) ListManufacturingCountries(params *ListManufacturingCountriesParams
 
 	resp := &ListManufacturingCountriesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1574,7 +1580,7 @@ func (c FBS) SetManufacturingCountry(params *SetManufacturingCountryParams) (*Se
 
 	resp := &SetManufacturingCountryResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1627,7 +1633,7 @@ func (c FBS) PartialPackOrder(params *PartialPackOrderParams) (*PartialPackOrder
 
 	resp := &PartialPackOrderResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1716,7 +1722,7 @@ func (c FBS) AvailableFreightsList(params *AvailableFreightsListParams) (*Availa
 
 	resp := &AvailableFreightsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1752,7 +1758,7 @@ func (c FBS) GenerateAct(params *GenerateActParams) (*GenerateActResponse, error
 
 	resp := &GenerateActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1791,7 +1797,7 @@ func (c FBS) GetDigitalAct(params *GetDigitalActParams) (*GetDigitalActResponse,
 
 	resp := &GetDigitalActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1824,7 +1830,7 @@ func (c FBS) PackageUnitLabel(params *PackageUnitLabelsParams) (*PackageUnitLabe
 
 	resp := &PackageUnitLabelsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1852,7 +1858,7 @@ func (c FBS) OpenDisputeOverShipment(params *OpenDisputeOverShipmentParams) (*Op
 
 	resp := &OpenDisputeOverShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1894,7 +1900,7 @@ func (c FBS) ShipmentCancellationReasons(params *ShipmentCancellationReasonsPara
 
 	resp := &ShipmentCancellationReasonsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1930,7 +1936,7 @@ func (c FBS) ShipmentsCancellationReasons() (*ShipmentsCancellationReasonsRespon
 
 	resp := &ShipmentsCancellationReasonsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp)
+	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1968,7 +1974,7 @@ func (c FBS) AddWeightForBulkProduct(params *AddWeightForBulkProductParams) (*Ad
 
 	resp := &AddWeightForBulkProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2012,7 +2018,7 @@ func (c FBS) CancelSending(params *CancelSendingParams) (*CancelSendingResponse,
 
 	resp := &CancelSendingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2078,7 +2084,7 @@ func (c FBS) ListShipmentInCertificate(params *ListShipmentInCertificateParams) 
 
 	resp := &ListShipmentInCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2113,7 +2119,7 @@ func (c FBS) SpecifyNumberOfBoxes(params *SpecifyNumberOfBoxesParams) (*SpecifyN
 
 	resp := &SpecifyNumberOfBoxesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2182,7 +2188,7 @@ func (c FBS) StatusOfAct(params *StatusOfActParams) (*StatusOfActResponse, error
 
 	resp := &StatusOfActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2234,7 +2240,7 @@ func (c FBS) ETGBCustomsDeclarations(params *ETGBCustomsDeclarationsParams) (*ET
 
 	resp := &ETGBCustomsDeclarationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

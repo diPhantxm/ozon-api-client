@@ -150,7 +150,7 @@ func (c Finance) ReportOnSoldProducts(params *ReportOnSoldProductsParams) (*Repo
 
 	resp := &ReportOnSoldProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ func (c Finance) GetTotalTransactionsSum(params *GetTotalTransactionsSumParams) 
 
 	resp := &GetTotalTransactionsSumResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +377,7 @@ func (c Finance) ListTransactions(params *ListTransactionsParams) (*ListTransact
 
 	resp := &ListTransactionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

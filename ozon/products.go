@@ -81,7 +81,7 @@ func (c Products) GetStocksInfo(params *GetStocksInfoParams) (*GetStocksInfoResp
 
 	resp := &GetStocksInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -359,7 +359,7 @@ func (c Products) GetProductDetails(params *GetProductDetailsParams) (*GetProduc
 
 	resp := &GetProductDetailsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -420,7 +420,7 @@ func (c Products) UpdateStocks(params *UpdateStocksParams) (*UpdateStocksRespons
 
 	resp := &UpdateStocksResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -490,7 +490,7 @@ func (c Products) UpdateQuantityStockProducts(params *UpdateQuantityStockProduct
 
 	resp := &UpdateQuantityStockProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -539,7 +539,7 @@ func (c Products) StocksInSellersWarehouse(params *StocksInSellersWarehouseParam
 
 	resp := &StocksInSellersWarehouseResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -612,7 +612,7 @@ func (c Products) UpdatePrices(params *UpdatePricesParams) (*UpdatePricesRespons
 
 	resp := &UpdatePricesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -785,7 +785,7 @@ func (c Products) CreateOrUpdateProduct(params *CreateOrUpdateProductParams) (*C
 
 	resp := &CreateOrUpdateProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -847,7 +847,7 @@ func (c Products) GetListOfProducts(params *GetListOfProductsParams) (*GetListOf
 
 	resp := &GetListOfProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -922,7 +922,7 @@ func (c Products) GetProductsRatingBySKU(params *GetProductsRatingBySKUParams) (
 
 	resp := &GetProductsRatingBySKUResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -977,7 +977,7 @@ func (c Products) GetProductImportStatus(params *GetProductImportStatusParams) (
 
 	resp := &GetProductImportStatusResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1045,7 +1045,7 @@ func (c Products) CreateProductByOzonID(params *CreateProductByOzonIDParams) (*C
 
 	resp := &CreateProductByOzonIDResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1130,7 +1130,7 @@ func (c Products) UpdateProductImages(params *UpdateProductImagesParams) (*Produ
 
 	resp := &ProductInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1150,7 +1150,7 @@ func (c Products) CheckImageUploadingStatus(params *CheckImageUploadingStatusPar
 
 	resp := &ProductInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1190,7 +1190,7 @@ func (c Products) ListProductsByIDs(params *ListProductsByIDsParams) (*ListProdu
 
 	resp := &ListProductsByIDsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1360,7 +1360,7 @@ func (c Products) GetDescriptionOfProduct(params *GetDescriptionOfProductParams)
 
 	resp := &GetDescriptionOfProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1402,7 +1402,7 @@ func (c Products) GetProductDescription(params *GetProductDescriptionParams) (*G
 
 	resp := &GetProductDescriptionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1451,7 +1451,7 @@ func (c Products) GetProductRangeLimit() (*GetProductRangeLimitResponse, error) 
 
 	resp := &GetProductRangeLimitResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, &struct{}{}, resp)
+	response, err := c.client.Request(http.MethodPost, url, &struct{}{}, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1496,7 +1496,7 @@ func (c Products) ChangeProductIDs(params *ChangeProductIDsParams) (*ChangeProdu
 
 	resp := &ChangeProductIDsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1523,7 +1523,7 @@ func (c Products) ArchiveProduct(params *ArchiveProductParams) (*ArchiveProductR
 
 	resp := &ArchiveProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1538,7 +1538,7 @@ func (c Products) UnarchiveProduct(params *ArchiveProductParams) (*ArchiveProduc
 
 	resp := &ArchiveProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1581,7 +1581,7 @@ func (c Products) RemoveProductWithoutSKU(params *RemoveProductWithoutSKUParams)
 
 	resp := &RemoveProductWithoutSKUResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1640,7 +1640,7 @@ func (c Products) ListGeoRestrictions(params *ListGeoRestrictionsParams) (*ListG
 
 	resp := &ListGeoRestrictionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1673,7 +1673,7 @@ func (c Products) UploadActivationCodes(params *UploadActivationCodesParams) (*U
 
 	resp := &UploadActivationCodesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1706,7 +1706,7 @@ func (c Products) StatusOfUploadingActivationCodes(params *StatusOfUploadingActi
 
 	resp := &StatusOfUploadingActivationCodesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1892,7 +1892,7 @@ func (c Products) GetProductPriceInfo(params *GetProductPriceInfoParams) (*GetPr
 
 	resp := &GetProductPriceInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1966,7 +1966,7 @@ func (c Products) GetMarkdownInfo(params *GetMarkdownInfoParams) (*GetMarkdownIn
 
 	resp := &GetMarkdownInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1996,7 +1996,7 @@ func (c Products) SetDiscountOnMarkdownProduct(params *SetDiscountOnMarkdownProd
 
 	resp := &SetDiscountOnMarkdownProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

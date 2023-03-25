@@ -56,7 +56,7 @@ func (c Client) newRequest(method string, url string, body interface{}) (*http.R
 	return req, nil
 }
 
-func (c Client) Request(method string, path string, req, resp interface{}) (*Response, error) {
+func (c Client) Request(method string, path string, req, resp interface{}, options map[string]string) (*Response, error) {
 	httpReq, err := c.newRequest(method, path, req)
 	if err != nil {
 		return nil, err
