@@ -76,7 +76,7 @@ type GetListOfWarehousesResponse struct {
 		Status string `json:"status"`
 
 		// Warehouse working days
-		WorkingDays []string `json:"working_days"`
+		WorkingDays []WorkingDay `json:"working_days"`
 	} `json:"resulCommonResponse"`
 }
 

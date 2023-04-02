@@ -15,7 +15,7 @@ type GetProductTreeParams struct {
 	CategoryId int64 `json:"category_id"`
 
 	// Response language
-	Language string `json:"language" default:"DEFAULT"`
+	Language Language `json:"language" default:"DEFAULT"`
 }
 
 type GetProductTreeResponse struct {
@@ -54,13 +54,13 @@ func (c Categories) Tree(params *GetProductTreeParams) (*GetProductTreeResponse,
 
 type GetCategoryAttributesParams struct {
 	// Filter by characteristics
-	AttributeType string `json:"attribute_type" default:"ALL"`
+	AttributeType AttributeType `json:"attribute_type" default:"ALL"`
 
 	// Category identifier
 	CategoryId []int64 `json:"category_id"`
 
 	// Response language
-	Language string `json:"language" default:"DEFAULT"`
+	Language Language `json:"language" default:"DEFAULT"`
 }
 
 type GetCategoryAttributesResponse struct {
@@ -151,7 +151,7 @@ type GetAttributeDictionaryParams struct {
 
 	// Response language
 	// The default language is Russian
-	Language string `json:"language" default:"DEFAULT"`
+	Language Language `json:"language" default:"DEFAULT"`
 
 	LastValueId int64 `json:"last_value_id"`
 
