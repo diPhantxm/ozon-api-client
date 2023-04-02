@@ -19,7 +19,7 @@ type GetAnalyticsDataParams struct {
 	DateTo time.Time `json:"date_to"`
 
 	// Items Enum: "unknownDimension" "sku" "spu" "day" "week" "month" "year" "category1" "category2" "category3" "category4" "brand" "modelID"
-	Dimension []string `json:"dimension"`
+	Dimension []GetAnalyticsDataDimension `json:"dimension"`
 
 	// Filters
 	Filters []struct {
@@ -27,9 +27,7 @@ type GetAnalyticsDataParams struct {
 		Key string `json:"key"`
 
 		// Comparison operation
-		//
-		// Enum: "EQ" "GT" "GTE" "LT" "LTE"
-		Operation string `json:"operation"`
+		Operation GetAnalyticsDataFilterOperation `json:"operation"`
 
 		// Value for comparison
 		Value string `json:"value"`
@@ -41,11 +39,7 @@ type GetAnalyticsDataParams struct {
 	Limit int64 `json:"limit"`
 
 	// Specify up to 14 metrics. If there are more, you will get an error with the InvalidArgument code
-	//
-	// Items Enum: "unknown_metric" "hits_view_search" "hits_view_pdp" "hits_view" "hits_tocart_search" "hits_tocart_pdp" "hits_tocart" "session_view_search"
-	// "session_view_pdp" "session_view" "conv_tocart_search" "conv_tocart_pdp" "conv_tocart" "revenue" "returns" "cancellations" "ordered_units" "delivered_units"
-	// "adv_view_pdp" "adv_view_search_category" "adv_view_all" "adv_sum_all" "position_category" "postings" "postings_premium"
-	Metrics []string `json:"metrics"`
+	Metrics []GetAnalyticsDataFilterMetric `json:"metrics"`
 
 	// Number of elements that will be skipped in the response. For example, if `offset=10`, the response will start with the 11th element found
 	Offset int64 `json:"offset"`
@@ -57,12 +51,10 @@ type GetAnalyticsDataParams struct {
 // Report sorting settings
 type GetAnalyticsDataSort struct {
 	// Metric by which the method result will be sorted
-	Key string `json:"key"`
+	Key GetAnalyticsDataFilterMetric `json:"key"`
 
 	// Sorting type
-	//   - ASC — in ascending order,
-	//   - DESC — in descending order.
-	Order string `json:"order"`
+	Order Order `json:"order"`
 }
 
 type GetAnalyticsDataResponse struct {
@@ -118,10 +110,7 @@ type GetStocksOnWarehousesParams struct {
 	Offset int64 `json:"offset"`
 
 	// Warehouse type filter:
-	//   - EXPRESS_DARK_STORE — Ozon warehouses with Fresh delivery.
-	//   - NOT_EXPRESS_DARK_STORE — Ozon warehouses without Fresh delivery.
-	//   - ALL — all Ozon warehouses.
-	WarehouseType string `json:"warehouse_type"`
+	WarehouseType WarehouseType `json:"warehouse_type"`
 }
 
 type GetStocksOnWarehousesResponse struct {

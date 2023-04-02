@@ -464,7 +464,7 @@ func (c Promotions) RemoveProductsToHotSale(params *RemoveProductsToHotSaleParam
 
 type ListDiscountRequestsParams struct {
 	// Discount request status
-	Status string `json:"status" default:"UNKNOWN"`
+	Status ListDiscountRequestsStatus `json:"status" default:"UNKNOWN"`
 
 	// Page number from which you want to download the list of discount requests
 	Page uint64 `json:"page"`

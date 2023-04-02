@@ -23,12 +23,12 @@ func TestGetAnalyticsData(t *testing.T) {
 			&GetAnalyticsDataParams{
 				DateFrom:  core.TimeFromString(t, "2006-01-02", "2020-09-01"),
 				DateTo:    core.TimeFromString(t, "2006-01-02", "2021-10-15"),
-				Dimension: []string{"sku", "day"},
-				Metrics:   []string{"hits_view_search"},
+				Dimension: []GetAnalyticsDataDimension{SKUDimension, DayDimension},
+				Metrics:   []GetAnalyticsDataFilterMetric{AdvViewAll},
 				Sort: []GetAnalyticsDataSort{
 					{
-						Key:   "hits_view_search",
-						Order: "DESC",
+						Key:   HistViewPDP,
+						Order: Descending,
 					},
 				},
 				Limit:  1000,
