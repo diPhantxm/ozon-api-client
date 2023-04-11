@@ -173,7 +173,7 @@ func (c FBO) GetShipmentsList(params *GetFBOShipmentsListParams) (*GetFBOShipmen
 	return resp, nil
 }
 
-type GetShipmentDetailsParams struct{
+type GetShipmentDetailsParams struct {
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
@@ -184,7 +184,7 @@ type GetShipmentDetailsParams struct{
 	With GetShipmentDetailsWith `json:"with"`
 }
 
-type GetShipmentDetailsWith struct{
+type GetShipmentDetailsWith struct {
 	// Specify true to add analytics data to the response
 	AnalyticsData bool `json:"analytics_data"`
 
@@ -192,19 +192,19 @@ type GetShipmentDetailsWith struct{
 	FinancialData bool `json:"financial_data"`
 }
 
-type GetShipmentDetailsResponse struct{
+type GetShipmentDetailsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct{
+	Result struct {
 		// Additional data
-		AdditionalData []struct{
-			Key string `json:"key"`
+		AdditionalData []struct {
+			Key   string `json:"key"`
 			Value string `json:"value"`
 		} `json:"additional_data"`
 
 		// Analytical data
-		AnalyticsData struct{
+		AnalyticsData struct {
 			// Delivery city
 			City string `json:"Delivery city"`
 
@@ -224,7 +224,7 @@ type GetShipmentDetailsResponse struct{
 
 			// Delivery region
 			Region string `json:"region"`
-			
+
 			// Warehouse identifier
 			WarehouseId int64 `json:"warehouse_id"`
 
@@ -268,6 +268,201 @@ func (c FBO) GetShipmentDetails(params *GetShipmentDetailsParams) (*GetShipmentD
 	resp := &GetShipmentDetailsResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListSupplyRequestsParams struct {
+	// Number of the page returned in the request
+	Page int32 `json:"page"`
+
+	// Number of elements on the page
+	PageSize int32 `json:"page_size"`
+
+	// Filter on status of a supply by request
+	States []SupplyRequestState `json:"states"`
+}
+
+type ListSupplyRequestsResponse struct {
+	core.CommonResponse
+
+	// Indicates that the response contains not the entire array of supply requests:
+	//   - true — make a new request with a different page and page_size values to get information on the remaining requests;
+	//   - false — the entire array of requests for the filter specified in the request was returned in the response
+	HasNext bool `json:"has_next"`
+
+	// Supply requests list
+	SupplyOrders []SupplyRequestCommonResponse `json:"supply_orders"`
+
+	// Total requests number
+	TotalSupplyOrdersCount int32 `json:"total_supply_orders_count"`
+}
+
+type SupplyRequestCommonResponse struct {
+	// Supply request creation date
+	CreatedAt string `json:"created_at"`
+
+	// Local time supply interval
+	LocalTimeslot struct {
+		// Interval start
+		From string `json:"from"`
+
+		// Interval end
+		To string `json:"to"`
+	} `json:"local_timeslot"`
+
+	// Date from which you want to bring the supply to the warehouse. Only for supplies via vDC
+	PreferredSupplyDataFrom string `json:"preferred_supply_data_from"`
+
+	// Date by which you want to bring the supply to the warehouse. Only for supplies via vDC
+	PreferredSupplyDataTo string `json:"preferred_supply_data_to"`
+
+	// Status of a supply by request
+	State string `json:"state"`
+
+	// Supply request identifier
+	SupplyOrderId int64 `json:"supply_order_id"`
+
+	// Supply request number
+	SupplyOrderNumber string `json:"supply_order_number"`
+
+	// Supply warehouse
+	SupplyWarehouse struct {
+		// Warehouse address
+		Address string `json:address"`
+
+		// Warehouse name
+		Name string `json:"name"`
+
+		// Warehouse identifier
+		WarehouseId int64 `json:"warehouse_id"`
+	} `json:"supply_warehouse"`
+
+	// time_left_to_prepare_supply
+	TimeLeftToPrepareSupply int64 `json:"time_left_to_prepare_supply"`
+
+	// Time in seconds left to select the supply option. Only for supplies via vDC
+	TimeLeftToSelectSupplyVariant int64 `json:"time_left_to_select_supply_variant"`
+
+	// total_items_count
+	TotalItemsCount int32 `json:"total_items_count"`
+
+	// Total number of items in the request
+	TotalQuantity int32 `json:"total_quantity"`
+}
+
+// Method for getting a list of supply requests to the Ozon warehouse.
+// Requests with supply both to a specific warehouse and via a virtual
+// distribution center (vDC) are taken into account
+func (c FBO) ListSupplyRequests(params *ListSupplyRequestsParams) (*ListSupplyRequestsResponse, error) {
+	url := "/v1/supply-order/list"
+
+	resp := &ListSupplyRequestsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetSupplyRequestInfoParams struct {
+	// Supply request identifier
+	SupplyOrderId int64 `json:"supply_order_id"`
+}
+
+type GetSupplyRequestInfoResponse struct {
+	core.CommonResponse
+
+	SupplyRequestCommonResponse
+
+	// Driver and car information
+	VehicleInfo struct {
+		// Driver name
+		DriverName string `json:"driver_name"`
+
+		// Driver phone number
+		DriverPhone string `json:"driver_phone"`
+
+		// Car model
+		VehicleModel string `json:"vehicle_model"`
+
+		// Car number
+		VehicleNumber string `json:"vehicle_number"`
+	} `json:"vehicle_info"`
+}
+
+// Method for getting detailed information on a supply request.
+// Requests with supply both to a specific warehouse and via a
+// virtual distribution center (vDC) are taken into account
+func (c FBO) GetSupplyRequestInfo(params *GetSupplyRequestInfoParams) (*GetSupplyRequestInfoResponse, error) {
+	url := "/v1/supply-order/get"
+
+	resp := &GetSupplyRequestInfoResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListProductsInSupplyRequestParams struct {
+	// Number of the page returned in the query
+	Page int32 `json:"page"`
+
+	// Number of elements on the page
+	PageSize int32 `json:"page_size"`
+
+	// Supply request identifier
+	SupplyOrderId int64 `json:"supply_order_id"`
+}
+
+type ListProductsInSupplyRequestResponse struct {
+	core.CommonResponse
+
+	// Indicates that the response contains not the entire array of supply requests:
+	//   - true — make a new request with a different page and page_size values to get the remaining products;
+	//   - false — the entire array of product was returned in the response
+	HasNext bool `json:"has_next"`
+
+	// Products list
+	Items []struct {
+		// Link to product image
+		IconPath string `json:"icon_path"`
+
+		// Product name
+		Name string `json:"name"`
+
+		// Product ID
+		OfferId string `json:"offer_id"`
+
+		// Product quantity
+		Quantity int64 `json:"quantity"`
+
+		// Product identifier in the Ozon system, SKU
+		SKU int64 `json:"sku"`
+	} `json:"items"`
+
+	// Total number of products in the request
+	TotalItemsCount int32 `json:"total_items_count"`
+}
+
+// List of products in the sullpy request
+func (c FBO) ListProductsInSupplyRequest(params *ListProductsInSupplyRequestParams) (*ListProductsInSupplyRequestResponse, error) {
+	url := "/v1/supply-order/items"
+
+	resp := &ListProductsInSupplyRequestResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp)
 	if err != nil {
 		return nil, err
 	}

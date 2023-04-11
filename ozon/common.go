@@ -120,3 +120,58 @@ const (
 	BrandDimension     GetAnalyticsDataDimension = "brand"
 	ModelIDDimension   GetAnalyticsDataDimension = "modelID"
 )
+
+type SupplyRequestState string
+
+const (
+	// request draft. Only for supplies via vDC
+	Draft SupplyRequestState = "DRAFT"
+
+	// selecting supply options. Only for supplies via vDC
+	SupplyVariantsArranging SupplyRequestState = "SUPPLY_VARIANTS_ARRANGING"
+
+	// no supply options, the request is archived. Only for supplies via vDC
+	HasNoSupplyVariantsArchive SupplyRequestState = "HAS_NO_SUPPLY_VARIANTS_ARCHIVE"
+
+	// no supply options. Only for supplies via vDC
+	HasNoSupplyVariantsNew SupplyRequestState = "HAS_NO_SUPPLY_VARIANTS_NEW"
+
+	// supply being approved. Only for supplies via vDC
+	SupplyVariantsConfirmation SupplyRequestState = "SUPPLY_VARIANTS_CONFIRMATION"
+
+	// time reservation
+	TimeslotBooking SupplyRequestState = "TIMESLOT_BOOKING"
+
+	// filling in the data
+	DATA_FILLING SupplyRequestState = "DATA_FILLING"
+
+	// ready for shipment
+	ReadyToSupply SupplyRequestState = "READY_TO_SUPPLY"
+
+	// accepted at the shipping point
+	AcceptedAtSupplyWarehouse SupplyRequestState = "ACCEPTED_AT_SUPPLY_WAREHOUSE"
+
+	// on the way
+	InTransit SupplyRequestState = "IN_TRANSIT"
+
+	// acceptance at the warehouse
+	AcceptanceAtStorageWarehouse SupplyRequestState = "ACCEPTANCE_AT_STORAGE_WAREHOUSE"
+
+	// acts being approved
+	ReportsConfirmationAwaiting SupplyRequestState = "REPORTS_CONFIRMATION_AWAITING"
+
+	// dispute
+	ReportRejected SupplyRequestState = "REPORT_REJECTED"
+
+	// completed
+	Completed SupplyRequestState = "COMPLETED"
+
+	// refused acceptance
+	RejectedAtSupplyWarehouse SupplyRequestState = "REJECTED_AT_SUPPLY_WAREHOUSE"
+
+	// cancelled
+	Cancelled SupplyRequestState = "CANCELLED"
+
+	// overdue
+	Overdue SupplyRequestState = "OVERDUE"
+)
