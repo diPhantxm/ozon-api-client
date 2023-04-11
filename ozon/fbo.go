@@ -363,7 +363,7 @@ func (c FBO) ListSupplyRequests(params *ListSupplyRequestsParams) (*ListSupplyRe
 
 	resp := &ListSupplyRequestsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -406,7 +406,7 @@ func (c FBO) GetSupplyRequestInfo(params *GetSupplyRequestInfoParams) (*GetSuppl
 
 	resp := &GetSupplyRequestInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -462,7 +462,7 @@ func (c FBO) ListProductsInSupplyRequest(params *ListProductsInSupplyRequestPara
 
 	resp := &ListProductsInSupplyRequestResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
