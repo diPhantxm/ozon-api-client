@@ -277,3 +277,208 @@ func TestGetShipmentDetails(t *testing.T) {
 		}
 	}
 }
+
+func TestListSupplyRequests(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListSupplyRequestsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListSupplyRequestsParams{
+				Page:     0,
+				PageSize: 0,
+				States:   []SupplyRequestState{AcceptanceAtStorageWarehouse},
+			},
+			`{
+				"has_next": true,
+				"supply_orders": [
+				  {
+					"created_at": "string",
+					"local_timeslot": {
+					  "from": "string",
+					  "to": "string"
+					},
+					"preferred_supply_date_from": "string",
+					"preferred_supply_date_to": "string",
+					"state": "string",
+					"supply_order_id": 0,
+					"supply_order_number": "string",
+					"supply_warehouse": {
+					  "address": "string",
+					  "name": "string",
+					  "warehouse_id": 0
+					},
+					"time_left_to_prepare_supply": 0,
+					"time_left_to_select_supply_variant": 0,
+					"total_items_count": 0,
+					"total_quantity": 0
+				  }
+				],
+				"total_supply_orders_count": 0
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListSupplyRequestsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBO().ListSupplyRequests(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetSupplyRequestInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetSupplyRequestInfoParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetSupplyRequestInfoParams{
+				SupplyOrderId: 0,
+			},
+			`{
+				"created_at": "string",
+				"local_timeslot": {
+				  "from": "string",
+				  "to": "string"
+				},
+				"preferred_supply_date_from": "string",
+				"preferred_supply_date_to": "string",
+				"seller_warehouse": {
+				  "address": "string",
+				  "name": "string",
+				  "warehouse_id": 0
+				},
+				"state": "string",
+				"supply_order_id": 0,
+				"supply_order_number": "string",
+				"supply_warehouse": {
+				  "address": "string",
+				  "name": "string",
+				  "warehouse_id": 0
+				},
+				"time_left_to_prepare_supply": 0,
+				"time_left_to_select_supply_variant": 0,
+				"total_items_count": 0,
+				"total_quantity": 0,
+				"vehicle_info": {
+				  "driver_name": "string",
+				  "driver_phone": "string",
+				  "vehicle_model": "string",
+				  "vehicle_number": "string"
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetSupplyRequestInfoParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBO().GetSupplyRequestInfo(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestListProductsInSupplyRequest(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListProductsInSupplyRequestParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListProductsInSupplyRequestParams{
+				Page:          0,
+				PageSize:      0,
+				SupplyOrderId: 0,
+			},
+			`{
+				"has_next": true,
+				"items": [
+				  {
+					"icon_path": "string",
+					"name": "string",
+					"offer_id": "string",
+					"quantity": 0,
+					"sku": 0
+				  }
+				],
+				"total_items_count": 0
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListProductsInSupplyRequestParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBO().ListProductsInSupplyRequest(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
