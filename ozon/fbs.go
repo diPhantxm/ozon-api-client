@@ -754,14 +754,13 @@ type GetShipmentDataByIdentifierResponse struct {
 		ShipmentDate time.Time `json:"shipment_date"`
 
 		// Shipment status
-		Status string `json:"status"`
+		Status ShipmentStatus `json:"status"`
 
-		// Type of integration with the delivery service:
-		//   - ozon — delivery by the Ozon logistics.
-		//   - aggregator — delivery by a third-party service, Ozon registers the order.
-		//   - 3pl_tracking — delivery by a third-party service, the seller registers the order.
-		//   - non_integrated — delivery by the seller
-		TPLIntegrationType string `json:"tpl_integration_type"`
+		// Shipment substatus
+		Substatus ShipmentSubstatus `json:"substatus"`
+
+		// Type of integration with the delivery service
+		TPLIntegrationType TPLIntegrationType `json:"tpl_integration_type"`
 
 		// Shipment tracking number
 		TrackingNumber string `json:"tracking_number"`
@@ -1132,6 +1131,7 @@ type CancelShipmentResponse struct {
 //   - 665 — the customer did not pick the order;
 //   - 666 — delivery is not available in the region;
 //   - 667 — order was lost by the delivery service.
+//
 // For presumably delivered orders only the last 3 reasons are available.
 //
 // If cancel_reason_id parameter value is 402, fill the cancel_reason_message field
@@ -1381,13 +1381,14 @@ type CheckProductItemsDataResponse struct {
 // Asynchronous method:
 //   - for checking the availability of product items in the “Chestny ZNAK” labeling system
 //   - for saving product items data
+//
 // To get the checks results, use the `/v4/fbs/posting/product/exemplar/status method`
 //
 // If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value `is_gtd_absent` = true
 //
 // If you have multiple identical products in a shipment, specify one `product_id` and `exemplars` array for each product in the shipment
 //
-// Always pass a complete set of product items data
+// # Always pass a complete set of product items data
 //
 // For example, you have 10 product items in your system.
 // You have passed them for checking and saving. Then they added another 60 product items to your system.

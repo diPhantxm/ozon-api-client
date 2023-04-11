@@ -175,3 +175,141 @@ const (
 	// overdue
 	Overdue SupplyRequestState = "OVERDUE"
 )
+
+type ShipmentStatus string
+
+const (
+	// acceptance is in progress
+	AcceptanceInProgress ShipmentStatus = "acceptance_in_progress"
+
+	// arbitration
+	Arbitration ShipmentStatus = "arbitration"
+
+	// awaiting confirmation
+	AwaitingApprove ShipmentStatus = "awaiting_approve"
+
+	// awaiting shipping
+	AwaitingDeliver ShipmentStatus = "awaiting_deliver"
+
+	// awaiting packaging
+	AwaitingPackaging ShipmentStatus = "awaiting_packaging"
+
+	// created
+	AwaitingVerification ShipmentStatus = "awaiting_verification"
+
+	// cancelled
+	CancelledSubstatus ShipmentStatus = "cancelled"
+
+	// delivered
+	Delivered ShipmentStatus = "delivered"
+
+	// delivery is in progress
+	Delivering ShipmentStatus = "delivering"
+
+	// picked up by driver
+	DriverPickup ShipmentStatus = "driver_pickup"
+
+	// not accepted at the sorting center
+	NotAccepted ShipmentStatus = "not_accepted"
+
+	// sent by the seller
+	SentBySeller ShipmentStatus = "sent_by_seller"
+)
+
+type ShipmentSubstatus string
+
+const (
+	// acceptance in progress
+	PostingAcceptanceInProgress ShipmentStatus = "posting_acceptance_in_progress"
+
+	// arbitrage
+	PostingInArbitration ShipmentStatus = "posting_in_arbitration"
+
+	// created
+	PostingCreated ShipmentStatus = "posting_created"
+
+	// in the freight
+	PostingInCarriage ShipmentStatus = "posting_in_carriage"
+
+	// not added to the freight
+	PostingNotInCarriage ShipmentStatus = "posting_not_in_carriage"
+
+	// registered
+	PostingRegistered ShipmentStatus = "posting_registered"
+
+	// is handed over to the delivery service
+	PostingTransferringToDelivery ShipmentStatus = "posting_transferring_to_delivery"
+
+	// waiting for passport data
+	PostingAwaitingPassportData ShipmentStatus = "posting_awaiting_passport_data"
+
+	// created
+	PostingCreatedSubstatus ShipmentStatus = "posting_created"
+
+	// awaiting registration
+	PostingAwaitingRegistration ShipmentStatus = "posting_awaiting_registration"
+
+	// registration error
+	PostingRegistrationError ShipmentStatus = "posting_registration_error"
+
+	// created
+	PostingSplitPending ShipmentStatus = "posting_split_pending"
+
+	// canceled
+	PostingCancelled ShipmentStatus = "posting_canceled"
+
+	// customer delivery arbitrage
+	PostingInClientArbitration ShipmentStatus = "posting_in_client_arbitration"
+
+	// delivered
+	PostingDelivered ShipmentStatus = "posting_delivered"
+
+	// recieved
+	PostingReceived ShipmentStatus = "posting_received"
+
+	// presumably delivered
+	PostingConditionallyDelivered ShipmentStatus = "posting_conditionally_delivered"
+
+	// courier on the way
+	PostingInCourierService ShipmentStatus = "posting_in_courier_service"
+
+	// at the pick-up point
+	PostingInPickupPoint ShipmentStatus = "posting_in_pickup_point"
+
+	// on the way to the city
+	PostingOnWayToCity ShipmentStatus = "posting_on_way_to_city"
+
+	// on the way to the pick-up point
+	PostingOnWayToPickupPoint ShipmentStatus = "posting_on_way_to_pickup_point"
+
+	// returned to the warehouse
+	PostingReturnedToWarehouse ShipmentStatus = "posting_returned_to_warehouse"
+
+	// is handed over to the courier
+	PostingTransferredToCourierService ShipmentStatus = "posting_transferred_to_courier_service"
+
+	// handed over to the driver
+	PostingDriverPickup ShipmentStatus = "posting_driver_pick_up"
+
+	// not accepted at the sorting center
+	PostingNotInSortCenter ShipmentStatus = "posting_not_in_sort_center"
+
+	// sent by the seller
+	SentBySellerSubstatus ShipmentStatus = "sent_by_seller"
+)
+
+type TPLIntegrationType string
+
+const (
+	// delivery by the Ozon logistics
+	OzonTPLType TPLIntegrationType = "ozon"
+
+	// delivery by a third-party service, Ozon registers the order
+	AggregatorTPLType TPLIntegrationType = "aggregator"
+
+	// delivery by a third-party service, the seller registers the order
+	TrackingTPLType TPLIntegrationType = "3pl_tracking"
+
+	// delivery by the seller
+	NonIntegratedTPLType TPLIntegrationType = "non_integrated"
+)

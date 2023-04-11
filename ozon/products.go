@@ -223,7 +223,51 @@ type ProductDetails struct {
 	// Product price including discounts. This value is shown on the product description page
 	Price string `json:"price"`
 
-	// Price index. Learn more in Help Center
+	// Product price indexes
+	PriceIndexes struct {
+		// Competitors' product price on other marketplaces
+		ExternalIndexData struct {
+			// Minimum competitors' product price on other marketplaces
+			MinimalPrice string `json:"minimal_price"`
+
+			// Price currency
+			MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+			// Price index value
+			PriceIndexValue float64 `json:"price_index_value"`
+		} `json:"external_index_data"`
+
+		// Competitors' product price on Ozon
+		OzonIndexData struct {
+			// Minimum competitors' product price on Ozon
+			MinimalPrice string `json:"minimal_price"`
+
+			// Price currency
+			MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+			// Price index value
+			PriceIndexValue float64 `json:"price_index_value"`
+		} `json:"ozon_index_data"`
+
+		// Resulting price index of the product
+		PriceIndex string `json:"price_index"`
+
+		// Price of your product on other marketplaces
+		SelfMarketplaceIndexData struct {
+			// Minimum price of your product on other marketplaces
+			MinimalPrice string `json:"minimal_price"`
+
+			// Price currency
+			MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+			// Price index value
+			PriceIndexValue float64 `json:"price_index_value"`
+		} `json:"self_marketplace_index_data"`
+	} `json:"prices_indexes"`
+
+	// Deprecated: Price index. Learn more in Help Center
+	//
+	// Use PriceIndexes instead
 	PriceIndex string `json:"price_idnex"`
 
 	// Product price suggested by the system based on similar offers
@@ -1445,6 +1489,7 @@ type GetProductRangeLimitUploadQuota struct {
 //   - Product range limit: how many products you can create in your personal account.
 //   - Products creation limit: how many products you can create per day.
 //   - Products update limit: how many products you can update per day.
+//
 // If you have a product range limit and you exceed it, you won't be able to create new products
 func (c Products) GetProductRangeLimit() (*GetProductRangeLimitResponse, error) {
 	url := "/v4/product/info/limit"
@@ -1910,7 +1955,7 @@ type GetMarkdownInfoResponse struct {
 	core.CommonResponse
 
 	// Information about the markdown and the main product
-	Items []struct{
+	Items []struct {
 		// Comment on the damage reason
 		CommentReasonDamaged string `json:"comment_reason_damaged"`
 
@@ -1975,7 +2020,7 @@ func (c Products) GetMarkdownInfo(params *GetMarkdownInfoParams) (*GetMarkdownIn
 	return resp, nil
 }
 
-type SetDiscountOnMarkdownProductParams struct{
+type SetDiscountOnMarkdownProductParams struct {
 	// Discount amount: from 3 to 99 percents
 	Discount int32 `json:"discount"`
 
@@ -1983,7 +2028,7 @@ type SetDiscountOnMarkdownProductParams struct{
 	ProductId int64 `json:"product_id"`
 }
 
-type SetDiscountOnMarkdownProductResponse struct{
+type SetDiscountOnMarkdownProductResponse struct {
 	core.CommonResponse
 
 	// Method result. true if the query was executed without errors
@@ -1995,6 +2040,39 @@ func (c Products) SetDiscountOnMarkdownProduct(params *SetDiscountOnMarkdownProd
 	url := "/v1/product/update/discount"
 
 	resp := &SetDiscountOnMarkdownProductResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type NumberOfSubsToProductAvailabilityParams struct {
+	// List of SKUs, product identifiers in the Ozon system
+	SKUS []int64 `json:"skus"`
+}
+
+type NumberOfSubsToProductAvailabilityResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct {
+		// Number of subscribed users
+		Count int64 `json:"count"`
+
+		// Product identifier in the Ozon system, SKU
+		SKU int64 `json:"sku"`
+	} `json:"result"`
+}
+
+// You can pass multiple products in a request
+func (c Products) NumberOfSubsToProductAvailability(params *NumberOfSubsToProductAvailabilityParams) (*NumberOfSubsToProductAvailabilityResponse, error) {
+	url := "/v1/product/info/subscription"
+
+	resp := &NumberOfSubsToProductAvailabilityResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
 	if err != nil {
