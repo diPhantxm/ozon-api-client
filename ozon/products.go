@@ -1911,8 +1911,52 @@ type GetProductPriceInfoResponse struct {
 				VAT string `json:"vat"`
 			} `json:"price"`
 
-			// Price index
+			// Deprected: price index
+			//
+			// Use PriceIndexes instead
 			PriceIndex string `json:"price_index"`
+
+			// Product price indexes
+			PriceIndexes struct {
+				// Competitors' product price on other marketplaces
+				ExternalIndexData struct {
+					// Minimum competitors' product price on other marketplaces
+					MinimalPrice string `json:"minimal_price"`
+
+					// Price currency
+					MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+					// Price index value
+					PriceIndexValue float64 `json:"price_index_value"`
+				} `json:"external_index_data"`
+
+				// Competitors' product price on Ozon
+				OzonIndexData struct {
+					// Minimum competitors' product price on Ozon
+					MinimalPrice string `json:"minimal_price"`
+
+					// Price currency
+					MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+					// Price index value
+					PriceIndexValue float64 `json:"price_index_value"`
+				} `json:"ozon_index_data"`
+
+				// Resulting price index of the product
+				PriceIndex string `json:"price_index"`
+
+				// Price of your product on other marketplaces
+				SelfMarketplaceIndexData struct {
+					// Minimum price of your product on other marketplaces
+					MinimalPrice string `json:"minimal_price"`
+
+					// Price currency
+					MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+					// Price index value
+					PriceIndexValue float64 `json:"price_index_value"`
+				} `json:"self_marketplace_index_data"`
+			} `json:"prices_indexes"`
 
 			// Product identifier
 			ProductId int64 `json:"product_id"`
