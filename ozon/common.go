@@ -313,3 +313,50 @@ const (
 	// delivery by the seller
 	NonIntegratedTPLType TPLIntegrationType = "non_integrated"
 )
+
+type DetailsDeliveryItemName string
+
+const (
+	DirectFlowLogisticSumDetailsDeliveryItemName DetailsDeliveryItemName = "MarketplaceServiceItemDirectFlowLogisticSum"
+	DropoffDetailsDeliveryItemName               DetailsDeliveryItemName = "MarketplaceServiceItemDropoff"
+	DelivToCustomerDetailsDeliveryItemName       DetailsDeliveryItemName = "MarketplaceServiceItemDelivToCustomer"
+)
+
+type DetailsReturnServiceName string
+
+const (
+	ReturnAfterDelivToCustomerDetailsReturnServiceName DetailsReturnServiceName = "MarketplaceServiceItemReturnAfterDelivToCustomer"
+	ReturnPartGoodsCustomerDetailsReturnServiceName    DetailsReturnServiceName = "MarketplaceServiceItemReturnPartGoodsCustomer"
+	ReturnNotDelivToCustomerDetailsReturnServiceName   DetailsReturnServiceName = "MarketplaceServiceItemReturnNotDelivToCustomer"
+	ReturnFlowLogisticDetailsReturnServiceName         DetailsReturnServiceName = "MarketplaceServiceItemReturnFlowLogistic"
+)
+
+type DetailsServiceItemName string
+
+const (
+	OtherMarketAndTech                          DetailsServiceItemName = "MarketplaceServiceItemOtherMarketAndTechService"
+	ReturnStorageServiceAtThePickupPointFbsItem DetailsServiceItemName = "MarketplaceReturnStorageServiceAtThePickupPointFbsItem"
+	SaleReviewsItem                             DetailsServiceItemName = "MarketplaceSaleReviewsItem"
+	ServicePremiumCashbackIndividualPoints      DetailsServiceItemName = "MarketplaceServicePremiumCashbackIndividualPoints"
+	ServiceStorageItem                          DetailsServiceItemName = "MarketplaceServiceStorageItem"
+	ServiceStockDisposal                        DetailsServiceItemName = "MarketplaceServiceStockDisposal"
+	ReturnDisposalServiceFbsItem                DetailsServiceItemName = "MarketplaceReturnDisposalServiceFbsItem"
+	ServiceItemFlexiblePaymentSchedule          DetailsServiceItemName = "MarketplaceServiceItemFlexiblePaymentSchedule"
+	ServiceProcessingSpoilage                   DetailsServiceItemName = "MarketplaceServiceProcessingSpoilage"
+	ServiceProcessingIdentifiedSurplus          DetailsServiceItemName = "MarketplaceServiceProcessingIdentifiedSurplus"
+	ServiceProcessingIdentifiedDiscrepancies    DetailsServiceItemName = "MarketplaceServiceProcessingIdentifiedDiscrepancies"
+	ServiceItemInternetSiteAdvertising          DetailsServiceItemName = "MarketplaceServiceItemInternetSiteAdvertising"
+	ServiceItemPremiumSubscribtion              DetailsServiceItemName = "MarketplaceServiceItemPremiumSubscribtion"
+	AgencyFeeAggregator3PLGlobalItem            DetailsServiceItemName = "MarketplaceAgencyFeeAggregator3PLGlobalItem"
+)
+
+type DetailsOtherItemName string
+
+const (
+	RedistributionOfAcquiringOperation                   DetailsOtherItemName = "MarketplaceRedistributionOfAcquiringOperation"
+	CompensationLossOfGoodsOperation                     DetailsOtherItemName = "MarketplaceSellerCompensationLossOfGoodsOperation"
+	CorrectionOperation                                  DetailsOtherItemName = "MarketplaceSellerCorrectionOperation"
+	OperationCorrectionSeller                            DetailsOtherItemName = "OperationCorrectionSeller"
+	OperationMarketplaceWithHoldingForUndeliverableGoods DetailsOtherItemName = "OperationMarketplaceWithHoldingForUndeliverableGoods"
+	OperationClaim                                       DetailsOtherItemName = "OperationClaim"
+)

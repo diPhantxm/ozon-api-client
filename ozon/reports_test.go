@@ -165,28 +165,98 @@ func TestGetFinancialReport(t *testing.T) {
 					From: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2022-01-01T00:00:00.000Z"),
 					To:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2022-12-31T00:00:00.000Z"),
 				},
-				Page:     1,
-				PageSize: 1,
+				WithDetails: true,
+				Page:        1,
+				PageSize:    1,
 			},
 			`{
 				"result": {
 				  "cash_flows": [
 					{
-					  "period": {
-						"id": 11567022278500,
-						"begin": "2022-08-01T00:00:00Z",
-						"end": "2022-08-15T00:00:00Z"
-					  },
-					  "orders_amount": 1000,
-					  "returns_amount": -3000,
 					  "commission_amount": 1437,
-					  "services_amount": 8471.28,
+					  "currency_code": "string",
 					  "item_delivery_and_return_amount": 1991,
-					  "currency_code": "RUB"
+					  "orders_amount": 1000,
+					  "period": {
+						"begin": "2023-04-03T09:12:10.239Z",
+						"end": "2023-04-03T09:12:10.239Z",
+						"id": 11567022278500
+					  },
+					  "returns_amount": -3000,
+					  "services_amount": 8471.28
 					}
 				  ],
-				  "page_count": 15
-				}
+				  "details": {
+					"period": {
+					  "begin": "2023-04-03T09:12:10.239Z",
+					  "end": "2023-04-03T09:12:10.239Z",
+					  "id": 11567022278500
+					},
+					"payments": [
+					  {
+						"payment": 0,
+						"currency_code": "string"
+					  }
+					],
+					"begin_balance_amount": 0,
+					"delivery": {
+					  "total": 0,
+					  "amount": 0,
+					  "delivery_services": {
+						"total": 0,
+						"items": [
+						  {
+							"name": "string",
+							"price": 0
+						  }
+						]
+					  }
+					},
+					"return": {
+					  "total": 0,
+					  "amount": 0,
+					  "return_services": {
+						"total": 0,
+						"items": [
+						  {
+							"name": "string",
+							"price": 0
+						  }
+						]
+					  }
+					},
+					"loan": 0,
+					"invoice_transfer": 0,
+					"rfbs": {
+					  "total": 0,
+					  "transfer_delivery": 0,
+					  "transfer_delivery_return": 0,
+					  "compensation_delivery_return": 0,
+					  "partial_compensation": 0,
+					  "partial_compensation_return": 0
+					},
+					"services": {
+					  "total": 0,
+					  "items": [
+						{
+						  "name": "string",
+						  "price": 0
+						}
+					  ]
+					},
+					"others": {
+					  "total": 0,
+					  "items": [
+						{
+						  "name": "string",
+						  "price": 0
+						}
+					  ]
+					},
+					"end_balance_amount": 0
+				  }
+				},
+				"page_count": 15
 			}`,
 		},
 		// Test No Client-Id or Api-Key
