@@ -360,3 +360,20 @@ const (
 	OperationMarketplaceWithHoldingForUndeliverableGoods DetailsOtherItemName = "OperationMarketplaceWithHoldingForUndeliverableGoods"
 	OperationClaim                                       DetailsOtherItemName = "OperationClaim"
 )
+
+type StrategyType string
+
+const (
+	MinExtPrice StrategyType = "MIN_EXT_PRICE"
+	CompPrice   StrategyType = "COMP_PRICE"
+)
+
+type StrategyUpdateType string
+
+const (
+	StrategyEnabled          StrategyUpdateType = "strategyEnabled"
+	StrategyDisabled         StrategyUpdateType = "strategyDisabled"
+	StrategyChanged          StrategyUpdateType = "strategyChanged"
+	StrategyCreated          StrategyUpdateType = "strategyCreated"
+	StrategyItemsListChanged StrategyUpdateType = "strategyItemsListChanged"
+)
