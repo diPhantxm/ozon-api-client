@@ -159,6 +159,9 @@ type GetFinancialReportParams struct {
 	// Number of the page returned in the request
 	Page int64 `json:"page"`
 
+	// true, если нужно добавить дополнительные параметры в ответ
+	WithDetails bool `json:"with_details"`
+
 	// Number of items on the page
 	PageSize int64 `json:"page_size"`
 }
@@ -208,6 +211,99 @@ type GetFinancialReportResponse struct {
 			// Code of the currency used to calculate the commissions
 			CurrencyCode string `json:"currency_code"`
 		} `json:"cash_flows"`
+
+		// Detailed info
+		Details struct {
+			// Balance on the beginning of period
+			BeginBalanceAmount float64 `json:"begin_balance_amount"`
+
+			// Orders
+			Delivery struct {
+				Total float64 `json:"total"`
+
+				Amount float64 `json:"amount"`
+
+				DeliveryServices struct {
+					Total float64 `json:"total"`
+
+					Items []struct {
+						Name DetailsDeliveryItemName `json:"name"`
+
+						Price float64 `json:"price"`
+					} `json:"items"`
+				} `json:"delivery_services"`
+			} `json:"delivery"`
+
+			InvoiceTransfer float64 `json:"invoice_transfer"`
+
+			Loan float64 `json:"loan"`
+
+			Payments []struct {
+				CurrencyCode string `json:"currency_code"`
+
+				Payment float64 `json:"payment"`
+			} `json:"payments"`
+
+			Period struct {
+				Begin time.Time `json:"begin"`
+
+				End time.Time `json:"end"`
+
+				Id int64 `json:"id"`
+			} `json:"period"`
+
+			Return struct {
+				Total float64 `json:"total"`
+
+				Amount float64 `json:"amount"`
+
+				ReturnServices struct {
+					Total float64 `json:"total"`
+
+					Items []struct {
+						Name DetailsReturnServiceName `json:"name"`
+
+						Price float64 `json:"price"`
+					} `json:"items"`
+				} `json:"return_services"`
+			} `json:"return"`
+
+			RFBS struct {
+				Total float64 `json:"total"`
+
+				TransferDelivery float64 `json:"transfer_delivery"`
+
+				TransferDeliveryReturn float64 `json:"transfer_delivery_return"`
+
+				CompensationDeliveryReturn float64 `json:"compensation_delivery_return"`
+
+				PartialCompensation float64 `json:"partial_compensation"`
+
+				PartialCompensationReturn float64 `json:"partial_compensation_return"`
+			} `json:"rfbs"`
+
+			Services struct {
+				Total float64 `json:"total"`
+
+				Items []struct {
+					Name DetailsServiceItemName `json:"name"`
+
+					Price float64 `json:"price"`
+				} `json:"items"`
+			} `json:"services"`
+
+			Others struct {
+				Total float64 `json:"total"`
+
+				Items []struct {
+					Name DetailsOtherItemName `json:"name"`
+
+					Price float64 `json:"price"`
+				} `json:"items"`
+			} `json:"others"`
+
+			EndBalanceAmount float64 `json:"end_balance_amount"`
+		} `json:"details"`
 
 		// Number of pages with reports
 		PageCount int64 `json:"page_count"`
