@@ -2126,3 +2126,59 @@ func (c Products) NumberOfSubsToProductAvailability(params *NumberOfSubsToProduc
 
 	return resp, nil
 }
+
+type UpdateCharacteristicsParams struct {
+	// Products and characteristics to be updated
+	Items []UpdateCharacteristicsItem `json:"items"`
+}
+
+type UpdateCharacteristicsItem struct {
+	// Product characteristics
+	Attributes []UpdateCharacteristicsItemAttribute `json:"attributes"`
+
+	// Product ID
+	OfferId string `json:"offer_id"`
+}
+
+type UpdateCharacteristicsItemAttribute struct {
+	// Identifier of the characteristic that supports nested properties.
+	// Each of the nested characteristics can have multiple value variants
+	ComplexId int64 `json:"complex_id"`
+
+	// Characteristic identifier
+	Id int64 `json:"id"`
+
+	// Array of nested characteristic values
+	Values []UpdateCharacteristicsItemValue `json:"values"`
+}
+
+type UpdateCharacteristicsItemValue struct {
+	// Characteristic identifier in the dictionary
+	DictionaryValueId int64 `json:"dictionary_value_id"`
+
+	// Product characteristic value
+	Value string `json:"value"`
+}
+
+type UpdateCharacteristicsResponse struct {
+	core.CommonResponse
+
+	// Products update task code.
+	//
+	// To check the update status, pass the received value to the `/v1/product/import/info` method
+	TaskId int64 `json:"task_id"`
+}
+
+func (c Products) UpdateCharacteristics(params *UpdateCharacteristicsParams) (*UpdateCharacteristicsResponse, error) {
+	url := "/v1/product/attributes/update"
+
+	resp := &UpdateCharacteristicsResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
