@@ -482,3 +482,61 @@ func TestListProductsInSupplyRequest(t *testing.T) {
 		}
 	}
 }
+
+func TestGetWarehouseWorkload(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"result": [
+				  {
+					"schedule": {
+					  "capacity": [
+						{
+						  "start": "2019-08-24T14:15:22Z",
+						  "end": "2019-08-24T14:15:22Z",
+						  "value": 0
+						}
+					  ],
+					  "date": "2019-08-24T14:15:22Z"
+					},
+					"warehouse": {
+					  "id": "string",
+					  "name": "string"
+					}
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBO().GetWarehouseWorkload()
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

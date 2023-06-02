@@ -470,3 +470,52 @@ func (c FBO) ListProductsInSupplyRequest(params *ListProductsInSupplyRequestPara
 
 	return resp, nil
 }
+
+type GetWarehouseWorkloadResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []struct {
+		// Workload
+		Schedule struct {
+			// Data on the products quantity supplied to the warehouse
+			Capacity []struct {
+				// Period start, local time
+				Start time.Time `json:"start"`
+
+				// Period end, local time
+				End time.Time `json:"end"`
+
+				// Average number of products that the warehouse can accept per day for the period
+				Value int32 `json:"value"`
+			} `json:"capacity"`
+
+			// The closest available date for supply, local time
+			Date time.Time `json:"date"`
+		} `json:"schedule"`
+
+		// Warehouse
+		Warehouse struct {
+			// Warehouse identifier
+			Id string `json:"id"`
+
+			// Warehouse name
+			Name string `json:"name"`
+		} `json:"warehouse"`
+	} `json:"result"`
+}
+
+// Method returns a list of active Ozon warehouses with information about their average workload in the nearest future
+func (c FBO) GetWarehouseWorkload() (*GetWarehouseWorkloadResponse, error) {
+	url := "/v1/supplier/available_warehouses"
+
+	resp := &GetWarehouseWorkloadResponse{}
+
+	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
