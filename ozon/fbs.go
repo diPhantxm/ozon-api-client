@@ -92,6 +92,10 @@ type FBSPosting struct {
 
 	Products []PostingProduct `json:"products"`
 
+	// The parameter is only relevant for bulky products 
+	// with a delivery by a third-party or integrated service
+	PRROption PRROptionStatus `json:"prr_option"`
+
 	Requirements FBSRequirements `json:"requirements"`
 
 	ShipmentDate       time.Time `json:"shipment_date"`
@@ -739,6 +743,22 @@ type GetShipmentDataByIdentifierResponse struct {
 
 		// Delivery service status
 		ProviderStatus string `json:"provider_status"`
+
+		// Information on lifting service. Only relevant for bulky products 
+		// with a delivery by a third-party or integrated service
+		PRROption struct {
+			// Lifting service code
+			Code PRROptionStatus `json:"code"`
+
+			// Service cost, which Ozon reimburses to the seller
+			Price string `json:"price"`
+
+			// Currency
+			CurrencyCode string `json:"currency_code"`
+
+			// Floor to which you need to lift the product
+			Floor string `json:"floor"`
+		} `json:"prr_option"`
 
 		// Related shipments
 		RelatedPostings struct {
