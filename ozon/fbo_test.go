@@ -43,8 +43,8 @@ func TestGetFBOShipmentsList(t *testing.T) {
 					"posting_number": "16965409-0014-1",
 					"status": "delivered",
 					"cancel_reason_id": 0,
-					"created_at": "2021-09-01T00:23:45.607Z",
-					"in_process_at": "2021-09-01T00:25:30.120Z",
+					"created_at": "2021-09-01T00:23:45.607000Z",
+					"in_process_at": "2021-09-01T00:25:30.120000Z",
 					"products": [
 					  {
 						"sku": 160249683,

@@ -845,13 +845,13 @@ func (c FBS) AddTrackingNumbers(params *AddTrackingNumbersParams) (*AddTrackingN
 
 type ListOfShipmentCertificatesParams struct {
 	// Filter parameters
-	Filter ListOfShipmentCertificates `json:"filter"`
+	Filter ListOfShipmentCertificatesFilter `json:"filter"`
 
 	// Maximum number of certificates in the response
 	Limit int64 `json:"limit"`
 }
 
-type ListOfShipmentCertificates struct {
+type ListOfShipmentCertificatesFilter struct {
 	// Initial date of shipment creation
 	DateFrom string `json:"date_from"`
 
@@ -866,7 +866,7 @@ type ListOfShipmentCertificates struct {
 	IntegrationType string `json:"integration_type"`
 
 	// Freight statuses
-	Status []string `json:"status"`
+	Status []ShipmentCertificateFilterStatus `json:"status"`
 }
 
 type ListOfShipmentCertificatesResponse struct {
@@ -1121,20 +1121,22 @@ type CancelShipmentResponse struct {
 	Result bool `json:"result"`
 }
 
-// Change shipment status to cancelled.
-//
-// If you are using the rFBS scheme, you have the following cancellation reason identifiers (cancel_reason_id) available:
-//   - 352 — product is out of stock;
-//   - 400 — only defective products left;
-//   - 401 — cancellation from arbitration;
-//   - 402 — other reason;
-//   - 665 — the customer did not pick the order;
-//   - 666 — delivery is not available in the region;
-//   - 667 — order was lost by the delivery service.
-//
-// For presumably delivered orders only the last 3 reasons are available.
-//
-// If cancel_reason_id parameter value is 402, fill the cancel_reason_message field
+// Change shipment status to `cancelled`.
+// 
+// If you are using the rFBS scheme, you have the following cancellation reason identifiers (`cancel_reason_id`) available:
+// 
+// 352—product is out of stock ;
+// 400—only defective products left;
+// 401—cancellation from arbitration;
+// 402—other reason;
+// 665—the customer didn't pick the order;
+// 666—delivery isn't available in the region;
+// 667—order was lost by the delivery service.
+// The last 4 reasons are available for shipments in the "Delivering" and "Courier on the way" statuses.
+// 
+// You can't cancel presumably delivered orders.
+// 
+// If `cancel_reason_id` parameter value is 402, fill the `cancel_reason_message` field.
 func (c FBS) CancelShipment(params *CancelShipmentParams) (*CancelShipmentResponse, error) {
 	url := "/v2/posting/fbs/cancel"
 
@@ -1454,10 +1456,10 @@ type RescheduleShipmentDeliveryDateParams struct {
 
 type RescheduleShipmentDeliveryDateTimeslot struct {
 	// Period start date
-	DeliveryDateBegin time.Time `json:"delivery_date_begin"`
+	From time.Time `json:"from"`
 
 	// Period end date
-	DeliveryDateEnd time.Time `json:"delivery_date_end"`
+	To time.Time `json:"to"`
 }
 
 type RescheduleShipmentDeliveryDateResponse struct {
@@ -2013,7 +2015,22 @@ type CancelSendingResponse struct {
 	Result string `json:"result"`
 }
 
-// Use this method if you cannot send some of the products from the shipment
+// Use this method if you cannot send some of the products from the shipment.
+// 
+// If you are using the rFBS scheme, you have the following cancellation reason identifiers (`cancel_reason_id`) available:
+// 
+// 352—product is out of stock;
+// 400—only defective products left;
+// 401—cancellation from arbitration;
+// 402—other reason;
+// 665—the customer did not pick the order;
+// 666—delivery is not available in the region;
+// 667—order was lost by the delivery service.
+// The last 4 reasons are available for shipments in the "Delivering" and "Courier on the way" statuses.
+// 
+// You can't cancel presumably delivered orders.
+// 
+// If `cancel_reason_id` parameter value is 402, fill the `cancel_reason_message` field.
 func (c FBS) CancelSending(params *CancelSendingParams) (*CancelSendingResponse, error) {
 	url := "/v2/posting/fbs/product/cancel"
 

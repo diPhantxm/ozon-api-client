@@ -1577,6 +1577,8 @@ func (c Products) ArchiveProduct(params *ArchiveProductParams) (*ArchiveProductR
 	return resp, nil
 }
 
+// Warning: Since June 14, 2023 the method is disabled.
+// 
 // Unarchive product
 func (c Products) UnarchiveProduct(params *ArchiveProductParams) (*ArchiveProductResponse, error) {
 	url := "/v1/product/unarchive"
