@@ -377,3 +377,61 @@ const (
 	StrategyCreated          StrategyUpdateType = "strategyCreated"
 	StrategyItemsListChanged StrategyUpdateType = "strategyItemsListChanged"
 )
+
+type ShipmentCertificateFilterStatus string
+
+const (
+	// new
+	ShitmentCertificateFilterNew ShipmentCertificateFilterStatus = "new"
+
+	// retry creation
+	ShitmentCertificateFilterAwaitingRetry ShipmentCertificateFilterStatus = "awaiting-retry"
+
+	// is being packaged
+	ShitmentCertificateFilterInProcess ShipmentCertificateFilterStatus = "in_process"
+
+	// created
+	ShitmentCertificateFilterSuccess ShipmentCertificateFilterStatus = "success"
+
+	// creation error
+	ShitmentCertificateFilterError ShipmentCertificateFilterStatus = "error"
+
+	// sent
+	ShitmentCertificateFilterSend ShipmentCertificateFilterStatus = "sent"
+
+	// received
+	ShitmentCertificateFilterReceived ShipmentCertificateFilterStatus = "received"
+
+	// packaged
+	ShitmentCertificateFilterFormed ShipmentCertificateFilterStatus = "formed"
+
+	// canceled
+	ShitmentCertificateFilterCancelled ShipmentCertificateFilterStatus = "cancelled"
+
+	// in the queue for packaging
+	ShitmentCertificateFilterPending ShipmentCertificateFilterStatus = "pending"
+
+	// in the queue for completion
+	ShitmentCertificateFilterCompletionEnqueued ShipmentCertificateFilterStatus = "completion_enqueued"
+
+	// in the process of completion
+	ShitmentCertificateFilterCompletionProcessing ShipmentCertificateFilterStatus = "completion_processing"
+
+	// completion error
+	ShitmentCertificateFilterCompletionFailed ShipmentCertificateFilterStatus = "completion_failed"
+
+	// in the queue for cancellation
+	ShitmentCertificateFilterCancelationEnqueued ShipmentCertificateFilterStatus = "cancelation_enqueued"
+
+	// in the process of cancellation
+	ShitmentCertificateFilterCancelationProcessing ShipmentCertificateFilterStatus = "cancelation_processing"
+
+	// cancellation error
+	ShitmentCertificateFilterCancelationFailed ShipmentCertificateFilterStatus = "cancelation_failed"
+
+	// completed
+	ShitmentCertificateFilterCompleted ShipmentCertificateFilterStatus = "completed"
+
+	// closed
+	ShitmentCertificateFilterClosed ShipmentCertificateFilterStatus = "closed"
+)

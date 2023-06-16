@@ -751,11 +751,11 @@ func TestListOfShipmentCertificates(t *testing.T) {
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&ListOfShipmentCertificatesParams{
 				Limit: 100,
-				Filter: ListOfShipmentCertificates{
+				Filter: ListOfShipmentCertificatesFilter{
 					DateFrom:        "2021-08-04",
 					DateTo:          "2022-08-04",
 					IntegrationType: "ozon",
-					Status:          []string{"delivered"},
+					Status:          []ShipmentCertificateFilterStatus{ShitmentCertificateFilterFormed},
 				},
 			},
 			`{
@@ -1480,8 +1480,8 @@ func TestRescheduleShipmentDeliveryDate(t *testing.T) {
 			&RescheduleShipmentDeliveryDateParams{
 				PostingNumber: "23281294-0063-2",
 				NewTimeslot: RescheduleShipmentDeliveryDateTimeslot{
-					DeliveryDateBegin: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-03-03T11:07:00.381Z"),
-					DeliveryDateEnd:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-03-03T11:07:00.381Z"),
+					From: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-03-25T08:51:56.932Z"),
+					To:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-03-25T08:51:56.932Z"),
 				},
 			},
 			`{
