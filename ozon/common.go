@@ -435,3 +435,22 @@ const (
 	// closed
 	ShitmentCertificateFilterClosed ShipmentCertificateFilterStatus = "closed"
 )
+
+type PRROptionStatus string
+
+const (
+	// carrying the bulky product using the elevator
+	PRROptionLift PRROptionStatus = "lift"
+
+	// carrying the bulky product upstairs
+	PRROptionStairs PRROptionStatus = "stairs"
+
+	// the customer canceled the service, 
+	// you don't need to lift the shipment
+	PRROptionNone PRROptionStatus = "none"
+
+	// delivery is included in the price. 
+	// According to the offer you need to 
+	// deliver products to the floor
+	PRROptionDeliveryDefault PRROptionStatus = "delivery_default"
+)
