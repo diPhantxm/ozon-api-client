@@ -19,13 +19,15 @@ type ListCompetitorsParams struct {
 type ListCompetitorsResponse struct {
 	core.CommonResponse
 
-	Competitors []struct {
-		Name string `json:"name"`
-
-		Id int64 `json:"id"`
-	} `json:"competitors"`
+	Competitors []ListCompetitorsCompetitor `json:"competitors"`
 
 	Total int32 `json:"total"`
+}
+
+type ListCompetitorsCompetitor struct {
+	Name string `json:"name"`
+
+	Id int64 `json:"id"`
 }
 
 func (c Strategies) ListCompetitors(params *ListCompetitorsParams) (*ListCompetitorsResponse, error) {
@@ -51,25 +53,27 @@ type ListStrategiesParams struct {
 type ListStrategiesResponse struct {
 	core.CommonResponse
 
-	Strategies []struct {
-		Id string `json:"id"`
-
-		Name string `json:"name"`
-
-		Type StrategyType `json:"type"`
-
-		UpdateType StrategyUpdateType `json:"update_type"`
-
-		UpdatedAt string `json:"updated_at"`
-
-		ProductsCount int64 `json:"products_count"`
-
-		CompetitorsCount int64 `json:"competitors_count"`
-
-		Enabled bool `json:"enabled"`
-	} `json:"strategies"`
+	Strategies []ListStrategiesStrategy `json:"strategies"`
 
 	Total int32 `json:"total"`
+}
+
+type ListStrategiesStrategy struct {
+	Id string `json:"id"`
+
+	Name string `json:"name"`
+
+	Type StrategyType `json:"type"`
+
+	UpdateType StrategyUpdateType `json:"update_type"`
+
+	UpdatedAt string `json:"updated_at"`
+
+	ProductsCount int64 `json:"products_count"`
+
+	CompetitorsCount int64 `json:"competitors_count"`
+
+	Enabled bool `json:"enabled"`
 }
 
 func (c Strategies) List(params *ListStrategiesParams) (*ListStrategiesResponse, error) {
@@ -101,9 +105,11 @@ type CreateStrategyCompetitor struct {
 type CreateStrategyResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		StrategyId string `json:"strategy_id"`
-	} `json:"result"`
+	Result CreateStrategyResult `json:"result"`
+}
+
+type CreateStrategyResult struct {
+	StrategyId string `json:"strategy_id"`
 }
 
 func (c Strategies) Create(params *CreateStrategyParams) (*CreateStrategyResponse, error) {
@@ -127,17 +133,19 @@ type InfoStrategyParams struct {
 type InfoStrategyResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		Competitors []CreateStrategyCompetitor `json:"competitors"`
+	Result InfoStrategyResult `json:"result"`
+}
 
-		Enabled bool `json:"enabled"`
+type InfoStrategyResult struct {
+	Competitors []CreateStrategyCompetitor `json:"competitors"`
 
-		Name string `json:"name"`
+	Enabled bool `json:"enabled"`
 
-		Type StrategyType `json:"type"`
+	Name string `json:"name"`
 
-		UpdateType StrategyUpdateType `json:"update_type"`
-	} `json:"result"`
+	Type StrategyType `json:"type"`
+
+	UpdateType StrategyUpdateType `json:"update_type"`
 }
 
 func (c Strategies) Info(params *InfoStrategyParams) (*InfoStrategyResponse, error) {
@@ -189,17 +197,21 @@ type AddProductsToStrategyParams struct {
 type AddProductsToStrategyResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		Errors []struct {
-			Code string `json:"code"`
+	Result AddProductsToStrategyResult `json:"result"`
+}
 
-			Error string `json:"error"`
+type AddProductsToStrategyResult struct {
+	Errors []AddProductsToStrategyResultError `json:"errors"`
 
-			ProductId int64 `json:"product_id"`
-		} `json:"errors"`
+	FailedProductCount int32 `json:"failed_product_count"`
+}
 
-		FailedProductCount int32 `json:"failed_product_count"`
-	} `json:"result"`
+type AddProductsToStrategyResultError struct {
+	Code string `json:"code"`
+
+	Error string `json:"error"`
+
+	ProductId int64 `json:"product_id"`
 }
 
 func (c Strategies) AddProducts(params *AddProductsToStrategyParams) (*AddProductsToStrategyResponse, error) {
@@ -223,13 +235,17 @@ type GetStrategiesByProductIdsParams struct {
 type GetStrategiesByProductIdsResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		ProductsInfo []struct {
-			ProductId int64 `json:"product_id"`
+	Result GetStrategiesByProductIdsResult `json:"result"`
+}
 
-			StrategyId string `json:"strategy_id"`
-		} `json:"products_info"`
-	} `json:"result"`
+type GetStrategiesByProductIdsResult struct {
+	ProductsInfo []GetStrategiesByProductIdsResultProductInfo `json:"products_info"`
+}
+
+type GetStrategiesByProductIdsResultProductInfo struct {
+	ProductId int64 `json:"product_id"`
+
+	StrategyId string `json:"strategy_id"`
 }
 
 func (c Strategies) GetByProductIds(params *GetStrategiesByProductIdsParams) (*GetStrategiesByProductIdsResponse, error) {
@@ -253,9 +269,11 @@ type ListProductsInStrategyParams struct {
 type ListProductsInStrategyResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		ProductId []string `json:"product_id"`
-	} `json:"result"`
+	Result ListProductsInStrategyResult `json:"result"`
+}
+
+type ListProductsInStrategyResult struct {
+	ProductId []string `json:"product_id"`
 }
 
 func (c Strategies) ListProducts(params *ListProductsInStrategyParams) (*ListProductsInStrategyResponse, error) {
@@ -279,19 +297,21 @@ type GetCompetitorPriceParams struct {
 type GetCompetitorPriceResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		StrategyId string `json:"strategy_id"`
+	Result GetCompetitorPriceResult `json:"result"`
+}
 
-		IsEnabled bool `json:"is_enabled"`
+type GetCompetitorPriceResult struct {
+	StrategyId string `json:"strategy_id"`
 
-		StrategyProductPrice int32 `json:"strategy_product_price"`
+	IsEnabled bool `json:"is_enabled"`
 
-		PriceDownloadedAt string `json:"price_downloaded_at"`
+	StrategyProductPrice int32 `json:"strategy_product_price"`
 
-		StrategyCompetitorId int64 `json:"strategy_competitor_id"`
+	PriceDownloadedAt string `json:"price_downloaded_at"`
 
-		StrategyCompetitorProductURL string `json:"strategy_competitor_product_url"`
-	} `json:"result"`
+	StrategyCompetitorId int64 `json:"strategy_competitor_id"`
+
+	StrategyCompetitorProductURL string `json:"strategy_competitor_product_url"`
 }
 
 func (c Strategies) GetCompetitorPrice(params *GetCompetitorPriceParams) (*GetCompetitorPriceResponse, error) {
@@ -315,9 +335,11 @@ type RemoveProductsFromStrategyParams struct {
 type RemoveProductsFromStrategyResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		FailedProductCount int32 `json:"failed_product_count"`
-	} `json:"result"`
+	Result RemoveProductsFromStrategyResult `json:"result"`
+}
+
+type RemoveProductsFromStrategyResult struct {
+	FailedProductCount int32 `json:"failed_product_count"`
 }
 
 func (c Strategies) RemoveProducts(params *RemoveProductsFromStrategyParams) (*RemoveProductsFromStrategyResponse, error) {

@@ -15,25 +15,31 @@ type ListOfAccordanceTypesResponse struct {
 	core.CommonResponse
 
 	// Accordance types
-	Result struct {
-		// Main accordance types
-		Base []struct {
-			// Accordance type code
-			Code string `json:"code"`
+	Result ListOfAccordanceTypesResult `json:"result"`
+}
 
-			// Accordance type description
-			Title string `json:"title"`
-		} `json:"base"`
+type ListOfAccordanceTypesResult struct {
+	// Main accordance types
+	Base []ListOfAccordanceTypesResultBase `json:"base"`
 
-		// Main accordance types related to dangerous products
-		Hazard []struct {
-			// Accordance type code
-			Code string `json:"code"`
+	// Main accordance types related to dangerous products
+	Hazard []ListOfAccordanceTypesResultHazard `json:"hazard"`
+}
 
-			// Accordance type description
-			Title string `json:"title"`
-		} `json:"hazard"`
-	} `json:"result"`
+type ListOfAccordanceTypesResultBase struct {
+	// Accordance type code
+	Code string `json:"code"`
+
+	// Accordance type description
+	Title string `json:"title"`
+}
+
+type ListOfAccordanceTypesResultHazard struct {
+	// Accordance type code
+	Code string `json:"code"`
+
+	// Accordance type description
+	Title string `json:"title"`
 }
 
 // List of accordance types (version 2)
@@ -55,13 +61,15 @@ type DirectoryOfDocumentTypesResponse struct {
 	core.CommonResponse
 
 	// List of certificate types and names
-	Result []struct {
-		// Certificate name
-		Name string `json:"name"`
+	Result []DirectoryOfDocumentTypesResult `json:"result"`
+}
 
-		// Certificate type
-		Value string `json:"value"`
-	} `json:"result"`
+type DirectoryOfDocumentTypesResult struct {
+	// Certificate name
+	Name string `json:"name"`
+
+	// Certificate type
+	Value string `json:"value"`
 }
 
 // Directory of document types
@@ -91,19 +99,23 @@ type ListOfCertifiedCategoriesResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Certified categories details
-		Certification []struct {
-			// Category name
-			CategoryName string `json:"category_name"`
+	Result ListOfCertifiedCategoriesResult `json:"reult"`
+}
 
-			// Indication of a mandatory category
-			IsRequired bool `json:"is_required"`
-		} `json:"certification"`
+type ListOfCertifiedCategoriesResult struct {
+	// Certified categories details
+	Certification []ListOfCertifiedCategoriesResultCert `json:"certification"`
 
-		// Total number of categories
-		Total int64 `json:"total"`
-	} `json:"reult"`
+	// Total number of categories
+	Total int64 `json:"total"`
+}
+
+type ListOfCertifiedCategoriesResultCert struct {
+	// Category name
+	CategoryName string `json:"category_name"`
+
+	// Indication of a mandatory category
+	IsRequired bool `json:"is_required"`
 }
 
 // List of certified categories
@@ -160,15 +172,17 @@ type DeleteCertificateResponse struct {
 	core.CommonResponse
 
 	// Result of deleting the certificate
-	Result struct {
-		// Indication that a certificate has been deleted:
-		//   - true — deleted
-		//   - false — not deleted
-		IsDelete bool `json:"is_delete"`
+	Result DeleteCertificateResult `json:"result"`
+}
 
-		// Description of errors during certificate deletion
-		ErrorMessage string `json:"error_message"`
-	} `json:"result"`
+type DeleteCertificateResult struct {
+	// Indication that a certificate has been deleted:
+	//   - true — deleted
+	//   - false — not deleted
+	IsDelete bool `json:"is_delete"`
+
+	// Description of errors during certificate deletion
+	ErrorMessage string `json:"error_message"`
 }
 
 // Delete certificate
@@ -195,40 +209,42 @@ type GetCertificateInfoResponse struct {
 	core.CommonResponse
 
 	// Certificate information
-	Result struct {
-		// Identifier
-		CertificateId int32 `json:"certificate_id"`
+	Result GetCertificateInfoResult `json:"result"`
+}
 
-		// Number
-		CertificateNumber string `json:"certificate_number"`
+type GetCertificateInfoResult struct {
+	// Identifier
+	CertificateId int32 `json:"certificate_id"`
 
-		// Name
-		CertificateName string `json:"certificate_name"`
+	// Number
+	CertificateNumber string `json:"certificate_number"`
 
-		// Type
-		TypeCode string `json:"type_code"`
+	// Name
+	CertificateName string `json:"certificate_name"`
 
-		// Status
-		StatusCode string `json:"status_code"`
+	// Type
+	TypeCode string `json:"type_code"`
 
-		// Accordance type
-		AccordanceTypeCode string `json:"accordance_type_code"`
+	// Status
+	StatusCode string `json:"status_code"`
 
-		// Certificate rejection reason
-		RejectionReasonCode string `json:"rejectio_reason_code"`
+	// Accordance type
+	AccordanceTypeCode string `json:"accordance_type_code"`
 
-		// Moderator's comment
-		VerificationComment string `json:"verification_comment"`
+	// Certificate rejection reason
+	RejectionReasonCode string `json:"rejectio_reason_code"`
 
-		// Issue date
-		IssueDate time.Time `json:"issue_date"`
+	// Moderator's comment
+	VerificationComment string `json:"verification_comment"`
 
-		// Expire date
-		ExpireDate time.Time `json:"expire_date"`
+	// Issue date
+	IssueDate time.Time `json:"issue_date"`
 
-		// Number of products associated with a certificate
-		ProductsCount int32 `json:"products_count"`
-	} `json:"result"`
+	// Expire date
+	ExpireDate time.Time `json:"expire_date"`
+
+	// Number of products associated with a certificate
+	ProductsCount int32 `json:"products_count"`
 }
 
 // Certificate information
@@ -268,46 +284,50 @@ type ListCertificatesResponse struct {
 	core.CommonResponse
 
 	// Certificates
-	Result struct {
-		// Сertificate information
-		Certificates []struct {
-			// Identifier
-			CertificateId int32 `json:"certificate_id"`
+	Result ListCertificatesResult `json:"result"`
+}
 
-			// Number
-			CertificateNumber string `json:"certificate_number"`
+type ListCertificatesResult struct {
+	// Сertificate information
+	Certificates []ListCertificatesResultCert `json:"certificates"`
 
-			// Name
-			CertificateName string `json:"certificate_name"`
+	// Number of pages
+	PageCount int32 `json:"page_count"`
+}
 
-			// Type
-			TypeCode string `json:"type"`
+type ListCertificatesResultCert struct {
+	// Identifier
+	CertificateId int32 `json:"certificate_id"`
 
-			// Status
-			StatusCode string `json:"status_code"`
+	// Number
+	CertificateNumber string `json:"certificate_number"`
 
-			// Accordance type
-			AccordanceTypecode string `json:"accordance_type_code"`
+	// Name
+	CertificateName string `json:"certificate_name"`
 
-			// Certificate rejection reason
-			RejectionReasonCode string `json:"rejectio_reason_code"`
+	// Type
+	TypeCode string `json:"type"`
 
-			// Moderator's comment
-			VerificationComment string `json:"verification_comment"`
+	// Status
+	StatusCode string `json:"status_code"`
 
-			// Issue date
-			IssueDate time.Time `json:"issue_data"`
+	// Accordance type
+	AccordanceTypecode string `json:"accordance_type_code"`
 
-			// Expire date
-			ExpireDate time.Time `json:"expire_date"`
+	// Certificate rejection reason
+	RejectionReasonCode string `json:"rejectio_reason_code"`
 
-			// Number of products associated with a certificate
-			ProductsCount int32 `json:"products_count"`
-		} `json:"certificates"`
+	// Moderator's comment
+	VerificationComment string `json:"verification_comment"`
 
-		// Number of pages
-		PageCount int32 `json:"page_count"`
-	} `json:"result"`
+	// Issue date
+	IssueDate time.Time `json:"issue_data"`
+
+	// Expire date
+	ExpireDate time.Time `json:"expire_date"`
+
+	// Number of products associated with a certificate
+	ProductsCount int32 `json:"products_count"`
 }
 
 // Certificates list
@@ -329,13 +349,15 @@ type ProductStatusesResponse struct {
 	core.CommonResponse
 
 	// Product statuses
-	Result []struct {
-		// Product status code when linking it to the certificate
-		Code string `json:"code"`
+	Result []ProductStatusesResult `json:"result"`
+}
 
-		// Status description
-		Name string `json:"name"`
-	} `json:"result"`
+type ProductStatusesResult struct {
+	// Product status code when linking it to the certificate
+	Code string `json:"code"`
+
+	// Status description
+	Name string `json:"name"`
 }
 
 func (c Certificates) ProductStatuses() (*ProductStatusesResponse, error) {
@@ -370,19 +392,21 @@ type ListProductsForCertificateResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// List of products
-		Items []struct {
-			// Product identifier
-			ProductId int64 `json:"product_id"`
+	Result ListProductsForCertificateResult `json:"result"`
+}
 
-			// Status of the product processing when binding to a certificate
-			ProductStatusCode string `json:"product_status_code"`
-		} `json:"items"`
+type ListProductsForCertificateResult struct {
+	// List of products
+	Items []struct {
+		// Product identifier
+		ProductId int64 `json:"product_id"`
 
-		// Number of products found
-		Count int64 `json:"count"`
-	} `json:"result"`
+		// Status of the product processing when binding to a certificate
+		ProductStatusCode string `json:"product_status_code"`
+	} `json:"items"`
+
+	// Number of products found
+	Count int64 `json:"count"`
 }
 
 // A method for getting a list of possible statuses of products when binding them to a certificate
@@ -412,18 +436,20 @@ type UnlinkFromProductResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// Error message when unbinding a product
-		Error string `json:"error"`
+	Result []UnlinkFromProductResult `json:"result"`
+}
 
-		// Product identifier
-		ProductId int64 `json:"product_id"`
+type UnlinkFromProductResult struct {
+	// Error message when unbinding a product
+	Error string `json:"error"`
 
-		// Indication that the product was unbound from a certificate:
-		//   - true — it was unbound,
-		//   - false — it is still bound
-		Updated bool `json:"updated"`
-	} `json:"result"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Indication that the product was unbound from a certificate:
+	//   - true — it was unbound,
+	//   - false — it is still bound
+	Updated bool `json:"updated"`
 }
 
 // Unbind products from a certificate
@@ -445,13 +471,15 @@ type PossibleRejectReasonsResponse struct {
 	core.CommonResponse
 
 	// Certificate rejection reasons
-	Result []struct {
-		// Сode of a certificate rejection reason
-		Code string `json:"code"`
+	Result []PossibleRejectReasonsResult `json:"result"`
+}
 
-		// Description of a certificate rejection reason
-		Name string `json:"name"`
-	} `json:"result"`
+type PossibleRejectReasonsResult struct {
+	// Сode of a certificate rejection reason
+	Code string `json:"code"`
+
+	// Description of a certificate rejection reason
+	Name string `json:"name"`
 }
 
 // Possible certificate rejection reasons
@@ -473,13 +501,15 @@ type PossibleStatusesResponse struct {
 	core.CommonResponse
 
 	// Possible certificate statuses
-	Result []struct {
-		// Certificate status code
-		Code string `json:"code"`
+	Result []PossibleStatusesResult `json:"result"`
+}
 
-		// Status description
-		Name string `json:"name"`
-	} `json:"result"`
+type PossibleStatusesResult struct {
+	// Certificate status code
+	Code string `json:"code"`
+
+	// Status description
+	Name string `json:"name"`
 }
 
 func (c Certificates) PossibleStatuses() (*PossibleStatusesResponse, error) {

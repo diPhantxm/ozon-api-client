@@ -39,36 +39,42 @@ type GetStocksInfoResponse struct {
 	core.CommonResponse
 
 	// Method Result
-	Result struct {
-		// Identifier of the last value on the page
-		//
-		// To get the next values, specify the recieved value in the next request in the last_id parameter
-		LastId string `json:"last_id,omitempty"`
+	Result GetStocksInfoResult `json:"result,omitempty"`
+}
 
-		// The number of unique products for which information about stocks is displayed
-		Total int32 `json:"total,omitempty"`
+type GetStocksInfoResult struct {
+	// Identifier of the last value on the page
+	//
+	// To get the next values, specify the recieved value in the next request in the last_id parameter
+	LastId string `json:"last_id,omitempty"`
 
-		// Product details
-		Items []struct {
-			// Product identifier in the seller's system
-			OfferId string `json:"offer_id,omitempty"`
+	// The number of unique products for which information about stocks is displayed
+	Total int32 `json:"total,omitempty"`
 
-			// Product identifier
-			ProductId int64 `json:"product_id,omitempty"`
+	// Product details
+	Items []GetStocksInfoResultItem `json:"items,omitempty"`
+}
 
-			// Stock details
-			Stocks []struct {
-				// In a warehouse
-				Present int32 `json:"present,omitempty"`
+type GetStocksInfoResultItem struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id,omitempty"`
 
-				// Reserved
-				Reserved int32 `json:"reserved,omitempty"`
+	// Product identifier
+	ProductId int64 `json:"product_id,omitempty"`
 
-				// Warehouse type
-				Type string `json:"type,omitempty" default:"ALL"`
-			} `json:"stocks,omitempty"`
-		} `json:"items,omitempty"`
-	} `json:"result,omitempty"`
+	// Stock details
+	Stocks []GetStocksInfoResultItemStock `json:"stocks,omitempty"`
+}
+
+type GetStocksInfoResultItemStock struct {
+	// In a warehouse
+	Present int32 `json:"present,omitempty"`
+
+	// Reserved
+	Reserved int32 `json:"reserved,omitempty"`
+
+	// Warehouse type
+	Type string `json:"type,omitempty" default:"ALL"`
 }
 
 // Returns information about the quantity of products in stock:
@@ -127,25 +133,7 @@ type ProductDetails struct {
 	ColorImage string `json:"color_image"`
 
 	// Commission fees details
-	Commissions []struct {
-		// Delivery cost
-		DeliveryAmount float64 `json:"deliveryAmount"`
-
-		// Minimum commission fee
-		MinValue float64 `json:"minValue"`
-
-		// Commission percentage
-		Percent float64 `json:"percent"`
-
-		// Return cost
-		ReturnAmount float64 `json:"returnAmount"`
-
-		// Sale scheme
-		SaleSchema string `json:"saleSchema"`
-
-		// Commission fee amount
-		Value float64 `json:"value"`
-	} `json:"commissions"`
+	Commissions []ProductDetailCommission `json:"commissions"`
 
 	// Date and time when the product was created
 	CreatedAt time.Time `json:"created_at"`
@@ -224,46 +212,7 @@ type ProductDetails struct {
 	Price string `json:"price"`
 
 	// Product price indexes
-	PriceIndexes struct {
-		// Competitors' product price on other marketplaces
-		ExternalIndexData struct {
-			// Minimum competitors' product price on other marketplaces
-			MinimalPrice string `json:"minimal_price"`
-
-			// Price currency
-			MinimalPriceCurrency string `json:"minimal_price_currency"`
-
-			// Price index value
-			PriceIndexValue float64 `json:"price_index_value"`
-		} `json:"external_index_data"`
-
-		// Competitors' product price on Ozon
-		OzonIndexData struct {
-			// Minimum competitors' product price on Ozon
-			MinimalPrice string `json:"minimal_price"`
-
-			// Price currency
-			MinimalPriceCurrency string `json:"minimal_price_currency"`
-
-			// Price index value
-			PriceIndexValue float64 `json:"price_index_value"`
-		} `json:"ozon_index_data"`
-
-		// Resulting price index of the product
-		PriceIndex string `json:"price_index"`
-
-		// Price of your product on other marketplaces
-		SelfMarketplaceIndexData struct {
-			// Minimum price of your product on other marketplaces
-			MinimalPrice string `json:"minimal_price"`
-
-			// Price currency
-			MinimalPriceCurrency string `json:"minimal_price_currency"`
-
-			// Price index value
-			PriceIndexValue float64 `json:"price_index_value"`
-		} `json:"self_marketplace_index_data"`
-	} `json:"prices_indexes"`
+	PriceIndexes ProductDetailPriceIndex `json:"prices_indexes"`
 
 	// Deprecated: Price index. Learn more in Help Center
 	//
@@ -274,67 +223,13 @@ type ProductDetails struct {
 	RecommendedPrice string `json:"recommended_price"`
 
 	// Product state description
-	Status struct {
-		// Product state
-		State string `json:"state"`
-
-		// Product state on the transition to which an error occurred
-		StateFailed string `json:"state_failed"`
-
-		// Moderation status
-		ModerateStatus string `json:"moderate_status"`
-
-		// Product decline reasons
-		DeclineReasons []string `json:"decline_reasons"`
-
-		// Validation status
-		ValidationsState string `json:"validation_state"`
-
-		// Product status name
-		StateName string `json:"state_name"`
-
-		// Product state description
-		StateDescription string `json:"state_description"`
-
-		// Indiction that there were errors while creating products
-		IsFailed bool `json:"is_failed"`
-
-		// Indiction that the product was created
-		IsCreated bool `json:"is_created"`
-
-		// Tooltips for the current product state
-		StateTooltip string `json:"state_tooltip"`
-
-		// Product loading errors
-		ItemErrors []GetProductDetailsResponseItemError `json:"item_errors"`
-
-		// The last time product state changed
-		StateUpdatedAt time.Time `json:"state_updated_at"`
-	} `json:"status"`
+	Status ProductDetailStatus `json:"status"`
 
 	// Details about the sources of similar offers. Learn more in Help Сenter
-	Sources []struct {
-		// Indication that the source is taken into account when calculating the market value
-		IsEnabled bool `json:"is_enabled"`
-
-		// Product identifier in the Ozon system, SKU
-		SKU int64 `json:"sku"`
-
-		// Link to the source
-		Source string `json:"source"`
-	} `json:"sources"`
+	Sources []ProductDetailSource `json:"sources"`
 
 	// Details about product stocks
-	Stocks struct {
-		// Supply expected
-		Coming int32 `json:"coming"`
-
-		// Currently at the warehouse
-		Present int32 `json:"present"`
-
-		// Reserved
-		Reserved int32 `json:"reserved"`
-	} `json:"stocks"`
+	Stocks ProductDetailStock `json:"stocks"`
 
 	// Date of the last product update
 	UpdatedAt time.Time `json:"updated_at"`
@@ -343,22 +238,151 @@ type ProductDetails struct {
 	VAT string `json:"vat"`
 
 	// Product visibility settings
-	VisibilityDetails struct {
-		// If the product is active, the value is true
-		ActiveProduct bool `json:"active_product"`
-
-		// If the price is set, the value is true
-		HasPrice bool `json:"has_price"`
-
-		// If there is stock at the warehouses, the value is true
-		HasStock bool `json:"has_stock"`
-	} `json:"visibility_details"`
+	VisibilityDetails ProductDetailVisibilityDetails `json:"visibility_details"`
 
 	// If the product is on sale, the value is true
 	Visible bool `json:"visible"`
 
 	// Product volume weight
 	VolumeWeight float64 `json:"volume_weights"`
+}
+
+type ProductDetailCommission struct {
+	// Delivery cost
+	DeliveryAmount float64 `json:"deliveryAmount"`
+
+	// Minimum commission fee
+	MinValue float64 `json:"minValue"`
+
+	// Commission percentage
+	Percent float64 `json:"percent"`
+
+	// Return cost
+	ReturnAmount float64 `json:"returnAmount"`
+
+	// Sale scheme
+	SaleSchema string `json:"saleSchema"`
+
+	// Commission fee amount
+	Value float64 `json:"value"`
+}
+
+type ProductDetailPriceIndex struct {
+	// Competitors' product price on other marketplaces
+	ExternalIndexData ProductDetailPriceIndexExternal `json:"external_index_data"`
+
+	// Competitors' product price on Ozon
+	OzonIndexData ProductDetailPriceIndexOzon `json:"ozon_index_data"`
+
+	// Resulting price index of the product
+	PriceIndex string `json:"price_index"`
+
+	// Price of your product on other marketplaces
+	SelfMarketplaceIndexData ProductDetailPriceIndexSelfMarketplace `json:"self_marketplace_index_data"`
+}
+
+type ProductDetailPriceIndexExternal struct {
+	// Minimum competitors' product price on other marketplaces
+	MinimalPrice string `json:"minimal_price"`
+
+	// Price currency
+	MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+	// Price index value
+	PriceIndexValue float64 `json:"price_index_value"`
+}
+
+type ProductDetailPriceIndexOzon struct {
+	// Minimum competitors' product price on Ozon
+	MinimalPrice string `json:"minimal_price"`
+
+	// Price currency
+	MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+	// Price index value
+	PriceIndexValue float64 `json:"price_index_value"`
+}
+
+type ProductDetailPriceIndexSelfMarketplace struct {
+	// Minimum price of your product on other marketplaces
+	MinimalPrice string `json:"minimal_price"`
+
+	// Price currency
+	MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+	// Price index value
+	PriceIndexValue float64 `json:"price_index_value"`
+}
+
+type ProductDetailStatus struct {
+	// Product state
+	State string `json:"state"`
+
+	// Product state on the transition to which an error occurred
+	StateFailed string `json:"state_failed"`
+
+	// Moderation status
+	ModerateStatus string `json:"moderate_status"`
+
+	// Product decline reasons
+	DeclineReasons []string `json:"decline_reasons"`
+
+	// Validation status
+	ValidationsState string `json:"validation_state"`
+
+	// Product status name
+	StateName string `json:"state_name"`
+
+	// Product state description
+	StateDescription string `json:"state_description"`
+
+	// Indiction that there were errors while creating products
+	IsFailed bool `json:"is_failed"`
+
+	// Indiction that the product was created
+	IsCreated bool `json:"is_created"`
+
+	// Tooltips for the current product state
+	StateTooltip string `json:"state_tooltip"`
+
+	// Product loading errors
+	ItemErrors []GetProductDetailsResponseItemError `json:"item_errors"`
+
+	// The last time product state changed
+	StateUpdatedAt time.Time `json:"state_updated_at"`
+}
+
+type ProductDetailSource struct {
+	// Indication that the source is taken into account when calculating the market value
+	IsEnabled bool `json:"is_enabled"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Link to the source
+	Source string `json:"source"`
+}
+
+type ProductDetailStock struct {
+	// Supply expected
+	Coming int32 `json:"coming"`
+
+	// Currently at the warehouse
+	Present int32 `json:"present"`
+
+	// Reserved
+	Reserved int32 `json:"reserved"`
+}
+
+type ProductDetailVisibilityDetails struct {
+	// If the product is active, the value is true
+	ActiveProduct bool `json:"active_product"`
+
+	// If the price is set, the value is true
+	HasPrice bool `json:"has_price"`
+
+	// If there is stock at the warehouses, the value is true
+	HasStock bool `json:"has_stock"`
 }
 
 type ProductDiscountedStocks struct {
@@ -433,25 +457,29 @@ type UpdateStocksResponse struct {
 	core.CommonResponse
 
 	// Request results
-	Result []struct {
-		// An array of errors that occurred while processing the request
-		Errors []struct {
-			// Error code
-			Code string `json:"code"`
+	Result []UpdateStocksResult `json:"result"`
+}
 
-			// Error reason
-			Message string `json:"message"`
-		} `json:"errors"`
+type UpdateStocksResult struct {
+	// An array of errors that occurred while processing the request
+	Errors []UpdateStocksResultError `json:"errors"`
 
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
 
-		// Product identifier
-		ProductId int64 `json:"product_id"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
 
-		// If the product details have been successfully updated — true
-		Updated bool `json:"updated"`
-	}
+	// If the product details have been successfully updated — true
+	Updated bool `json:"updated"`
+}
+
+type UpdateStocksResultError struct {
+	// Error code
+	Code string `json:"code"`
+
+	// Error reason
+	Message string `json:"message"`
 }
 
 // Allows you to change the products in stock quantity. The method is only used for FBS and rFBS warehouses.
@@ -496,28 +524,32 @@ type UpdateQuantityStockProductsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// An array of errors that occurred while processing the request
-		Errors []struct {
-			// Error code
-			Code string `json:"code"`
+	Result []UpdateQuantityStockProductsResult `json:"result"`
+}
 
-			// Error reason
-			Message string `json:"message"`
-		} `json:"errors"`
+type UpdateQuantityStockProductsResult struct {
+	// An array of errors that occurred while processing the request
+	Errors []UpdateQuantityStockProductsResultError `json:"errors"`
 
-		// Product identifier in the seller's system
-		Offerid string `json:"offer_id"`
+	// Product identifier in the seller's system
+	Offerid string `json:"offer_id"`
 
-		// Product identifier
-		ProductId int64 `json:"product_id"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
 
-		// If the request was completed successfully and the stocks are updated — true
-		Updated bool `json:"updated"`
+	// If the request was completed successfully and the stocks are updated — true
+	Updated bool `json:"updated"`
 
-		// Warehouse identifier derived from the /v1/warehouse/list method
-		WarehouseId int64 `json:"warehouse_id"`
-	} `json:"result"`
+	// Warehouse identifier derived from the /v1/warehouse/list method
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type UpdateQuantityStockProductsResultError struct {
+	// Error code
+	Code string `json:"code"`
+
+	// Error reason
+	Message string `json:"message"`
 }
 
 // Allows you to change the products in stock quantity.
@@ -556,25 +588,27 @@ type StocksInSellersWarehouseResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// SKU of the product that is sold from the seller's warehouse (FBS and RFBS schemes)
-		FBSSKU int64 `json:"fbs_sku"`
+	Result []StocksInSellersWarehouseResult `json:"result"`
+}
 
-		// Total number of items in the warehouse
-		Present int64 `json:"present"`
+type StocksInSellersWarehouseResult struct {
+	// SKU of the product that is sold from the seller's warehouse (FBS and RFBS schemes)
+	FBSSKU int64 `json:"fbs_sku"`
 
-		// The product identifier in the seller's system
-		ProductId int64 `json:"product_id"`
+	// Total number of items in the warehouse
+	Present int64 `json:"present"`
 
-		// The number of reserved products in the warehouse
-		Reserved int64 `json:"reserved"`
+	// The product identifier in the seller's system
+	ProductId int64 `json:"product_id"`
 
-		// Warehouse identifier
-		WarehouseId int64 `json:"warehouse_id"`
+	// The number of reserved products in the warehouse
+	Reserved int64 `json:"reserved"`
 
-		// Warehouse name
-		WarehouseName string `json:"warehouse_name"`
-	}
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
 }
 
 // Get stocks in seller's warehouse
@@ -628,22 +662,26 @@ type UpdatePricesPrice struct {
 type UpdatePricesResponse struct {
 	core.CommonResponse
 
-	Result []struct {
-		// An array of errors that occurred while processing the request
-		Errors []struct {
-			Code    string `json:"code"`
-			Message string `json:"message"`
-		} `json:"errors"`
+	Result []UpdatePricesResult `json:"result"`
+}
 
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
+type UpdatePricesResult struct {
+	// An array of errors that occurred while processing the request
+	Errors []UpdatePricesResultError `json:"errors"`
 
-		// Product ID
-		ProductId int64 `json:"product_id"`
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
 
-		// If the product details have been successfully updated — true
-		Updated bool `json:"updated"`
-	} `json:"result"`
+	// Product ID
+	ProductId int64 `json:"product_id"`
+
+	// If the product details have been successfully updated — true
+	Updated bool `json:"updated"`
+}
+
+type UpdatePricesResultError struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
 }
 
 // Allows you to change a price of one or more products.
@@ -817,10 +855,12 @@ type CreateOrUpdateProductResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Number of task for products upload
-		TaskId int64 `json:"task_id"`
-	} `json:"result"`
+	Result CreateOrUpdateProductResult `json:"result"`
+}
+
+type CreateOrUpdateProductResult struct {
+	// Number of task for products upload
+	TaskId int64 `json:"task_id"`
 }
 
 // This method allows you to create products and update their details
@@ -866,24 +906,28 @@ type GetListOfProductsResponse struct {
 	core.CommonResponse
 
 	// Result
-	Result struct {
-		// Products list
-		Items []struct {
-			// Product identifier in the seller's system
-			OfferId string `json:"offer_id"`
+	Result GetListOfProductsResult `json:"result"`
+}
 
-			// Product ID
-			ProductId int64 `json:"product_id"`
-		} `json:"items"`
+type GetListOfProductsResult struct {
+	// Products list
+	Items []GetListOfProductsResultItem `json:"items"`
 
-		// Identifier of the last value on the page.
-		//
-		// To get the next values, specify the recieved value in the next request in the last_id parameter
-		LastId string `json:"last_id"`
+	// Identifier of the last value on the page.
+	//
+	// To get the next values, specify the recieved value in the next request in the last_id parameter
+	LastId string `json:"last_id"`
 
-		// Total number of products
-		Total int32 `json:"total"`
-	} `json:"result"`
+	// Total number of products
+	Total int32 `json:"total"`
+}
+
+type GetListOfProductsResultItem struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Product ID
+	ProductId int64 `json:"product_id"`
 }
 
 func (c Products) GetListOfProducts(params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
@@ -909,55 +953,63 @@ type GetProductsRatingBySKUResponse struct {
 	core.CommonResponse
 
 	// Products' content rating
-	Products []struct {
-		// Product identifier in the Ozon system, SKU
-		SKU int64 `json:"sku"`
+	Products []GetProductsRatingbySKUProduct `json:"products"`
+}
 
-		// Product content rating: 0 to 100
-		Rating float64 `json:"rating"`
+type GetProductsRatingbySKUProduct struct {
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 
-		// Groups of characteristics that make up the content rating
-		Groups []struct {
-			// List of conditions that increase the product content rating
-			Conditions []struct {
-				// Number of content rating points that the condition gives
-				Cost float64 `json:"cost"`
+	// Product content rating: 0 to 100
+	Rating float64 `json:"rating"`
 
-				// Condition description
-				Description string `json:"description"`
+	// Groups of characteristics that make up the content rating
+	Groups []GetProductsRatingBySKUProductGroup `json:"groups"`
+}
 
-				// Indication that the condition is met
-				Fulfilled bool `json:"fulfilled"`
+type GetProductsRatingBySKUProductGroup struct {
+	// List of conditions that increase the product content rating
+	Conditions []GetProductsRatingBySKUProductGroupCondition `json:"conditions"`
 
-				// Condition identifier
-				Key string `json:"key"`
-			} `json:"conditions"`
+	// Number of attributes you need to fill in to get the maximum score in this characteristics group
+	ImproveAtLeast int32 `json:"improve_at_least"`
 
-			// Number of attributes you need to fill in to get the maximum score in this characteristics group
-			ImproveAtLeast int32 `json:"improve_at_least"`
+	// List of attributes that can increase the product content rating
+	ImproveAttributes []GetProductsRatingBySKUProductGroupImproveAttr `json:"improve_attributes"`
 
-			// List of attributes that can increase the product content rating
-			ImproveAttributes []struct {
-				// Attribute identifier
-				Id int64 `json:"id"`
+	// Group identifier
+	Key string `json:"key"`
 
-				// Attribute name
-				Name string `json:"name"`
-			} `json:"improve_attributes"`
+	// Group name
+	Name string `json:"name"`
 
-			// Group identifier
-			Key string `json:"key"`
+	// Rating in the group
+	Rating float64 `json:"rating"`
 
-			// Group name
-			Name string `json:"name"`
+	// Percentage influence of group characteristics on the content rating
+	Weight float64 `json:"weight"`
+}
 
-			// Rating in the group
-			Rating float64 `json:"rating"`
+type GetProductsRatingBySKUProductGroupCondition struct {
+	// Number of content rating points that the condition gives
+	Cost float64 `json:"cost"`
 
-			// Percentage influence of group characteristics on the content rating
-			Weight float64 `json:"weight"`
-		} `json:"groups"`
-	} `json:"products"`
+	// Condition description
+	Description string `json:"description"`
+
+	// Indication that the condition is met
+	Fulfilled bool `json:"fulfilled"`
+
+	// Condition identifier
+	Key string `json:"key"`
+}
+
+type GetProductsRatingBySKUProductGroupImproveAttr struct {
+	// Attribute identifier
+	Id int64 `json:"id"`
+
+	// Attribute name
+	Name string `json:"name"`
 }
 
 // Method for getting products' content rating and recommendations on how to increase it
@@ -984,35 +1036,41 @@ type GetProductImportStatusResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Product details
-		Items []struct {
-			// Product identifier in the seller's system.
-			//
-			// The maximum length of a string is 50 characters
-			OfferId string `json:"offer_id"`
+	Result GetProductImportStatusResult `json:"result"`
+}
 
-			// Product identifier
-			ProductId int64 `json:"product_id"`
+type GetProductImportStatusResult struct {
+	// Product details
+	Items []GetProductImportStatusResultItem `json:"items"`
 
-			// Product creation status. Product information is processed in queues. Possible parameter values:
-			//   - pending — product in the processing queue;
-			//   - imported — product loaded successfully;
-			//   - failed — product loaded with errors
-			Status string `json:"status"`
+	// Product identifier in the seller's system
+	Total int32 `json:"total"`
+}
 
-			// Array of errors
-			Errors []struct {
-				GetProductDetailsResponseItemError
+type GetProductImportStatusResultItem struct {
+	// Product identifier in the seller's system.
+	//
+	// The maximum length of a string is 50 characters
+	OfferId string `json:"offer_id"`
 
-				// Error technical description
-				Message string `json:"message"`
-			} `json:"errors"`
-		} `json:"items"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
 
-		// Product identifier in the seller's system
-		Total int32 `json:"total"`
-	} `json:"result"`
+	// Product creation status. Product information is processed in queues. Possible parameter values:
+	//   - pending — product in the processing queue;
+	//   - imported — product loaded successfully;
+	//   - failed — product loaded with errors
+	Status string `json:"status"`
+
+	// Array of errors
+	Errors []GetProductImportStatusResultItemError `json:"errors"`
+}
+
+type GetProductImportStatusResultItemError struct {
+	GetProductDetailsResponseItemError
+
+	// Error technical description
+	Message string `json:"message"`
 }
 
 // Allows you to get the status of a product description page creation process
@@ -1119,35 +1177,39 @@ type ProductInfoResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Pictures
-		Pictures []struct {
-			// Attribute of a 360 image
-			Is360 bool `json:"is_360"`
+	Result ProductInfoResult `json:"result"`
+}
 
-			// Attribute of a marketing color
-			IsColor bool `json:"is_color"`
+type ProductInfoResult struct {
+	// Pictures
+	Pictures []ProductInfoResultPicture `json:"pictures"`
+}
 
-			// Attribute of a marketing color
-			IsPrimary bool `json:"is_primary"`
+type ProductInfoResultPicture struct {
+	// Attribute of a 360 image
+	Is360 bool `json:"is_360"`
 
-			// Product identifier
-			ProductId int64 `json:"product_id"`
+	// Attribute of a marketing color
+	IsColor bool `json:"is_color"`
 
-			// Image uploading status.
-			//
-			// If the `/v1/product/pictures/import` method was called, the response will always be imported—image not processed.
-			// To see the final status, call the `/v1/product/pictures/info` method after about 10 seconds.
-			//
-			// If you called the `/v1/product/pictures/info` method, one of the statuses will appear:
-			//   - uploaded — image uploaded;
-			//   - failed — image was not uploaded
-			State string `json:"state"`
+	// Attribute of a marketing color
+	IsPrimary bool `json:"is_primary"`
 
-			// The link to the image in the public cloud storage. The image format is JPG or PNG
-			URL string `json:"url"`
-		} `json:"pictures"`
-	} `json:"result"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Image uploading status.
+	//
+	// If the `/v1/product/pictures/import` method was called, the response will always be imported—image not processed.
+	// To see the final status, call the `/v1/product/pictures/info` method after about 10 seconds.
+	//
+	// If you called the `/v1/product/pictures/info` method, one of the statuses will appear:
+	//   - uploaded — image uploaded;
+	//   - failed — image was not uploaded
+	State string `json:"state"`
+
+	// The link to the image in the public cloud storage. The image format is JPG or PNG
+	URL string `json:"url"`
 }
 
 // The method for uploading and updating product images.
@@ -1218,10 +1280,12 @@ type ListProductsByIDsResponse struct {
 	core.CommonResponse
 
 	// Request results
-	Result struct {
-		// Data array
-		Items []ProductDetails `json:"items"`
-	} `json:"result"`
+	Result ListProductsByIDsResult `json:"result"`
+}
+
+type ListProductsByIDsResult struct {
+	// Data array
+	Items []ProductDetails `json:"items"`
 }
 
 // Method for getting an array of products by their identifiers.
@@ -1277,117 +1341,7 @@ type GetDescriptionOfProductResponse struct {
 	core.CommonResponse
 
 	// Request results
-	Result []struct {
-		// Array of product characteristics
-		Attributes []struct {
-			// Characteristic identifier
-			AttributeId int64 `json:"attribute_id"`
-
-			// Identifier of the characteristic that supports nested properties.
-			// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
-			// Each of the nested characteristics can have multiple value variants
-			ComplexId int64 `json:"complex_id"`
-
-			// Array of characteristic values
-			Values []struct {
-				// Characteristic identifier in the dictionary
-				DictionaryValueId int64 `json:"dictionary_value_id"`
-
-				// Product characteristic value
-				Value string `json:"value"`
-			} `json:"values"`
-		} `json:"attributes"`
-
-		// Barcode
-		Barcode string `json:"barcode"`
-
-		// Category identifier
-		CategoryId int64 `json:"category_id"`
-
-		// Marketing color
-		ColorImage string `json:"color_image"`
-
-		// Array of nested characteristics
-		ComplexAttributes []struct {
-			// Array of product characteristics
-			Attributes []struct {
-				// Characteristic identifier
-				AttributeId int64 `json:"attribute_id"`
-
-				// Identifier of the characteristic that supports nested properties.
-				// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
-				// Each of the nested characteristics can have multiple value variants
-				ComplexId int64 `json:"complex_id"`
-
-				// Array of characteristic values
-				Values []struct {
-					// Characteristic identifier in the dictionary
-					DictionaryValueId int64 `json:"dictionary_value_id"`
-
-					// Product characteristic value
-					Value string `json:"value"`
-				} `json:"values"`
-			} `json:"attributes"`
-		} `json:"complex_attributes"`
-
-		// Depth
-		Depth int32 `json:"depth"`
-
-		// Dimension measurement units:
-		//   - mm — millimeters,
-		//   - cm — centimeters,
-		//   - in — inches
-		DimensionUnit string `json:"dimension_unit"`
-
-		// Package height
-		Height int32 `json:"height"`
-
-		// Product characteristic identifier
-		Id int64 `json:"id"`
-
-		// Identifier for subsequent batch loading of images
-		ImageGroupId string `json:"image_group_id"`
-
-		// Array of links to product images
-		Images []struct {
-			Default  bool   `json:"default"`
-			FileName string `json:"file_name"`
-			Index    int64  `json:"index"`
-		} `json:"images"`
-
-		// Array of 360 images
-		Images360 []struct {
-			FileName string `json:"file_name"`
-			Index    int64  `json:"index"`
-		} `json:"images360"`
-
-		// Product name. Up to 500 characters
-		Name string `json:"name"`
-
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
-
-		// Array of PDF files
-		PDFList []struct {
-			// Path to PDF file
-			FileName string `json:"file_name"`
-
-			// Storage order index
-			Index int64 `json:"index"`
-
-			// File name
-			Name string `json:"name"`
-		} `json:"pdf_list"`
-
-		// Weight of product in the package
-		Weight int32 `json:"weight"`
-
-		// Weight measurement unit
-		WeightUnit string `json:"weight_unit"`
-
-		// Package width
-		Width int32 `json:"width"`
-	} `json:"result"`
+	Result []GetDescriptionOfProductResult `json:"result"`
 
 	// Identifier of the last value on the page.
 	//
@@ -1396,6 +1350,134 @@ type GetDescriptionOfProductResponse struct {
 
 	// Number of products in the list
 	Total int32 `json:"total"`
+}
+
+type GetDescriptionOfProductResult struct {
+	// Array of product characteristics
+	Attributes []GetDescriptionOfProductResultAttr `json:"attributes"`
+
+	// Barcode
+	Barcode string `json:"barcode"`
+
+	// Category identifier
+	CategoryId int64 `json:"category_id"`
+
+	// Marketing color
+	ColorImage string `json:"color_image"`
+
+	// Array of nested characteristics
+	ComplexAttributes []GetDescriptionOfProductResultComplexAttrs `json:"complex_attributes"`
+
+	// Depth
+	Depth int32 `json:"depth"`
+
+	// Dimension measurement units:
+	//   - mm — millimeters,
+	//   - cm — centimeters,
+	//   - in — inches
+	DimensionUnit string `json:"dimension_unit"`
+
+	// Package height
+	Height int32 `json:"height"`
+
+	// Product characteristic identifier
+	Id int64 `json:"id"`
+
+	// Identifier for subsequent batch loading of images
+	ImageGroupId string `json:"image_group_id"`
+
+	// Array of links to product images
+	Images []GetDescriptionOfProductResultImage `json:"images"`
+
+	// Array of 360 images
+	Images360 []GetDescriptionOfProductResultImage360 `json:"images360"`
+
+	// Product name. Up to 500 characters
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Array of PDF files
+	PDFList []GetDescriptionOfProductResultPDF `json:"pdf_list"`
+
+	// Weight of product in the package
+	Weight int32 `json:"weight"`
+
+	// Weight measurement unit
+	WeightUnit string `json:"weight_unit"`
+
+	// Package width
+	Width int32 `json:"width"`
+}
+
+type GetDescriptionOfProductResultAttr struct {
+	// Characteristic identifier
+	AttributeId int64 `json:"attribute_id"`
+
+	// Identifier of the characteristic that supports nested properties.
+	// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
+	// Each of the nested characteristics can have multiple value variants
+	ComplexId int64 `json:"complex_id"`
+
+	// Array of characteristic values
+	Values []GetDescriptionOfProductResultAttrValue `json:"values"`
+}
+
+type GetDescriptionOfProductResultAttrValue struct {
+	// Characteristic identifier in the dictionary
+	DictionaryValueId int64 `json:"dictionary_value_id"`
+
+	// Product characteristic value
+	Value string `json:"value"`
+}
+
+type GetDescriptionOfProductResultComplexAttrs struct {
+	// Array of product characteristics
+	Attributes []GetDescriptionOfProductResultComplexAttr `json:"attributes"`
+}
+
+type GetDescriptionOfProductResultComplexAttr struct {
+	// Characteristic identifier
+	AttributeId int64 `json:"attribute_id"`
+
+	// Identifier of the characteristic that supports nested properties.
+	// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
+	// Each of the nested characteristics can have multiple value variants
+	ComplexId int64 `json:"complex_id"`
+
+	// Array of characteristic values
+	Values []GetDescriptionOfProductResultComplexAttrValue `json:"values"`
+}
+
+type GetDescriptionOfProductResultComplexAttrValue struct {
+	// Characteristic identifier in the dictionary
+	DictionaryValueId int64 `json:"dictionary_value_id"`
+
+	// Product characteristic value
+	Value string `json:"value"`
+}
+
+type GetDescriptionOfProductResultImage struct {
+	Default  bool   `json:"default"`
+	FileName string `json:"file_name"`
+	Index    int64  `json:"index"`
+}
+
+type GetDescriptionOfProductResultImage360 struct {
+	FileName string `json:"file_name"`
+	Index    int64  `json:"index"`
+}
+
+type GetDescriptionOfProductResultPDF struct {
+	// Path to PDF file
+	FileName string `json:"file_name"`
+
+	// Storage order index
+	Index int64 `json:"index"`
+
+	// File name
+	Name string `json:"name"`
 }
 
 // Returns a product characteristics description by product identifier. You can search for the product by `offer_id` or `product_id`
@@ -1425,19 +1507,21 @@ type GetProductDescriptionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Description
-		Description string `json:"description"`
+	Result GetProductDescriptionResult `json:"result"`
+}
 
-		// Identifier
-		Id int64 `json:"id"`
+type GetProductDescriptionResult struct {
+	// Description
+	Description string `json:"description"`
 
-		// Name
-		Name string `json:"name"`
+	// Identifier
+	Id int64 `json:"id"`
 
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
-	} `json:"result"`
+	// Name
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
 }
 
 // Get product description
@@ -1465,13 +1549,15 @@ type GetProductRangeLimitResponse struct {
 	DailyUpdate GetProductRangeLimitUploadQuota `json:"daily_update"`
 
 	// Product range limit
-	Total struct {
-		// How many products you can create in your personal account
-		Limit int64 `json:"limit"`
+	Total GetProductRangeLimitTotal `json:"total"`
+}
 
-		// How many products you've already created
-		Usage int64 `json:"usage"`
-	} `json:"total"`
+type GetProductRangeLimitTotal struct {
+	// How many products you can create in your personal account
+	Limit int64 `json:"limit"`
+
+	// How many products you've already created
+	Usage int64 `json:"usage"`
 }
 
 type GetProductRangeLimitUploadQuota struct {
@@ -1524,13 +1610,15 @@ type ChangeProductIDsResponse struct {
 	core.CommonResponse
 
 	// Errors list
-	Errors []struct {
-		// Error message
-		Message string `json:"message"`
+	Errors []ChangeProductIDsError `json:"errors"`
+}
 
-		// Product identifier that wasn't changed
-		OfferId string `json:"offer_id"`
-	} `json:"errors"`
+type ChangeProductIDsError struct {
+	// Error message
+	Message string `json:"message"`
+
+	// Product identifier that wasn't changed
+	OfferId string `json:"offer_id"`
 }
 
 // Method for changing the offer_id linked to products. You can change multiple offer_id in this method.
@@ -1578,7 +1666,7 @@ func (c Products) ArchiveProduct(params *ArchiveProductParams) (*ArchiveProductR
 }
 
 // Warning: Since June 14, 2023 the method is disabled.
-// 
+//
 // Unarchive product
 func (c Products) UnarchiveProduct(params *ArchiveProductParams) (*ArchiveProductResponse, error) {
 	url := "/v1/product/unarchive"
@@ -1608,16 +1696,18 @@ type RemoveProductWithoutSKUResponse struct {
 	core.CommonResponse
 
 	// Product processing status
-	Status []struct {
-		// Reason of the error that occurred while processing the request
-		Error string `json:"error"`
+	Status []RemoveProductWithoutSKUStatus `json:"status"`
+}
 
-		// If the request was executed without errors and the products were deleted, the value is true
-		IsDeleted bool `json:"is_deleted"`
+type RemoveProductWithoutSKUStatus struct {
+	// Reason of the error that occurred while processing the request
+	Error string `json:"error"`
 
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
-	} `json:"status"`
+	// If the request was executed without errors and the products were deleted, the value is true
+	IsDeleted bool `json:"is_deleted"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
 }
 
 // Remove a product without an SKU from the archive
@@ -1663,22 +1753,24 @@ type ListGeoRestrictionsResponse struct {
 	core.CommonResponse
 
 	// Restrictions
-	Restrictions []struct {
-		// Geo-restriction identifier
-		Id string `json:"id"`
+	Restrictions []ListGeoRestrictionsRestriction `json:"restrictions"`
+}
 
-		// Item visibility
-		IsVisible bool `json:"is_visible"`
+type ListGeoRestrictionsRestriction struct {
+	// Geo-restriction identifier
+	Id string `json:"id"`
 
-		// City name
-		Name string `json:"name"`
+	// Item visibility
+	IsVisible bool `json:"is_visible"`
 
-		// Geo-restriction order number.
-		//
-		// If you specify 23 in the last_order_number parameter in the request,
-		// the first item in the restrictions list will have order_number = 24
-		OrderNumber int64 `json:"order_number"`
-	} `json:"restrictions"`
+	// City name
+	Name string `json:"name"`
+
+	// Geo-restriction order number.
+	//
+	// If you specify 23 in the last_order_number parameter in the request,
+	// the first item in the restrictions list will have order_number = 24
+	OrderNumber int64 `json:"order_number"`
 }
 
 // Get a list of geo-restrictions for services
@@ -1708,10 +1800,12 @@ type UploadActivationCodesResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Uploading digital code task identifier
-		TaskId int64 `json:"task_id"`
-	} `json:"result"`
+	Result UploadActivationCodesResult `json:"result"`
+}
+
+type UploadActivationCodesResult struct {
+	// Uploading digital code task identifier
+	TaskId int64 `json:"task_id"`
 }
 
 // Upload activation codes when you upload service or digital products. Activation code is associated with the digital product card
@@ -1738,13 +1832,15 @@ type StatusOfUploadingActivationCodesResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Upload status:
-		//   - pending — products in queue for processing.
-		//   - imported — the product has been successfully uploaded.
-		//   - failed — the product was uploaded with errors
-		Status string `json:"status"`
-	} `json:"result"`
+	Result StatusOfUploadingActivationCodesResult `json:"result"`
+}
+
+type StatusOfUploadingActivationCodesResult struct {
+	// Upload status:
+	//   - pending — products in queue for processing.
+	//   - imported — the product has been successfully uploaded.
+	//   - failed — the product was uploaded with errors
+	Status string `json:"status"`
 }
 
 // Get status of uploading activation codes task for services and digital products
@@ -1790,191 +1886,211 @@ type GetProductPriceInfoResponse struct {
 	core.CommonResponse
 
 	// Result
-	Result struct {
-		// Products list
-		Items []struct {
-			// Commissions information
-			Commissions struct {
-				// Last mile (FBO)
-				FBOLastMile float64 `json:"fbo_deliv_to_customer_amount"`
+	Result GetProductPriceInfoResult `json:"result"`
+}
 
-				// Pipeline to (FBO)
-				FBOPipelineTo float64 `json:"fbo_direct_flow_trans_max_amount"`
+type GetProductPriceInfoResult struct {
+	// Products list
+	Items []GetPRoductPriceInfoResultItem `json:"items"`
 
-				// Pipeline from (FBO)
-				FBOPipelineFrom float64 `json:"fbo_direct_flow_trans_min_amount"`
+	// Identifier of the last value on page. Leave this field blank in the first request.
+	//
+	// To get the next values, specify last_id from the response of the previous request
+	LastId string `json:"last_id"`
 
-				// Order packaging fee (FBO)
-				FBOOrderPackagingFee float64 `json:"fbo_fulfillment_amount"`
+	// Products number in the list
+	Total int32 `json:"total"`
+}
 
-				// Return and cancellation fees (FBO)
-				FBOReturnCancellationFee float64 `json:"fbo_return_flow_amount"`
+type GetPRoductPriceInfoResultItem struct {
+	// Commissions information
+	Commissions GetProductPriceInfoResultItemCommission `json:"commissions"`
 
-				// Reverse logistics fee from (FBO)
-				FBOReverseLogisticsFeeFrom float64 `json:"fbo_return_flow_trans_min_amount"`
+	// Promotions information
+	MarketingActions []GetProductPriceInfoResultItemMarketingActions `json:"marketing_actions"`
 
-				// Reverse logistics fee to (FBO)
-				FBOReverseLogisticsFeeTo float64 `json:"fbo_return_flow_trans_max_amount"`
+	// Seller product identifier
+	OfferId string `json:"offer_id"`
 
-				// Last mile (FBS)
-				FBSLastMile float64 `json:"fbs_deliv_to_customer_amount"`
+	// Product price
+	Price GetProductPriceInfoResultItemPrice `json:"price"`
 
-				// Pipeline to (FBS)
-				FBSPipelineTo float64 `json:"fbs_direct_flow_trans_max_amount"`
+	// Deprected: price index
+	//
+	// Use PriceIndexes instead
+	PriceIndex string `json:"price_index"`
 
-				// Pipeline from (FBS)
-				FBSPipelineFrom float64 `json:"fbs_direct_flow_trans_min_amount"`
+	// Product price indexes
+	PriceIndexes GetProductPriceInfoResultItemPriceIndexes `json:"prices_indexes"`
 
-				// Shipment processing fee to (FBS)
-				FBSShipmentProcessingToFee float64 `json:"fbs_first_mile_min_amount"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
 
-				// Shipment processing fee from (FBS)
-				FBSShipmentProcessingFromFee float64 `json:"Shipment processing fee from (FBS)"`
+	// Product volume weight
+	VolumeWeight float64 `json:"volume_weight"`
+}
 
-				// Return and cancellation fees, shipment processing (FBS)
-				FBSReturnCancellationProcessingFee float64 `json:"fbs_return_flow_amount"`
+type GetProductPriceInfoResultItemCommission struct {
+	// Last mile (FBO)
+	FBOLastMile float64 `json:"fbo_deliv_to_customer_amount"`
 
-				// Return and cancellation fees, pipeline to (FBS)
-				FBSReturnCancellationToFees float64 `json:"fbs_return_flow_trans_max_amount"`
+	// Pipeline to (FBO)
+	FBOPipelineTo float64 `json:"fbo_direct_flow_trans_max_amount"`
 
-				// Return and cancellation fees, pipeline from (FBS)
-				FBSReturnCancellationFromFees float64 `json:"fbs_return_flow_trans_min_amount"`
+	// Pipeline from (FBO)
+	FBOPipelineFrom float64 `json:"fbo_direct_flow_trans_min_amount"`
 
-				// Sales commission percentage (FBO and FBS)
-				SalesCommissionRate float64 `json:"sales_percent"`
-			} `json:"commissions"`
+	// Order packaging fee (FBO)
+	FBOOrderPackagingFee float64 `json:"fbo_fulfillment_amount"`
 
-			// Promotions information
-			MarketingActions []struct {
-				// Seller's promotions. The parameters date_from, date_to, discount_value and title are specified for each seller's promotion
-				Actions []struct {
-					// Date and time when the seller's promotion starts
-					DateFrom time.Time `json:"date_from"`
+	// Return and cancellation fees (FBO)
+	FBOReturnCancellationFee float64 `json:"fbo_return_flow_amount"`
 
-					// Date and time when the seller's promotion ends
-					DateTo time.Time `json:"date_to"`
+	// Reverse logistics fee from (FBO)
+	FBOReverseLogisticsFeeFrom float64 `json:"fbo_return_flow_trans_min_amount"`
 
-					// Discount on the seller's promotion
-					DiscountValue string `json:"discount_value"`
+	// Reverse logistics fee to (FBO)
+	FBOReverseLogisticsFeeTo float64 `json:"fbo_return_flow_trans_max_amount"`
 
-					// Promotion name
-					Title string `json:"title"`
-				} `json:"actions"`
+	// Last mile (FBS)
+	FBSLastMile float64 `json:"fbs_deliv_to_customer_amount"`
 
-				// Current period start date and time for all current promotions
-				CurrentPeriodFrom time.Time `json:"current_period_from"`
+	// Pipeline to (FBS)
+	FBSPipelineTo float64 `json:"fbs_direct_flow_trans_max_amount"`
 
-				// Current period end date and time for all current promotions
-				CurrentPeriodTo time.Time `json:"current_period_to"`
+	// Pipeline from (FBS)
+	FBSPipelineFrom float64 `json:"fbs_direct_flow_trans_min_amount"`
 
-				// If a promotion can be applied to the product at the expense of Ozon, this field is set to true
-				OzonActionsExist bool `json:"ozon_actions_exist"`
-			} `json:"marketing_actions"`
+	// Shipment processing fee to (FBS)
+	FBSShipmentProcessingToFee float64 `json:"fbs_first_mile_min_amount"`
 
-			// Seller product identifier
-			OfferId string `json:"offer_id"`
+	// Shipment processing fee from (FBS)
+	FBSShipmentProcessingFromFee float64 `json:"Shipment processing fee from (FBS)"`
 
-			// Product price
-			Price struct {
-				// If promos auto-application is enabled, the value is true
-				AutoActionEnabled bool `json:"auto_action_enabled"`
+	// Return and cancellation fees, shipment processing (FBS)
+	FBSReturnCancellationProcessingFee float64 `json:"fbs_return_flow_amount"`
 
-				// Currency of your prices. It matches the currency set in the personal account settings
-				CurrencyCode string `json:"currency_code"`
+	// Return and cancellation fees, pipeline to (FBS)
+	FBSReturnCancellationToFees float64 `json:"fbs_return_flow_trans_max_amount"`
 
-				// Product price including all promotion discounts. This value will be indicated on the Ozon storefront
-				MarketingPrice string `json:"marketing_price"`
+	// Return and cancellation fees, pipeline from (FBS)
+	FBSReturnCancellationFromFees float64 `json:"fbs_return_flow_trans_min_amount"`
 
-				// Product price with seller's promotions applied
-				MarketingSellerPrice string `json:"marketing_seller_price"`
+	// Sales commission percentage (FBO and FBS)
+	SalesCommissionRate float64 `json:"sales_percent"`
+}
 
-				// Minimum price for similar products on Ozon
-				MinOzonPrice string `json:"min_ozon_price"`
+type GetProductPriceInfoResultItemMarketingActions struct {
+	// Seller's promotions. The parameters date_from, date_to, discount_value and title are specified for each seller's promotion
+	Actions []GetProductPriceInfoResultItemMarketingActionsAction `json:"actions"`
 
-				// Minimum product price with all promotions applied
-				MinPrice string `json:"min_price"`
+	// Current period start date and time for all current promotions
+	CurrentPeriodFrom time.Time `json:"current_period_from"`
 
-				// Price before discounts. Displayed strikethrough on the product description page
-				OldPrice string `json:"old_price"`
+	// Current period end date and time for all current promotions
+	CurrentPeriodTo time.Time `json:"current_period_to"`
 
-				// Price for customers with an Ozon Premium subscription
-				PremiumPrice string `json:"premium_price"`
+	// If a promotion can be applied to the product at the expense of Ozon, this field is set to true
+	OzonActionsExist bool `json:"ozon_actions_exist"`
+}
 
-				// Product price including discounts. This value is shown on the product description page
-				Price string `json:"price"`
+type GetProductPriceInfoResultItemMarketingActionsAction struct {
+	// Date and time when the seller's promotion starts
+	DateFrom time.Time `json:"date_from"`
 
-				// Product price suggested by the system based on similar offers
-				RecommendedPrice string `json:"recommended_price"`
+	// Date and time when the seller's promotion ends
+	DateTo time.Time `json:"date_to"`
 
-				// Retailer price
-				RetailPrice string `json:"retail_price"`
+	// Discount on the seller's promotion
+	DiscountValue string `json:"discount_value"`
 
-				// Product VAT rate
-				VAT string `json:"vat"`
-			} `json:"price"`
+	// Promotion name
+	Title string `json:"title"`
+}
 
-			// Deprected: price index
-			//
-			// Use PriceIndexes instead
-			PriceIndex string `json:"price_index"`
+type GetProductPriceInfoResultItemPrice struct {
+	// If promos auto-application is enabled, the value is true
+	AutoActionEnabled bool `json:"auto_action_enabled"`
 
-			// Product price indexes
-			PriceIndexes struct {
-				// Competitors' product price on other marketplaces
-				ExternalIndexData struct {
-					// Minimum competitors' product price on other marketplaces
-					MinimalPrice string `json:"minimal_price"`
+	// Currency of your prices. It matches the currency set in the personal account settings
+	CurrencyCode string `json:"currency_code"`
 
-					// Price currency
-					MinimalPriceCurrency string `json:"minimal_price_currency"`
+	// Product price including all promotion discounts. This value will be indicated on the Ozon storefront
+	MarketingPrice string `json:"marketing_price"`
 
-					// Price index value
-					PriceIndexValue float64 `json:"price_index_value"`
-				} `json:"external_index_data"`
+	// Product price with seller's promotions applied
+	MarketingSellerPrice string `json:"marketing_seller_price"`
 
-				// Competitors' product price on Ozon
-				OzonIndexData struct {
-					// Minimum competitors' product price on Ozon
-					MinimalPrice string `json:"minimal_price"`
+	// Minimum price for similar products on Ozon
+	MinOzonPrice string `json:"min_ozon_price"`
 
-					// Price currency
-					MinimalPriceCurrency string `json:"minimal_price_currency"`
+	// Minimum product price with all promotions applied
+	MinPrice string `json:"min_price"`
 
-					// Price index value
-					PriceIndexValue float64 `json:"price_index_value"`
-				} `json:"ozon_index_data"`
+	// Price before discounts. Displayed strikethrough on the product description page
+	OldPrice string `json:"old_price"`
 
-				// Resulting price index of the product
-				PriceIndex string `json:"price_index"`
+	// Price for customers with an Ozon Premium subscription
+	PremiumPrice string `json:"premium_price"`
 
-				// Price of your product on other marketplaces
-				SelfMarketplaceIndexData struct {
-					// Minimum price of your product on other marketplaces
-					MinimalPrice string `json:"minimal_price"`
+	// Product price including discounts. This value is shown on the product description page
+	Price string `json:"price"`
 
-					// Price currency
-					MinimalPriceCurrency string `json:"minimal_price_currency"`
+	// Product price suggested by the system based on similar offers
+	RecommendedPrice string `json:"recommended_price"`
 
-					// Price index value
-					PriceIndexValue float64 `json:"price_index_value"`
-				} `json:"self_marketplace_index_data"`
-			} `json:"prices_indexes"`
+	// Retailer price
+	RetailPrice string `json:"retail_price"`
 
-			// Product identifier
-			ProductId int64 `json:"product_id"`
+	// Product VAT rate
+	VAT string `json:"vat"`
+}
 
-			// Product volume weight
-			VolumeWeight float64 `json:"volume_weight"`
-		} `json:"items"`
+type GetProductPriceInfoResultItemPriceIndexes struct {
+	// Competitors' product price on other marketplaces
+	ExternalIndexData GetProductPriceInfoResultItemPriceIndexesExternal `json:"external_index_data"`
 
-		// Identifier of the last value on page. Leave this field blank in the first request.
-		//
-		// To get the next values, specify last_id from the response of the previous request
-		LastId string `json:"last_id"`
+	// Competitors' product price on Ozon
+	OzonIndexData GetProductPriceInfoResultItemPriceIndexesOzon `json:"ozon_index_data"`
 
-		// Products number in the list
-		Total int32 `json:"total"`
-	} `json:"result"`
+	// Resulting price index of the product
+	PriceIndex string `json:"price_index"`
+
+	// Price of your product on other marketplaces
+	SelfMarketplaceIndexData GetProductPriceInfoResultItemPriceIndexesSelfMarketplace `json:"self_marketplace_index_data"`
+}
+
+type GetProductPriceInfoResultItemPriceIndexesExternal struct {
+	// Minimum competitors' product price on other marketplaces
+	MinimalPrice string `json:"minimal_price"`
+
+	// Price currency
+	MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+	// Price index value
+	PriceIndexValue float64 `json:"price_index_value"`
+}
+
+type GetProductPriceInfoResultItemPriceIndexesOzon struct {
+	// Minimum competitors' product price on Ozon
+	MinimalPrice string `json:"minimal_price"`
+
+	// Price currency
+	MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+	// Price index value
+	PriceIndexValue float64 `json:"price_index_value"`
+}
+
+type GetProductPriceInfoResultItemPriceIndexesSelfMarketplace struct {
+	// Minimum price of your product on other marketplaces
+	MinimalPrice string `json:"minimal_price"`
+
+	// Price currency
+	MinimalPriceCurrency string `json:"minimal_price_currency"`
+
+	// Price index value
+	PriceIndexValue float64 `json:"price_index_value"`
 }
 
 // You can specify up to 1000 products in the request
@@ -2001,51 +2117,53 @@ type GetMarkdownInfoResponse struct {
 	core.CommonResponse
 
 	// Information about the markdown and the main product
-	Items []struct {
-		// Comment on the damage reason
-		CommentReasonDamaged string `json:"comment_reason_damaged"`
+	Items []GetMarkdownInfoItem `json:"items"`
+}
 
-		// Product condition: new or used
-		Condition string `json:"condition"`
+type GetMarkdownInfoItem struct {
+	// Comment on the damage reason
+	CommentReasonDamaged string `json:"comment_reason_damaged"`
 
-		// Product condition on a 1 to 7 scale.
-		//   - 1 — satisfactory,
-		//   - 2 — good,
-		//   - 3 — very good,
-		//   - 4 — excellent,
-		//   - 5–7 — like new
-		ConditionEstimate string `json:"condition_estimate"`
+	// Product condition: new or used
+	Condition string `json:"condition"`
 
-		// Product defects
-		Defects string `json:"defects"`
+	// Product condition on a 1 to 7 scale.
+	//   - 1 — satisfactory,
+	//   - 2 — good,
+	//   - 3 — very good,
+	//   - 4 — excellent,
+	//   - 5–7 — like new
+	ConditionEstimate string `json:"condition_estimate"`
 
-		// Markdown product SKU
-		DiscountedSKU int64 `json:"discounted_sku"`
+	// Product defects
+	Defects string `json:"defects"`
 
-		// Mechanical damage description
-		MechanicalDamage string `json:"mechanical_damage"`
+	// Markdown product SKU
+	DiscountedSKU int64 `json:"discounted_sku"`
 
-		// Packaging damage description
-		PackageDamage string `json:"package_damage"`
+	// Mechanical damage description
+	MechanicalDamage string `json:"mechanical_damage"`
 
-		// Indication of package integrity damage
-		PackagingViolation string `json:"packaging_violation"`
+	// Packaging damage description
+	PackageDamage string `json:"package_damage"`
 
-		// Damage reason
-		ReasonDamaged string `json:"reason_damaged"`
+	// Indication of package integrity damage
+	PackagingViolation string `json:"packaging_violation"`
 
-		// Indication of repaired product
-		Repair string `json:"repair"`
+	// Damage reason
+	ReasonDamaged string `json:"reason_damaged"`
 
-		// Indication that the product is incomplete
-		Shortage string `json:"shortage"`
+	// Indication of repaired product
+	Repair string `json:"repair"`
 
-		// Main products SKU
-		SKU int64 `json:"sku"`
+	// Indication that the product is incomplete
+	Shortage string `json:"shortage"`
 
-		// Indication that the product has a valid warranty
-		WarrantyType string `json:"warranty_type"`
-	} `json:"items"`
+	// Main products SKU
+	SKU int64 `json:"sku"`
+
+	// Indication that the product has a valid warranty
+	WarrantyType string `json:"warranty_type"`
 }
 
 // Get information about the markdown and the main product by the markdown product SKU
@@ -2105,13 +2223,15 @@ type NumberOfSubsToProductAvailabilityResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// Number of subscribed users
-		Count int64 `json:"count"`
+	Result []NumberOfSubsToProductAvailabilityResult `json:"result"`
+}
 
-		// Product identifier in the Ozon system, SKU
-		SKU int64 `json:"sku"`
-	} `json:"result"`
+type NumberOfSubsToProductAvailabilityResult struct {
+	// Number of subscribed users
+	Count int64 `json:"count"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 }
 
 // You can pass multiple products in a request

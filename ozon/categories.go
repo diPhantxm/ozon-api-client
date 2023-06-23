@@ -22,16 +22,18 @@ type GetProductTreeResponse struct {
 	core.CommonResponse
 
 	// Category list
-	Result []struct {
-		// Category identifier
-		CategoryId int64 `json:"category_id"`
+	Result []GetProductTreeResult `json:"result"`
+}
 
-		// Subcategory tree
-		Children []GetProductTreeResponse `json:"children"`
+type GetProductTreeResult struct {
+	// Category identifier
+	CategoryId int64 `json:"category_id"`
 
-		// Category name
-		Title string `json:"title"`
-	} `json:"result"`
+	// Subcategory tree
+	Children []GetProductTreeResponse `json:"children"`
+
+	// Category name
+	Title string `json:"title"`
 }
 
 // Returns product categories in the tree view.
@@ -67,58 +69,62 @@ type GetCategoryAttributesResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// Array of product characteristics
-		Attributes []struct {
-			// Indication that the dictionary attribute values depend on the category:
-			//   - true — the attribute has its own set of values for each category.
-			//   - false — the attribute has the same set of values for all categories
-			CategoryDependent bool `json:"category_dependent"`
+	Result []GetCategoryAttributesResult `json:"result"`
+}
 
-			// Characteristic description
-			Description string `json:"description"`
+type GetCategoryAttributesResult struct {
+	// Array of product characteristics
+	Attributes []GetCategoryAttributesResultAttribute `json:"attributes"`
 
-			// Directory identifier
-			DictionaryId int64 `json:"dictionary_id"`
+	// Category identifier
+	CategoryId int64 `json:"category_id"`
+}
 
-			// Characteristics group identifier
-			GroupId int64 `json:"group_id"`
+type GetCategoryAttributesResultAttribute struct {
+	// Indication that the dictionary attribute values depend on the category:
+	//   - true — the attribute has its own set of values for each category.
+	//   - false — the attribute has the same set of values for all categories
+	CategoryDependent bool `json:"category_dependent"`
 
-			// Characteristics group name
-			GroupName string `json:"group_name"`
+	// Characteristic description
+	Description string `json:"description"`
 
-			// Document generation task number
-			Id int64 `json:"id"`
+	// Directory identifier
+	DictionaryId int64 `json:"dictionary_id"`
 
-			// Indicates that the attribute is aspect. An aspect attribute is a characteristic that distinguishes products of the same model.
-			//
-			// For example, clothes and shoes of the same model may have different colors and sizes. That is, color and size are aspect attributes.
-			//
-			// Values description:
-			//   - true — the attribute is aspect and cannot be changed after the products are delivered to the warehouse or sold from the seller's warehouse.
-			//   - false — the attribute is not aspect and can be changed at any time
-			IsAspect bool `json:"is_aspect"`
+	// Characteristics group identifier
+	GroupId int64 `json:"group_id"`
 
-			// Indicates that the characteristic is a set of values:
-			//   - true — the characteristic is a set of values,
-			//   - false — the characteristic consists of a single value
-			IsCollection bool `json:"is_collection"`
+	// Characteristics group name
+	GroupName string `json:"group_name"`
 
-			// Indicates that the characteristic is mandatory:
-			//   - true — a mandatory characteristic,
-			//   - false — you can leave the characteristic out
-			IsRequired bool `json:"is_required"`
+	// Document generation task number
+	Id int64 `json:"id"`
 
-			// Name
-			Name string `json:"name"`
+	// Indicates that the attribute is aspect. An aspect attribute is a characteristic that distinguishes products of the same model.
+	//
+	// For example, clothes and shoes of the same model may have different colors and sizes. That is, color and size are aspect attributes.
+	//
+	// Values description:
+	//   - true — the attribute is aspect and cannot be changed after the products are delivered to the warehouse or sold from the seller's warehouse.
+	//   - false — the attribute is not aspect and can be changed at any time
+	IsAspect bool `json:"is_aspect"`
 
-			// Characteristic type
-			Type string `json:"type"`
-		} `json:"attributes"`
+	// Indicates that the characteristic is a set of values:
+	//   - true — the characteristic is a set of values,
+	//   - false — the characteristic consists of a single value
+	IsCollection bool `json:"is_collection"`
 
-		// Category identifier
-		CategoryId int64 `json:"category_id"`
-	} `json:"result"`
+	// Indicates that the characteristic is mandatory:
+	//   - true — a mandatory characteristic,
+	//   - false — you can leave the characteristic out
+	IsRequired bool `json:"is_required"`
+
+	// Name
+	Name string `json:"name"`
+
+	// Characteristic type
+	Type string `json:"type"`
 }
 
 // Getting characteristics for specified product category.
@@ -167,14 +173,16 @@ type GetAttributeDictionaryResponse struct {
 	HasNext bool `json:"has_next"`
 
 	// Method result
-	Result []struct {
-		Id      int64  `json:"id"`
-		Info    string `json:"info"`
-		Picture string `json:"picture"`
+	Result []GetAttributeDictionaryResult `json:"result"`
+}
 
-		// Product characteristic value
-		Value string `json:"value"`
-	} `json:"result"`
+type GetAttributeDictionaryResult struct {
+	Id      int64  `json:"id"`
+	Info    string `json:"info"`
+	Picture string `json:"picture"`
+
+	// Product characteristic value
+	Value string `json:"value"`
 }
 
 // You can use the `/v3/category/attribute` method to check if an attribute has a nested directory.

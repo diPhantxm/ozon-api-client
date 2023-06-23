@@ -56,69 +56,75 @@ type GetFBOShipmentsListResponse struct {
 	core.CommonResponse
 
 	// Shipments list
-	Result []struct {
-		// Additional data for shipment list
-		AdditionalData []struct {
-			Key   string `json:"key"`
-			Value string `json:"value"`
-		} `json:"additional_data"`
+	Result []GetFBOShipmentsListResult `json:"result"`
+}
 
-		// Analytical data
-		AnalyticsData struct {
-			// Delivery city
-			City string `json:"city"`
+type GetFBOShipmentsListResult struct {
+	// Additional data for shipment list
+	AdditionalData []GetFBOShipmentsListResultAdditionalData `json:"additional_data"`
 
-			// Delivery method
-			DeliveryType string `json:"delivery_type"`
+	// Analytical data
+	AnalyticsData GetFBOShipmentsListResultAnalyticsData `json:"analytics_data"`
 
-			// Indication that the recipient is a legal person
-			//   * true — a legal person,
-			//   * false — a natural person.
-			IsLegal bool `json:"is_legal"`
+	// Shipment cancellation reason identifier
+	CancelReasonId int64 `json:"cancel_reason_id"`
 
-			// Premium subscription
-			IsPremium bool `json:"is_premium"`
+	// Date and time of shipment creation
+	CreatedAt time.Time `json:"created_at"`
 
-			// Payment method
-			PaymentTypeGroupName string `json:"payment_type_group_name"`
+	// Financial data
+	FinancialData FBOFinancialData `json:"financial_data"`
 
-			// Delivery region
-			Region string `json:"region"`
+	// Date and time of shipment processing start
+	InProccessAt time.Time `json:"in_process_at"`
 
-			// Warehouse identifier
-			WarehouseId int64 `json:"warehouse_id"`
+	// Identifier of the order to which the shipment belongs
+	OrderId int64 `json:"order_id"`
 
-			// Name of the warehouse from which the order is shipped
-			WarehouseName string `json:"warehouse_name"`
-		} `json:"analytics_data"`
+	// Number of the order to which the shipment belongs
+	OrderNumber string `json:"order_number"`
 
-		// Shipment cancellation reason identifier
-		CancelReasonId int64 `json:"cancel_reason_id"`
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
 
-		// Date and time of shipment creation
-		CreatedAt time.Time `json:"created_at"`
+	// Number of products in the shipment
+	Products []FBOPostingProduct `json:"products"`
 
-		// Financial data
-		FinancialData FBOFinancialData `json:"financial_data"`
+	// Shipment status
+	Status string `json:"status"`
+}
 
-		// Date and time of shipment processing start
-		InProccessAt time.Time `json:"in_process_at"`
+type GetFBOShipmentsListResultAdditionalData struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
 
-		// Identifier of the order to which the shipment belongs
-		OrderId int64 `json:"order_id"`
+type GetFBOShipmentsListResultAnalyticsData struct {
+	// Delivery city
+	City string `json:"city"`
 
-		// Number of the order to which the shipment belongs
-		OrderNumber string `json:"order_number"`
+	// Delivery method
+	DeliveryType string `json:"delivery_type"`
 
-		// Shipment number
-		PostingNumber string `json:"posting_number"`
+	// Indication that the recipient is a legal person
+	//   * true — a legal person,
+	//   * false — a natural person.
+	IsLegal bool `json:"is_legal"`
 
-		// Number of products in the shipment
-		Products []FBOPostingProduct `json:"products"`
+	// Premium subscription
+	IsPremium bool `json:"is_premium"`
 
-		// Shipment status
-		Status string `json:"status"`
-	} `json:"result"`
+	// Payment method
+	PaymentTypeGroupName string `json:"payment_type_group_name"`
+
+	// Delivery region
+	Region string `json:"region"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Name of the warehouse from which the order is shipped
+	WarehouseName string `json:"warehouse_name"`
 }
 
 type FBOPostingProduct struct {
@@ -196,69 +202,75 @@ type GetShipmentDetailsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Additional data
-		AdditionalData []struct {
-			Key   string `json:"key"`
-			Value string `json:"value"`
-		} `json:"additional_data"`
+	Result GetShipmentDetailsResult `json:"result"`
+}
 
-		// Analytical data
-		AnalyticsData struct {
-			// Delivery city
-			City string `json:"Delivery city"`
+type GetShipmentDetailsResult struct {
+	// Additional data
+	AdditionalData []GetShipmentDetailsResultAdditionalData `json:"additional_data"`
 
-			// Delivery method
-			DeliveryType string `json:"delivery_type"`
+	// Analytical data
+	AnalyticsData GetShipmentDetailsResultAnalyticsData `json:"analytics_data"`
 
-			// Indication that the recipient is a legal person:
-			//   - true — a legal person
-			//   - false — a natural person
-			IsLegal bool `json:"is_legal"`
+	// Shipment cancellation reason identifier
+	CancelReasonId int64 `json:"cancel_reason_id"`
 
-			// Premium subscription
-			IsPremium bool `json:"is_premium"`
+	// Date and time of shipment creation
+	CreatedAt time.Time `json:"created_at"`
 
-			// Payment method
-			PaymentTypeGroupName string `json:"payment_type_group_name"`
+	// Financial data
+	FinancialData FBOFinancialData `json:"financial_data"`
 
-			// Delivery region
-			Region string `json:"region"`
+	// Date and time of shipment processing start
+	InProcessAt time.Time `json:"in_process_at"`
 
-			// Warehouse identifier
-			WarehouseId int64 `json:"warehouse_id"`
+	// Identifier of the order to which the shipment belongs
+	OrderId int64 `json:"order_id"`
 
-			// Name of the warehouse from which the order is shipped
-			WarehouseName string `json:"warehouse_name"`
-		} `json:"analytics_data"`
+	// Number of the order to which the shipment belongs
+	OrderNumber string `json:"order_number"`
 
-		// Shipment cancellation reason identifier
-		CancelReasonId int64 `json:"cancel_reason_id"`
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
 
-		// Date and time of shipment creation
-		CreatedAt time.Time `json:"created_at"`
+	// Number of products in the shipment
+	Products []FBOPostingProduct `json:"products"`
 
-		// Financial data
-		FinancialData FBOFinancialData `json:"financial_data"`
+	// Shipment status
+	Status string `json:"status"`
+}
 
-		// Date and time of shipment processing start
-		InProcessAt time.Time `json:"in_process_at"`
+type GetShipmentDetailsResultAdditionalData struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
 
-		// Identifier of the order to which the shipment belongs
-		OrderId int64 `json:"order_id"`
+type GetShipmentDetailsResultAnalyticsData struct {
+	// Delivery city
+	City string `json:"Delivery city"`
 
-		// Number of the order to which the shipment belongs
-		OrderNumber string `json:"order_number"`
+	// Delivery method
+	DeliveryType string `json:"delivery_type"`
 
-		// Shipment number
-		PostingNumber string `json:"posting_number"`
+	// Indication that the recipient is a legal person:
+	//   - true — a legal person
+	//   - false — a natural person
+	IsLegal bool `json:"is_legal"`
 
-		// Number of products in the shipment
-		Products []FBOPostingProduct `json:"products"`
+	// Premium subscription
+	IsPremium bool `json:"is_premium"`
 
-		// Shipment status
-		Status string `json:"status"`
-	} `json:"result"`
+	// Payment method
+	PaymentTypeGroupName string `json:"payment_type_group_name"`
+
+	// Delivery region
+	Region string `json:"region"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Name of the warehouse from which the order is shipped
+	WarehouseName string `json:"warehouse_name"`
 }
 
 // Returns information about the shipment by its identifier
@@ -307,13 +319,7 @@ type SupplyRequestCommonResponse struct {
 	CreatedAt string `json:"created_at"`
 
 	// Local time supply interval
-	LocalTimeslot struct {
-		// Interval start
-		From string `json:"from"`
-
-		// Interval end
-		To string `json:"to"`
-	} `json:"local_timeslot"`
+	LocalTimeslot SupplyRequestCommonResponseLocalTimeslot `json:"local_timeslot"`
 
 	// Date from which you want to bring the supply to the warehouse. Only for supplies via vDC
 	PreferredSupplyDataFrom string `json:"preferred_supply_data_from"`
@@ -331,16 +337,7 @@ type SupplyRequestCommonResponse struct {
 	SupplyOrderNumber string `json:"supply_order_number"`
 
 	// Supply warehouse
-	SupplyWarehouse struct {
-		// Warehouse address
-		Address string `json:address"`
-
-		// Warehouse name
-		Name string `json:"name"`
-
-		// Warehouse identifier
-		WarehouseId int64 `json:"warehouse_id"`
-	} `json:"supply_warehouse"`
+	SupplyWarehouse SupplyRequestCommonResponseSupplyWarehouse `json:"supply_warehouse"`
 
 	// time_left_to_prepare_supply
 	TimeLeftToPrepareSupply int64 `json:"time_left_to_prepare_supply"`
@@ -353,6 +350,25 @@ type SupplyRequestCommonResponse struct {
 
 	// Total number of items in the request
 	TotalQuantity int32 `json:"total_quantity"`
+}
+
+type SupplyRequestCommonResponseLocalTimeslot struct {
+	// Interval start
+	From string `json:"from"`
+
+	// Interval end
+	To string `json:"to"`
+}
+
+type SupplyRequestCommonResponseSupplyWarehouse struct {
+	// Warehouse address
+	Address string `json:"address"`
+
+	// Warehouse name
+	Name string `json:"name"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
 }
 
 // Method for getting a list of supply requests to the Ozon warehouse.
@@ -383,19 +399,21 @@ type GetSupplyRequestInfoResponse struct {
 	SupplyRequestCommonResponse
 
 	// Driver and car information
-	VehicleInfo struct {
-		// Driver name
-		DriverName string `json:"driver_name"`
+	VehicleInfo GetSupplyRequestInfoVehicle `json:"vehicle_info"`
+}
 
-		// Driver phone number
-		DriverPhone string `json:"driver_phone"`
+type GetSupplyRequestInfoVehicle struct {
+	// Driver name
+	DriverName string `json:"driver_name"`
 
-		// Car model
-		VehicleModel string `json:"vehicle_model"`
+	// Driver phone number
+	DriverPhone string `json:"driver_phone"`
 
-		// Car number
-		VehicleNumber string `json:"vehicle_number"`
-	} `json:"vehicle_info"`
+	// Car model
+	VehicleModel string `json:"vehicle_model"`
+
+	// Car number
+	VehicleNumber string `json:"vehicle_number"`
 }
 
 // Method for getting detailed information on a supply request.
@@ -435,25 +453,27 @@ type ListProductsInSupplyRequestResponse struct {
 	HasNext bool `json:"has_next"`
 
 	// Products list
-	Items []struct {
-		// Link to product image
-		IconPath string `json:"icon_path"`
-
-		// Product name
-		Name string `json:"name"`
-
-		// Product ID
-		OfferId string `json:"offer_id"`
-
-		// Product quantity
-		Quantity int64 `json:"quantity"`
-
-		// Product identifier in the Ozon system, SKU
-		SKU int64 `json:"sku"`
-	} `json:"items"`
+	Items []ListProductsInSupplyRequestItem `json:"items"`
 
 	// Total number of products in the request
 	TotalItemsCount int32 `json:"total_items_count"`
+}
+
+type ListProductsInSupplyRequestItem struct {
+	// Link to product image
+	IconPath string `json:"icon_path"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Product ID
+	OfferId string `json:"offer_id"`
+
+	// Product quantity
+	Quantity int64 `json:"quantity"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 }
 
 // List of products in the sullpy request
@@ -475,34 +495,42 @@ type GetWarehouseWorkloadResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// Workload
-		Schedule struct {
-			// Data on the products quantity supplied to the warehouse
-			Capacity []struct {
-				// Period start, local time
-				Start time.Time `json:"start"`
+	Result []GetWarehouseWorkloadResult `json:"result"`
+}
 
-				// Period end, local time
-				End time.Time `json:"end"`
+type GetWarehouseWorkloadResult struct {
+	// Workload
+	Schedule GetWarehouseWorkloadResultSchedule `json:"schedule"`
 
-				// Average number of products that the warehouse can accept per day for the period
-				Value int32 `json:"value"`
-			} `json:"capacity"`
+	// Warehouse
+	Warehouse GetWarehouseWorkloadResultWarehouse `json:"warehouse"`
+}
 
-			// The closest available date for supply, local time
-			Date time.Time `json:"date"`
-		} `json:"schedule"`
+type GetWarehouseWorkloadResultSchedule struct {
+	// Data on the products quantity supplied to the warehouse
+	Capacity []GetWarehouseWorkloadResultScheduleCapacity `json:"capacity"`
 
-		// Warehouse
-		Warehouse struct {
-			// Warehouse identifier
-			Id string `json:"id"`
+	// The closest available date for supply, local time
+	Date time.Time `json:"date"`
+}
 
-			// Warehouse name
-			Name string `json:"name"`
-		} `json:"warehouse"`
-	} `json:"result"`
+type GetWarehouseWorkloadResultScheduleCapacity struct {
+	// Period start, local time
+	Start time.Time `json:"start"`
+
+	// Period end, local time
+	End time.Time `json:"end"`
+
+	// Average number of products that the warehouse can accept per day for the period
+	Value int32 `json:"value"`
+}
+
+type GetWarehouseWorkloadResultWarehouse struct {
+	// Warehouse identifier
+	Id string `json:"id"`
+
+	// Warehouse name
+	Name string `json:"name"`
 }
 
 // Method returns a list of active Ozon warehouses with information about their average workload in the nearest future

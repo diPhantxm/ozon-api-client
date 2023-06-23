@@ -15,73 +15,79 @@ type GetCurrentSellerRatingInfoResponse struct {
 	core.CommonResponse
 
 	// Rating groups list
-	Groups []struct {
-		// Ratings group name
-		GroupName string `json:"group_name"`
+	Groups []GetCurrentSellerRatingInfoGroup `json:"groups"`
+}
 
-		// Ratings list
-		Items []struct {
+type GetCurrentSellerRatingInfoGroup struct {
+	// Ratings group name
+	GroupName string `json:"group_name"`
 
-			// Rating change: the ratio of the previous value to the current one
-			Change struct {
-				// How the rating value has changed:
-				//   - DIRECTION_UNKNOWN — unknown.
-				//   - DIRECTION_NONE — has not changed.
-				//   - DIRECTION_RISE — has increased.
-				//   - DIRECTION_FALL — has dropped.
-				Direction string `json:"direction"`
+	// Ratings list
+	Items []GetCurrentSellerRatingInfoGroupItem `json:"items"`
 
-				// What the change means:
-				//   - MEANING_UNKNOWN — unknown.
-				//   - MEANING_NONE — neutral.
-				//   - MEANING_GOOD — the indicator is improving, everything is good.
-				//   - MEANING_BAD — the indicator is dropping, you should do something.
-				Meaning string `json:"meaning"`
-			} `json:"change"`
+	// An indication that the penalty points balance is exceeded
+	PenaltyScoreExceeded bool `json:"penalty_score_exceeded"`
 
-			// Current rating value
-			CurrentValue float64 `json:"current_value"`
+	// An indication that you participate in the Premium program
+	Premium bool `json:"premium"`
+}
 
-			// Rating name
-			Name string `json:"name"`
+type GetCurrentSellerRatingInfoGroupItem struct {
 
-			// Previous rating value
-			PastValue float64 `json:"past_value"`
+	// Rating change: the ratio of the previous value to the current one
+	Change GetCurrentSellerRatingInfoGroupItemChange `json:"change"`
 
-			// System rating name
-			Rating string `json:"rating"`
+	// Current rating value
+	CurrentValue float64 `json:"current_value"`
 
-			// What should be the rating value to be considered good:
-			//   - UNKNOWN_DIRECTION — unknown.
-			//   - NEUTRAL — doesn't matter.
-			//   - HIGHER_IS_BETTER — the higher the better.
-			//   - LOWER_IS_BETTER — the lower the better.
-			RatingDirection string `json:"rating_direction"`
+	// Rating name
+	Name string `json:"name"`
 
-			// Rating status:
-			//   - UNKNOWN_STATUS — unknown status.
-			//   - OK — everything is OK.
-			//   - WARNING — indicators require attention.
-			//   - CRITICAL — critical rating
-			Status string `json:"status"`
+	// Previous rating value
+	PastValue float64 `json:"past_value"`
 
-			// Value type:
-			//   - UNKNOWN_VALUE — unknown,
-			//   - INDEX,
-			//   - PERCENT,
-			//   - TIME,
-			//   - RATIO — coefficient,
-			//   - REVIEW_SCORE — score,
-			//   - COUNT
-			ValueType string `json:"value_type"`
-		} `json:"items"`
+	// System rating name
+	Rating string `json:"rating"`
 
-		// An indication that the penalty points balance is exceeded
-		PenaltyScoreExceeded bool `json:"penalty_score_exceeded"`
+	// What should be the rating value to be considered good:
+	//   - UNKNOWN_DIRECTION — unknown.
+	//   - NEUTRAL — doesn't matter.
+	//   - HIGHER_IS_BETTER — the higher the better.
+	//   - LOWER_IS_BETTER — the lower the better.
+	RatingDirection string `json:"rating_direction"`
 
-		// An indication that you participate in the Premium program
-		Premium bool `json:"premium"`
-	} `json:"groups"`
+	// Rating status:
+	//   - UNKNOWN_STATUS — unknown status.
+	//   - OK — everything is OK.
+	//   - WARNING — indicators require attention.
+	//   - CRITICAL — critical rating
+	Status string `json:"status"`
+
+	// Value type:
+	//   - UNKNOWN_VALUE — unknown,
+	//   - INDEX,
+	//   - PERCENT,
+	//   - TIME,
+	//   - RATIO — coefficient,
+	//   - REVIEW_SCORE — score,
+	//   - COUNT
+	ValueType string `json:"value_type"`
+}
+
+type GetCurrentSellerRatingInfoGroupItemChange struct {
+	// How the rating value has changed:
+	//   - DIRECTION_UNKNOWN — unknown.
+	//   - DIRECTION_NONE — has not changed.
+	//   - DIRECTION_RISE — has increased.
+	//   - DIRECTION_FALL — has dropped.
+	Direction string `json:"direction"`
+
+	// What the change means:
+	//   - MEANING_UNKNOWN — unknown.
+	//   - MEANING_NONE — neutral.
+	//   - MEANING_GOOD — the indicator is improving, everything is good.
+	//   - MEANING_BAD — the indicator is dropping, you should do something.
+	Meaning string `json:"meaning"`
 }
 
 func (c Rating) GetCurrentSellerRatingInfo() (*GetCurrentSellerRatingInfoResponse, error) {
@@ -116,61 +122,71 @@ type GetSellerRatingInfoPeriodResponse struct {
 	core.CommonResponse
 
 	// Information on the Premium program penalty points
-	PremiumScores []struct {
-		// Rating name
-		Rating string `json:"rating"`
-
-		// Information on penalty points
-		Scores []struct {
-			// Date when the penalty points were received
-			Date time.Time `json:"date"`
-
-			// Rating value for which the penalty points were received
-			RatingValue float64 `json:"rating_value"`
-
-			// Number of received penalty points
-			Value int32 `json:"value"`
-		} `json:"scores"`
-	} `json:"premium_scores"`
+	PremiumScores []GetSellerRatingInfoPeriodPremiumScores `json:"premium_scores"`
 
 	// Information on the seller ratings
-	Ratings []struct {
-		// Rating threshold, after which sales will be blocked
-		DangerThreshold float64 `json:"danger_threshold"`
+	Ratings []GetSellerRatingInfoPeriodRating `json:"ratings"`
+}
 
-		// Rating threshold for participation in the Premium program
-		PremiumThreshold float64 `json:"premium_threshold"`
+type GetSellerRatingInfoPeriodPremiumScores struct {
+	// Rating name
+	Rating string `json:"rating"`
 
-		// Rating system name
-		Rating string `json:"rating"`
+	// Information on penalty points
+	Scores []GetSellerRatingInfoPeriodPremiumScore `json:"scores"`
+}
 
-		// Rating values list
-		Values []struct {
-			// Rating calculation start date
-			DateFrom time.Time `json:"date_from"`
+type GetSellerRatingInfoPeriodPremiumScore struct {
+	// Date when the penalty points were received
+	Date time.Time `json:"date"`
 
-			// Rating calculation end date
-			DateTo time.Time `json:"date_to"`
+	// Rating value for which the penalty points were received
+	RatingValue float64 `json:"rating_value"`
 
-			// Rating status
-			Status struct {
-				// Indication if the rating threshold for blocking is exceeded
-				Danger bool `json:"danger"`
+	// Number of received penalty points
+	Value int32 `json:"value"`
+}
 
-				// Indication whether the threshold for participation in the Premium program has been reached
-				Premium bool `json:"premium"`
+type GetSellerRatingInfoPeriodRating struct {
+	// Rating threshold, after which sales will be blocked
+	DangerThreshold float64 `json:"danger_threshold"`
 
-				// Indication of a warning that the threshold for blocking may be exceeded
-				Warning bool `json:"warning"`
-			} `json:"status"`
+	// Rating threshold for participation in the Premium program
+	PremiumThreshold float64 `json:"premium_threshold"`
 
-			// Rating value
-			Value float64 `json:"value"`
-		} `json:"values"`
+	// Rating system name
+	Rating string `json:"rating"`
 
-		// Rating threshold, after which a warning about possible blocking appears
-		WarningThreshold float64 `json:"warning_threshold"`
-	} `json:"ratings"`
+	// Rating values list
+	Values []GetSellerRatingInfoPeriodRatingValue `json:"values"`
+
+	// Rating threshold, after which a warning about possible blocking appears
+	WarningThreshold float64 `json:"warning_threshold"`
+}
+
+type GetSellerRatingInfoPeriodRatingValue struct {
+	// Rating calculation start date
+	DateFrom time.Time `json:"date_from"`
+
+	// Rating calculation end date
+	DateTo time.Time `json:"date_to"`
+
+	// Rating status
+	Status GetSellerRatingInfoPeriodRatingValueStatus `json:"status"`
+
+	// Rating value
+	Value float64 `json:"value"`
+}
+
+type GetSellerRatingInfoPeriodRatingValueStatus struct {
+	// Indication if the rating threshold for blocking is exceeded
+	Danger bool `json:"danger"`
+
+	// Indication whether the threshold for participation in the Premium program has been reached
+	Premium bool `json:"premium"`
+
+	// Indication of a warning that the threshold for blocking may be exceeded
+	Warning bool `json:"warning"`
 }
 
 func (c Rating) GetSellerRatingInfoForPeriod(params *GetSellerRatingInfoForPeriodParams) (*GetSellerRatingInfoPeriodResponse, error) {

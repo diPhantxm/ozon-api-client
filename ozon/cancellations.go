@@ -31,13 +31,7 @@ type CancellationInfo struct {
 	PostingNumber string `json:"posting_number"`
 
 	// Cancellation reason
-	CancellationReason struct {
-		// Cancellation reason identifier
-		Id int64 `json:"id"`
-
-		// Cancellation reason name
-		Name string `json:"name"`
-	} `json:"cancellation_reason"`
+	CancellationReason CancellationInfoReason `json:"cancellation_reason"`
 
 	// Cancellation request creation date
 	CancelledAt time.Time `json:"cancelled_at"`
@@ -49,16 +43,7 @@ type CancellationInfo struct {
 	TPLIntegrationType string `json:"tpl_integration_type"`
 
 	// Cancellation request status
-	State struct {
-		// Status identifier
-		Id int64 `json:"id"`
-
-		// Status name
-		Name string `json:"name"`
-
-		// Request status
-		State string `json:"state"`
-	} `json:"state"`
+	State CancellationInfoState `json:"state"`
 
 	// Cancellation initiator
 	CancellationInitiator string `json:"cancellation_initiator"`
@@ -74,6 +59,25 @@ type CancellationInfo struct {
 
 	// Date after which the request will be automatically approved
 	AutoApproveDate time.Time `json:"auto_approve_date"`
+}
+
+type CancellationInfoReason struct {
+	// Cancellation reason identifier
+	Id int64 `json:"id"`
+
+	// Cancellation reason name
+	Name string `json:"name"`
+}
+
+type CancellationInfoState struct {
+	// Status identifier
+	Id int64 `json:"id"`
+
+	// Status name
+	Name string `json:"name"`
+
+	// Request status
+	State string `json:"state"`
 }
 
 // Method for getting information about a rFBS cancellation request
@@ -134,16 +138,18 @@ type ListCancellationsResponse struct {
 	Total int32 `json:"total"`
 
 	// Counter of requests in different statuses
-	Counters struct {
-		// Number of requests for approval
-		OnApproval int64 `json:"on_approval"`
+	Counters ListCancellationResponseCounters `json:"counters"`
+}
 
-		// Number of approved requests
-		Approved int64 `json:"approved"`
+type ListCancellationResponseCounters struct {
+	// Number of requests for approval
+	OnApproval int64 `json:"on_approval"`
 
-		// Number of rejected requests
-		Rejected int64 `json:"rejected"`
-	} `json:"counters"`
+	// Number of approved requests
+	Approved int64 `json:"approved"`
+
+	// Number of rejected requests
+	Rejected int64 `json:"rejected"`
 }
 
 // Method for getting a list of rFBS cancellation requests
@@ -190,7 +196,7 @@ func (c Cancellations) Approve(params *ApproveRejectCancellationsParams) (*Appro
 }
 
 // The method allows to reject an rFBS cancellation request in the ON_APPROVAL status. Explain your decision in the comment parameter.
-// 
+//
 // The order will remain in the same status and must be delivered to the customer
 func (c Cancellations) Reject(params *ApproveRejectCancellationsParams) (*ApproveRejectCancellationsResponse, error) {
 	url := "/v1/conditional-cancellation/reject"
