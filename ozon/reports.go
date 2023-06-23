@@ -63,8 +63,7 @@ type GetReportsListResultReport struct {
 	File string `json:"file"`
 
 	// Array with the filters specified when the seller created the report
-	Params struct {
-	} `json:"params"`
+	Params map[string]string `json:"params"`
 
 	// Report type:
 	//   - SELLER_PRODUCTS — products report,
