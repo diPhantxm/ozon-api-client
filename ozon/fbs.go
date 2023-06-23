@@ -12,208 +12,479 @@ type FBS struct {
 }
 
 type ListUnprocessedShipmentsParams struct {
-	Direction string                         `json:"dir"`
-	Filter    ListUnprocessedShipmentsFilter `json:"filter"`
-	Limit     int64                          `json:"limit"`
-	Offset    int64                          `json:"offset"`
-	With      ListUnprocessedShipmentsWith   `json:"with"`
+	// Sorting direction
+	Direction Order `json:"dir"`
+
+	// Request filter
+	Filter ListUnprocessedShipmentsFilter `json:"filter"`
+
+	// Number of values in the response:
+	//
+	// maximum — 1000,
+	// minimum — 1.
+	Limit int64 `json:"limit"`
+
+	// Number of elements that will be skipped in the response.
+	// For example, if `offset` = 10, the response will start with the 11th element found
+	Offset int64 `json:"offset"`
+
+	// Additional fields that should be added to the response
+	With ListUnprocessedShipmentsWith `json:"with"`
 }
 
 type ListUnprocessedShipmentsFilter struct {
-	CutoffFrom         time.Time `json:"cutoff_from"`
-	CutoffTo           time.Time `json:"cutoff_to"`
+	// Filter by the time by which the seller should pack the order. Period start.
+	//
+	// Format: YYYY-MM-DDThh: mm:ss. mcsZ. Example: 2020-03-18T07:34:50.359 Z
+	CutoffFrom time.Time `json:"cutoff_from"`
+
+	// Filter by the time by which the seller should pack the order. Period end.
+	//
+	// Format: YYYY-MM-DDThh: mm:ss. mcsZ. Example: 2020-03-18T07:34:50.359 Z
+	CutoffTo time.Time `json:"cutoff_to"`
+
+	// Minimum date when shipment should be handed over for delivery
 	DeliveringDateFrom time.Time `json:"delivering_date_from"`
-	DeliveringDateTo   time.Time `json:"delivering_date_to"`
-	DeliveryMethodId   []int64   `json:"deliveryMethodId"`
-	ProviderId         []int64   `json:"provider_id"`
-	Status             string    `json:"status"`
-	WarehouseId        []int64   `json:"warehouse_id"`
+
+	// Maximum date when shipment should be handed over for delivery
+	DeliveringDateTo time.Time `json:"delivering_date_to"`
+
+	// Delivery method identifier
+	DeliveryMethodId []int64 `json:"delivery_method_id"`
+
+	// Delivery service identifier
+	ProviderId []int64 `json:"provider_id"`
+
+	// Shipment status
+	Status string `json:"status"`
+
+	// Warehouse identifier
+	WarehouseId []int64 `json:"warehouse_id"`
 }
 
 type ListUnprocessedShipmentsWith struct {
+	// Add analytics data to the response
 	AnalyticsData bool `json:"analytics_data"`
-	Barcodes      bool `json:"barcodes"`
+
+	// Add the shipment barcodes to the response
+	Barcodes bool `json:"barcodes"`
+
+	// Add financial data to the response
 	FinancialData bool `json:"financial_data"`
-	Translit      bool `json:"translit"`
+
+	// Transliterate the return values
+	Translit bool `json:"translit"`
 }
 
 type ListUnprocessedShipmentsResponse struct {
 	core.CommonResponse
 
+	// Request result
 	Result ListUnprocessedShipmentsResult `json:"result"`
 }
 
 type ListUnprocessedShipmentsResult struct {
-	Count    int64        `json:"count"`
+	// Element counter in the response
+	Count int64 `json:"count"`
+
+	// List of shipments and detailed information on each one
 	Postings []FBSPosting `json:"postings"`
 }
 
 type FBSPosting struct {
+	// Recipient details
 	Addressee FBSPostingAddressee `json:"addressee"`
 
+	// Analytics data
 	AnalyticsData FBSPostingAnalyticsData `json:"analytics_data"`
 
+	// Shipment barcodes
 	Barcodes FBSBarcode `json:"barcodes"`
 
+	// Cancellation details
 	Cancellation FBSCancellation `json:"cancellation"`
 
+	// Customer details
 	Customer FBSCustomer `json:"customer"`
 
+	// Date when the shipment was transferred for delivery
 	DeliveringDate time.Time `json:"delivering_date"`
 
+	// Delivery method
 	DeliveryMethod FBSDeliveryMethod `json:"delivery_method"`
 
+	// Data on the product cost, discount amount, payout and commission
 	FinancialData FBSFinancialData `json:"financial_data"`
 
-	InProccessAt        time.Time `json:"in_process_at"`
-	IsExpress           bool      `json:"is_express"`
-	IsMultibox          bool      `json:"is_multibox"`
-	MultiBoxQuantity    int32     `json:"multi_box_qty"`
-	OrderId             int64     `json:"order_id"`
-	OrderNumber         string    `json:"order_number"`
-	ParentPostingNumber string    `json:"parent_posting_number"`
-	PostingNumber       string    `json:"posting_number"`
+	// Start date and time of shipment processing
+	InProccessAt time.Time `json:"in_process_at"`
 
+	// If Ozon Express fast delivery was used — `true`
+	IsExpress bool `json:"is_express"`
+
+	// Indication that there is a multi-box product in the shipment
+	// and you need to pass the number of boxes for it
+	IsMultibox bool `json:"is_multibox"`
+
+	// Number of boxes in which the product is packed
+	MultiBoxQuantity int32 `json:"multi_box_qty"`
+
+	// Identifier of the order to which the shipment belongs
+	OrderId int64 `json:"order_id"`
+
+	// Number of the order to which the shipment belongs
+	OrderNumber string `json:"order_number"`
+
+	// Number of the parent shipment which split resulted in the current shipment
+	ParentPostingNumber string `json:"parent_posting_number"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// List of products in the shipment
 	Products []PostingProduct `json:"products"`
 
 	// The parameter is only relevant for bulky products
 	// with a delivery by a third-party or integrated service
 	PRROption PRROptionStatus `json:"prr_option"`
 
+	// Array of Ozon Product IDs (SKU) for which you need to pass the
+	// customs cargo declaration (CCD) number, the manufacturing country,
+	// product batch registration number, or "Chestny ZNAK" labeling to
+	// change the shipment status to the next one
 	Requirements FBSRequirements `json:"requirements"`
 
-	ShipmentDate       time.Time `json:"shipment_date"`
-	Status             string    `json:"status"`
-	TPLIntegrationType string    `json:"tpl_integration_type"`
-	TrackingNumber     string    `json:"tracking_number"`
+	// Date and time before which the shipment must be packaged.
+	// If the shipment is not packaged by this date, it will be
+	// canceled automatically
+	ShipmentDate time.Time `json:"shipment_date"`
+
+	// Shipment status
+	Status string `json:"status"`
+
+	// Shipment substatus
+	Substatus string `json:"substatus"`
+
+	// Type of integration with the delivery service
+	TPLIntegrationType string `json:"tpl_integration_type"`
+
+	// Shipment tracking number
+	TrackingNumber string `json:"tracking_number"`
 }
 
 type FBSPostingAddressee struct {
-	Name  string `json:"name"`
+	// Recipient name
+	Name string `json:"name"`
+
+	// Recipient phone number.
+	//
+	// Returns an empty string
 	Phone string `json:"phone"`
 }
 
 type FBSPostingAnalyticsData struct {
-	City                 string    `json:"city"`
-	DeliveryDateBegin    time.Time `json:"delivery_date_begin"`
-	DeliveryDateEnd      time.Time `json:"delivery_date_end"`
-	DeliveryType         string    `json:"delivery_type"`
-	IsLegal              bool      `json:"is_legal"`
-	IsPremium            bool      `json:"is_premium"`
-	PaymentTypeGroupName string    `json:"payment_type_group_name"`
-	Region               string    `json:"region"`
-	TPLProvider          string    `json:"tpl_provider"`
-	TPLProviderId        int64     `json:"tpl_provider_id"`
-	Warehouse            string    `json:"warehouse"`
-	WarehouseId          int64     `json:"warehouse_id"`
+	// Delivery city
+	City string `json:"city"`
+
+	// Delivery start date and time
+	DeliveryDateBegin time.Time `json:"delivery_date_begin"`
+
+	// Delivery end date and time
+	DeliveryDateEnd time.Time `json:"delivery_date_end"`
+
+	// Delivery method
+	DeliveryType string `json:"delivery_type"`
+
+	// Indication that the recipient is a legal entity:
+	//
+	// true — a legal entity,
+	// false — a natural person
+	IsLegal bool `json:"is_legal"`
+
+	// Premium subscription availability
+	IsPremium bool `json:"is_premium"`
+
+	// Payment method
+	PaymentTypeGroupName string `json:"payment_type_group_name"`
+
+	// Delivery region
+	Region string `json:"region"`
+
+	// Delivery service
+	TPLProvider string `json:"tpl_provider"`
+
+	// Delivery service identifier
+	TPLProviderId int64 `json:"tpl_provider_id"`
+
+	// Order shipping warehouse name
+	Warehouse string `json:"warehouse"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
 }
 
 type FBSBarcode struct {
+	// Lower barcode on the shipment label
 	LowerBarcode string `json:"lower_barcode"`
+
+	// Upper barcode on the shipment label
 	UpperBarcode string `json:"upper_barcode"`
 }
 
 type FBSCancellation struct {
-	AffectCancellationRating bool   `json:"affect_cancellation_rating"`
-	CancelReason             string `json:"cancel_reason"`
-	CancelReasonId           int64  `json:"cancel_reason_id"`
-	CancellationInitiator    string `json:"cancellation_initiator"`
-	CancellationType         string `json:"cancellation_type"`
-	CancelledAfterShip       bool   `json:"cancelled_after_ship"`
+	// If the cancellation affects the seller's rating—true
+	AffectCancellationRating bool `json:"affect_cancellation_rating"`
+
+	// Cancellation reason
+	CancelReason string `json:"cancel_reason"`
+
+	// Cancellation reason identifier
+	CancelReasonId int64 `json:"cancel_reason_id"`
+
+	// Shipment cancellation initiator:
+	//
+	// Клиент—client,
+	// Ozon,
+	// Продавец—seller
+	CancellationInitiator string `json:"cancellation_initiator"`
+
+	// Cancellation type:
+	//
+	// client—canceled by client.
+	// ozon—canceled by Ozon.
+	// seller—canceled by seller
+	CancellationType string `json:"cancellation_type"`
+
+	// If the cancellation occurred after the shipment had been packaged—true
+	CancelledAfterShip bool `json:"cancelled_after_ship"`
 }
 
 type FBSDeliveryMethod struct {
-	Id            int64  `json:"id"`
-	Name          string `json:"name"`
-	TPLProvider   string `json:"tpl_provider"`
-	TPLProviderId int64  `json:"tpl_provider_id"`
-	Warehouse     string `json:"warehouse"`
-	WarehouseId   int64  `json:"warehouse_id"`
+	// Delivery method identifier
+	Id int64 `json:"id"`
+
+	// Delivery method name
+	Name string `json:"name"`
+
+	// Delivery service
+	TPLProvider string `json:"tpl_provider"`
+
+	// Delivery service identifier
+	TPLProviderId int64 `json:"tpl_provider_id"`
+
+	// Warehouse name
+	Warehouse string `json:"warehouse"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
 }
 
 type FBSFinancialData struct {
-	ClusterFrom     string                 `json:"cluster_from"`
-	ClusterTo       string                 `json:"cluster_to"`
-	PostingServices MarketplaceServices    `json:"posting_services"`
-	Products        []FinancialDataProduct `json:"products"`
+	// Identifier of the cluster, where the shipment is sent from
+	ClusterFrom string `json:"cluster_from"`
+
+	// Identifier of the cluster, where the shipment is delivered
+	ClusterTo string `json:"cluster_to"`
+
+	// Services
+	PostingServices MarketplaceServices `json:"posting_services"`
+
+	// List of products in the shipment
+	Products []FinancialDataProduct `json:"products"`
 }
 
 type FBSRequirements struct {
-	ProductsRequiringGTD           []string `json:"products_requiring_gtd"`
-	ProductsRequiringCountry       []string `json:"products_requiring_country"`
+	// Array of Ozon Product IDs (SKU) for which you need to pass the customs cargo declaration (CCD) numbers.
+	//
+	// To pack the shipment, pass the CCD number for all listed SKUs.
+	// If you do not have a CCD number, pass the value `is_gtd_absent` = true
+	// via the `/v3/posting/fbs/ship/package` or `/v3/posting/fbs/ship` method
+	ProductsRequiringGTD []string `json:"products_requiring_gtd"`
+
+	// Array of Ozon Product IDs (SKU) for which
+	// you need to pass the manufacturing country.
+	//
+	// To pack the shipment, pass the manufacturing
+	// country value for all listed SKUs via the `/v2/posting/fbs/product/country/set` method
+	ProductsRequiringCountry []string `json:"products_requiring_country"`
+
+	// Array of Ozon Product IDs (SKU) for which you need to pass the "Chestny ZNAK" labeling
 	ProductsRequiringMandatoryMark []string `json:"products_requiring_mandatory_mark"`
-	ProductsRequiringRNPT          []string `json:"products_requiring_rnpt"`
+
+	// Array of Ozon Product IDs (SKU) for which you need to pass a product batch registration number
+	ProductsRequiringRNPT []string `json:"products_requiring_rnpt"`
 }
 
 type PostingProduct struct {
+	// Mandatory product labeling
 	MandatoryMark []string `json:"mandatory_mark"`
-	Name          string   `json:"name"`
-	OfferId       string   `json:"offer_id"`
-	CurrencyCode  string   `json:"currency_code"`
-	Price         string   `json:"price"`
-	Quantity      int32    `json:"quantity"`
-	SKU           int64    `json:"sku"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Currency of your prices. It matches the one set in the personal account settings
+	CurrencyCode string `json:"currency_code"`
+
+	// Product price
+	Price string `json:"price"`
+
+	// Product quantity in the shipment
+	Quantity int32 `json:"quantity"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 }
 
 type FBSCustomer struct {
+	// Delivery address details
 	Address FBSCustomerAddress `json:"customer"`
 
+	// Customer e-mail
 	CustomerEmail string `json:"customer_email"`
-	CustomerId    int64  `json:"customer_id"`
-	Name          string `json:"name"`
-	Phone         string `json:"phone"`
+
+	// Customer identifier
+	CustomerId int64 `json:"customer_id"`
+
+	// Customer name
+	Name string `json:"name"`
+
+	// Customer phone number.
+	//
+	// Returns an empty string
+	Phone string `json:"phone"`
 }
 
 type FBSCustomerAddress struct {
-	AddressTail     string  `json:"address_tail"`
-	City            string  `json:"city"`
-	Comment         string  `json:"comment"`
-	Country         string  `json:"country"`
-	District        string  `json:"district"`
-	Latitude        float64 `json:"latitude"`
-	Longitude       float64 `json:"longitude"`
-	ProviderPVZCode string  `json:"provider_pvz_code"`
-	PVZCode         int64   `json:"pvz_code"`
-	Region          string  `json:"region"`
-	ZIPCode         string  `json:"zip_code"`
+	// Address in text format
+	AddressTail string `json:"address_tail"`
+
+	// Delivery city
+	City string `json:"city"`
+
+	// Comment on the order
+	Comment string `json:"comment"`
+
+	// Delivery country
+	Country string `json:"country"`
+
+	// Delivery area
+	District string `json:"district"`
+
+	// Latitude
+	Latitude float64 `json:"latitude"`
+
+	// Longitude
+	Longitude float64 `json:"longitude"`
+
+	// 3PL pick-up point code
+	ProviderPVZCode string `json:"provider_pvz_code"`
+
+	// Pick-up point code
+	PVZCode int64 `json:"pvz_code"`
+
+	// Delivery region
+	Region string `json:"region"`
+
+	// Recipient postal code
+	ZIPCode string `json:"zip_code"`
 }
 
 type MarketplaceServices struct {
-	DeliveryToCustomer            float64 `json:"marketplace_service_item_deliv_to_customer"`
-	DirectFlowTrans               float64 `json:"marketplace_service_item_direct_flow_trans"`
-	DropoffFF                     float64 `json:"marketplace_service_item_item_dropoff_ff"`
-	DropoffPVZ                    float64 `json:"marketplace_service_item_dropoff_pvz"`
-	DropoffSC                     float64 `json:"marketplace_service_item_dropoff_sc"`
-	Fulfillment                   float64 `json:"marketplace_service_item_fulfillment"`
-	Pickup                        float64 `json:"marketplace_service_item_pickup"`
+	// Last mile
+	DeliveryToCustomer float64 `json:"marketplace_service_item_deliv_to_customer"`
+
+	// Pipeline
+	DirectFlowTrans float64 `json:"marketplace_service_item_direct_flow_trans"`
+
+	// Shipment processing in the fulfilment warehouse (FF)
+	DropoffFF float64 `json:"marketplace_service_item_item_dropoff_ff"`
+
+	// Shipment processing at the pick up point
+	DropoffPVZ float64 `json:"marketplace_service_item_dropoff_pvz"`
+
+	// Shipment processing at the sorting center
+	DropoffSC float64 `json:"marketplace_service_item_dropoff_sc"`
+
+	// Order packaging
+	Fulfillment float64 `json:"marketplace_service_item_fulfillment"`
+
+	// Transport arrival to the seller's address for shipments pick-up (Pick-up)
+	Pickup float64 `json:"marketplace_service_item_pickup"`
+
+	// Return processing
 	ReturnAfterDeliveryToCustomer float64 `json:"marketplace_service_item_return_after_deliv_to_customer"`
-	ReturnFlowTrans               float64 `json:"marketplace_service_item_return_flow_trans"`
-	ReturnNotDeliveryToCustomer   float64 `json:"marketplace_service_item_return_not_deliv_to_customer"`
-	ReturnPartGoodsCustomer       float64 `json:"marketplace_service_item_return_part_goods_customer"`
+
+	// Reverse pipeline
+	ReturnFlowTrans float64 `json:"marketplace_service_item_return_flow_trans"`
+
+	// Cancellations processing
+	ReturnNotDeliveryToCustomer float64 `json:"marketplace_service_item_return_not_deliv_to_customer"`
+
+	// Non-purchase processing
+	ReturnPartGoodsCustomer float64 `json:"marketplace_service_item_return_part_goods_customer"`
 }
 
 type FinancialDataProduct struct {
-	Actions                 []string                    `json:"actions"`
-	ClientPrice             string                      `json:"client_price"`
-	CommissionAmount        float64                     `json:"commission_amount"`
-	CommissionPercent       int64                       `json:"commission_percent"`
-	CommissionsCurrencyCode string                      `json:"commissions_currency_code"`
-	ItemServices            MarketplaceServices         `json:"item_services"`
-	CurrencyCode            string                      `json:"currency_code"`
-	OldPrice                float64                     `json:"old_price"`
-	Payout                  float64                     `json:"payout"`
-	Picking                 FinancialDataProductPicking `json:"picking"`
-	Price                   float64                     `json:"price"`
-	ProductId               int64                       `json:"product_id"`
-	Quantity                int64                       `json:"quantity"`
-	TotalDiscountPercent    float64                     `json:"total_discount_percent"`
-	TotalDiscountValue      float64                     `json:"total_discount_value"`
+	// Actions
+	Actions []string `json:"actions"`
+
+	// Customer price
+	ClientPrice string `json:"client_price"`
+
+	// Commission amount for the product
+	CommissionAmount float64 `json:"commission_amount"`
+
+	// Commission percentage
+	CommissionPercent int64 `json:"commission_percent"`
+
+	// Code of the currency used to calculate the commissions
+	CommissionsCurrencyCode string `json:"commissions_currency_code"`
+
+	// Services
+	ItemServices MarketplaceServices `json:"item_services"`
+
+	// Currency of your prices. It matches the currency set in the personal account settings
+	CurrencyCode string `json:"currency_code"`
+
+	// Price before discounts. Displayed strikethrough on the product description page
+	OldPrice float64 `json:"old_price"`
+
+	// Payment to the seller
+	Payout float64 `json:"payout"`
+
+	// Delivery details.
+	//
+	// Returns `null`
+	Picking FinancialDataProductPicking `json:"picking"`
+
+	// Product price including discounts. This value is shown on the product description page
+	Price float64 `json:"price"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Product quantity in the shipment
+	Quantity int64 `json:"quantity"`
+
+	// Discount percentage
+	TotalDiscountPercent float64 `json:"total_discount_percent"`
+
+	// Discount amount
+	TotalDiscountValue float64 `json:"total_discount_value"`
 }
 
 type FinancialDataProductPicking struct {
-	Amount float64   `json:"amount"`
+	// Delivery cost
+	Amount float64 `json:"amount"`
+
+	// Delivery date and time
 	Moment time.Time `json:"moment"`
-	Tag    string    `json:"tag"`
+
+	// Bulky products or not
+	Tag string `json:"tag"`
 }
 
 func (c FBS) ListUnprocessedShipments(params *ListUnprocessedShipmentsParams) (*ListUnprocessedShipmentsResponse, error) {

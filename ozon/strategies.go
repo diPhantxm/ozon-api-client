@@ -11,25 +11,33 @@ type Strategies struct {
 }
 
 type ListCompetitorsParams struct {
+	// Page number from which you want to download the list of competitors.
+	// The minimum value is 1
 	Page int64 `json:"page"`
 
+	// Maximum number of competitors on the page. Allowed values: 1–50
 	Limit int64 `json:"limit"`
 }
 
 type ListCompetitorsResponse struct {
 	core.CommonResponse
 
+	// List of competitors
 	Competitors []ListCompetitorsCompetitor `json:"competitors"`
 
+	// Total number of competitors
 	Total int32 `json:"total"`
 }
 
 type ListCompetitorsCompetitor struct {
+	// Competitor's name
 	Name string `json:"name"`
 
+	// Competitor identifier
 	Id int64 `json:"id"`
 }
 
+// Method for getting a list of competitors—sellers with similar products in other online stores and marketplaces
 func (c Strategies) ListCompetitors(params *ListCompetitorsParams) (*ListCompetitorsResponse, error) {
 	url := "/v1/pricing-strategy/competitors/list"
 
@@ -45,34 +53,47 @@ func (c Strategies) ListCompetitors(params *ListCompetitorsParams) (*ListCompeti
 }
 
 type ListStrategiesParams struct {
+	// Page number from which you want to download the list of competitors.
+	// The minimum value is 1
 	Page int64 `json:"page"`
 
+	// Maximum number of competitors on the page. Allowed values: 1–50
 	Limit int64 `json:"limit"`
 }
 
 type ListStrategiesResponse struct {
 	core.CommonResponse
 
+	// List of strategies
 	Strategies []ListStrategiesStrategy `json:"strategies"`
 
+	// Total number of strategies
 	Total int32 `json:"total"`
 }
 
 type ListStrategiesStrategy struct {
+	// Strategy identifier
 	Id string `json:"id"`
 
+	// Strategy name
 	Name string `json:"name"`
 
+	// Strategy type
 	Type StrategyType `json:"type"`
 
+	// Type of the last strategy change
 	UpdateType StrategyUpdateType `json:"update_type"`
 
+	// Date of last change
 	UpdatedAt string `json:"updated_at"`
 
+	// Number of products in the strategy
 	ProductsCount int64 `json:"products_count"`
 
+	// Number of selected competitors
 	CompetitorsCount int64 `json:"competitors_count"`
 
+	// Strategy status
 	Enabled bool `json:"enabled"`
 }
 
@@ -91,24 +112,31 @@ func (c Strategies) List(params *ListStrategiesParams) (*ListStrategiesResponse,
 }
 
 type CreateStrategyParams struct {
+	// List of competitors
 	Competitors []CreateStrategyCompetitor `json:"competitors"`
 
+	// Strategy name
 	StrategyName string `json:"strategy_name"`
 }
 
 type CreateStrategyCompetitor struct {
+	// Coefficient by which the minimum price among competitors will be multiplied.
+	// The allowed range is from 0.5 to 1.2
 	Coefficient float32 `json:"coefficient"`
 
+	// Competitor identifier
 	CompetitorId int64 `json:"competitor_id"`
 }
 
 type CreateStrategyResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result CreateStrategyResult `json:"result"`
 }
 
 type CreateStrategyResult struct {
+	// Strategy identifier
 	StrategyId string `json:"strategy_id"`
 }
 
@@ -127,24 +155,31 @@ func (c Strategies) Create(params *CreateStrategyParams) (*CreateStrategyRespons
 }
 
 type InfoStrategyParams struct {
+	// Strategy identifier
 	StrategyId string `json:"strategy_id"`
 }
 
 type InfoStrategyResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result InfoStrategyResult `json:"result"`
 }
 
 type InfoStrategyResult struct {
+	// List of competitors
 	Competitors []CreateStrategyCompetitor `json:"competitors"`
 
+	// Strategy status
 	Enabled bool `json:"enabled"`
 
+	// Strategy name
 	Name string `json:"name"`
 
+	// Strategy type
 	Type StrategyType `json:"type"`
 
+	// Type of the last strategy change
 	UpdateType StrategyUpdateType `json:"update_type"`
 }
 
@@ -163,10 +198,13 @@ func (c Strategies) Info(params *InfoStrategyParams) (*InfoStrategyResponse, err
 }
 
 type UpdateStrategyParams struct {
+	// List of competitors
 	Competitors []CreateStrategyCompetitor `json:"competitors"`
 
+	// Product identifier
 	StrategyId string `json:"strategy_id"`
 
+	// Strategy name
 	StrategyName string `json:"strategy_name"`
 }
 
@@ -189,28 +227,36 @@ func (c Strategies) Update(params *UpdateStrategyParams) (*UpdateStrategyRespons
 }
 
 type AddProductsToStrategyParams struct {
+	// List of product identifiers. The maximum number is 50
 	ProductId []int64 `json:"product_id"`
 
+	// Product identifier
 	StrategyId string `json:"strategy_id"`
 }
 
 type AddProductsToStrategyResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result AddProductsToStrategyResult `json:"result"`
 }
 
 type AddProductsToStrategyResult struct {
+	// Products with errors
 	Errors []AddProductsToStrategyResultError `json:"errors"`
 
+	// Number of products with errors
 	FailedProductCount int32 `json:"failed_product_count"`
 }
 
 type AddProductsToStrategyResultError struct {
+	// Error code
 	Code string `json:"code"`
 
+	// Error message
 	Error string `json:"error"`
 
+	// Product identifier
 	ProductId int64 `json:"product_id"`
 }
 
@@ -229,22 +275,27 @@ func (c Strategies) AddProducts(params *AddProductsToStrategyParams) (*AddProduc
 }
 
 type GetStrategiesByProductIdsParams struct {
+	// List of product identifiers. The maximum number is 50
 	ProductId []int64 `json:"product_id"`
 }
 
 type GetStrategiesByProductIdsResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result GetStrategiesByProductIdsResult `json:"result"`
 }
 
 type GetStrategiesByProductIdsResult struct {
+	// Product information
 	ProductsInfo []GetStrategiesByProductIdsResultProductInfo `json:"products_info"`
 }
 
 type GetStrategiesByProductIdsResultProductInfo struct {
+	// Product identifier
 	ProductId int64 `json:"product_id"`
 
+	// Strategy identifier to which the product is bounded
 	StrategyId string `json:"strategy_id"`
 }
 
@@ -263,16 +314,19 @@ func (c Strategies) GetByProductIds(params *GetStrategiesByProductIdsParams) (*G
 }
 
 type ListProductsInStrategyParams struct {
+	// Strategy identifier
 	StrategyId string `json:"strategy_id"`
 }
 
 type ListProductsInStrategyResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result ListProductsInStrategyResult `json:"result"`
 }
 
 type ListProductsInStrategyResult struct {
+	// Product identifier
 	ProductId []string `json:"product_id"`
 }
 
@@ -291,26 +345,34 @@ func (c Strategies) ListProducts(params *ListProductsInStrategyParams) (*ListPro
 }
 
 type GetCompetitorPriceParams struct {
+	// Product identifier
 	ProductId int64 `json:"product_id"`
 }
 
 type GetCompetitorPriceResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result GetCompetitorPriceResult `json:"result"`
 }
 
 type GetCompetitorPriceResult struct {
+	// Product identifier
 	StrategyId string `json:"strategy_id"`
 
+	// true if the product is in the pricing strategy
 	IsEnabled bool `json:"is_enabled"`
 
+	// Price of product in the strategy
 	StrategyProductPrice int32 `json:"strategy_product_price"`
 
+	// Price setting date
 	PriceDownloadedAt string `json:"price_downloaded_at"`
 
+	// Competitor identifier
 	StrategyCompetitorId int64 `json:"strategy_competitor_id"`
 
+	// Link to a competitor's product
 	StrategyCompetitorProductURL string `json:"strategy_competitor_product_url"`
 }
 
@@ -329,16 +391,19 @@ func (c Strategies) GetCompetitorPrice(params *GetCompetitorPriceParams) (*GetCo
 }
 
 type RemoveProductsFromStrategyParams struct {
+	// List of product identifiers. The maximum number is 50
 	ProductId []int64 `json:"product_id"`
 }
 
 type RemoveProductsFromStrategyResponse struct {
 	core.CommonResponse
 
+	// Method result
 	Result RemoveProductsFromStrategyResult `json:"result"`
 }
 
 type RemoveProductsFromStrategyResult struct {
+	// Number of products with errors
 	FailedProductCount int32 `json:"failed_product_count"`
 }
 
@@ -357,8 +422,10 @@ func (c Strategies) RemoveProducts(params *RemoveProductsFromStrategyParams) (*R
 }
 
 type ChangeStrategyStatusParams struct {
+	// Strategy status
 	Enabled bool `json:"enabled"`
 
+	// Product identifier
 	StrategyId string `json:"strategy_id"`
 }
 
@@ -381,6 +448,7 @@ func (c Strategies) ChangeStatus(params *ChangeStrategyStatusParams) (*ChangeStr
 }
 
 type RemoveStrategyParams struct {
+	// Strategy identifier
 	StrategyId string `json:"strategy_id"`
 }
 

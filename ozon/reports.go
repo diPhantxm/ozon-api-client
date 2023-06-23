@@ -239,114 +239,156 @@ type GetFinancialResultResultDetail struct {
 	// Orders
 	Delivery GetFinancialResultResultDetailDelivery `json:"delivery"`
 
+	// Amount to be paid for the period
 	InvoiceTransfer float64 `json:"invoice_transfer"`
 
+	// Transfer under loan agreements
 	Loan float64 `json:"loan"`
 
+	// Paid for the period
 	Payments []GetFinancialResultResultDetailPayment `json:"payments"`
 
+	// Period data
 	Period GetFinancialResultResultDetailPeriod `json:"period"`
 
+	// Returns and cancellations
 	Return GetFinancialResultResultDetailReturn `json:"return"`
 
+	// rFBS transfers
 	RFBS GetFinancialResultResultDetailRFBS `json:"rfbs"`
 
+	// Services
 	Services GetFinancialResultResultDetailService `json:"services"`
 
+	// Compensation and other accruals
 	Others GetFinancialResultResultDetailOthers `json:"others"`
 
+	// Balance at the end of the period
 	EndBalanceAmount float64 `json:"end_balance_amount"`
 }
 
 type GetFinancialResultResultDetailDelivery struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Amount for which products were purchased, including commission fees
 	Amount float64 `json:"amount"`
 
+	// Processing and delivery fees
 	DeliveryServices GetFinancialResultResultDetailDeliveryServices `json:"delivery_services"`
 }
 
 type GetFinancialResultResultDetailDeliveryServices struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Details
 	Items []GetFinancialResultResultDetailDeliveryServicesItem `json:"items"`
 }
 
 type GetFinancialResultResultDetailDeliveryServicesItem struct {
+	// Operation name
 	Name DetailsDeliveryItemName `json:"name"`
 
+	// Amount by operation
 	Price float64 `json:"price"`
 }
 
 type GetFinancialResultResultDetailPayment struct {
+	// Currency
 	CurrencyCode string `json:"currency_code"`
 
+	// Payment amount
 	Payment float64 `json:"payment"`
 }
 
 type GetFinancialResultResultDetailPeriod struct {
+	// Period start
 	Begin time.Time `json:"begin"`
 
+	// Period end
 	End time.Time `json:"end"`
 
+	// Period identifier
 	Id int64 `json:"id"`
 }
 
 type GetFinancialResultResultDetailReturn struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Amount of returns received, including commission fees
 	Amount float64 `json:"amount"`
 
+	// Returns and cancellation fees
 	ReturnServices GetFinancialResultResultDetailReturnServices `json:"return_services"`
 }
 
 type GetFinancialResultResultDetailReturnServices struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Details
 	Items []GetFinancialResultResultDetailReturnServicesItem `json:"items"`
 }
 
 type GetFinancialResultResultDetailReturnServicesItem struct {
+	// Operation name
 	Name DetailsReturnServiceName `json:"name"`
 
+	// Amount by operation
 	Price float64 `json:"price"`
 }
 
 type GetFinancialResultResultDetailRFBS struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Transfers from customers
 	TransferDelivery float64 `json:"transfer_delivery"`
 
+	// Return of transfers to customers
 	TransferDeliveryReturn float64 `json:"transfer_delivery_return"`
 
+	// Compensation of delivery fees
 	CompensationDeliveryReturn float64 `json:"compensation_delivery_return"`
 
+	// Transfers of partial refunds to customers
 	PartialCompensation float64 `json:"partial_compensation"`
 
+	// Compensation of partial refunds
 	PartialCompensationReturn float64 `json:"partial_compensation_return"`
 }
 
 type GetFinancialResultResultDetailService struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Details
 	Items []GetFinancialResultResultDetailServiceItem `json:"items"`
 }
 
 type GetFinancialResultResultDetailServiceItem struct {
+	// Operation name
 	Name DetailsServiceItemName `json:"name"`
 
+	// Amount by operation
 	Price float64 `json:"price"`
 }
 
 type GetFinancialResultResultDetailOthers struct {
+	// Total amount
 	Total float64 `json:"total"`
 
+	// Details
 	Items []GetFinancialResultResultDetailOthersItem `json:"items"`
 }
 
 type GetFinancialResultResultDetailOthersItem struct {
+	// Operation name
 	Name DetailsOtherItemName `json:"name"`
 
+	// Amount by operation
 	Price float64 `json:"price"`
 }
 
