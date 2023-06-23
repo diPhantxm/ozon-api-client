@@ -22,21 +22,25 @@ type ListCertifiedBrandsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Certified brands details
-		BrandCertification []struct {
-			// Brand name
-			BrandName string `json:"brand_name"`
+	Result ListCertifiedBrandsResult `json:"result"`
+}
 
-			// Indication that the certificate is required:
-			//   - true if the certificate is required;
-			//   - false if not
-			HasCertificate bool `json:"has_certificate"`
-		} `json:"brand_certification"`
+type ListCertifiedBrandsResult struct {
+	// Certified brands details
+	BrandCertification []ListCertifiedBrandsResultCertificate `json:"brand_certification"`
 
-		// Total number of brands
-		Total int64 `json:"total"`
-	} `json:"result"`
+	// Total number of brands
+	Total int64 `json:"total"`
+}
+
+type ListCertifiedBrandsResultCertificate struct {
+	// Brand name
+	BrandName string `json:"brand_name"`
+
+	// Indication that the certificate is required:
+	//   - true if the certificate is required;
+	//   - false if not
+	HasCertificate bool `json:"has_certificate"`
 }
 
 // List of certified brands

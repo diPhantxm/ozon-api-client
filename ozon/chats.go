@@ -38,42 +38,46 @@ type ListChatsResponse struct {
 	core.CommonResponse
 
 	// Chats data
-	Chats []struct {
-		// Chat data
-		Chat struct {
-			// Chat identifier
-			ChatId string `json:"chat_id"`
-
-			// Chat status:
-			//   - All
-			//   - Opened
-			//   - Closed
-			ChatStatus string `json:"chat_status"`
-
-			// Chat type:
-			//   - Seller_Support — support chat
-			//   - Buyer_Seller — chat with a customer
-			ChatType string `json:"chat_type"`
-
-			// Chat creation date
-			CreatedAt time.Time `json:"created_at"`
-		} `json:"chat"`
-
-		// Identifier of the first unread chat message
-		FirstUnreadMessageId string `json:"first_unread_message_id"`
-
-		// Identifier of the last message in the chat
-		LastMessageId string `json:"last_message_id"`
-
-		// Number of unread messages in the chat
-		UnreadCount int64 `json:"unread_count"`
-	} `json:"chats"`
+	Chats []ListChatsChat `json:"chats"`
 
 	// Total number of chats
 	TotalChatsCount int64 `json:"total_chats_count"`
 
 	// Total number of unread messages
 	TotalUnreadCount int64 `json:"total_unread_count"`
+}
+
+type ListChatsChat struct {
+	// Chat data
+	Chat ListChatsChatData `json:"chat"`
+
+	// Identifier of the first unread chat message
+	FirstUnreadMessageId string `json:"first_unread_message_id"`
+
+	// Identifier of the last message in the chat
+	LastMessageId string `json:"last_message_id"`
+
+	// Number of unread messages in the chat
+	UnreadCount int64 `json:"unread_count"`
+}
+
+type ListChatsChatData struct {
+	// Chat identifier
+	ChatId string `json:"chat_id"`
+
+	// Chat status:
+	//   - All
+	//   - Opened
+	//   - Closed
+	ChatStatus string `json:"chat_status"`
+
+	// Chat type:
+	//   - Seller_Support — support chat
+	//   - Buyer_Seller — chat with a customer
+	ChatType string `json:"chat_type"`
+
+	// Chat creation date
+	CreatedAt time.Time `json:"created_at"`
 }
 
 // Returns information about chats by specified filters
@@ -179,33 +183,37 @@ type ChatHistoryResponse struct {
 	HasNext bool `json:"has_next"`
 
 	// An array of messages sorted according to the direction parameter in the request body
-	Messages []struct {
-		// Message creation date
-		CreatedAt time.Time `json:"created_at"`
+	Messages []ChatHistoryMessage `json:"messages"`
+}
 
-		// Array with message content in Markdown format
-		Data []string `json:"data"`
+type ChatHistoryMessage struct {
+	// Message creation date
+	CreatedAt time.Time `json:"created_at"`
 
-		// Indication of the read message
-		IsRead bool `json:"is_read"`
+	// Array with message content in Markdown format
+	Data []string `json:"data"`
 
-		// Message identifier
-		MessageId string `json:"message_id"`
+	// Indication of the read message
+	IsRead bool `json:"is_read"`
 
-		// Chat participant identifier
-		User struct {
-			// Chat participant identifier
-			Id string `json:"id"`
+	// Message identifier
+	MessageId string `json:"message_id"`
 
-			// Chat participant type:
-			//   - customer
-			//   - seller
-			//   - crm—system messages
-			//   - courier
-			//   - support
-			Type string `json:"type"`
-		} `json:"user"`
-	} `json:"messages"`
+	// Chat participant identifier
+	User ChatHistoryMessageUser `json:"user"`
+}
+
+type ChatHistoryMessageUser struct {
+	// Chat participant identifier
+	Id string `json:"id"`
+
+	// Chat participant type:
+	//   - customer
+	//   - seller
+	//   - crm—system messages
+	//   - courier
+	//   - support
+	Type string `json:"type"`
 }
 
 // Chat history
@@ -238,80 +246,94 @@ type UpdateChatResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// An order or a product user wrote about in the chat
-		Context struct {
-			// Product inforamtion
-			Item struct {
-				// Product identifier in the Ozon system, SKU
-				SKU int64 `json:"sku"`
-			} `json:"item"`
+	Result []UpdateChatResult `json:"result"`
+}
 
-			// Order information
-			Order struct {
-				// Order number
-				OrderNumber string `json:"order_number"`
+type UpdateChatResult struct {
+	// An order or a product user wrote about in the chat
+	Context UpdateChatResultContext `json:"context"`
 
-				// Shipment information
-				Postings []struct {
-					// Delivery scheme:
-					//   - FBO
-					//   - FBS
-					//   - RFBS
-					//   - Crossborder
-					DeliverySchema string `json:"delivery_schema"`
+	// Creation date and time
+	CreatedAt time.Time `json:"created_at"`
 
-					// Shipment number
-					PostingNumber string `json:"posting_number"`
+	// Information about the file in the chat. Displayed only for `type = file`
+	File UpdateChatResultFile `json:"file"`
 
-					// List of product identifiers in the shipment
-					SKUList []int64 `json:"sku_list"`
-				} `json:"postings"`
-			} `json:"order"`
-		} `json:"context"`
+	// File identifier
+	Id uint64 `json:"id"`
 
-		// Creation date and time
-		CreatedAt time.Time `json:"created_at"`
+	// Message. Displayed only for `type = text`
+	Text string `json:"text"`
 
-		// Information about the file in the chat. Displayed only for `type = file`
-		File struct {
-			// File type
-			Mime string `json:"mime"`
+	// Message type:
+	//   - text
+	//   - file
+	Type string `json:"type"`
 
-			// File name
-			Name string `json:"name"`
+	// Chat participant information
+	User UpdateChatResultUser `json:"user"`
+}
 
-			// File size in bytes
-			Size int64 `json:"size"`
+type UpdateChatResultContext struct {
+	// Product inforamtion
+	Item UpdateChatResultContextItem `json:"item"`
 
-			// File URL
-			URL string `json:"url"`
-		} `json:"file"`
+	// Order information
+	Order UpdateChatResultContextOrder `json:"order"`
+}
 
-		// File identifier
-		Id uint64 `json:"id"`
+type UpdateChatResultContextItem struct {
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+}
 
-		// Message. Displayed only for `type = text`
-		Text string `json:"text"`
+type UpdateChatResultContextOrder struct {
+	// Order number
+	OrderNumber string `json:"order_number"`
 
-		// Message type:
-		//   - text
-		//   - file
-		Type string `json:"type"`
+	// Shipment information
+	Postings []UpdateChatResultContextOrderPosting `json:"postings"`
+}
 
-		// Chat participant information
-		User struct {
-			// Chat participant identifier
-			Id string `json:"id"`
+type UpdateChatResultContextOrderPosting struct {
+	// Delivery scheme:
+	//   - FBO
+	//   - FBS
+	//   - RFBS
+	//   - Crossborder
+	DeliverySchema string `json:"delivery_schema"`
 
-			// Chat participant chat:
-			//   - customer
-			//   - seller
-			//   - crm—system messages
-			//   - courier
-			Type string `json:"type"`
-		} `json:"user"`
-	} `json:"result"`
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// List of product identifiers in the shipment
+	SKUList []int64 `json:"sku_list"`
+}
+
+type UpdateChatResultFile struct {
+	// File type
+	Mime string `json:"mime"`
+
+	// File name
+	Name string `json:"name"`
+
+	// File size in bytes
+	Size int64 `json:"size"`
+
+	// File URL
+	URL string `json:"url"`
+}
+
+type UpdateChatResultUser struct {
+	// Chat participant identifier
+	Id string `json:"id"`
+
+	// Chat participant chat:
+	//   - customer
+	//   - seller
+	//   - crm—system messages
+	//   - courier
+	Type string `json:"type"`
 }
 
 // Update chat
@@ -338,10 +360,12 @@ type CreateNewChatResponse struct {
 	core.CommonResponse
 
 	//Method result
-	Result struct {
-		// Chat identifier
-		ChatId string `json:"chat_id"`
-	} `json:"result"`
+	Result CreateNewChatResult `json:"result"`
+}
+
+type CreateNewChatResult struct {
+	// Chat identifier
+	ChatId string `json:"chat_id"`
 }
 
 // Creates a new chat on the shipment with the customer. For example, to clarify the address or the product model

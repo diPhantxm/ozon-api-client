@@ -15,59 +15,61 @@ type GetAvailablePromotionsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// Promotion identifier
-		Id float64 `json:"id"`
+	Result []GetAvailablePromotionsResult `json:"result"`
+}
 
-		// Promotion name
-		Title string `json:"title"`
+type GetAvailablePromotionsResult struct {
+	// Promotion identifier
+	Id float64 `json:"id"`
 
-		// Promotion type
-		ActionType string `json:"action_type"`
+	// Promotion name
+	Title string `json:"title"`
 
-		// Promotion description
-		Description string `json:"description"`
+	// Promotion type
+	ActionType string `json:"action_type"`
 
-		// Promotion start date
-		DateStart string `json:"date_start"`
+	// Promotion description
+	Description string `json:"description"`
 
-		// Promotion end date
-		DateEnd string `json:"date_end"`
+	// Promotion start date
+	DateStart string `json:"date_start"`
 
-		// Promotion freeze date.
-		//
-		// If the field is filled, the seller can't increase prices, change the list of products, or decrease the number of product units in the promotion.
-		//
-		// The seller can lower prices and increase the product units number in the promotion
-		FreezeDate string `json:"freeze_date"`
+	// Promotion end date
+	DateEnd string `json:"date_end"`
 
-		// Number of products that can participate in the promotion
-		PotentialProductsCount float64 `json:"potential_products_count"`
+	// Promotion freeze date.
+	//
+	// If the field is filled, the seller can't increase prices, change the list of products, or decrease the number of product units in the promotion.
+	//
+	// The seller can lower prices and increase the product units number in the promotion
+	FreezeDate string `json:"freeze_date"`
 
-		// Number of products that participate in the promotion
-		ParticipatingProductsCount float64 `json:"participating_products_count"`
+	// Number of products that can participate in the promotion
+	PotentialProductsCount float64 `json:"potential_products_count"`
 
-		// Whether or not you participate in the promotion
-		IsParticipating bool `json:"participating"`
+	// Number of products that participate in the promotion
+	ParticipatingProductsCount float64 `json:"participating_products_count"`
 
-		// Indication that customers need a promo code to participate in the promotion
-		IsVoucherAction bool `json:"is_voucher_action"`
+	// Whether or not you participate in the promotion
+	IsParticipating bool `json:"participating"`
 
-		// Number of blocked products
-		BannedProductsCount float64 `json:"banned_products_count"`
+	// Indication that customers need a promo code to participate in the promotion
+	IsVoucherAction bool `json:"is_voucher_action"`
 
-		// Indication of the promotion is with the target audience
-		WithTargeting bool `json:"with_targeting"`
+	// Number of blocked products
+	BannedProductsCount float64 `json:"banned_products_count"`
 
-		// Order amount
-		OrderAmount float64 `json:"order_amount"`
+	// Indication of the promotion is with the target audience
+	WithTargeting bool `json:"with_targeting"`
 
-		// Discount type
-		DiscountType string `json:"discount_type"`
+	// Order amount
+	OrderAmount float64 `json:"order_amount"`
 
-		// Discount size
-		DiscountValue float64 `json:"discount_value"`
-	} `json:"result"`
+	// Discount type
+	DiscountType string `json:"discount_type"`
+
+	// Discount size
+	DiscountValue float64 `json:"discount_value"`
 }
 
 // A method for getting a list of promotions that you can participate in
@@ -108,19 +110,23 @@ type AddProductToPromotionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// List of product identifiers that were added to the promotion
-		ProductIds []float64 `json:"product_ids"`
+	Result AddProductToPromotionResult `json:"result"`
+}
 
-		// List of products that weren't added to the promotion
-		Rejected []struct {
-			// Product identifier
-			ProductId float64 `json:"product_id"`
+type AddProductToPromotionResult struct {
+	// List of product identifiers that were added to the promotion
+	ProductIds []float64 `json:"product_ids"`
 
-			// Reason why the product wasn't added to the promotion
-			Reason string `json:"reason"`
-		} `json:"rejected"`
-	} `json:"result"`
+	// List of products that weren't added to the promotion
+	Rejected []AddProductToPromotionResultRejected `json:"rejected"`
+}
+
+type AddProductToPromotionResultRejected struct {
+	// Product identifier
+	ProductId float64 `json:"product_id"`
+
+	// Reason why the product wasn't added to the promotion
+	Reason string `json:"reason"`
 }
 
 // A method for adding products to an available promotion
@@ -154,13 +160,15 @@ type ProductsAvailableForPromotionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Products list
-		Products []PromotionProduct `json:"products"`
+	Result ProductsAvailableForPromotionResult `json:"result"`
+}
 
-		// Total number of products that can participate in the promotion
-		Total float64 `json:"total"`
-	} `json:"result"`
+type ProductsAvailableForPromotionResult struct {
+	// Products list
+	Products []PromotionProduct `json:"products"`
+
+	// Total number of products that can participate in the promotion
+	Total float64 `json:"total"`
 }
 
 type PromotionProduct struct {
@@ -216,13 +224,15 @@ type ProductsInPromotionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Products list
-		Products []PromotionProduct `json:"products"`
+	Result ProductsInPromotionResult `json:"reuslt"`
+}
 
-		// Total number of products that can participate in the promotion
-		Total float64 `json:"total"`
-	} `json:"reuslt"`
+type ProductsInPromotionResult struct {
+	// Products list
+	Products []PromotionProduct `json:"products"`
+
+	// Total number of products that can participate in the promotion
+	Total float64 `json:"total"`
 }
 
 // A method for getting the list of products participating in the promotion by its identifier
@@ -252,19 +262,23 @@ type RemoveProductFromPromotionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// List of product identifiers that were removed from the promotion
-		ProductIds []float64 `json:"product_ids"`
+	Result RemoveProductFromPromotionResult `json:"result"`
+}
 
-		// List of product identifiers that weren't removed from the promotion
-		Rejected []struct {
-			// Product identifier
-			ProductId float64 `json:"product_id"`
+type RemoveProductFromPromotionResult struct {
+	// List of product identifiers that were removed from the promotion
+	ProductIds []float64 `json:"product_ids"`
 
-			// Reason why the product wasn't removed from the promotion
-			Reason string `json:"reason"`
-		} `json:"rejected"`
-	} `json:"result"`
+	// List of product identifiers that weren't removed from the promotion
+	Rejected []RemoveProductFromPromotionResultRejected `json:"rejected"`
+}
+
+type RemoveProductFromPromotionResultRejected struct {
+	// Product identifier
+	ProductId float64 `json:"product_id"`
+
+	// Reason why the product wasn't removed from the promotion
+	Reason string `json:"reason"`
 }
 
 // A method for removing products from the promotion
@@ -286,33 +300,35 @@ type ListHotSalePromotionsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result []struct {
-		// Promotion end date
-		DateEnd string `json:"date_end"`
+	Result []ListHotSalePromotionsResult `json:"result"`
+}
 
-		// Promotion start date
-		DateStart string `json:"date_start"`
+type ListHotSalePromotionsResult struct {
+	// Promotion end date
+	DateEnd string `json:"date_end"`
 
-		// Promotion description
-		Description string `json:"description"`
+	// Promotion start date
+	DateStart string `json:"date_start"`
 
-		// Promotion freeze date.
-		//
-		// If the field is filled, the seller can't increase prices, change the list of products,
-		// or decrease the number of product units in the promotion.
-		//
-		// The seller can lower prices and increase the product units number in the promotion
-		FreezeDate string `json:"freeze_date"`
+	// Promotion description
+	Description string `json:"description"`
 
-		// Hot Sale promotion identifier
-		HotsaleId float64 `json:"hotsale_id"`
+	// Promotion freeze date.
+	//
+	// If the field is filled, the seller can't increase prices, change the list of products,
+	// or decrease the number of product units in the promotion.
+	//
+	// The seller can lower prices and increase the product units number in the promotion
+	FreezeDate string `json:"freeze_date"`
 
-		// Indication that you participate in this promotion
-		IsParticipating bool `json:"is_participating"`
+	// Hot Sale promotion identifier
+	HotsaleId float64 `json:"hotsale_id"`
 
-		// Promotion name
-		Title string `json:"title"`
-	} `json:"result"`
+	// Indication that you participate in this promotion
+	IsParticipating bool `json:"is_participating"`
+
+	// Promotion name
+	Title string `json:"title"`
 }
 
 // List of available Hot Sale promotions
@@ -345,34 +361,38 @@ type ProductsAvailableForHotSalePromotionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Products list
-		Products []struct {
-			// Promotional product price
-			ActionPrice float64 `json:"action_price"`
+	Result ProductsAvailableForHotSalePromotionResult `json:"result"`
+}
 
-			// Date when the product participates in the promotion in the YYYY-MM-DD format
-			DateDayPromo string `json:"date_day_promo"`
+type ProductsAvailableForHotSalePromotionResult struct {
+	// Products list
+	Products []ProductsAvailableForHotSalePromotionResultProduct `json:"products"`
 
-			// Product identifier
-			Id float64 `json:"id"`
+	// Total number of products that are available for the promotion
+	Total float64 `json:"total"`
+}
 
-			// Indication that product participates in the promotion
-			IsActive bool `json:"is_active"`
+type ProductsAvailableForHotSalePromotionResultProduct struct {
+	// Promotional product price
+	ActionPrice float64 `json:"action_price"`
 
-			// Maximum possible promotional price of the product
-			MaxActionPrice float64 `json:"max_action_type"`
+	// Date when the product participates in the promotion in the YYYY-MM-DD format
+	DateDayPromo string `json:"date_day_promo"`
 
-			// Minimum number of product units in a stock discount type promotion
-			MinStock float64 `json:"min_stock"`
+	// Product identifier
+	Id float64 `json:"id"`
 
-			// Number of product units in a stock discount type promotion
-			Stock float64 `json:"stock"`
-		} `json:"products"`
+	// Indication that product participates in the promotion
+	IsActive bool `json:"is_active"`
 
-		// Total number of products that are available for the promotion
-		Total float64 `json:"total"`
-	} `json:"result"`
+	// Maximum possible promotional price of the product
+	MaxActionPrice float64 `json:"max_action_type"`
+
+	// Minimum number of product units in a stock discount type promotion
+	MinStock float64 `json:"min_stock"`
+
+	// Number of product units in a stock discount type promotion
+	Stock float64 `json:"stock"`
 }
 
 // Method for getting a list of products that can participate or are already participating in the Hot Sale promotion
@@ -413,16 +433,20 @@ type ProductsToHotSaleResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// List of products that haven't been added to the promotion
-		Rejected []struct {
-			//Product identifier
-			ProductId float64 `json:"product_id"`
+	Result ProductsToHotSaleResult `json:"result"`
+}
 
-			// Reason why the product hasn't been added to the promotion
-			Reason string `json:"reason"`
-		} `json:"rejected"`
-	} `json:"result"`
+type ProductsToHotSaleResult struct {
+	// List of products that haven't been added to the promotion
+	Rejected []ProductsToHotSaleResultRejected `json:"rejected"`
+}
+
+type ProductsToHotSaleResultRejected struct {
+	//Product identifier
+	ProductId float64 `json:"product_id"`
+
+	// Reason why the product hasn't been added to the promotion
+	Reason string `json:"reason"`
 }
 
 func (c Promotions) AddProductsToHotSale(params *AddProductsToHotSaleParams) (*ProductsToHotSaleResponse, error) {
@@ -477,112 +501,114 @@ type ListDiscountRequestsResponse struct {
 	core.CommonResponse
 
 	// List of requests
-	Result []struct {
-		// Request ID
-		Id uint64 `json:"id"`
+	Result []ListDiscountRequestsResult `json:"result"`
+}
 
-		// Request created date
-		CreatedAt time.Time `json:"created_at"`
+type ListDiscountRequestsResult struct {
+	// Request ID
+	Id uint64 `json:"id"`
 
-		// End time of the request
-		EndAt time.Time `json:"end_at"`
+	// Request created date
+	CreatedAt time.Time `json:"created_at"`
 
-		// Time to change the decision
-		EditedTill time.Time `json:"edited_till"`
+	// End time of the request
+	EndAt time.Time `json:"end_at"`
 
-		// Request status
-		Status string `json:"status"`
+	// Time to change the decision
+	EditedTill time.Time `json:"edited_till"`
 
-		// Customer's name
-		CustomerName string `json:"customer_name"`
+	// Request status
+	Status string `json:"status"`
 
-		// Product identifier in the Ozon system, SKU
-		SKU uint64 `json:"sku"`
+	// Customer's name
+	CustomerName string `json:"customer_name"`
 
-		// Customer's comment on the request
-		UserComment string `json:"user_comment"`
+	// Product identifier in the Ozon system, SKU
+	SKU uint64 `json:"sku"`
 
-		// Seller's comment on the request
-		SellerComment string `json:"seller_comment"`
+	// Customer's comment on the request
+	UserComment string `json:"user_comment"`
 
-		// Requested price
-		RequestedPrice float64 `json:"requested_price"`
+	// Seller's comment on the request
+	SellerComment string `json:"seller_comment"`
 
-		// Approved price
-		ApprovedPrice float64 `json:"approved_price"`
+	// Requested price
+	RequestedPrice float64 `json:"requested_price"`
 
-		// Product price before all discounts
-		OriginalPrice float64 `json:"original_price"`
+	// Approved price
+	ApprovedPrice float64 `json:"approved_price"`
 
-		// Discount in rubles
-		Discount float64 `json:"discount"`
+	// Product price before all discounts
+	OriginalPrice float64 `json:"original_price"`
 
-		// Discount percentage
-		DiscountPercent float64 `json:"discount_percent"`
+	// Discount in rubles
+	Discount float64 `json:"discount"`
 
-		// Base price at which a product is selling on Ozon, if not eligible for a promotion
-		BasePrice float64 `json:"base_price"`
+	// Discount percentage
+	DiscountPercent float64 `json:"discount_percent"`
 
-		// The minimum price after auto-application of discounts and promotions
-		MinAutoPrice float64 `json:"min_auto_price"`
+	// Base price at which a product is selling on Ozon, if not eligible for a promotion
+	BasePrice float64 `json:"base_price"`
 
-		// ID of the previous customer request for this product
-		PrevTaskId uint64 `json:"prev_task_id"`
+	// The minimum price after auto-application of discounts and promotions
+	MinAutoPrice float64 `json:"min_auto_price"`
 
-		// If product is damaged — true
-		IsDamaged bool `json:"is_damaged"`
+	// ID of the previous customer request for this product
+	PrevTaskId uint64 `json:"prev_task_id"`
 
-		// Moderation date: review, approval or decline of the request
-		ModeratedAt time.Time `json:"moderated_at"`
+	// If product is damaged — true
+	IsDamaged bool `json:"is_damaged"`
 
-		// Discount in rubles approved by the seller. Pass the value 0 if the seller did not approve the request
-		ApprovedDiscount float64 `json:"approved_discount"`
+	// Moderation date: review, approval or decline of the request
+	ModeratedAt time.Time `json:"moderated_at"`
 
-		// Discount percentage approved by the seller. Pass the value 0 if the seller did not approve the request
-		ApprovedDiscountPercent float64 `json:"approved_discount_percent"`
+	// Discount in rubles approved by the seller. Pass the value 0 if the seller did not approve the request
+	ApprovedDiscount float64 `json:"approved_discount"`
 
-		// Whether the customer has purchased the product. true if purchased
-		IsPurchased bool `json:"is_purchased"`
+	// Discount percentage approved by the seller. Pass the value 0 if the seller did not approve the request
+	ApprovedDiscountPercent float64 `json:"approved_discount_percent"`
 
-		// Whether the request was moderated automatically. true if moderation was automatic
-		IsAutoModerated bool `json:"is_auto_moderated"`
+	// Whether the customer has purchased the product. true if purchased
+	IsPurchased bool `json:"is_purchased"`
 
-		// Product identifier in the seller's system
-		OfferId string `json:"offer_id"`
+	// Whether the request was moderated automatically. true if moderation was automatic
+	IsAutoModerated bool `json:"is_auto_moderated"`
 
-		// Email of the user who processed the request
-		Email string `json:"email"`
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
 
-		// Last name of the user who processed the request
-		LastName string `json:"last_name"`
+	// Email of the user who processed the request
+	Email string `json:"email"`
 
-		// First name of the user who processed the request
-		FirstName string `json:"first_name"`
+	// Last name of the user who processed the request
+	LastName string `json:"last_name"`
 
-		// Patronymic of the user who processed the request
-		Patronymic string `json:"patronymic"`
+	// First name of the user who processed the request
+	FirstName string `json:"first_name"`
 
-		// Approved minimum quantity of products
-		ApprovedQuantityMin uint64 `json:"approved_quantity_min"`
+	// Patronymic of the user who processed the request
+	Patronymic string `json:"patronymic"`
 
-		// Approved maximum quantity of products
-		ApprovedQuantityMax uint64 `json:"approved_quantity_max"`
+	// Approved minimum quantity of products
+	ApprovedQuantityMin uint64 `json:"approved_quantity_min"`
 
-		// Requested minimum number of products
-		RequestedQuantityMin uint64 `json:"requested_quantity_min"`
+	// Approved maximum quantity of products
+	ApprovedQuantityMax uint64 `json:"approved_quantity_max"`
 
-		// Requested maximum number of products
-		RequestedQuantityMax uint64 `json:"requested_quantity_max"`
+	// Requested minimum number of products
+	RequestedQuantityMin uint64 `json:"requested_quantity_min"`
 
-		// Requested price with fee
-		RequestedPriceWithFee float64 `json:"requested_price_with_fee"`
+	// Requested maximum number of products
+	RequestedQuantityMax uint64 `json:"requested_quantity_max"`
 
-		// Approved price with fee
-		ApprovedPriceWithFee float64 `json:"approved_price_with_fee"`
+	// Requested price with fee
+	RequestedPriceWithFee float64 `json:"requested_price_with_fee"`
 
-		// Approved price fee percent
-		ApprovedPriceFeePercent float64 `json:"approved_price_fee_percent"`
-	} `json:"result"`
+	// Approved price with fee
+	ApprovedPriceWithFee float64 `json:"approved_price_with_fee"`
+
+	// Approved price fee percent
+	ApprovedPriceFeePercent float64 `json:"approved_price_fee_percent"`
 }
 
 // Method for getting a list of products that customers want to buy with discount
@@ -626,22 +652,26 @@ type DiscountRequestResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Errors when creating a request
-		FailDetails []struct {
-			// Request ID
-			TaskId uint64 `json:"task_id"`
+	Result DiscountRequestResult `json:"result"`
+}
 
-			// Error message
-			ErrorForUser string `json:"error_for_user"`
-		} `json:"fail_details"`
+type DiscountRequestResult struct {
+	// Errors when creating a request
+	FailDetails []DiscountRequestResultFailDetail `json:"fail_details"`
 
-		// The number of requests with a successful status change
-		SuccessCount int32 `json:"success_count"`
+	// The number of requests with a successful status change
+	SuccessCount int32 `json:"success_count"`
 
-		// The number of requests that failed to change their status
-		FailCount int32 `json:"fail_count"`
-	} `json:"result"`
+	// The number of requests that failed to change their status
+	FailCount int32 `json:"fail_count"`
+}
+
+type DiscountRequestResultFailDetail struct {
+	// Request ID
+	TaskId uint64 `json:"task_id"`
+
+	// Error message
+	ErrorForUser string `json:"error_for_user"`
 }
 
 // You can approve applications in statuses:

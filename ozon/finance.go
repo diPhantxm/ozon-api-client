@@ -20,126 +20,132 @@ type ReportOnSoldProductsResponse struct {
 	core.CommonResponse
 
 	// Query result
-	Result []struct {
-		// Report title page
-		Header []struct {
-			// Report ID
-			Id string `json:"num"`
+	Result []ReportonSoldProductsResult `json:"result"`
+}
 
-			// Report generation date
-			DocDate string `json:"doc_date"`
+type ReportonSoldProductsResult struct {
+	// Report title page
+	Header []ReportOnSoldProductsResultHeader `json:"header"`
 
-			// Date of the offer agreement
-			ContractDate string `json:"contract_date"`
+	// Report table
+	Rows []ReportOnSoldProductsResultRow `json:"rows"`
+}
 
-			// Offer agreement number
-			ContractNum string `json:"contract_num"`
+type ReportOnSoldProductsResultHeader struct {
+	// Report ID
+	Id string `json:"num"`
 
-			// Currency of your prices
-			CurrencyCode string `json:"currency_code"`
+	// Report generation date
+	DocDate string `json:"doc_date"`
 
-			// Amount to accrue
-			DocAmount float64 `json:"doc_amount"`
+	// Date of the offer agreement
+	ContractDate string `json:"contract_date"`
 
-			// Amount to accrue with VAT
-			VATAmount float64 `json:"vat_amount"`
+	// Offer agreement number
+	ContractNum string `json:"contract_num"`
 
-			// Payer's TIN
-			PayerINN string `json:"payer_inn"`
+	// Currency of your prices
+	CurrencyCode string `json:"currency_code"`
 
-			// Payer's Tax Registration Reason Code (KPP)
-			PayerKPP string `json:"payer_kpp"`
+	// Amount to accrue
+	DocAmount float64 `json:"doc_amount"`
 
-			// Payer's name
-			PayerName string `json:"payer_name"`
+	// Amount to accrue with VAT
+	VATAmount float64 `json:"vat_amount"`
 
-			// Recipient's TIN
-			RecipientINN string `json:"rcv_inn"`
+	// Payer's TIN
+	PayerINN string `json:"payer_inn"`
 
-			// Recipient's Tax Registration Reason Code (KPP)
-			RecipientKPP string `json:"rcv_kpp"`
+	// Payer's Tax Registration Reason Code (KPP)
+	PayerKPP string `json:"payer_kpp"`
 
-			// Recipient's name
-			RecipientName string `json:"rcv_name"`
+	// Payer's name
+	PayerName string `json:"payer_name"`
 
-			// Period start in the report
-			StartDate string `json:"start_date"`
+	// Recipient's TIN
+	RecipientINN string `json:"rcv_inn"`
 
-			// Period end in the report
-			StopDate string `json:"stop_date"`
-		} `json:"header"`
+	// Recipient's Tax Registration Reason Code (KPP)
+	RecipientKPP string `json:"rcv_kpp"`
 
-		// Report table
-		Rows []struct {
-			// Row number
-			RowNumber int32 `json:"row_number"`
+	// Recipient's name
+	RecipientName string `json:"rcv_name"`
 
-			// Product ID
-			ProductId int64 `json:"product_id"`
+	// Period start in the report
+	StartDate string `json:"start_date"`
 
-			// Product name
-			ProductName string `json:"product_name"`
+	// Period end in the report
+	StopDate string `json:"stop_date"`
+}
 
-			// Product barcode
-			Barcode string `json:"barcode"`
+type ReportOnSoldProductsResultRow struct {
+	// Row number
+	RowNumber int32 `json:"row_number"`
 
-			// Product identifier in the seller's system
-			OfferId string `json:"offer_id"`
+	// Product ID
+	ProductId int64 `json:"product_id"`
 
-			// Sales commission by category
-			CommissionPercent float64 `json:"commission_percent"`
+	// Product name
+	ProductName string `json:"product_name"`
 
-			// Seller's price with their discount
-			Price float64 `json:"price"`
+	// Product barcode
+	Barcode string `json:"barcode"`
 
-			// Selling price: the price at which the customer purchased the product. For sold products
-			PriceSale float64 `json:"price_sale"`
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
 
-			// Sold for amount.
-			//
-			// Sold products cost considering the quantity and regional coefficients. Calculation is made by the sale_amount price
-			SaleAmount float64 `json:"sale_amount"`
+	// Sales commission by category
+	CommissionPercent float64 `json:"commission_percent"`
 
-			// Commission for sold products, including discounts and extra charges
-			SaleCommission float64 `json:"sale_commission"`
+	// Seller's price with their discount
+	Price float64 `json:"price"`
 
-			// Extra charge at the expense of Ozon.
-			//
-			// Amount that Ozon will compensate the seller if the Ozon discount is greater than or equal to the sales commission
-			SaleDiscount float64 `json:"sale_discount"`
+	// Selling price: the price at which the customer purchased the product. For sold products
+	PriceSale float64 `json:"price_sale"`
 
-			// Total accrual for the products sold.
-			//
-			// Amount after deduction of sales commission, application of discounts and extra charges
-			SalePriceSeller float64 `json:"sale_price_seller"`
+	// Sold for amount.
+	//
+	// Sold products cost considering the quantity and regional coefficients. Calculation is made by the sale_amount price
+	SaleAmount float64 `json:"sale_amount"`
 
-			// Quantity of products sold at the price_sale price
-			SaleQuantity int32 `json:"sale_qty"`
+	// Commission for sold products, including discounts and extra charges
+	SaleCommission float64 `json:"sale_commission"`
 
-			// Price at which the customer purchased the product. For returned products
-			ReturnSale float64 `json:"return_sale"`
+	// Extra charge at the expense of Ozon.
+	//
+	// Amount that Ozon will compensate the seller if the Ozon discount is greater than or equal to the sales commission
+	SaleDiscount float64 `json:"sale_discount"`
 
-			// Cost of returned products, taking into account the quantity and regional coefficients.
-			// Calculation is carried out at the return_sale price
-			ReturnAmount float64 `json:"return_amount"`
+	// Total accrual for the products sold.
+	//
+	// Amount after deduction of sales commission, application of discounts and extra charges
+	SalePriceSeller float64 `json:"sale_price_seller"`
 
-			// Commission including the quantity of products, discounts and extra charges.
-			// Ozon compensates it for the returned products
-			ReturnCommission float64 `json:"return_commission"`
+	// Quantity of products sold at the price_sale price
+	SaleQuantity int32 `json:"sale_qty"`
 
-			// Extra charge at the expense of Ozon.
-			//
-			// Amount of the discount at the expense of Ozon on returned products.
-			// Ozon will compensate it to the seller if the Ozon discount is greater than or equal to the sales commission
-			ReturnDiscount float64 `json:"return_discount"`
+	// Price at which the customer purchased the product. For returned products
+	ReturnSale float64 `json:"return_sale"`
 
-			// Amount charged to the seller for returned products after deducing sales commissions, applying discounts and extra charges
-			ReturnPriceSeller float64 `json:"return_price_seller"`
+	// Cost of returned products, taking into account the quantity and regional coefficients.
+	// Calculation is carried out at the return_sale price
+	ReturnAmount float64 `json:"return_amount"`
 
-			// Quantity of returned products
-			ReturnQuantity int32 `json:"return_qty"`
-		} `json:"rows"`
-	} `json:"result"`
+	// Commission including the quantity of products, discounts and extra charges.
+	// Ozon compensates it for the returned products
+	ReturnCommission float64 `json:"return_commission"`
+
+	// Extra charge at the expense of Ozon.
+	//
+	// Amount of the discount at the expense of Ozon on returned products.
+	// Ozon will compensate it to the seller if the Ozon discount is greater than or equal to the sales commission
+	ReturnDiscount float64 `json:"return_discount"`
+
+	// Amount charged to the seller for returned products after deducing sales commissions, applying discounts and extra charges
+	ReturnPriceSeller float64 `json:"return_price_seller"`
+
+	// Quantity of returned products
+	ReturnQuantity int32 `json:"return_qty"`
 }
 
 // Returns information on products sold and returned within a month. Canceled or non-purchased products are not included.
@@ -196,40 +202,42 @@ type GetTotalTransactionsSumResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Total cost of products and returns for specified period
-		AccrualsForSale float64 `json:"accruals_for_sale"`
+	Result GetTotalTransactionsSumResult `json:"result"`
+}
 
-		// Compensations
-		CompensationAmount float64 `json:"compensatino_amount"`
+type GetTotalTransactionsSumResult struct {
+	// Total cost of products and returns for specified period
+	AccrualsForSale float64 `json:"accruals_for_sale"`
 
-		// Charges for delivery and returns when working under rFBS scheme
-		MoneyTransfer float64 `json:"money_transfer"`
+	// Compensations
+	CompensationAmount float64 `json:"compensatino_amount"`
 
-		// Other accurals
-		OthersAmount float64 `json:"others_amount"`
+	// Charges for delivery and returns when working under rFBS scheme
+	MoneyTransfer float64 `json:"money_transfer"`
 
-		// Cost of shipment processing, orders packaging, pipeline and last mile services, and delivery cost before the new commissions and rates applied from February 1, 2021.
-		//
-		// Pipeline is delivery of products from one cluster to another.
-		//
-		// Last mile is products delivery to the pick-up point, parcle terminal, or by courier
-		ProcessingAndDelivery float64 `json:"processing_and_delivery"`
+	// Other accurals
+	OthersAmount float64 `json:"others_amount"`
 
-		// Cost of reverse pipeline, returned, canceled and unredeemed orders processing, and return cost before the new commissions and rates applied from February 1, 2021.
-		//
-		// Pipeline is delivery of products from one cluster to another.
-		//
-		// Last mile is products delivery to the pick-up point, parcle terminal, or by courier
-		RefundsAndCancellations float64 `json:"refunds_and_cancellations"`
+	// Cost of shipment processing, orders packaging, pipeline and last mile services, and delivery cost before the new commissions and rates applied from February 1, 2021.
+	//
+	// Pipeline is delivery of products from one cluster to another.
+	//
+	// Last mile is products delivery to the pick-up point, parcle terminal, or by courier
+	ProcessingAndDelivery float64 `json:"processing_and_delivery"`
 
-		// The commission withheld when the product was sold and refunded when the product was returned
-		SaleCommission float64 `json:"sale_commission"`
+	// Cost of reverse pipeline, returned, canceled and unredeemed orders processing, and return cost before the new commissions and rates applied from February 1, 2021.
+	//
+	// Pipeline is delivery of products from one cluster to another.
+	//
+	// Last mile is products delivery to the pick-up point, parcle terminal, or by courier
+	RefundsAndCancellations float64 `json:"refunds_and_cancellations"`
 
-		// The additional services cost that are not directly related to deliveries and returns.
-		// For example, promotion or product placement
-		ServicesAmount float64 `json:"services_amount"`
-	} `json:"result"`
+	// The commission withheld when the product was sold and refunded when the product was returned
+	SaleCommission float64 `json:"sale_commission"`
+
+	// The additional services cost that are not directly related to deliveries and returns.
+	// For example, promotion or product placement
+	ServicesAmount float64 `json:"services_amount"`
 }
 
 // Returns total sums for transactions for specified period
@@ -247,7 +255,7 @@ func (c Finance) GetTotalTransactionsSum(params *GetTotalTransactionsSumParams) 
 	return resp, nil
 }
 
-type ListTransactionsParams struct{
+type ListTransactionsParams struct {
 	// Filter
 	Filter ListTransactionsFilter `json:"filter"`
 
@@ -258,7 +266,7 @@ type ListTransactionsParams struct{
 	PageSize int64 `json:"page_size"`
 }
 
-type ListTransactionsFilter struct{
+type ListTransactionsFilter struct {
 	// Filter by date
 	Date ListTransactionsFilterDate `json:"date"`
 
@@ -272,105 +280,115 @@ type ListTransactionsFilter struct{
 	TransactionType string `json:"transaction_type"`
 }
 
-type ListTransactionsFilterDate struct{
+type ListTransactionsFilterDate struct {
 	// Period start.
-	// 
+	//
 	// Format: YYYY-MM-DDTHH:mm:ss.sssZ.
 	// Example: 2019-11-25T10:43:06.51
 	From time.Time `json:"from"`
 
 	// Period end.
-	// 
+	//
 	// Format: YYYY-MM-DDTHH:mm:ss.sssZ.
 	// Example: 2019-11-25T10:43:06.51
 	To time.Time `json:"to"`
 }
 
-type ListTransactionsResponse struct{
+type ListTransactionsResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct{
-		// Transactions infromation
-		Operations []struct{
-			// Cost of the products with seller's discounts applied
-			AccrualsForSale float64 `json:"accruals_for_sale"`
+	Result ListTransactionsResult `json:"result"`
+}
 
-			// Total transaction sum
-			Amount float64 `json:"amount"`
+type ListTransactionsResult struct {
+	// Transactions infromation
+	Operations []ListTransactionsResultOperation `json:"operations"`
 
-			// Delivery cost for charges by rates that were in effect until February 1, 2021, and for charges for bulky products
-			DeliveryCharge float64 `json:"delivery_charge"`
+	// Number of pages
+	PageCount int64 `json:"page_count"`
 
-			// Product information
-			Items []struct{
-				// Product name
-				Name string `json:"name"`
+	// Number of products
+	RowCount int64 `json:"row_count"`
+}
 
-				// Product identifier in the Ozon system, SKU
-				SKU int64 `json:"sku"`
-			} `json:"items"`
+type ListTransactionsResultOperation struct {
+	// Cost of the products with seller's discounts applied
+	AccrualsForSale float64 `json:"accruals_for_sale"`
 
-			// Operation date
-			OperationDate string `json:"operation_date"`
+	// Total transaction sum
+	Amount float64 `json:"amount"`
 
-			// Operation identifier
-			OperationId int64 `json:"operation_id"`
+	// Delivery cost for charges by rates that were in effect until February 1, 2021, and for charges for bulky products
+	DeliveryCharge float64 `json:"delivery_charge"`
 
-			// Operation type
-			OperationType string `json:"operation_type"`
+	// Product information
+	Items []ListTransactionsResultOperationItem `json:"items"`
 
-			// Operation type name
-			OperationTypeName string `json:"operation_type_name"`
+	// Operation date
+	OperationDate string `json:"operation_date"`
 
-			// Shipment information
-			Posting struct{
-				// Delivery scheme:
-				//   - FBO — delivery to Ozon warehouse
-				//   - FBS — delivery from seller's warehouse
-				//   - RFBS — delivery service of seller's choice
-				//   - Crossborder — delivery from abroad
-				DeliverySchema string `json:"delivery_schema"`
+	// Operation identifier
+	OperationId int64 `json:"operation_id"`
 
-				// Date the product was accepted for processing
-				OrderDate string `json:"order_date"`
+	// Operation type
+	OperationType string `json:"operation_type"`
 
-				// Shipment number
-				PostingNumber string `json:"posting_number"`
+	// Operation type name
+	OperationTypeName string `json:"operation_type_name"`
 
-				// Warehouse identifier
-				WarehouseId int64 `json:"warehouse_id"`
-			} `json:"posting"`
+	// Shipment information
+	Posting ListTransactionsResultOperationPosting `json:"posting"`
 
-			// Returns and cancellation cost for charges by rates that were in effect until February 1, 2021, and for charges for bulky products
-			ReturnDeliveryCharge float64 `json:"return_delivery_charge"`
+	// Returns and cancellation cost for charges by rates that were in effect until February 1, 2021, and for charges for bulky products
+	ReturnDeliveryCharge float64 `json:"return_delivery_charge"`
 
-			// Sales commission or sales commission refund
-			SaleCommission float64 `json:"sale_commission"`
+	// Sales commission or sales commission refund
+	SaleCommission float64 `json:"sale_commission"`
 
-			// Additional services
-			Services []struct{
-				// Service name
-				Name string `json:"name"`
+	// Additional services
+	Services []ListTransactionsResultOperationService `json:"services"`
 
-				// Price
-				Price float64 `json:"price"`
-			} `json:"services"`
+	// Transaction type
+	Type string `json:"type"`
+}
 
-			// Transaction type
-			Type string `json:"type"`
-		} `json:"operations"`
+type ListTransactionsResultOperationItem struct {
+	// Product name
+	Name string `json:"name"`
 
-		// Number of pages
-		PageCount int64 `json:"page_count"`
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+}
 
-		// Number of products
-		RowCount int64 `json:"row_count"`
-	} `json:"result"`
+type ListTransactionsResultOperationPosting struct {
+	// Delivery scheme:
+	//   - FBO — delivery to Ozon warehouse
+	//   - FBS — delivery from seller's warehouse
+	//   - RFBS — delivery service of seller's choice
+	//   - Crossborder — delivery from abroad
+	DeliverySchema string `json:"delivery_schema"`
+
+	// Date the product was accepted for processing
+	OrderDate string `json:"order_date"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type ListTransactionsResultOperationService struct {
+	// Service name
+	Name string `json:"name"`
+
+	// Price
+	Price float64 `json:"price"`
 }
 
 // Returns detailed information on all accruals. The maximum period for which you can get information in one request is 1 month.
-// 
+//
 // If you don't specify the posting_number in request, the response contains all shipments for the specified period or shipments of a certain type
 func (c Finance) ListTransactions(params *ListTransactionsParams) (*ListTransactionsResponse, error) {
 	url := "/v3/finance/transaction/list"

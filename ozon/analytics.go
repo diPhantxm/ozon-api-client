@@ -22,16 +22,7 @@ type GetAnalyticsDataParams struct {
 	Dimension []GetAnalyticsDataDimension `json:"dimension"`
 
 	// Filters
-	Filters []struct {
-		// Sorting parameter. You can pass any attribute from the `dimension` and `metric` parameters except the `brand` attribute
-		Key string `json:"key"`
-
-		// Comparison operation
-		Operation GetAnalyticsDataFilterOperation `json:"operation"`
-
-		// Value for comparison
-		Value string `json:"value"`
-	} `json:"filters"`
+	Filters []GetAnalyticsDataFilter `json:"filters"`
 
 	// Number of items in the respones:
 	//   - maximum is 1000,
@@ -48,6 +39,17 @@ type GetAnalyticsDataParams struct {
 	Sort []GetAnalyticsDataSort `json:"sort"`
 }
 
+type GetAnalyticsDataFilter struct {
+	// Sorting parameter. You can pass any attribute from the `dimension` and `metric` parameters except the `brand` attribute
+	Key string `json:"key"`
+
+	// Comparison operation
+	Operation GetAnalyticsDataFilterOperation `json:"operation"`
+
+	// Value for comparison
+	Value string `json:"value"`
+}
+
 // Report sorting settings
 type GetAnalyticsDataSort struct {
 	// Metric by which the method result will be sorted
@@ -61,28 +63,34 @@ type GetAnalyticsDataResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Data array
-		Data []struct {
-			// Data grouping in the report
-			Dimensions []struct {
-				// Identifier
-				Id string `json:"id"`
-
-				// Name
-				Name string `json:"name"`
-			} `json:"dimensions"`
-
-			// Metric values list
-			Metrics []float64 `json:"metrics"`
-		} `json:"data"`
-
-		// Total and average metrics values
-		Totals []float64 `json:"totals"`
-	} `json:"result"`
+	Result GetAnalyticsDataResult `json:"result"`
 
 	// Report creation time
 	Timestamp string `json:"timestamp"`
+}
+
+type GetAnalyticsDataResult struct {
+	// Data array
+	Data []GetAnalyticsDataResultData `json:"data"`
+
+	// Total and average metrics values
+	Totals []float64 `json:"totals"`
+}
+
+type GetAnalyticsDataResultData struct {
+	// Data grouping in the report
+	Dimensions []GetAnalyticsDataResultDimension `json:"dimensions"`
+
+	// Metric values list
+	Metrics []float64 `json:"metrics"`
+}
+
+type GetAnalyticsDataResultDimension struct {
+	// Identifier
+	Id string `json:"id"`
+
+	// Name
+	Name string `json:"name"`
 }
 
 // Specify the period and metrics that are required. The response will contain analytical data grouped by the `dimensions` parameter.
@@ -117,31 +125,35 @@ type GetStocksOnWarehousesResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Information about products and stocks
-		Rows []struct {
-			// Product identifier in the Ozon system, SKU
-			SKU int64 `json:"sku"`
+	Result GetStocksOnWarehousesResult `json:"result"`
+}
 
-			// Product identifier in the seller's system
-			ItemCode string `json:"item_code"`
+type GetStocksOnWarehousesResult struct {
+	// Information about products and stocks
+	Rows []GetStocksOnWarehousesResultRow `json:"rows"`
+}
 
-			// Product name in the Ozon system
-			ItemName string `json:"item_name"`
+type GetStocksOnWarehousesResultRow struct {
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 
-			// Product amount available for sale on Ozon
-			FreeToSellAmount int64 `json:"free_to_sell_amount"`
+	// Product identifier in the seller's system
+	ItemCode string `json:"item_code"`
 
-			// Product amount specified for confirmed future supplies
-			PromisedAmount int64 `json:"promised_amount"`
+	// Product name in the Ozon system
+	ItemName string `json:"item_name"`
 
-			// Product amount reserved for purchase, returns, and transportation between warehouses
-			ReservedAmount int64 `json:"reserved_amount"`
+	// Product amount available for sale on Ozon
+	FreeToSellAmount int64 `json:"free_to_sell_amount"`
 
-			// Name of the warehouse where the products are stored
-			WarehouseName string `json:"warehouse_name"`
-		} `json:"rows"`
-	} `json:"result"`
+	// Product amount specified for confirmed future supplies
+	PromisedAmount int64 `json:"promised_amount"`
+
+	// Product amount reserved for purchase, returns, and transportation between warehouses
+	ReservedAmount int64 `json:"reserved_amount"`
+
+	// Name of the warehouse where the products are stored
+	WarehouseName string `json:"warehouse_name"`
 }
 
 // Report on stocks and products movement at Ozon warehouses

@@ -38,40 +38,42 @@ type GetFBOReturnsResponse struct {
 	LastId int64 `json:"last_id"`
 
 	// Returns information
-	Returns []struct {
-		// Time when a return was received from the customer
-		AcceptedFromCustomerMoment time.Time `json:"accepted_from_customer_moment"`
+	Returns []GetFBOReturnsReturn `json:"returns"`
+}
 
-		// Seller identifier
-		CompanyId int64 `json:"company_id"`
+type GetFBOReturnsReturn struct {
+	// Time when a return was received from the customer
+	AcceptedFromCustomerMoment time.Time `json:"accepted_from_customer_moment"`
 
-		// Current return location
-		CurrentPlaceName string `json:"current_place_name"`
+	// Seller identifier
+	CompanyId int64 `json:"company_id"`
 
-		// Return destination
-		DestinationPlaceName string `json:"dst_place_name"`
+	// Current return location
+	CurrentPlaceName string `json:"current_place_name"`
 
-		// Return identifier
-		Id int64 `json:"id"`
+	// Return destination
+	DestinationPlaceName string `json:"dst_place_name"`
 
-		// Indication that the package has been opened. true, if it has been
-		IsOpened bool `json:"is_opened"`
+	// Return identifier
+	Id int64 `json:"id"`
 
-		// Shipment number
-		PostingNumber string `json:"posting_number"`
+	// Indication that the package has been opened. true, if it has been
+	IsOpened bool `json:"is_opened"`
 
-		// Return reason
-		ReturnReasonName string `json:"return_reason_name"`
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
 
-		// Return delivery time to the Ozon warehouse
-		ReturnedToOzonMoment time.Time `json:"returned_to_ozon_moment"`
+	// Return reason
+	ReturnReasonName string `json:"return_reason_name"`
 
-		// Product identifier in the Ozon system, SKU
-		SKU int64 `json:"sku"`
+	// Return delivery time to the Ozon warehouse
+	ReturnedToOzonMoment time.Time `json:"returned_to_ozon_moment"`
 
-		// Return status
-		Status string `json:"status_name"`
-	} `json:"returns"`
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Return status
+	Status string `json:"status_name"`
 }
 
 // Method for getting information on returned products that are sold from the Ozon warehouse
@@ -150,88 +152,92 @@ type GetFBSReturnsFilterTimeRange struct {
 type GetFBSReturnsResponse struct {
 	core.CommonResponse
 
-	Result struct {
-		// Elements counter in the response
-		Count int64 `json:"count"`
+	Result GetFBSReturnsResult `json:"result"`
+}
 
-		// Returns information
-		Returns []struct {
-			// Time of receiving the return from the customer
-			AcceptedFromCustomerAmount string `json:"accepted_from_customer_amount"`
+type GetFBSReturnsResult struct {
+	// Elements counter in the response
+	Count int64 `json:"count"`
 
-			// Bottom barcode on the product label
-			ClearingId int64 `json:"clearing_id"`
+	// Returns information
+	Returns []GetFBSReturnResultReturn `json:"returns"`
+}
 
-			// Commission fee
-			Commission float64 `json:"commission"`
+type GetFBSReturnResultReturn struct {
+	// Time of receiving the return from the customer
+	AcceptedFromCustomerAmount string `json:"accepted_from_customer_amount"`
 
-			// Commission percentage
-			CommissionPercent float64 `json:"commission_percent"`
+	// Bottom barcode on the product label
+	ClearingId int64 `json:"clearing_id"`
 
-			// Return identifier
-			Id int64 `json:"id"`
+	// Commission fee
+	Commission float64 `json:"commission"`
 
-			// If the product is in transit — true
-			IsMoving bool `json:"is_moving"`
+	// Commission percentage
+	CommissionPercent float64 `json:"commission_percent"`
 
-			// Indication that the package has been opened. true, if it has been
-			IsOpened bool `json:"is_opened"`
+	// Return identifier
+	Id int64 `json:"id"`
 
-			// Last day of free storage
-			LastFreeWaitingDay string `json:"last_free_waiting_day"`
+	// If the product is in transit — true
+	IsMoving bool `json:"is_moving"`
 
-			// ID of the warehouse the product is being transported to
-			PlaceId int64 `json:"place_id"`
+	// Indication that the package has been opened. true, if it has been
+	IsOpened bool `json:"is_opened"`
 
-			// Name of the warehouse the product is being transported to
-			MovingToPlaceName string `json:"moving_to_place_name"`
+	// Last day of free storage
+	LastFreeWaitingDay string `json:"last_free_waiting_day"`
 
-			// Delivery cost
-			PickingAmount float64 `json:"picking_amount"`
+	// ID of the warehouse the product is being transported to
+	PlaceId int64 `json:"place_id"`
 
-			// Shipment number
-			PostingNumber string `json:"posting_number"`
+	// Name of the warehouse the product is being transported to
+	MovingToPlaceName string `json:"moving_to_place_name"`
 
-			// Current product price without a discount
-			Price float64 `json:"price"`
+	// Delivery cost
+	PickingAmount float64 `json:"picking_amount"`
 
-			// Product price without commission
-			PriceWithoutCommission float64 `json:"price_without_commission"`
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
 
-			// Product identifier
-			ProductId int64 `json:"product_id"`
+	// Current product price without a discount
+	Price float64 `json:"price"`
 
-			// Product name
-			ProductName string `json:"product_name"`
+	// Product price without commission
+	PriceWithoutCommission float64 `json:"price_without_commission"`
 
-			// Product quantity
-			Quantity int64 `json:"quantity"`
+	// Product identifier
+	ProductId int64 `json:"product_id"`
 
-			// Product return date
-			ReturnDate string `json:"return_date"`
+	// Product name
+	ProductName string `json:"product_name"`
 
-			// Return reason
-			ReturnReasonName string `json:"return_reason_name"`
+	// Product quantity
+	Quantity int64 `json:"quantity"`
 
-			// Date when the product is ready to be handed over to the seller
-			WaitingForSellerDate string `json:"waiting_for_seller_date_time"`
+	// Product return date
+	ReturnDate string `json:"return_date"`
 
-			// Date of handing over the product to the seller
-			ReturnedToSellerDate string `json:"returned_to_seller_date_time"`
+	// Return reason
+	ReturnReasonName string `json:"return_reason_name"`
 
-			// Return storage period in days
-			WaitingForSellerDays int64 `json:"waiting_for_seller_days"`
+	// Date when the product is ready to be handed over to the seller
+	WaitingForSellerDate string `json:"waiting_for_seller_date_time"`
 
-			// Return storage cost
-			ReturnsKeepingCost float64 `json:"returns_keeping_cost"`
+	// Date of handing over the product to the seller
+	ReturnedToSellerDate string `json:"returned_to_seller_date_time"`
 
-			// Product identifier in the Ozon system, SKU
-			SKU int64 `json:"sku"`
+	// Return storage period in days
+	WaitingForSellerDays int64 `json:"waiting_for_seller_days"`
 
-			// Return status
-			Status string `json:"status"`
-		} `json:"returns"`
-	} `json:"result"`
+	// Return storage cost
+	ReturnsKeepingCost float64 `json:"returns_keeping_cost"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Return status
+	Status string `json:"status"`
 }
 
 // Method for getting information on returned products that are sold from the seller's warehouse

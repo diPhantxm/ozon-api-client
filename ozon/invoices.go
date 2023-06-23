@@ -49,10 +49,12 @@ type GetProformaLinkResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Proforma invoice link
-		FileURL string `json:"file_url"`
-	} `json:"result"`
+	Result GetProformaLinkResult `json:"result"`
+}
+
+type GetProformaLinkResult struct {
+	// Proforma invoice link
+	FileURL string `json:"file_url"`
 }
 
 // Get a proforma invoice link

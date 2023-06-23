@@ -38,45 +38,49 @@ type GetReportsListResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Array with generated reports
-		Reports []struct {
-			// Unique report identifier
-			Code string `json:"code"`
+	Result GetReportsListResult `json:"result"`
+}
 
-			// Report creation date
-			CreatedAt time.Time `json:"created_at"`
+type GetReportsListResult struct {
+	// Array with generated reports
+	Reports []GetReportsListResultReport `json:"reports"`
 
-			// Error code when generating the report
-			Error string `json:"error"`
+	// Total number of reports
+	Total int32 `json:"total"`
+}
 
-			// Link to CSV file
-			File string `json:"file"`
+type GetReportsListResultReport struct {
+	// Unique report identifier
+	Code string `json:"code"`
 
-			// Array with the filters specified when the seller created the report
-			Params struct {
-			} `json:"params"`
+	// Report creation date
+	CreatedAt time.Time `json:"created_at"`
 
-			// Report type:
-			//   - SELLER_PRODUCTS — products report,
-			//   - SELLER_TRANSACTIONS — transactions report,
-			//   - SELLER_PRODUCT_PRICES — product prices report,
-			//   - SELLER_STOCK — stocks report,
-			//   - SELLER_PRODUCT_MOVEMENT — products movement report,
-			//   - SELLER_RETURNS — returns report,
-			//   - SELLER_POSTINGS — shipments report,
-			//   - SELLER_FINANCE — financial report
-			ReportType string `json:"report_type"`
+	// Error code when generating the report
+	Error string `json:"error"`
 
-			// Report generation status
-			//   - `success`
-			//   - `failed`
-			Status string `json:"status"`
-		} `json:"reports"`
+	// Link to CSV file
+	File string `json:"file"`
 
-		// Total number of reports
-		Total int32 `json:"total"`
-	} `json:"result"`
+	// Array with the filters specified when the seller created the report
+	Params struct {
+	} `json:"params"`
+
+	// Report type:
+	//   - SELLER_PRODUCTS — products report,
+	//   - SELLER_TRANSACTIONS — transactions report,
+	//   - SELLER_PRODUCT_PRICES — product prices report,
+	//   - SELLER_STOCK — stocks report,
+	//   - SELLER_PRODUCT_MOVEMENT — products movement report,
+	//   - SELLER_RETURNS — returns report,
+	//   - SELLER_POSTINGS — shipments report,
+	//   - SELLER_FINANCE — financial report
+	ReportType string `json:"report_type"`
+
+	// Report generation status
+	//   - `success`
+	//   - `failed`
+	Status string `json:"status"`
 }
 
 // Returns the list of reports that have been generated before
@@ -103,38 +107,40 @@ type GetReportDetailsResponse struct {
 	core.CommonResponse
 
 	// Report details
-	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
+	Result GetReportDetailResult `json:"result"`
+}
 
-		// Report creation date
-		CreatedAt time.Time `json:"created_at"`
+type GetReportDetailResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
 
-		// Error code when generating the report
-		Error string `json:"error"`
+	// Report creation date
+	CreatedAt time.Time `json:"created_at"`
 
-		// Link to CSV file
-		File string `json:"file"`
+	// Error code when generating the report
+	Error string `json:"error"`
 
-		// Array with the filters specified when the seller created the report
-		Params map[string]string `json:"params"`
+	// Link to CSV file
+	File string `json:"file"`
 
-		// Report type:
-		//   - SELLER_PRODUCTS — products report,
-		//   - SELLER_TRANSACTIONS — transactions report,
-		//   - SELLER_PRODUCT_PRICES — product prices report,
-		//   - SELLER_STOCK — stocks report,
-		//   - SELLER_PRODUCT_MOVEMENT — products movement report,
-		//   - SELLER_RETURNS — returns report,
-		//   - SELLER_POSTINGS — shipments report,
-		//   - SELLER_FINANCE — financial report
-		ReportType string `json:"report_type"`
+	// Array with the filters specified when the seller created the report
+	Params map[string]string `json:"params"`
 
-		// Report generation status:
-		//   - success
-		//   - failed
-		Status string `json:"status"`
-	} `json:"result"`
+	// Report type:
+	//   - SELLER_PRODUCTS — products report,
+	//   - SELLER_TRANSACTIONS — transactions report,
+	//   - SELLER_PRODUCT_PRICES — product prices report,
+	//   - SELLER_STOCK — stocks report,
+	//   - SELLER_PRODUCT_MOVEMENT — products movement report,
+	//   - SELLER_RETURNS — returns report,
+	//   - SELLER_POSTINGS — shipments report,
+	//   - SELLER_FINANCE — financial report
+	ReportType string `json:"report_type"`
+
+	// Report generation status:
+	//   - success
+	//   - failed
+	Status string `json:"status"`
 }
 
 // Returns information about a created report by its identifier
@@ -178,136 +184,170 @@ type GetFinancialReportResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Reports list
-		CashFlows []struct {
-			// Period data
-			Period struct {
-				// Period identifier
-				Id int64 `json:"id"`
+	Result GetFinancialResultResult `json:"result"`
+}
 
-				// Period start
-				Begin time.Time `json:"begin"`
+type GetFinancialResultResult struct {
+	// Reports list
+	CashFlows []GetFinancialResultResultCashflow `json:"cash_flows"`
 
-				// Period end
-				End time.Time `json:"end"`
-			} `json:"period"`
+	// Detailed info
+	Details GetFinancialResultResultDetail `json:"details"`
 
-			// Sum of sold products prices
-			OrdersAmount float64 `json:"order_amount"`
+	// Number of pages with reports
+	PageCount int64 `json:"page_count"`
+}
 
-			// Sum of returned products prices
-			ReturnsAmount float64 `json:"returns_amount"`
+type GetFinancialResultResultCashflow struct {
+	// Period data
+	Period GetFinancialResultResultCashflowPeriod `json:"period"`
 
-			// Ozon sales commission
-			CommissionAmount float64 `json:"commission_amount"`
+	// Sum of sold products prices
+	OrdersAmount float64 `json:"order_amount"`
 
-			// Additional services cost
-			ServicesAmount float64 `json:"services_amount"`
+	// Sum of returned products prices
+	ReturnsAmount float64 `json:"returns_amount"`
 
-			// Logistic services cost
-			ItemDeliveryAndReturnAmount float64 `json:"item_delivery_and_return_amount"`
+	// Ozon sales commission
+	CommissionAmount float64 `json:"commission_amount"`
 
-			// Code of the currency used to calculate the commissions
-			CurrencyCode string `json:"currency_code"`
-		} `json:"cash_flows"`
+	// Additional services cost
+	ServicesAmount float64 `json:"services_amount"`
 
-		// Detailed info
-		Details struct {
-			// Balance on the beginning of period
-			BeginBalanceAmount float64 `json:"begin_balance_amount"`
+	// Logistic services cost
+	ItemDeliveryAndReturnAmount float64 `json:"item_delivery_and_return_amount"`
 
-			// Orders
-			Delivery struct {
-				Total float64 `json:"total"`
+	// Code of the currency used to calculate the commissions
+	CurrencyCode string `json:"currency_code"`
+}
 
-				Amount float64 `json:"amount"`
+type GetFinancialResultResultCashflowPeriod struct {
+	// Period identifier
+	Id int64 `json:"id"`
 
-				DeliveryServices struct {
-					Total float64 `json:"total"`
+	// Period start
+	Begin time.Time `json:"begin"`
 
-					Items []struct {
-						Name DetailsDeliveryItemName `json:"name"`
+	// Period end
+	End time.Time `json:"end"`
+}
 
-						Price float64 `json:"price"`
-					} `json:"items"`
-				} `json:"delivery_services"`
-			} `json:"delivery"`
+type GetFinancialResultResultDetail struct {
+	// Balance on the beginning of period
+	BeginBalanceAmount float64 `json:"begin_balance_amount"`
 
-			InvoiceTransfer float64 `json:"invoice_transfer"`
+	// Orders
+	Delivery GetFinancialResultResultDetailDelivery `json:"delivery"`
 
-			Loan float64 `json:"loan"`
+	InvoiceTransfer float64 `json:"invoice_transfer"`
 
-			Payments []struct {
-				CurrencyCode string `json:"currency_code"`
+	Loan float64 `json:"loan"`
 
-				Payment float64 `json:"payment"`
-			} `json:"payments"`
+	Payments []GetFinancialResultResultDetailPayment `json:"payments"`
 
-			Period struct {
-				Begin time.Time `json:"begin"`
+	Period GetFinancialResultResultDetailPeriod `json:"period"`
 
-				End time.Time `json:"end"`
+	Return GetFinancialResultResultDetailReturn `json:"return"`
 
-				Id int64 `json:"id"`
-			} `json:"period"`
+	RFBS GetFinancialResultResultDetailRFBS `json:"rfbs"`
 
-			Return struct {
-				Total float64 `json:"total"`
+	Services GetFinancialResultResultDetailService `json:"services"`
 
-				Amount float64 `json:"amount"`
+	Others GetFinancialResultResultDetailOthers `json:"others"`
 
-				ReturnServices struct {
-					Total float64 `json:"total"`
+	EndBalanceAmount float64 `json:"end_balance_amount"`
+}
 
-					Items []struct {
-						Name DetailsReturnServiceName `json:"name"`
+type GetFinancialResultResultDetailDelivery struct {
+	Total float64 `json:"total"`
 
-						Price float64 `json:"price"`
-					} `json:"items"`
-				} `json:"return_services"`
-			} `json:"return"`
+	Amount float64 `json:"amount"`
 
-			RFBS struct {
-				Total float64 `json:"total"`
+	DeliveryServices GetFinancialResultResultDetailDeliveryServices `json:"delivery_services"`
+}
 
-				TransferDelivery float64 `json:"transfer_delivery"`
+type GetFinancialResultResultDetailDeliveryServices struct {
+	Total float64 `json:"total"`
 
-				TransferDeliveryReturn float64 `json:"transfer_delivery_return"`
+	Items []GetFinancialResultResultDetailDeliveryServicesItem `json:"items"`
+}
 
-				CompensationDeliveryReturn float64 `json:"compensation_delivery_return"`
+type GetFinancialResultResultDetailDeliveryServicesItem struct {
+	Name DetailsDeliveryItemName `json:"name"`
 
-				PartialCompensation float64 `json:"partial_compensation"`
+	Price float64 `json:"price"`
+}
 
-				PartialCompensationReturn float64 `json:"partial_compensation_return"`
-			} `json:"rfbs"`
+type GetFinancialResultResultDetailPayment struct {
+	CurrencyCode string `json:"currency_code"`
 
-			Services struct {
-				Total float64 `json:"total"`
+	Payment float64 `json:"payment"`
+}
 
-				Items []struct {
-					Name DetailsServiceItemName `json:"name"`
+type GetFinancialResultResultDetailPeriod struct {
+	Begin time.Time `json:"begin"`
 
-					Price float64 `json:"price"`
-				} `json:"items"`
-			} `json:"services"`
+	End time.Time `json:"end"`
 
-			Others struct {
-				Total float64 `json:"total"`
+	Id int64 `json:"id"`
+}
 
-				Items []struct {
-					Name DetailsOtherItemName `json:"name"`
+type GetFinancialResultResultDetailReturn struct {
+	Total float64 `json:"total"`
 
-					Price float64 `json:"price"`
-				} `json:"items"`
-			} `json:"others"`
+	Amount float64 `json:"amount"`
 
-			EndBalanceAmount float64 `json:"end_balance_amount"`
-		} `json:"details"`
+	ReturnServices GetFinancialResultResultDetailReturnServices `json:"return_services"`
+}
 
-		// Number of pages with reports
-		PageCount int64 `json:"page_count"`
-	} `json:"result"`
+type GetFinancialResultResultDetailReturnServices struct {
+	Total float64 `json:"total"`
+
+	Items []GetFinancialResultResultDetailReturnServicesItem `json:"items"`
+}
+
+type GetFinancialResultResultDetailReturnServicesItem struct {
+	Name DetailsReturnServiceName `json:"name"`
+
+	Price float64 `json:"price"`
+}
+
+type GetFinancialResultResultDetailRFBS struct {
+	Total float64 `json:"total"`
+
+	TransferDelivery float64 `json:"transfer_delivery"`
+
+	TransferDeliveryReturn float64 `json:"transfer_delivery_return"`
+
+	CompensationDeliveryReturn float64 `json:"compensation_delivery_return"`
+
+	PartialCompensation float64 `json:"partial_compensation"`
+
+	PartialCompensationReturn float64 `json:"partial_compensation_return"`
+}
+
+type GetFinancialResultResultDetailService struct {
+	Total float64 `json:"total"`
+
+	Items []GetFinancialResultResultDetailServiceItem `json:"items"`
+}
+
+type GetFinancialResultResultDetailServiceItem struct {
+	Name DetailsServiceItemName `json:"name"`
+
+	Price float64 `json:"price"`
+}
+
+type GetFinancialResultResultDetailOthers struct {
+	Total float64 `json:"total"`
+
+	Items []GetFinancialResultResultDetailOthersItem `json:"items"`
+}
+
+type GetFinancialResultResultDetailOthersItem struct {
+	Name DetailsOtherItemName `json:"name"`
+
+	Price float64 `json:"price"`
 }
 
 // Returns information about a created report by its identifier
@@ -350,10 +390,12 @@ type GetProductsReportResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
-	} `json:"result"`
+	Result GetProductsReportResult `json:"result"`
+}
+
+type GetProductsReportResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
 }
 
 // Method for getting a report with products data. For example, Ozon ID, number of products, prices, status
@@ -383,10 +425,12 @@ type GetStocksReportResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
-	} `json:"result"`
+	Result GetStocksReportResult `json:"result"`
+}
+
+type GetStocksReportResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
 }
 
 // Report with information about the number of available and reserved products in stock
@@ -422,10 +466,12 @@ type GetProductsMovementReportResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
-	} `json:"result"`
+	Result GetProductsMovementReportResult `json:"result"`
+}
+
+type GetProductsMovementReportResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
 }
 
 // Report with complete information on products, as well as the number of products with statuses:
@@ -473,10 +519,12 @@ type GetReturnsReportResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
-	} `json:"result"`
+	Result GetReturnReportResult `json:"result"`
+}
+
+type GetReturnReportResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
 }
 
 // The report contains information about returned products that were accepted from the customer, ready for pickup, or delivered to the seller.
@@ -542,10 +590,12 @@ type GetShipmentReportResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result struct {
-		// Unique report identifier
-		Code string `json:"code"`
-	} `json:"result"`
+	Result GetShipmentReportResult `json:"result"`
+}
+
+type GetShipmentReportResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
 }
 
 // Shipment report with orders details:
@@ -603,23 +653,25 @@ type ReportOnDiscountedProductsResponse struct {
 	core.CommonResponse
 
 	// Report information
-	Report struct {
-		// Report creation date
-		CreatedAt time.Time `json:"created_at"`
+	Report ReportonDiscountedProductsReport `json:"report"`
+}
 
-		// Link to report file
-		File string `json:"file"`
+type ReportonDiscountedProductsReport struct {
+	// Report creation date
+	CreatedAt time.Time `json:"created_at"`
 
-		// Report status:
-		//   - success — created
-		//   - pending — waiting to be processed
-		//   - processing — processed
-		//   - failed — generation error
-		Status string `json:"status"`
+	// Link to report file
+	File string `json:"file"`
 
-		// Report generation error code
-		Error string `json:"error"`
-	} `json:"report"`
+	// Report status:
+	//   - success — created
+	//   - pending — waiting to be processed
+	//   - processing — processed
+	//   - failed — generation error
+	Status string `json:"status"`
+
+	// Report generation error code
+	Error string `json:"error"`
 }
 
 // By report identifier, returns information about the report generated earlier
