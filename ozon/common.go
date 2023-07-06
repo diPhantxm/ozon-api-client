@@ -445,12 +445,22 @@ const (
 	// carrying the bulky product upstairs
 	PRROptionStairs PRROptionStatus = "stairs"
 
-	// the customer canceled the service, 
+	// the customer canceled the service,
 	// you don't need to lift the shipment
 	PRROptionNone PRROptionStatus = "none"
 
-	// delivery is included in the price. 
-	// According to the offer you need to 
+	// delivery is included in the price.
+	// According to the offer you need to
 	// deliver products to the floor
 	PRROptionDeliveryDefault PRROptionStatus = "delivery_default"
+)
+
+type GetFBSReturnsFilterStatus string
+
+const (
+	ReturnedToSeller          GetFBSReturnsFilterStatus = "returned_to_seller"
+	WaitingForSeller          GetFBSReturnsFilterStatus = "waiting_for_seller"
+	AcceptedFromCustomer      GetFBSReturnsFilterStatus = "accepted_from_customer"
+	CancelledWithCompensation GetFBSReturnsFilterStatus = "cancelled_with_compensation"
+	ReadyForShipment          GetFBSReturnsFilterStatus = "ready_for_shipment"
 )
