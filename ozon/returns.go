@@ -100,9 +100,10 @@ type GetFBSReturnsParams struct {
 	//   - minimum — 1
 	Limit int64 `json:"limit"`
 
-	// Number of elements that will be skipped in the response.
-	// For example, if offset=10, the response will start with the 11th element found
-	Offset int64 `json:"offset"`
+	// Return identifier that was loaded the last time.
+	// Return identifiers with the higher value than `last_id`
+	// will be returned in the response.
+	LastId int64 `json:"offset"`
 }
 
 type GetFBSReturnsFilter struct {
@@ -110,7 +111,7 @@ type GetFBSReturnsFilter struct {
 	AcceptedFromCustomerMoment GetFBSReturnsFilterTimeRange `json:"accepted_from_customer_moment"`
 
 	// Last day of free storage
-	LastFreeWaitingDay []GetFBSReturnsFilterTimeRange `json:"last_free_waiting_dat"`
+	LastFreeWaitingDay GetFBSReturnsFilterTimeRange `json:"last_free_waiting_dat"`
 
 	// Order ID
 	OrderId int64 `json:"order_id"`
@@ -124,13 +125,8 @@ type GetFBSReturnsFilter struct {
 	// Product ID
 	ProductOfferId string `json:"product_offer_id"`
 
-	// Return status:
-	//   - returned_to_seller — returned to seller,
-	//   - waiting_for_seller — waiting for seller,
-	//   - accepted_from_customer — accepted from customer,
-	//   - cancelled_with_compensation — cancelled with compensation,
-	//   - ready_for_shipment — ready for shipment
-	Status string `json:"status"`
+	// Return status
+	Status GetFBSReturnsFilterStatus `json:"status"`
 }
 
 type GetFBSReturnsFilterTimeRange struct {
@@ -152,12 +148,10 @@ type GetFBSReturnsFilterTimeRange struct {
 type GetFBSReturnsResponse struct {
 	core.CommonResponse
 
-	Result GetFBSReturnsResult `json:"result"`
-}
-
-type GetFBSReturnsResult struct {
-	// Elements counter in the response
-	Count int64 `json:"count"`
+	// Return identifier that was loaded the last time.
+	// Return identifiers with the higher value than `last_id`
+	// will be returned in the response
+	LastId int64 `json:"last_id"`
 
 	// Returns information
 	Returns []GetFBSReturnResultReturn `json:"returns"`
@@ -176,7 +170,10 @@ type GetFBSReturnResultReturn struct {
 	// Commission percentage
 	CommissionPercent float64 `json:"commission_percent"`
 
-	// Return identifier
+	// Product item identifier in the Ozon logistics system
+	ExemplarId int64 `json:"exemplar_id"`
+
+	// Return identifier in the Ozon accounting system
 	Id int64 `json:"id"`
 
 	// If the product is in transit — true
@@ -200,6 +197,8 @@ type GetFBSReturnResultReturn struct {
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
+	PickingTag string `json:"picking_tag"`
+
 	// Current product price without a discount
 	Price float64 `json:"price"`
 
@@ -214,6 +213,12 @@ type GetFBSReturnResultReturn struct {
 
 	// Product quantity
 	Quantity int64 `json:"quantity"`
+
+	// Barcode on the return label. Use this parameter value to work with the return label
+	ReturnBarcode string `json:"return_barcode"`
+
+	// Package unit identifier in the Ozon logistics system
+	ReturnClearingId int64 `json:"return_clearing_id"`
 
 	// Product return date
 	ReturnDate string `json:"return_date"`
@@ -242,7 +247,7 @@ type GetFBSReturnResultReturn struct {
 
 // Method for getting information on returned products that are sold from the seller's warehouse
 func (c Returns) GetFBSReturns(params *GetFBSReturnsParams) (*GetFBSReturnsResponse, error) {
-	url := "/v2/returns/company/fbs"
+	url := "/v3/returns/company/fbs"
 
 	resp := &GetFBSReturnsResponse{}
 
