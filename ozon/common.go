@@ -464,3 +464,18 @@ const (
 	CancelledWithCompensation GetFBSReturnsFilterStatus = "cancelled_with_compensation"
 	ReadyForShipment          GetFBSReturnsFilterStatus = "ready_for_shipment"
 )
+
+type GetFBOReturnsFilterStatus string
+
+const (
+	GetFBOReturnsFilterStatusReturnedToOzon GetFBOReturnsFilterStatus = "ReturnedToOzon"
+	GetFBOReturnsFilterStatusCancelled      GetFBOReturnsFilterStatus = "Cancelled"
+)
+
+type GetFBOReturnsReturnStatus string
+
+const (
+	GetFBOReturnsReturnStatusCancelled            GetFBOReturnsReturnStatus = "Возврат отменен"
+	GetFBOReturnsReturnStatusAcceptedFromCustomer GetFBOReturnsReturnStatus = "Принят от покупателя"
+	GetFBOReturnsReturnStatusReceivedAtOzon       GetFBOReturnsReturnStatus = "Получен в Ozon"
+)

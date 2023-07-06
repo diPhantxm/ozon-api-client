@@ -28,7 +28,8 @@ type GetFBOReturnsFilter struct {
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
-	Status []string `json:"status"`
+	// Return status
+	Status []GetFBOReturnsFilterStatus `json:"status"`
 }
 
 type GetFBOReturnsResponse struct {
@@ -73,7 +74,7 @@ type GetFBOReturnsReturn struct {
 	SKU int64 `json:"sku"`
 
 	// Return status
-	Status string `json:"status_name"`
+	Status GetFBOReturnsReturnStatus `json:"status_name"`
 }
 
 // Method for getting information on returned products that are sold from the Ozon warehouse
