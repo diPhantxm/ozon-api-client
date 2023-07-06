@@ -105,43 +105,42 @@ func TestGetFBSReturns(t *testing.T) {
 					Status:        "returned_to_seller",
 				},
 				Limit:  1000,
-				LastId: 0,
+				Offset: 0,
 			},
 			`{
-				"last_id": 0,
-				"returns": [
-				  {
-					"accepted_from_customer_moment": "string",
-					"clearing_id": 23,
-					"commission": 21,
-					"commission_percent": 0,
-					"exemplar_id": 42,
-					"id": 123,
-					"is_moving": true,
-					"is_opened": true,
-					"last_free_waiting_day": "string",
-					"place_id": 122,
-					"moving_to_place_name": "string",
-					"picking_amount": 0,
-					"posting_number": "string",
-					"picking_tag": "string",
-					"price": 0,
-					"price_without_commission": 0,
-					"product_id": 2222,
-					"product_name": "string",
-					"quantity": 0,
-					"return_barcode": "string",
-					"return_clearing_id": 0,
-					"return_date": "string",
-					"return_reason_name": "string",
-					"waiting_for_seller_date_time": "string",
-					"returned_to_seller_date_time": "string",
-					"waiting_for_seller_days": 0,
-					"returns_keeping_cost": 0,
-					"sku": 33332,
-					"status": "string"
-				  }
-				]
+				"result": {
+				  "returns": [
+					{
+					  "id": 19166541735000,
+					  "clearing_id": 19166541725000,
+					  "posting_number": "07402477-0022-2",
+					  "product_id": 172423678,
+					  "sku": 172423678,
+					  "status": "returned_to_seller",
+					  "returns_keeping_cost": 0,
+					  "return_reason_name": "5.12 Заказ более не актуален: долгие сроки доставки",
+					  "return_date": "2020-08-12T17:27:50+00:00",
+					  "quantity": 1,
+					  "product_name": "Кофе ароматизированный \"Лесной орех\" 250 гр",
+					  "price": 294,
+					  "waiting_for_seller_date_time": "2020-08-16T02:50:35+00:00",
+					  "returned_to_seller_date_time": "2020-08-21T10:07:13+00:00",
+					  "last_free_waiting_day": "2020-08-19T23:59:59+00:00",
+					  "is_opened": false,
+					  "place_id": 0,
+					  "commission_percent": 0,
+					  "commission": 0,
+					  "price_without_commission": 0,
+					  "is_moving": false,
+					  "moving_to_place_name": "МОСКВА_ХАБ",
+					  "waiting_for_seller_days": 2,
+					  "picking_amount": null,
+					  "accepted_from_customer_moment": null,
+					  "picking_tag": null
+					}
+				  ],
+				  "count": 1
+				}
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -169,17 +168,20 @@ func TestGetFBSReturns(t *testing.T) {
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			if len(resp.Returns) > 0 {
-				if resp.Returns[0].Id == 0 {
+			if int(resp.Result.Count) != len(resp.Result.Returns) {
+				t.Errorf("Count must equal to length of returns")
+			}
+			if len(resp.Result.Returns) > 0 {
+				if resp.Result.Returns[0].Id == 0 {
 					t.Errorf("Id cannot be 0")
 				}
-				if resp.Returns[0].ProductId == 0 {
+				if resp.Result.Returns[0].ProductId == 0 {
 					t.Errorf("Product id cannot be 0")
 				}
-				if resp.Returns[0].SKU == 0 {
+				if resp.Result.Returns[0].SKU == 0 {
 					t.Errorf("SKU cannot be 0")
 				}
-				if resp.Returns[0].Status == "" {
+				if resp.Result.Returns[0].Status == "" {
 					t.Errorf("Status cannot be empty")
 				}
 			}
