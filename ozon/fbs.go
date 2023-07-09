@@ -340,7 +340,7 @@ type PostingProduct struct {
 
 type FBSCustomer struct {
 	// Delivery address details
-	Address FBSCustomerAddress `json:"customer"`
+	Address FBSCustomerAddress `json:"address"`
 
 	// Customer e-mail
 	CustomerEmail string `json:"customer_email"`
