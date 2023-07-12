@@ -2645,3 +2645,36 @@ func (c FBS) ETGBCustomsDeclarations(params *ETGBCustomsDeclarationsParams) (*ET
 
 	return resp, nil
 }
+
+type BarcodeFromProductShipmentParams struct {
+	// Freight identifier
+	Id int64 `json:"id"`
+}
+
+type BarcodeFromProductShipmentResponse struct {
+	core.CommonResponse
+
+	// Link to barcode image
+	Content string `json:"content"`
+
+	// File name
+	Name string `json:"name"`
+
+	// File type
+	Type string `json:"type"`
+}
+
+// Method for getting a barcode to show at a pick-up point or sorting center during the shipment
+func (c FBS) BarcodeFromProductShipment(params *BarcodeFromProductShipmentParams) (*BarcodeFromProductShipmentResponse, error) {
+	url := "/v2/posting/fbs/act/get-barcode"
+
+	resp := &BarcodeFromProductShipmentResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
