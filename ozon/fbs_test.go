@@ -2586,3 +2586,55 @@ func TestBarcodeFromProductShipment(t *testing.T) {
 		}
 	}
 }
+
+func TestBarcodeValueFromProductShipment(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *BarcodeValueFromProductShipmentParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&BarcodeValueFromProductShipmentParams{
+				Id: 295662811,
+			},
+			`{
+				"result": "%303%24276481394"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&BarcodeValueFromProductShipmentParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().BarcodeValueFromProductShipment(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Result == "" {
+				t.Errorf("result cannot be empty")
+			}
+		}
+	}
+}

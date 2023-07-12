@@ -2678,3 +2678,30 @@ func (c FBS) BarcodeFromProductShipment(params *BarcodeFromProductShipmentParams
 
 	return resp, nil
 }
+
+type BarcodeValueFromProductShipmentParams struct {
+	// Freight identifier
+	Id int64 `json:"id"`
+}
+
+type BarcodeValueFromProductShipmentResponse struct {
+	core.CommonResponse
+
+	// Barcode in text format
+	Result string `json:"result"`
+}
+
+// Use this method to get the barcode from the /v2/posting/fbs/act/get-barcode response in text format.
+func (c FBS) BarcodeValueFromProductShipment(params *BarcodeValueFromProductShipmentParams) (*BarcodeValueFromProductShipmentResponse, error) {
+	url := "/v2/posting/fbs/act/get-barcode/text"
+
+	resp := &BarcodeValueFromProductShipmentResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
