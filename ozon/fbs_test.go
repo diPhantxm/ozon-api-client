@@ -2526,3 +2526,63 @@ func TestETGBCustomsDeclarations(t *testing.T) {
 		}
 	}
 }
+
+func TestBarcodeFromProductShipment(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *BarcodeFromProductShipmentParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&BarcodeFromProductShipmentParams{
+				Id: 295662811,
+			},
+			`{
+				"content": "https://cdn.ozone.ru/s3/ozon-disk-api/techdoc/seller-api/barcode_1684849346.png",
+				"name": "barcode-test",
+				"type": "PNG"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&BarcodeFromProductShipmentParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().BarcodeFromProductShipment(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Content == "" {
+				t.Errorf("content cannot be empty")
+			}
+			if resp.Type == "" {
+				t.Error("type cannot be empty")
+			}
+			if resp.Name == "" {
+				t.Error("name cannot be empty")
+			}
+		}
+	}
+}
