@@ -1186,7 +1186,9 @@ func TestPrintLabeling(t *testing.T) {
 				PostingNumber: []string{"48173252-0034-4"},
 			},
 			`{
-				"content": "https://cdn1.ozone.ru/s3/ozon-disk-api/c4a11c8b748033daf6cdd44aca7ed4c492e55d6f4810f13feae4792afa7934191647255705"
+				"content_type": "application/pdf",
+				"file_name": "ticket-170660-2023-07-13T13:17:06Z.pdf",
+				"file_content": "%PDF-1.7\n%âãÏÓ\n53 0 obj\n<</MarkInfo<</Marked true/Type/MarkInfo>>/Pages 9 0 R/StructTreeRoot 10 0 R/Type/Catalog>>\nendobj\n8 0 obj\n<</Filter/FlateDecode/Length 2888>>\nstream\nxå[[ݶ\u0011~?¿BÏ\u0005Bs\u001c^\u0000Àwí5ú\u0010 m\u0016Èsà¦)\n;hÒ\u0014èÏïG\u0014)<{äµ] ]?¬¬oIÎ}¤F±óϤñï\u001bÕü×X­´OÏï?^~¹$<ø¨È9q\u0013Y\u0012åñì§_¼|ÿégü\t+\u0012\u001bxª}Æxҿ¿¼_º¼xg¦þ5OkuÌ3ýíògüûå\"Ni\u0016C\u0001°\u000fA9g'r¢\"\u0013YóĪ\u0018NÑ{\u001dÕóZ¬\\Ô\""
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -1211,6 +1213,12 @@ func TestPrintLabeling(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Content == "" {
+				t.Error("content cannot be empty")
+			}
 		}
 	}
 }
@@ -1888,9 +1896,9 @@ func TestGetDigitalAct(t *testing.T) {
 				DocType: "act_of_acceptance",
 			},
 			`{
-				"content": "string",
-				"name": "string",
-				"type": "string"
+				"content_type": "application/pdf",
+				"file_name": "20816409_act_of_mismatch.pdf",
+				"file_content": "%PDF-1.4\n%ÓôÌá\n1 0 obj\n<<\n/Creator(Chromium)\n/Producer(PDFsharp 1.50.5147 \\([www.pdfsharp.com|http://www.pdfsharp.com/]\\) \\(Original: Skia/PDF m103\\))\n/CreationDate(D:20230625092529+00'00')\n/ModDate(D:20230625092529+00'00')\n>>\nendobj\n2 0 obj\n<<\n/Type/Page\n/Resources\n<<\n/ProcSet[/PDF/Text/ImageB/ImageC/ImageI]\n/ExtGState\n<<\n/G3 3 0 R\n/G8 8 0 R\n>>\n/XObject\n<<\n/X6 6 0 R\n/X7 7 0 R\n>>\n/Font\n<<\n/F4 4 0 R\n/F5 5 0 R\n>>\n>>\n/MediaBox[0 0 594.96 841.92]\n/Contents 9 0 R\n/StructParents 0\n/Parent 13 0 R\n/Group\n<<\n/CS/DeviceRGB\n/S/Transparency\n>>\n>>\nendobj\n3 0 obj\n<<\n/ca 1\n/BM/Normal\n>>\nendobj\n4 0 obj\n<<\n/Type/Font\n/Subtype/Type0\n/BaseFont/AAAAAA+LiberationSans\n/Encoding/Identity-H\n/DescendantFonts[160 0 R]\n/ToUnicode 161 0 R\n>>\nendobj\n5 0 obj\n<<\n/Type/Font\n/Subtype/Type0\n/BaseFont/BAAAAA+LiberationSans-Bold\n/Encoding/Identity-H\n/DescendantFonts[164 0"
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -2544,9 +2552,9 @@ func TestBarcodeFromProductShipment(t *testing.T) {
 				Id: 295662811,
 			},
 			`{
-				"content": "https://cdn.ozone.ru/s3/ozon-disk-api/techdoc/seller-api/barcode_1684849346.png",
-				"name": "barcode-test",
-				"type": "PNG"
+				"content_type": "image/png",
+				"file_name": "20913984_barcode.png",
+				"file_content": "PNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0003\u0010\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u0000íZ\u000e'\u0000\u0000\u0002pIDATxìÕÁJ\u00031\u0014@Q+þÿ/×E\u0017\u000e¼\u0010u¡-ç¬$£Éˌp?î÷·§t» }ýü¸Ãcåz¹2wOWû\\Ϛ뫧×Ùö;ì|rÇýßîç¼úî{§¬N?í7oìv¸®µ¹Ãùû¹¾ÿÏ9ÿî?a¸ºéê7O&߿É9çÉ\u000eÏáý¯\u0007\u0000à\u0012\b\u0000@\u0000\u0004\u0002$\u0010\u0000$\u0000 \t\u0004\u0000I \u0000H\u0002\u0001@\u0012\b\u0000@\u0000\u0004\u0002$\u0010\u0000$\u0000 \t\u0004\u0000I \u0000H\u0002\u0001@\u0012\b\u0000@\u0000\u0004\u0002$\u0010\u0000$\u0000 \t\u0004\u0000I \u0000H\u0002\u0001@\u0012\b\u0000@\u0000\u0004\u0002$\u0010\u0000$\u0000 \t\u0004\u0000I \u0000H\u0002\u0001@\u0012\b\u0000@\u0000\u0004\u0002$\u0010\u0000"
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -2633,6 +2641,60 @@ func TestBarcodeValueFromProductShipment(t *testing.T) {
 
 		if resp.StatusCode == http.StatusOK {
 			if resp.Result == "" {
+				t.Errorf("result cannot be empty")
+			}
+		}
+	}
+}
+
+func TestGetActPDF(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetActPDFParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetActPDFParams{
+				Id: 22435521842000,
+			},
+			`{
+				"content_type": "application/pdf",
+				"file_name": "20928233.pdf",
+				"file_content": "binarystring"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetActPDFParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		resp, err := c.FBS().GetActPDF(test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.FileContent == "" {
 				t.Errorf("result cannot be empty")
 			}
 		}

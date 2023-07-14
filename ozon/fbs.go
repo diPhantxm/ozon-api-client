@@ -1594,7 +1594,13 @@ type PrintLabelingResponse struct {
 	core.CommonResponse
 
 	// Order content
-	Content string `json:"content"`
+	Content string `json:"file_content"`
+
+	// File name
+	FileName string `json:"file_name"`
+
+	// File type
+	ContentType string `json:"content_type"`
 }
 
 // Generates a PDF file with a labeling for the specified shipments. You can pass a maximum of 20 identifiers in one request.
@@ -2139,7 +2145,7 @@ type GetDigitalActParams struct {
 	//   - act_of_acceptance — acceptance certificate,
 	//   - act_of_mismatch — discrepancy certificate,
 	//   - act_of_excess — surplus certificate
-	DocType string `json:"doc_type"`
+	DocType DigitalActType `json:"doc_type"`
 }
 
 type GetDigitalActResponse struct {
@@ -2161,7 +2167,9 @@ func (c FBS) GetDigitalAct(params *GetDigitalActParams) (*GetDigitalActResponse,
 
 	resp := &GetDigitalActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "application/json",
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -2194,7 +2202,9 @@ func (c FBS) PackageUnitLabel(params *PackageUnitLabelsParams) (*PackageUnitLabe
 
 	resp := &PackageUnitLabelsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "application/json",
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -2655,13 +2665,13 @@ type BarcodeFromProductShipmentResponse struct {
 	core.CommonResponse
 
 	// Link to barcode image
-	Content string `json:"content"`
+	Content string `json:"file_content"`
 
 	// File name
-	Name string `json:"name"`
+	Name string `json:"file_name"`
 
 	// File type
-	Type string `json:"type"`
+	Type string `json:"content_type"`
 }
 
 // Method for getting a barcode to show at a pick-up point or sorting center during the shipment
@@ -2670,7 +2680,9 @@ func (c FBS) BarcodeFromProductShipment(params *BarcodeFromProductShipmentParams
 
 	resp := &BarcodeFromProductShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "image/png",
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -2698,6 +2710,46 @@ func (c FBS) BarcodeValueFromProductShipment(params *BarcodeValueFromProductShip
 	resp := &BarcodeValueFromProductShipmentResponse{}
 
 	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetActPDFParams struct {
+	// Document generation task number (freight identifier) received from
+	// the POST `/v2/posting/fbs/act/create` method
+	Id int64 `json:"id"`
+}
+
+type GetActPDFResponse struct {
+	core.CommonResponse
+
+	// File content in binary format
+	FileContent string `json:"file_content"`
+
+	// File name
+	FileName string `json:"file_name"`
+
+	// File type
+	ContentType string `json:"content_type"`
+}
+
+// Get the generated transfer documents in PDF format: an acceptance and transfer certificate and a waybill.
+//
+// If you are not connected to electronic document circulation (EDC), the method returns an acceptance and transfer certificate and a waybill.
+//
+// If you are connected to EDC, the method returns a waybill only.
+func (c FBS) GetActPDF(params *GetActPDFParams) (*GetActPDFResponse, error) {
+	url := "/v2/posting/fbs/act/get-pdf"
+
+	resp := &GetActPDFResponse{}
+
+	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+		"Content-Type": "application/pdf",
+	})
 	if err != nil {
 		return nil, err
 	}
