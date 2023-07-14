@@ -1132,9 +1132,8 @@ func TestGetLabeling(t *testing.T) {
 			},
 			`{
 				"result": {
-					"error": "24",
-					"file_url": "some-url",
-					"status": "completed"
+				  "status": "completed",
+				  "file_url": "https://cdn1.ozone.ru/s3/sc-temporary/e6/0c/e60cdfd7aed78c2b44d134504fbd591d.pdf"
 				}
 			}`,
 		},
