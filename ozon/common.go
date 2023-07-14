@@ -479,3 +479,16 @@ const (
 	GetFBOReturnsReturnStatusAcceptedFromCustomer GetFBOReturnsReturnStatus = "Принят от покупателя"
 	GetFBOReturnsReturnStatusReceivedAtOzon       GetFBOReturnsReturnStatus = "Получен в Ozon"
 )
+
+type DigitalActType string
+
+const (
+	// acceptance certificate
+	DigitalActTypeOfAcceptance DigitalActType = "act_of_acceptance"
+
+	// discrepancy certificate
+	DigitalActTypeOfMismatch DigitalActType = "act_of_mismatch"
+
+	// surplus certificate
+	DigitalActTypeOfExcess DigitalActType = "act_of_excess"
+)
