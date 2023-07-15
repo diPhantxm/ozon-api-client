@@ -2152,13 +2152,13 @@ type GetDigitalActResponse struct {
 	core.CommonResponse
 
 	// File content in binary format
-	Content string `json:"content"`
+	Content string `json:"file_content"`
 
 	// File name
-	Name string `json:"name"`
+	Name string `json:"file_name"`
 
 	// File type
-	Type string `json:"type"`
+	Type string `json:"content_type"`
 }
 
 // Specify the type of a certificate in the doc_type parameter: `act_of_acceptance`, `act_of_mismatch`, `act_of_excess`
