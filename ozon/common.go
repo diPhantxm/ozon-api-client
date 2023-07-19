@@ -492,3 +492,16 @@ const (
 	// surplus certificate
 	DigitalActTypeOfExcess DigitalActType = "act_of_excess"
 )
+
+type PriceStrategy string
+
+const (
+	// enable
+	PriceStrategyEnabled PriceStrategy = "ENABLED"
+
+	// disable
+	PriceStrategyDisabled PriceStrategy = "DISABLED"
+
+	// don't change anything. Default value
+	PriceStrategyUnknown PriceStrategy = "UNKNOWN"
+)

@@ -655,6 +655,15 @@ type UpdatePricesPrice struct {
 	// If the current price of the product is from 400 to 10 000 rubles inclusive, the difference between the values of price and old_price fields should be more than 5%, but not less than 20 rubles.
 	Price string `json:"price"`
 
+	// Attribute for enabling and disabling pricing strategies auto-application
+	//
+	// If you've previously enabled automatic application of pricing strategies and don't want to disable it, pass UNKNOWN in the next requests.
+	//
+	// If you pass `ENABLED` in this parameter, pass `strategy_id` in the `/v1/pricing-strategy/products/add` method request.
+	//
+	// If you pass `DISABLED` in this parameter, the product is removed from the strategy
+	PriceStrategyEnabled PriceStrategy `json:"price_strategy_enabled"`
+
 	// Product identifier
 	ProductId int64 `json:"product_id"`
 }
