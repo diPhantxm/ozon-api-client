@@ -448,12 +448,13 @@ func TestUpdatePrices(t *testing.T) {
 			&UpdatePricesParams{
 				Prices: []UpdatePricesPrice{
 					{
-						AutoActionEnabled: "UNKNOWN",
-						CurrencyCode:      "RUB",
-						MinPrice:          "800",
-						OldPrice:          "0",
-						Price:             "1448",
-						ProductId:         1386,
+						AutoActionEnabled:    "UNKNOWN",
+						CurrencyCode:         "RUB",
+						MinPrice:             "800",
+						OldPrice:             "0",
+						Price:                "1448",
+						ProductId:            1386,
+						PriceStrategyEnabled: PriceStrategyUnknown,
 					},
 				},
 			},
