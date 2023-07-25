@@ -2240,6 +2240,7 @@ func TestGetProductPriceInfo(t *testing.T) {
 				"result": {
 				  "items": [
 					{
+					  "acquiring": 0,
 					  "product_id": 243686911,
 					  "offer_id": "356792",
 					  "price": {
@@ -2255,9 +2256,28 @@ func TestGetProductPriceInfo(t *testing.T) {
 						"marketing_seller_price": "",
 						"auto_action_enabled": true
 					  },
-					  "price_index": "0.00",
+					  "price_indexes": {
+						"external_index_data": {
+						  "minimal_price": "string",
+						  "minimal_price_currency": "string",
+						  "price_index_value": 0
+						},
+						"ozon_index_data": {
+						  "minimal_price": "string",
+						  "minimal_price_currency": "string",
+						  "price_index_value": 0
+						},
+						"price_index": "WITHOUT_INDEX",
+						"self_marketplaces_index_data": {
+						  "minimal_price": "string",
+						  "minimal_price_currency": "string",
+						  "price_index_value": 0
+						}
+					  },
 					  "commissions": {
 						"sales_percent": 15,
+						"sales_percent_fbo": 15,
+						"sales_percent_fbs": 0,
 						"fbo_fulfillment_amount": 0,
 						"fbo_direct_flow_trans_min_amount": 31,
 						"fbo_direct_flow_trans_max_amount": 46.5,
@@ -2266,7 +2286,7 @@ func TestGetProductPriceInfo(t *testing.T) {
 						"fbo_return_flow_trans_min_amount": 21.7,
 						"fbo_return_flow_trans_max_amount": 21.7,
 						"fbs_first_mile_min_amount": 0,
-						"fbs_first_mile_max_amount": 0,
+						"fbs_first_mile_max_amount": 25,
 						"fbs_direct_flow_trans_min_amount": 41,
 						"fbs_direct_flow_trans_max_amount": 61.5,
 						"fbs_deliv_to_customer_amount": 60,

@@ -1912,6 +1912,9 @@ type GetProductPriceInfoResult struct {
 }
 
 type GetPRoductPriceInfoResultItem struct {
+	// Maximum acquiring fee
+	Acquiring int32 `json:"acquiring"`
+
 	// Commissions information
 	Commissions GetProductPriceInfoResultItemCommission `json:"commissions"`
 
@@ -1970,10 +1973,10 @@ type GetProductPriceInfoResultItemCommission struct {
 	// Pipeline from (FBS)
 	FBSPipelineFrom float64 `json:"fbs_direct_flow_trans_min_amount"`
 
-	// Shipment processing fee to (FBS)
+	// Minimal shipment processing fee (FBS) — 0 rubles
 	FBSShipmentProcessingToFee float64 `json:"fbs_first_mile_min_amount"`
 
-	// Shipment processing fee from (FBS)
+	// Maximal shipment processing fee (FBS) — 25 rubles
 	FBSShipmentProcessingFromFee float64 `json:"Shipment processing fee from (FBS)"`
 
 	// Return and cancellation fees, shipment processing (FBS)
@@ -1985,7 +1988,13 @@ type GetProductPriceInfoResultItemCommission struct {
 	// Return and cancellation fees, pipeline from (FBS)
 	FBSReturnCancellationFromFees float64 `json:"fbs_return_flow_trans_min_amount"`
 
-	// Sales commission percentage (FBO and FBS)
+	// Sales commission percentage (FBO)
+	SalesCommissionFBORate float64 `json:"sales_percent_fbo"`
+
+	// Sales commission percentage (FBS)
+	SalesCommissionFBSRate float64 `json:"sales_percent_fbs"`
+
+	// Larger sales commission percentage among FBO and FBS
 	SalesCommissionRate float64 `json:"sales_percent"`
 }
 
