@@ -67,7 +67,7 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 		//ns.error(rw, http.StatusInternalServerError, err)
 		return
 	}
-	h, _ := ns.handlers[mt.MessageType]
+	h := ns.handlers[mt.MessageType]
 	if err := h(req); err != nil {
 		ns.result(rw, false)
 		//ns.error(rw, http.StatusInternalServerError, err)
