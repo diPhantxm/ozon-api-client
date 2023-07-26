@@ -4,13 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
-)
-
-const (
-	port = 5000
+	"time"
 )
 
 func TestNotificationServer(t *testing.T) {
@@ -21,7 +20,7 @@ func TestNotificationServer(t *testing.T) {
 		// PING
 		{
 			`{
-				"message_type": "string",
+				"message_type": "TYPE_PING",
 				"time": "2019-08-24T14:15:22Z"
 			}`,
 			`{
@@ -61,10 +60,12 @@ func TestNotificationServer(t *testing.T) {
 				"seller_id": "7"
 			}`,
 			`{
-				"result": false
+				"result": true
 			}`,
 		},
 	}
+
+	port := getFreePort()
 
 	client := http.Client{}
 	server := NewNotificationServer(port)
@@ -81,8 +82,12 @@ func TestNotificationServer(t *testing.T) {
 		}
 	}()
 
+	// TODO: get rid of it
+	// Needed to make sure server is running
+	time.Sleep(3 * time.Second)
+
 	for _, testCase := range testCases {
-		httpResp, err := client.Post(fmt.Sprintf("http://127.0.0.1:%d/", port), "application/json", strings.NewReader(testCase.request))
+		httpResp, err := client.Post(fmt.Sprintf("http://0.0.0.0:%d/", port), "application/json", strings.NewReader(testCase.request))
 		if err != nil {
 			t.Error(err)
 			continue
@@ -94,10 +99,13 @@ func TestNotificationServer(t *testing.T) {
 			continue
 		}
 
-		expected := map[string]string{}
-		got := map[string]string{}
-		json.Unmarshal(gotJson, got)
-		json.Unmarshal([]byte(testCase.response), expected)
+		expected := map[string]interface{}{}
+		got := map[string]interface{}{}
+		err = json.Unmarshal(gotJson, &got)
+		if err != nil {
+			t.Error(err)
+		}
+		err = json.Unmarshal([]byte(testCase.response), &expected)
 
 		if err := compare(expected, got); err != nil {
 			t.Error(err)
@@ -106,13 +114,20 @@ func TestNotificationServer(t *testing.T) {
 	}
 }
 
-func compare(expected map[string]string, got map[string]string) error {
+func compare(expected map[string]interface{}, got map[string]interface{}) error {
 	for k, v := range expected {
 		if gotValue, ok := got[k]; !ok {
 			return fmt.Errorf("key %s is expected to present", k)
-		} else if gotValue != v {
-			return fmt.Errorf("key %s is not equal, got: %s, want: %s", k, gotValue, v)
+		} else if !reflect.DeepEqual(gotValue, v) {
+			return fmt.Errorf("key %s is not equal, got: %v, want: %v", k, gotValue, v)
 		}
 	}
 	return nil
+}
+
+func getFreePort() int {
+	listener, _ := net.Listen("tcp", ":0")
+	defer listener.Close()
+
+	return listener.Addr().(*net.TCPAddr).Port
 }

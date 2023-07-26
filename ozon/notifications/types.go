@@ -42,7 +42,7 @@ type NewPosting struct {
 	WarehouseId int64 `json:"warehouse_id"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 type Product struct {
@@ -79,7 +79,7 @@ type PostingCancelled struct {
 	WarehouseId int64 `json:"warehouse_id"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 type Reason struct {
@@ -107,7 +107,7 @@ type StateChanged struct {
 	WarehouseId int64 `json:"warehouse_id"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 // Shipment shipping date change
@@ -127,7 +127,7 @@ type CutoffDateChanged struct {
 	WarehouseId int64 `json:"warehouse_id"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 // Shipment delivery date change
@@ -153,7 +153,7 @@ type DeliveryDateChanged struct {
 	WarehouseId int64 `json:"warehouse_id"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 // Product creation and update or processing error
@@ -173,7 +173,7 @@ type CreateOrUpdateItem struct {
 	ChangedAt time.Time `json:"changed_at"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 // Product price index change
@@ -193,7 +193,7 @@ type PriceIndexChanged struct {
 	PriceIndex int64 `json:"price_index"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 // Stock change at the seller's warehouse
@@ -204,7 +204,7 @@ type StocksChanged struct {
 	Items []Item `json:"items"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 type Item struct {
@@ -255,7 +255,7 @@ type NewMessage struct {
 	Data []string `json:"data"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 type User struct {
@@ -302,7 +302,7 @@ type ChatClosed struct {
 	Type string `json:"type"`
 
 	// Seller identifier
-	SellerId int64 `json:"seller_id"`
+	SellerId string `json:"seller_id"`
 }
 
 type Response struct {

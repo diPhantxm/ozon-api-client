@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 )
@@ -36,10 +37,12 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 	mt := &Common{}
 	content, err := ioutil.ReadAll(httpReq.Body)
 	if err != nil {
+		log.Print(err)
 		ns.error(rw, http.StatusBadRequest, err)
 		return
 	}
 	if err := json.Unmarshal(content, mt); err != nil {
+		log.Print(err)
 		ns.error(rw, http.StatusBadRequest, err)
 		return
 	}
@@ -52,6 +55,7 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 		}
 		respJson, err := json.Marshal(resp)
 		if err != nil {
+			log.Print(err)
 			ns.error(rw, http.StatusInternalServerError, err)
 			return
 		}
@@ -63,16 +67,25 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 
 	req, err := ns.unmarshal(mt.MessageType, content)
 	if err != nil {
+		log.Print(err)
 		ns.result(rw, false)
 		//ns.error(rw, http.StatusInternalServerError, err)
 		return
 	}
-	h := ns.handlers[mt.MessageType]
+	h, ok := ns.handlers[mt.MessageType]
+	if !ok {
+		ns.result(rw, true)
+		log.Printf("handler for %s is not registered", mt.MessageType)
+		return
+	}
 	if err := h(req); err != nil {
+		log.Print(err)
 		ns.result(rw, false)
 		//ns.error(rw, http.StatusInternalServerError, err)
 		return
 	}
+
+	ns.result(rw, true)
 }
 
 func (ns *NotificationServer) Register(mt MessageType, handler func(req interface{}) error) {
