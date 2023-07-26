@@ -11,6 +11,7 @@ Read full [documentation](https://docs.ozon.ru/api/seller/en/#tag/Introduction)
 You can check [list of supported endpoints](ENDPOINTS.md)
 
 ## How to start
+### API
 Get Client-Id and Api-Key in your seller profile [here](https://seller.ozon.ru/app/settings/api-keys?locale=en)
 
 Just add dependency to your project and you're ready to go.
@@ -45,6 +46,44 @@ func main() {
 	// Do some stuff
 	for _, d := range resp.Result.Barcodes {
 		fmt.Printf("Barcode %s\n", d)
+	}
+}
+```
+
+### Notifications
+Ozon can send push-notifications to your REST server. There is an implementation of REST server that handles notifications in this library.
+
+[Official documentation](https://docs.ozon.ru/api/seller/en/#tag/push_intro)
+
+How to use:
+```Golang
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/diphantxm/ozon-api-client/ozon"
+)
+
+func main() {
+	// Create server
+	port := 5000
+	server := ozon.NewNotificationServer(port)
+
+	// Register handlers passing message type and handler itself
+	server.Register(ozon.ChatClosedType, func(req interface{}) error {
+		notification := req.(*ozon.ChatClosed)
+
+		// Do something with the notification here...
+		log.Printf("chat %s has been closed\n", notification.ChatId)
+
+		return nil
+	})
+
+	// Run server
+	if err := server.Run(); err != nil {
+		log.Printf("error while running notification server: %s", err)
 	}
 }
 ```
