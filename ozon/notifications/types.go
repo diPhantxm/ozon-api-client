@@ -4,8 +4,7 @@ import "time"
 
 // Checking if the service is ready at initial connection and periodically after it
 type pingRequest struct {
-	// Notification type: TYPE_PING
-	MessageType string `json:"message_type"`
+	Common
 
 	// Date and time when the notification was sent in UTC format
 	Time time.Time `json:"time"`
@@ -22,10 +21,13 @@ type pingResponse struct {
 	Time time.Time `json:"time"`
 }
 
+type Common struct {
+	MessageType MessageType `json:"message_type"`
+}
+
 // New shipment
 type NewPosting struct {
-	// Notification type: TYPE_NEW_POSTING
-	MessageType string `json:"message_type"`
+	Common
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
@@ -53,8 +55,7 @@ type Product struct {
 
 // Shipment cancellation
 type PostingCancelled struct {
-	// Notification type: TYPE_POSTING_CANCELLED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
@@ -91,8 +92,7 @@ type Reason struct {
 
 // Shipment status change
 type StateChanged struct {
-	// Notification type: TYPE_STATE_CHANGED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
@@ -112,8 +112,7 @@ type StateChanged struct {
 
 // Shipment shipping date change
 type CutoffDateChanged struct {
-	// Notification type: TYPE_CUTOFF_DATE_CHANGED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
@@ -133,8 +132,7 @@ type CutoffDateChanged struct {
 
 // Shipment delivery date change
 type DeliveryDateChanged struct {
-	// Notification type: TYPE_DELIVERY_DATE_CHANGED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
@@ -160,8 +158,7 @@ type DeliveryDateChanged struct {
 
 // Product creation and update or processing error
 type CreateOrUpdateItem struct {
-	// Notification type: TYPE_CREATE_OR_UPDATE_ITEM
-	MessageType string `json:"message_type"`
+	Common
 
 	// Product identifier in the seller's system
 	OfferId string `json:"offer_id"`
@@ -181,8 +178,7 @@ type CreateOrUpdateItem struct {
 
 // Product price index change
 type PriceIndexChanged struct {
-	// Notification type: TYPE_PRICE_INDEX_CHANGED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Date and time of price index change
 	UpdatedAt time.Time `json:"updated_at"`
@@ -202,8 +198,7 @@ type PriceIndexChanged struct {
 
 // Stock change at the seller's warehouse
 type StocksChanged struct {
-	// Notification type: TYPE_STOCKS_CHANGED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Array with products data
 	Items []Item `json:"items"`
@@ -239,8 +234,7 @@ type Stock struct {
 
 // New message in chat
 type NewMessage struct {
-	// Notification type: TYPE_NEW_MESSAGE
-	MessageType string `json:"message_type"`
+	Common
 
 	// Chat identifier
 	ChatId string `json:"chat_id"`
@@ -290,8 +284,7 @@ type MessageRead struct {
 
 // Chat is closed
 type ChatClosed struct {
-	// Notification type: TYPE_CHAT_CLOSED
-	MessageType string `json:"message_type"`
+	Common
 
 	// Chat identifier
 	ChatId string `json:"chat_id"`
