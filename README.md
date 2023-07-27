@@ -60,20 +60,19 @@ How to use:
 package main
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/diphantxm/ozon-api-client/ozon"
+	"github.com/diphantxm/ozon-api-client/ozon/notifications"
 )
 
 func main() {
 	// Create server
 	port := 5000
-	server := ozon.NewNotificationServer(port)
+	server := notifications.NewNotificationServer(port)
 
 	// Register handlers passing message type and handler itself
-	server.Register(ozon.ChatClosedType, func(req interface{}) error {
-		notification := req.(*ozon.ChatClosed)
+	server.Register(notifications.ChatClosedType, func(req interface{}) error {
+		notification := req.(*notifications.ChatClosed)
 
 		// Do something with the notification here...
 		log.Printf("chat %s has been closed\n", notification.ChatId)
