@@ -53,12 +53,7 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 			Name:    "Ozon Seller API",
 			Time:    time.Now(),
 		}
-		respJson, err := json.Marshal(resp)
-		if err != nil {
-			log.Print(err)
-			ns.error(rw, http.StatusInternalServerError, err)
-			return
-		}
+		respJson, _ := json.Marshal(resp)
 
 		rw.WriteHeader(http.StatusOK)
 		rw.Write(respJson)
@@ -68,8 +63,7 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 	req, err := ns.unmarshal(mt.MessageType, content)
 	if err != nil {
 		log.Print(err)
-		ns.result(rw, false)
-		//ns.error(rw, http.StatusInternalServerError, err)
+		ns.error(rw, http.StatusInternalServerError, err)
 		return
 	}
 	h, ok := ns.handlers[mt.MessageType]
@@ -80,8 +74,7 @@ func (ns *NotificationServer) handler(rw http.ResponseWriter, httpReq *http.Requ
 	}
 	if err := h(req); err != nil {
 		log.Print(err)
-		ns.result(rw, false)
-		//ns.error(rw, http.StatusInternalServerError, err)
+		ns.result(rw, true)
 		return
 	}
 
