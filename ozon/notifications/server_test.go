@@ -505,10 +505,146 @@ func TestNotificationServer(t *testing.T) {
 		err = json.Unmarshal(gotJson, &got)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 		err = json.Unmarshal([]byte(testCase.response), &expected)
 		if err != nil {
 			t.Error(err)
+			continue
+		}
+
+		if err := compare(expected, got); err != nil {
+			t.Error(err)
+			continue
+		}
+	}
+}
+
+func TestNotificationServerErrors(t *testing.T) {
+	testCases := []struct {
+		request  testData
+		response string
+	}{
+		{
+			testData{
+				raw: `{
+					"message_type": "string"
+				}`,
+			},
+			`
+			{
+				"error": {
+					"code": "500",
+					"message": "unsupported type: string",
+					"details": ""
+				}
+			}`,
+		},
+		{
+			testData{
+				raw: `invalid json`,
+			},
+			`{
+				"error": {
+					"code": "400",
+					"message": "invalid character 'i' looking for beginning of value",
+					"details": ""
+				}
+			}`,
+		},
+		{
+			testData{
+				raw: `{
+					"message_type": "TYPE_NEW_POSTING",
+					"field": [[
+				}`,
+			},
+			`{
+				"error": {
+					"code": "400",
+					"message": "invalid character '}' looking for beginning of value",
+					"details": ""
+				}
+			}`,
+		},
+		{
+			testData{
+				raw: `{
+					"message_type": "TYPE_NEW_POSTING"
+				}`,
+			},
+			`{
+				"result": true
+			}`,
+		},
+		{
+			testData{
+				raw: `{
+					"message_type": "TYPE_PING",
+					"time": "2019-08-24T14:15:22Z",
+				}`,
+			},
+			`{
+				"error": {
+					"code": "400",
+					"message": "invalid character '}' looking for beginning of object key string",
+					"details": ""
+				}
+			}`,
+		},
+		{
+			testData{
+				raw: `{
+					"message_type": "TYPE_CHAT_CLOSED"
+				}`,
+			},
+			`{
+				"result": true
+			}`,
+		},
+	}
+
+	port := getFreePort()
+
+	client := http.Client{}
+	server := NewNotificationServer(port)
+	server.Register(NewPostingType, func(req interface{}) error {
+		return fmt.Errorf("just error")
+	})
+	go func() {
+		if err := server.Run(); err != nil {
+			t.Fatalf("notification server is down: %s", err)
+		}
+	}()
+
+	// TODO: get rid of it
+	// Needed to make sure server is running
+	time.Sleep(3 * time.Second)
+
+	for _, testCase := range testCases {
+		httpResp, err := client.Post(fmt.Sprintf("http://0.0.0.0:%d/", port), "application/json", strings.NewReader(testCase.request.raw))
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		gotJson, err := ioutil.ReadAll(httpResp.Body)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		expected := map[string]interface{}{}
+		got := map[string]interface{}{}
+		err = json.Unmarshal(gotJson, &got)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+		err = json.Unmarshal([]byte(testCase.response), &expected)
+		if err != nil {
+			t.Error(err)
+			continue
 		}
 
 		if err := compare(expected, got); err != nil {
