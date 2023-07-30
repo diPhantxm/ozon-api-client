@@ -505,3 +505,16 @@ const (
 	// don't change anything. Default value
 	PriceStrategyUnknown PriceStrategy = "UNKNOWN"
 )
+
+type FBPFilter string
+
+const (
+	// all shipments matching other filters will be returned in the response
+	FBPFilterAll FBPFilter = "all"
+
+	// only FBP shipments will be returned
+	FBPFilterOnly FBPFilter = "only"
+
+	// all shipments except FBP will be returned
+	FBPFilterWithout FBPFilter = "without"
+)
