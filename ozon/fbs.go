@@ -52,6 +52,13 @@ type ListUnprocessedShipmentsFilter struct {
 	// Delivery method identifier
 	DeliveryMethodId []int64 `json:"delivery_method_id"`
 
+	// Filter for shipments delivered from partner warehouse (FBP). You can pass one of the following values:
+	//
+	// Default value is all.
+	//
+	// The FBP scheme is available only for sellers from China
+	FBPFilter FBPFilter `json:"fbpFilter"`
+
 	// Delivery service identifier
 	ProviderId []int64 `json:"provider_id"`
 
@@ -523,6 +530,13 @@ type GetFBSShipmentsListParams struct {
 type GetFBSShipmentsListFilter struct {
 	// Delivery method identifier
 	DeliveryMethodId []int64 `json:"delivery_method_id"`
+
+	// Filter for shipments delivered from partner warehouse (FBP). You can pass one of the following values:
+	//
+	// Default value is all.
+	//
+	// The FBP scheme is available only for sellers from China
+	FBPFilter FBPFilter `json:"fbpFilter"`
 
 	// Order identifier
 	OrderId int64 `json:"order_id"`
