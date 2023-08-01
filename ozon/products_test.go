@@ -380,12 +380,12 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&StocksInSellersWarehouseParams{
-				FBSSKU: []string{"123"},
+				SKU: []string{"123"},
 			},
 			`{
 				"result": [
 				  {
-					"fbs_sku": 12,
+					"sku": 12,
 					"present": 34,
 					"product_id": 548761,
 					"reserved": 5,
@@ -420,11 +420,11 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			if len(resp.Result) != len(test.params.FBSSKU) {
+			if len(resp.Result) != len(test.params.SKU) {
 				t.Errorf("Length of skus in request and response must be equal")
 			}
 			if len(resp.Result) > 0 {
-				if fmt.Sprint(resp.Result[0].FBSSKU) == test.params.FBSSKU[0] {
+				if fmt.Sprint(resp.Result[0].SKU) == test.params.SKU[0] {
 					t.Errorf("fbs sku in request and response are not equal")
 				}
 			}
