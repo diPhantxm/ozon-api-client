@@ -138,11 +138,8 @@ type ProductDetails struct {
 	// Date and time when the product was created
 	CreatedAt time.Time `json:"created_at"`
 
-	// SKU of the product that is sold from the Ozon warehouse (FBO)
-	FBOSKU int64 `json:"fbo_sku"`
-
-	// SKU of the product that is sold from the seller's warehouse (FBS and rFBS)
-	FBSSKU int64 `json:"fbs_sku"`
+	// Product SKU
+	SKU int64 `json:"sku"`
 
 	// Document generation task number
 	Id int64 `json:"id"`
@@ -576,12 +573,8 @@ func (c Products) UpdateQuantityStockProducts(params *UpdateQuantityStockProduct
 }
 
 type StocksInSellersWarehouseParams struct {
-	// SKU of the product that is sold from the seller's warehouse (FBS and RFBS schemes).
-	//
-	// Get fbs_sku in the /v2/product/info and /v2/product/info/list methods response.
-	//
-	// The maximum number of SKUs per request is 500.
-	FBSSKU []string `json:"fbs_sku"`
+	// Product SKU
+	SKU []string `json:"sku"`
 }
 
 type StocksInSellersWarehouseResponse struct {
@@ -593,7 +586,7 @@ type StocksInSellersWarehouseResponse struct {
 
 type StocksInSellersWarehouseResult struct {
 	// SKU of the product that is sold from the seller's warehouse (FBS and RFBS schemes)
-	FBSSKU int64 `json:"fbs_sku"`
+	SKU int64 `json:"sku"`
 
 	// Total number of items in the warehouse
 	Present int64 `json:"present"`
