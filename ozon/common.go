@@ -20,30 +20,24 @@ const (
 type GetAnalyticsDataFilterMetric string
 
 const (
-	UnknownMetric         GetAnalyticsDataFilterMetric = "unknown_metric"
-	HitsViewSearch        GetAnalyticsDataFilterMetric = "hits_view_search"
-	HistViewPDP           GetAnalyticsDataFilterMetric = "hits_view_pdp"
-	HitsView              GetAnalyticsDataFilterMetric = "hist_view"
-	HitsToCartSearch      GetAnalyticsDataFilterMetric = "hits_tocart_search"
-	HitsToCartPDP         GetAnalyticsDataFilterMetric = "hits_tocart_pdp"
-	SessionViewSearch     GetAnalyticsDataFilterMetric = "session_view_search"
-	SessionViewPDP        GetAnalyticsDataFilterMetric = "session_view_pdp"
-	SessionView           GetAnalyticsDataFilterMetric = "session_view"
-	ConvToCartSearch      GetAnalyticsDataFilterMetric = "conv_tocart_search"
-	ConvToCartPDP         GetAnalyticsDataFilterMetric = "conv_tocart_pdp"
-	ConvToCart            GetAnalyticsDataFilterMetric = "conv_tocart"
-	Revenue               GetAnalyticsDataFilterMetric = "revenue"
-	ReturnsMetric         GetAnalyticsDataFilterMetric = "returns"
-	CancellationsMetric   GetAnalyticsDataFilterMetric = "cancellations"
-	OrderedUnits          GetAnalyticsDataFilterMetric = "ordered_units"
-	DeliveredUnits        GetAnalyticsDataFilterMetric = "delivered_units"
-	AdvViewPDP            GetAnalyticsDataFilterMetric = "adv_view_pdp"
-	AdvViewSearchCategory GetAnalyticsDataFilterMetric = "adv_view_search_category"
-	AdvViewAll            GetAnalyticsDataFilterMetric = "adv_view_all"
-	AdvSumAll             GetAnalyticsDataFilterMetric = "adv_sum_all"
-	PositionCategory      GetAnalyticsDataFilterMetric = "position_category"
-	PostingsMetric        GetAnalyticsDataFilterMetric = "postings"
-	PostingsPremium       GetAnalyticsDataFilterMetric = "postings_premium"
+	UnknownMetric       GetAnalyticsDataFilterMetric = "unknown_metric"
+	HitsViewSearch      GetAnalyticsDataFilterMetric = "hits_view_search"
+	HistViewPDP         GetAnalyticsDataFilterMetric = "hits_view_pdp"
+	HitsView            GetAnalyticsDataFilterMetric = "hist_view"
+	HitsToCartSearch    GetAnalyticsDataFilterMetric = "hits_tocart_search"
+	HitsToCartPDP       GetAnalyticsDataFilterMetric = "hits_tocart_pdp"
+	SessionViewSearch   GetAnalyticsDataFilterMetric = "session_view_search"
+	SessionViewPDP      GetAnalyticsDataFilterMetric = "session_view_pdp"
+	SessionView         GetAnalyticsDataFilterMetric = "session_view"
+	ConvToCartSearch    GetAnalyticsDataFilterMetric = "conv_tocart_search"
+	ConvToCartPDP       GetAnalyticsDataFilterMetric = "conv_tocart_pdp"
+	ConvToCart          GetAnalyticsDataFilterMetric = "conv_tocart"
+	Revenue             GetAnalyticsDataFilterMetric = "revenue"
+	ReturnsMetric       GetAnalyticsDataFilterMetric = "returns"
+	CancellationsMetric GetAnalyticsDataFilterMetric = "cancellations"
+	OrderedUnits        GetAnalyticsDataFilterMetric = "ordered_units"
+	DeliveredUnits      GetAnalyticsDataFilterMetric = "delivered_units"
+	PositionCategory    GetAnalyticsDataFilterMetric = "position_category"
 )
 
 type WarehouseType string
@@ -517,4 +511,26 @@ const (
 
 	// all shipments except FBP will be returned
 	FBPFilterWithout FBPFilter = "without"
+)
+
+type InvoiceCurrency string
+
+const (
+	// dollar
+	InvoiceCurrencyUSD InvoiceCurrency = "USD"
+
+	// euro
+	InvoiceCurrencyEUR InvoiceCurrency = "EUR"
+
+	// Turkish lira
+	InvoiceCurrencyTRY InvoiceCurrency = "TRY"
+
+	// yuan
+	InvoiceCurrencyCNY InvoiceCurrency = "CNY"
+
+	// ruble
+	InvoiceCurrencyRUB InvoiceCurrency = "RUB"
+
+	// pound sterling
+	InvoiceCurrencyGBP InvoiceCurrency = "GBP"
 )

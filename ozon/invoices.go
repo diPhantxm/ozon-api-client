@@ -2,6 +2,7 @@ package ozon
 
 import (
 	"net/http"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -16,6 +17,21 @@ type CreateUpdateProformaLinkParams struct {
 
 	// Proforma invoice link
 	URL string `json:"url"`
+
+	// Invoice HS-code. Pass a number up to 12 characters long
+	HSCode string `json:"hs_code"`
+
+	// Invoice date
+	Date time.Time `json:"date"`
+
+	// Invoice number. The number can contain letters and digits, maximum length is 50 characters
+	Number string `json:"number"`
+
+	// Cost stated in the invoice. The fractional part is separated by decimal point, up to two digits after the decimal poin
+	Price float64 `json:"price"`
+
+	// Invoice currency
+	PriceCurrency InvoiceCurrency `json:"price_currency" default:"USD"`
 }
 
 type CreateUpdateProformaLinkResponse struct {

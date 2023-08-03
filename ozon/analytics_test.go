@@ -24,7 +24,7 @@ func TestGetAnalyticsData(t *testing.T) {
 				DateFrom:  core.TimeFromString(t, "2006-01-02", "2020-09-01"),
 				DateTo:    core.TimeFromString(t, "2006-01-02", "2021-10-15"),
 				Dimension: []GetAnalyticsDataDimension{SKUDimension, DayDimension},
-				Metrics:   []GetAnalyticsDataFilterMetric{AdvViewAll},
+				Metrics:   []GetAnalyticsDataFilterMetric{HistViewPDP},
 				Sort: []GetAnalyticsDataSort{
 					{
 						Key:   HistViewPDP,
