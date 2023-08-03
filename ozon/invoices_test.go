@@ -21,8 +21,13 @@ func TestCreateUpdateProformaLink(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&CreateUpdateProformaLinkParams{
-				PostingNumber: "posting number",
-				URL:           "link",
+				PostingNumber: "33920146-0252-1",
+				URL:           "https://cdn.ozone.ru/s3/ozon-disk-api/techdoc/seller-api/earsivfatura_1690960445.pdf",
+				HSCode:        "2134322",
+				Date:          core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-08-01T12:08:44.342Z"),
+				Number:        "424fdsf234",
+				Price:         234.34,
+				PriceCurrency: InvoiceCurrencyRUB,
 			},
 			`{
 				"result": true
