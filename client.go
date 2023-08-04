@@ -9,6 +9,20 @@ import (
 	"net/http/httptest"
 )
 
+type Configuration func(o *Client)
+
+func WithHttpClient(client HttpClient) Configuration {
+	return func(c *Client) {
+		c.client = client
+	}
+}
+
+func WithContext(ctx context.Context) Configuration {
+	return func(c *Client) {
+		c.ctx = ctx
+	}
+}
+
 type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -21,13 +35,19 @@ type Client struct {
 	client HttpClient
 }
 
-func NewClient(baseUrl string, opts map[string]string) *Client {
-	return &Client{
+func NewClient(baseUrl string, opts map[string]string, configs ...Configuration) *Client {
+	c := &Client{
 		Options: opts,
 		ctx:     context.Background(),
 		client:  http.DefaultClient,
 		baseUrl: baseUrl,
 	}
+
+	for _, config := range configs {
+		config(c)
+	}
+
+	return c
 }
 
 func NewMockClient(handler http.HandlerFunc) *Client {
