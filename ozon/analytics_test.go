@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -59,7 +60,8 @@ func TestGetAnalyticsData(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Analytics().GetAnalyticsData(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Analytics().GetAnalyticsData(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -119,7 +121,8 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Analytics().GetStocksOnWarehouses(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Analytics().GetStocksOnWarehouses(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

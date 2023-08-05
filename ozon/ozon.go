@@ -105,8 +105,8 @@ func (c Client) Strategies() *Strategies {
 	return c.strategies
 }
 
-func NewClient(clientId, apiKey string) *Client {
-	coreClient := core.NewClient(DefaultAPIBaseUrl, map[string]string{
+func NewClient(httpClient core.HttpClient, clientId, apiKey string) *Client {
+	coreClient := core.NewClient(httpClient, DefaultAPIBaseUrl, map[string]string{
 		"Client-Id": clientId,
 		"Api-Key":   apiKey,
 	})

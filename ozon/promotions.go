@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -73,12 +74,12 @@ type GetAvailablePromotionsResult struct {
 }
 
 // A method for getting a list of promotions that you can participate in
-func (c Promotions) GetAvailablePromotions() (*GetAvailablePromotionsResponse, error) {
+func (c Promotions) GetAvailablePromotions(ctx context.Context) (*GetAvailablePromotionsResponse, error) {
 	url := "/v1/actions"
 
 	resp := &GetAvailablePromotionsResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -130,12 +131,12 @@ type AddProductToPromotionResultRejected struct {
 }
 
 // A method for adding products to an available promotion
-func (c Promotions) AddToPromotion(params *AddProductToPromotionParams) (*AddProductToPromotionResponse, error) {
+func (c Promotions) AddToPromotion(ctx context.Context, params *AddProductToPromotionParams) (*AddProductToPromotionResponse, error) {
 	url := "/v1/actions/products/activate"
 
 	resp := &AddProductToPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -195,12 +196,12 @@ type PromotionProduct struct {
 }
 
 // A method for getting a list of products that can participate in the promotion by the promotion identifier
-func (c Promotions) ProductsAvailableForPromotion(params *ProductsAvailableForPromotionParams) (*ProductsAvailableForPromotionResponse, error) {
+func (c Promotions) ProductsAvailableForPromotion(ctx context.Context, params *ProductsAvailableForPromotionParams) (*ProductsAvailableForPromotionResponse, error) {
 	url := "/v1/actions/candidates"
 
 	resp := &ProductsAvailableForPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -236,12 +237,12 @@ type ProductsInPromotionResult struct {
 }
 
 // A method for getting the list of products participating in the promotion by its identifier
-func (c Promotions) ProductsInPromotion(params *ProductsInPromotionParams) (*ProductsInPromotionResponse, error) {
+func (c Promotions) ProductsInPromotion(ctx context.Context, params *ProductsInPromotionParams) (*ProductsInPromotionResponse, error) {
 	url := "/v1/actions/products"
 
 	resp := &ProductsInPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -282,12 +283,12 @@ type RemoveProductFromPromotionResultRejected struct {
 }
 
 // A method for removing products from the promotion
-func (c Promotions) RemoveProduct(params *RemoveProductFromPromotionParams) (*RemoveProductFromPromotionResponse, error) {
+func (c Promotions) RemoveProduct(ctx context.Context, params *RemoveProductFromPromotionParams) (*RemoveProductFromPromotionResponse, error) {
 	url := "/v1/actions/products/deactivate"
 
 	resp := &RemoveProductFromPromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -332,12 +333,12 @@ type ListHotSalePromotionsResult struct {
 }
 
 // List of available Hot Sale promotions
-func (c Promotions) ListHotSalePromotions() (*ListHotSalePromotionsResponse, error) {
+func (c Promotions) ListHotSalePromotions(ctx context.Context) (*ListHotSalePromotionsResponse, error) {
 	url := "/v1/actions/hotsales/list"
 
 	resp := &ListHotSalePromotionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -396,12 +397,12 @@ type ProductsAvailableForHotSalePromotionResultProduct struct {
 }
 
 // Method for getting a list of products that can participate or are already participating in the Hot Sale promotion
-func (c Promotions) ProductsAvailableForHotSalePromotion(params *ProductsAvailableForHotSalePromotionParams) (*ProductsAvailableForHotSalePromotionResponse, error) {
+func (c Promotions) ProductsAvailableForHotSalePromotion(ctx context.Context, params *ProductsAvailableForHotSalePromotionParams) (*ProductsAvailableForHotSalePromotionResponse, error) {
 	url := "/v1/actions/hotsales/products"
 
 	resp := &ProductsAvailableForHotSalePromotionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -449,12 +450,12 @@ type ProductsToHotSaleResultRejected struct {
 	Reason string `json:"reason"`
 }
 
-func (c Promotions) AddProductsToHotSale(params *AddProductsToHotSaleParams) (*ProductsToHotSaleResponse, error) {
+func (c Promotions) AddProductsToHotSale(ctx context.Context, params *AddProductsToHotSaleParams) (*ProductsToHotSaleResponse, error) {
 	url := "/v1/actions/hotsales/activate"
 
 	resp := &ProductsToHotSaleResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -472,12 +473,12 @@ type RemoveProductsToHotSaleParams struct {
 }
 
 // Remove product from the Hot Sale promotion
-func (c Promotions) RemoveProductsToHotSale(params *RemoveProductsToHotSaleParams) (*ProductsToHotSaleResponse, error) {
+func (c Promotions) RemoveProductsToHotSale(ctx context.Context, params *RemoveProductsToHotSaleParams) (*ProductsToHotSaleResponse, error) {
 	url := "/v1/actions/hotsales/activate"
 
 	resp := &ProductsToHotSaleResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -612,12 +613,12 @@ type ListDiscountRequestsResult struct {
 }
 
 // Method for getting a list of products that customers want to buy with discount
-func (c Promotions) ListDiscountRequests(params *ListDiscountRequestsParams) (*ListDiscountRequestsResponse, error) {
+func (c Promotions) ListDiscountRequests(ctx context.Context, params *ListDiscountRequestsParams) (*ListDiscountRequestsResponse, error) {
 	url := "/v1/actions/discounts-task/list"
 
 	resp := &ListDiscountRequestsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -677,12 +678,12 @@ type DiscountRequestResultFailDetail struct {
 // You can approve applications in statuses:
 //   - NEW — new
 //   - SEEN — viewed
-func (c Promotions) ApproveDiscountRequest(params *DiscountRequestParams) (*DiscountRequestResponse, error) {
+func (c Promotions) ApproveDiscountRequest(ctx context.Context, params *DiscountRequestParams) (*DiscountRequestResponse, error) {
 	url := "/v1/actions/discounts-task/approve"
 
 	resp := &DiscountRequestResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -694,12 +695,12 @@ func (c Promotions) ApproveDiscountRequest(params *DiscountRequestParams) (*Disc
 // You can decline applications in statuses:
 //   - NEW—new
 //   - SEEN—viewed
-func (c Promotions) DeclineDiscountRequest(params *DiscountRequestParams) (*DiscountRequestResponse, error) {
+func (c Promotions) DeclineDiscountRequest(ctx context.Context, params *DiscountRequestParams) (*DiscountRequestResponse, error) {
 	url := "/v1/actions/discounts-task/decline"
 
 	resp := &DiscountRequestResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

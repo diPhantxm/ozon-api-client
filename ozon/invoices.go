@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -42,12 +43,12 @@ type CreateUpdateProformaLinkResponse struct {
 }
 
 // Create or edit proforma invoice link for VAT refund to Turkey sellers
-func (c Invoices) CreateUpdate(params *CreateUpdateProformaLinkParams) (*CreateUpdateProformaLinkResponse, error) {
+func (c Invoices) CreateUpdate(ctx context.Context, params *CreateUpdateProformaLinkParams) (*CreateUpdateProformaLinkResponse, error) {
 	url := "/v1/invoice/create-or-update"
 
 	resp := &CreateUpdateProformaLinkResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -74,12 +75,12 @@ type GetProformaLinkResult struct {
 }
 
 // Get a proforma invoice link
-func (c Invoices) Get(params *GetProformaLinkParams) (*GetProformaLinkResponse, error) {
+func (c Invoices) Get(ctx context.Context, params *GetProformaLinkParams) (*GetProformaLinkResponse, error) {
 	url := "/v1/invoice/get"
 
 	resp := &GetProformaLinkResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -100,12 +101,12 @@ type DeleteProformaLinkResponse struct {
 	Result bool `json:"result"`
 }
 
-func (c Invoices) Delete(params *DeleteProformaLinkParams) (*DeleteProformaLinkResponse, error) {
+func (c Invoices) Delete(ctx context.Context, params *DeleteProformaLinkParams) (*DeleteProformaLinkResponse, error) {
 	url := "/v1/invoice/delete"
 
 	resp := &DeleteProformaLinkResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

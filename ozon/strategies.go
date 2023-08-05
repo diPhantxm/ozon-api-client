@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 
 	core "github.com/diphantxm/ozon-api-client"
@@ -38,12 +39,12 @@ type ListCompetitorsCompetitor struct {
 }
 
 // Method for getting a list of competitors—sellers with similar products in other online stores and marketplaces
-func (c Strategies) ListCompetitors(params *ListCompetitorsParams) (*ListCompetitorsResponse, error) {
+func (c Strategies) ListCompetitors(ctx context.Context, params *ListCompetitorsParams) (*ListCompetitorsResponse, error) {
 	url := "/v1/pricing-strategy/competitors/list"
 
 	resp := &ListCompetitorsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -97,12 +98,12 @@ type ListStrategiesStrategy struct {
 	Enabled bool `json:"enabled"`
 }
 
-func (c Strategies) List(params *ListStrategiesParams) (*ListStrategiesResponse, error) {
+func (c Strategies) List(ctx context.Context, params *ListStrategiesParams) (*ListStrategiesResponse, error) {
 	url := "/v1/pricing-strategy/list"
 
 	resp := &ListStrategiesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -140,12 +141,12 @@ type CreateStrategyResult struct {
 	StrategyId string `json:"strategy_id"`
 }
 
-func (c Strategies) Create(params *CreateStrategyParams) (*CreateStrategyResponse, error) {
+func (c Strategies) Create(ctx context.Context, params *CreateStrategyParams) (*CreateStrategyResponse, error) {
 	url := "/v1/pricing-strategy/create"
 
 	resp := &CreateStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -183,12 +184,12 @@ type InfoStrategyResult struct {
 	UpdateType StrategyUpdateType `json:"update_type"`
 }
 
-func (c Strategies) Info(params *InfoStrategyParams) (*InfoStrategyResponse, error) {
+func (c Strategies) Info(ctx context.Context, params *InfoStrategyParams) (*InfoStrategyResponse, error) {
 	url := "/v1/pricing-strategy/info"
 
 	resp := &InfoStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -212,12 +213,12 @@ type UpdateStrategyResponse struct {
 	core.CommonResponse
 }
 
-func (c Strategies) Update(params *UpdateStrategyParams) (*UpdateStrategyResponse, error) {
+func (c Strategies) Update(ctx context.Context, params *UpdateStrategyParams) (*UpdateStrategyResponse, error) {
 	url := "/v1/pricing-strategy/update"
 
 	resp := &UpdateStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -260,12 +261,12 @@ type AddProductsToStrategyResultError struct {
 	ProductId int64 `json:"product_id"`
 }
 
-func (c Strategies) AddProducts(params *AddProductsToStrategyParams) (*AddProductsToStrategyResponse, error) {
+func (c Strategies) AddProducts(ctx context.Context, params *AddProductsToStrategyParams) (*AddProductsToStrategyResponse, error) {
 	url := "/v1/pricing-strategy/products/add"
 
 	resp := &AddProductsToStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -299,12 +300,12 @@ type GetStrategiesByProductIdsResultProductInfo struct {
 	StrategyId string `json:"strategy_id"`
 }
 
-func (c Strategies) GetByProductIds(params *GetStrategiesByProductIdsParams) (*GetStrategiesByProductIdsResponse, error) {
+func (c Strategies) GetByProductIds(ctx context.Context, params *GetStrategiesByProductIdsParams) (*GetStrategiesByProductIdsResponse, error) {
 	url := "/v1/pricing-strategy/strategy-ids-by-product-ids"
 
 	resp := &GetStrategiesByProductIdsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -330,12 +331,12 @@ type ListProductsInStrategyResult struct {
 	ProductId []string `json:"product_id"`
 }
 
-func (c Strategies) ListProducts(params *ListProductsInStrategyParams) (*ListProductsInStrategyResponse, error) {
+func (c Strategies) ListProducts(ctx context.Context, params *ListProductsInStrategyParams) (*ListProductsInStrategyResponse, error) {
 	url := "/v1/pricing-strategy/products/list"
 
 	resp := &ListProductsInStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -376,12 +377,12 @@ type GetCompetitorPriceResult struct {
 	StrategyCompetitorProductURL string `json:"strategy_competitor_product_url"`
 }
 
-func (c Strategies) GetCompetitorPrice(params *GetCompetitorPriceParams) (*GetCompetitorPriceResponse, error) {
+func (c Strategies) GetCompetitorPrice(ctx context.Context, params *GetCompetitorPriceParams) (*GetCompetitorPriceResponse, error) {
 	url := "/v1/pricing-strategy/product/info"
 
 	resp := &GetCompetitorPriceResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -407,12 +408,12 @@ type RemoveProductsFromStrategyResult struct {
 	FailedProductCount int32 `json:"failed_product_count"`
 }
 
-func (c Strategies) RemoveProducts(params *RemoveProductsFromStrategyParams) (*RemoveProductsFromStrategyResponse, error) {
+func (c Strategies) RemoveProducts(ctx context.Context, params *RemoveProductsFromStrategyParams) (*RemoveProductsFromStrategyResponse, error) {
 	url := "/v1/pricing-strategy/products/delete"
 
 	resp := &RemoveProductsFromStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -433,12 +434,12 @@ type ChangeStrategyStatusResponse struct {
 	core.CommonResponse
 }
 
-func (c Strategies) ChangeStatus(params *ChangeStrategyStatusParams) (*ChangeStrategyStatusResponse, error) {
+func (c Strategies) ChangeStatus(ctx context.Context, params *ChangeStrategyStatusParams) (*ChangeStrategyStatusResponse, error) {
 	url := "/v1/pricing-strategy/status"
 
 	resp := &ChangeStrategyStatusResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -456,12 +457,12 @@ type RemoveStrategyResponse struct {
 	core.CommonResponse
 }
 
-func (c Strategies) Remove(params *RemoveStrategyParams) (*RemoveStrategyResponse, error) {
+func (c Strategies) Remove(ctx context.Context, params *RemoveStrategyParams) (*RemoveStrategyResponse, error) {
 	url := "/v1/pricing-strategy/delete"
 
 	resp := &RemoveStrategyResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

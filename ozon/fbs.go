@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -494,12 +495,12 @@ type FinancialDataProductPicking struct {
 	Tag string `json:"tag"`
 }
 
-func (c FBS) ListUnprocessedShipments(params *ListUnprocessedShipmentsParams) (*ListUnprocessedShipmentsResponse, error) {
+func (c FBS) ListUnprocessedShipments(ctx context.Context, params *ListUnprocessedShipmentsParams) (*ListUnprocessedShipmentsResponse, error) {
 	url := "/v3/posting/fbs/unfulfilled/list"
 
 	resp := &ListUnprocessedShipmentsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -602,12 +603,12 @@ type GetFBSShipmentsListResult struct {
 // You can filter shipments by their status. The list of available statuses is specified in the description of the filter.status parameter.
 //
 // The true value of the has_next parameter in the response means there is not the entire array of shipments in the response. To get information on the remaining shipments, make a new request with a different offset value.
-func (c FBS) GetFBSShipmentsList(params *GetFBSShipmentsListParams) (*GetFBSShipmentsListResponse, error) {
+func (c FBS) GetFBSShipmentsList(ctx context.Context, params *GetFBSShipmentsListParams) (*GetFBSShipmentsListResponse, error) {
 	url := "/v3/posting/fbs/list"
 
 	resp := &GetFBSShipmentsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -673,12 +674,12 @@ type PackOrderAdditionalData struct {
 // Differs from /v2/posting/fbs/ship by the presence of the field `exemplar_info` in the request.
 //
 // If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value is_gtd_absent = true
-func (c FBS) PackOrder(params *PackOrderParams) (*PackOrderResponse, error) {
+func (c FBS) PackOrder(ctx context.Context, params *PackOrderParams) (*PackOrderResponse, error) {
 	url := "/v4/posting/fbs/ship"
 
 	resp := &PackOrderResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -743,12 +744,12 @@ type ValidateLabelingCodesResultProduct struct {
 // Method for checking whether labeling codes meet the "Chestny ZNAK" system requirements on length and symbols.
 //
 // If you don't have the customs cargo declaration (CCD) number, you don't have to specify it
-func (c FBS) ValidateLabelingCodes(params *ValidateLabelingCodesParams) (*ValidateLabelingCodesResponse, error) {
+func (c FBS) ValidateLabelingCodes(ctx context.Context, params *ValidateLabelingCodesParams) (*ValidateLabelingCodesResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/validate"
 
 	resp := &ValidateLabelingCodesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -845,12 +846,12 @@ type GetShipmentDataByBarcodeResultFinancialData struct {
 }
 
 // Method for getting shipments data by barcode
-func (c FBS) GetShipmentDataByBarcode(params *GetShipmentDataByBarcodeParams) (*GetShipmentDataByBarcodeResponse, error) {
+func (c FBS) GetShipmentDataByBarcode(ctx context.Context, params *GetShipmentDataByBarcodeParams) (*GetShipmentDataByBarcodeResponse, error) {
 	url := "/v2/posting/fbs/get-by-barcode"
 
 	resp := &GetShipmentDataByBarcodeResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1134,12 +1135,12 @@ type FBSProductExemplar struct {
 }
 
 // Method for getting shipment details by identifier
-func (c FBS) GetShipmentDataByIdentifier(params *GetShipmentDataByIdentifierParams) (*GetShipmentDataByIdentifierResponse, error) {
+func (c FBS) GetShipmentDataByIdentifier(ctx context.Context, params *GetShipmentDataByIdentifierParams) (*GetShipmentDataByIdentifierResponse, error) {
 	url := "/v3/posting/fbs/get"
 
 	resp := &GetShipmentDataByIdentifierResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1180,12 +1181,12 @@ type AddTrackingNumbersResponseResult struct {
 }
 
 // Add tracking numbers to shipments
-func (c FBS) AddTrackingNumbers(params *AddTrackingNumbersParams) (*AddTrackingNumbersResponse, error) {
+func (c FBS) AddTrackingNumbers(ctx context.Context, params *AddTrackingNumbersParams) (*AddTrackingNumbersResponse, error) {
 	url := "/v2/fbs/posting/tracking-number/set"
 
 	resp := &AddTrackingNumbersResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1304,12 +1305,12 @@ type FBSAct struct {
 }
 
 // Returns a list of shipment certificates allowing to filter them by time period, status, and integration type
-func (c FBS) ListOfShipmentCertificates(params *ListOfShipmentCertificatesParams) (*ListOfShipmentCertificatesResponse, error) {
+func (c FBS) ListOfShipmentCertificates(ctx context.Context, params *ListOfShipmentCertificatesParams) (*ListOfShipmentCertificatesResponse, error) {
 	url := "/v2/posting/fbs/act/list"
 
 	resp := &ListOfShipmentCertificatesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1336,12 +1337,12 @@ type SignShipmentCertificateResponse struct {
 }
 
 // Signs shipment certificates electronically via the electronic documents (ED) system of Ozon logistics
-func (c FBS) SignShipmentCertificate(params *SignShipmentCertificateParams) (*SignShipmentCertificateResponse, error) {
+func (c FBS) SignShipmentCertificate(ctx context.Context, params *SignShipmentCertificateParams) (*SignShipmentCertificateResponse, error) {
 	url := "/v2/posting/fbs/digital/act/document-sign"
 
 	resp := &SignShipmentCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1374,12 +1375,12 @@ type ChangeStatusToResponseResult struct {
 }
 
 // Changes the shipment status to "Delivering" if a third-party delivery service is being used
-func (c FBS) ChangeStatusToDelivering(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+func (c FBS) ChangeStatusToDelivering(ctx context.Context, params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
 	url := "/v2/fbs/posting/delivering"
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1389,12 +1390,12 @@ func (c FBS) ChangeStatusToDelivering(params *ChangeStatusToParams) (*ChangeStat
 }
 
 // Changes the shipment status to "Last mile" if a third-party delivery service is being used
-func (c FBS) ChangeStatusToLastMile(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+func (c FBS) ChangeStatusToLastMile(ctx context.Context, params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
 	url := "/v2/fbs/posting/last-mile"
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1404,12 +1405,12 @@ func (c FBS) ChangeStatusToLastMile(params *ChangeStatusToParams) (*ChangeStatus
 }
 
 // Changes the shipment status to "Delivered" if a third-party delivery service is being used
-func (c FBS) ChangeStatusToDelivered(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+func (c FBS) ChangeStatusToDelivered(ctx context.Context, params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
 	url := "/v2/fbs/posting/delivered"
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1419,12 +1420,12 @@ func (c FBS) ChangeStatusToDelivered(params *ChangeStatusToParams) (*ChangeStatu
 }
 
 // Change shipment status to "Sent by seller". Status is only available to sellers with a first mile selling from abroad
-func (c FBS) ChangeStatusToSendBySeller(params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
+func (c FBS) ChangeStatusToSendBySeller(ctx context.Context, params *ChangeStatusToParams) (*ChangeStatusToResponse, error) {
 	url := "/v2/fbs/posting/sent-by-seller"
 
 	resp := &ChangeStatusToResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1446,12 +1447,12 @@ type PassShipmentToShippingResponse struct {
 }
 
 // Transfers disputed orders to shipping. The shipment status will change to `awaiting_deliver`
-func (c FBS) PassShipmentToShipping(params *PassShipmentToShippingParams) (*PassShipmentToShippingResponse, error) {
+func (c FBS) PassShipmentToShipping(ctx context.Context, params *PassShipmentToShippingParams) (*PassShipmentToShippingResponse, error) {
 	url := "/v2/posting/fbs/awaiting-delivery"
 
 	resp := &PassShipmentToShippingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1494,12 +1495,12 @@ type CancelShipmentResponse struct {
 // You can't cancel presumably delivered orders.
 //
 // If `cancel_reason_id` parameter value is 402, fill the `cancel_reason_message` field.
-func (c FBS) CancelShipment(params *CancelShipmentParams) (*CancelShipmentResponse, error) {
+func (c FBS) CancelShipment(ctx context.Context, params *CancelShipmentParams) (*CancelShipmentResponse, error) {
 	url := "/v2/posting/fbs/cancel"
 
 	resp := &CancelShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1541,12 +1542,12 @@ type CreateActResult struct {
 // Launches the procedure for generating the transfer documents: acceptance and transfer certificate and the waybill.
 //
 // To generate and receive transfer documents, transfer the shipment to the `awaiting_deliver` status
-func (c FBS) CreateAct(params *CreateActParams) (*CreateActResponse, error) {
+func (c FBS) CreateAct(ctx context.Context, params *CreateActParams) (*CreateActResponse, error) {
 	url := "/v2/posting/fbs/act/create"
 
 	resp := &CreateActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1583,12 +1584,12 @@ type GetLabelingResult struct {
 }
 
 // Method for getting labeling after using the /v1/posting/fbs/package-label/create method
-func (c FBS) GetLabeling(params *GetLabelingParams) (*GetLabelingResponse, error) {
+func (c FBS) GetLabeling(ctx context.Context, params *GetLabelingParams) (*GetLabelingResponse, error) {
 	url := "/v1/posting/fbs/package-label/get"
 
 	resp := &GetLabelingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/pdf",
 	})
 	if err != nil {
@@ -1623,12 +1624,12 @@ type PrintLabelingResponse struct {
 // We recommend requesting the label 45-60 seconds after the shipments were packed.
 //
 // The next postings are not ready error means that the label is not ready. Try again later
-func (c FBS) PrintLabeling(params *PrintLabelingParams) (*PrintLabelingResponse, error) {
+func (c FBS) PrintLabeling(ctx context.Context, params *PrintLabelingParams) (*PrintLabelingResponse, error) {
 	url := "/v2/posting/fbs/package-label"
 
 	resp := &PrintLabelingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/pdf",
 	})
 	if err != nil {
@@ -1659,12 +1660,12 @@ type CreateTaskForGeneratingLabelResult struct {
 // Method for creating a task for asynchronous labeling generation.
 //
 // To get labels created as a result of the method, use the /v1/posting/fbs/package-label/get method
-func (c FBS) CreateTaskForGeneratingLabel(params *CreateTaskForGeneratingLabelParams) (*CreateTaskForGeneratingLabelResponse, error) {
+func (c FBS) CreateTaskForGeneratingLabel(ctx context.Context, params *CreateTaskForGeneratingLabelParams) (*CreateTaskForGeneratingLabelResponse, error) {
 	url := "/v1/posting/fbs/package-label/create"
 
 	resp := &CreateTaskForGeneratingLabelResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/pdf",
 	})
 	if err != nil {
@@ -1715,12 +1716,12 @@ type GetDropOffPointRestrictionsResult struct {
 
 // Method for getting dimensions, weight, and other restrictions of the drop-off point by the shipment number.
 // The method is applicable only for the FBS scheme
-func (c FBS) GetDropOffPointRestrictions(params *GetDropOffPointRestrictionsParams) (*GetDropOffPointRestrictionsResponse, error) {
+func (c FBS) GetDropOffPointRestrictions(ctx context.Context, params *GetDropOffPointRestrictionsParams) (*GetDropOffPointRestrictionsResponse, error) {
 	url := "/v1/posting/fbs/restrictions"
 
 	resp := &GetDropOffPointRestrictionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1766,12 +1767,12 @@ type CheckProductItemsDataResponse struct {
 // For example, you have 10 product items in your system.
 // You have passed them for checking and saving. Then they added another 60 product items to your system.
 // When you pass product items for checking and saving again, pass all of them: both old and newly added
-func (c FBS) CheckproductItemsData(params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
+func (c FBS) CheckproductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/set"
 
 	resp := &CheckProductItemsDataResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1803,12 +1804,12 @@ type GetProductItemsCheckStatusesResponse struct {
 
 // Method for getting check statuses of product items that were passed in the `/fbs/posting/product/exemplar/set` method.
 // Also returns data on these product items.
-func (c FBS) GetProductItemsCheckStatuses(params *GetProductItemsCheckStatusesParams) (*GetProductItemsCheckStatusesResponse, error) {
+func (c FBS) GetProductItemsCheckStatuses(ctx context.Context, params *GetProductItemsCheckStatusesParams) (*GetProductItemsCheckStatusesResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/status"
 
 	resp := &GetProductItemsCheckStatusesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1841,12 +1842,12 @@ type RescheduleShipmentDeliveryDateResponse struct {
 }
 
 // You can change the delivery date of a shipment up to two times
-func (c FBS) RescheduleShipmentDeliveryDate(params *RescheduleShipmentDeliveryDateParams) (*RescheduleShipmentDeliveryDateResponse, error) {
+func (c FBS) RescheduleShipmentDeliveryDate(ctx context.Context, params *RescheduleShipmentDeliveryDateParams) (*RescheduleShipmentDeliveryDateResponse, error) {
 	url := "/v1/posting/fbs/timeslot/set"
 
 	resp := &RescheduleShipmentDeliveryDateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1882,12 +1883,12 @@ type DateAvailableForDeliveryScheduleDeliveryInterval struct {
 }
 
 // Method for getting the dates and number of times available for delivery reschedule
-func (c FBS) DateAvailableForDeliverySchedule(params *DateAvailableForDeliveryScheduleParams) (*DateAvailableForDeliveryScheduleResponse, error) {
+func (c FBS) DateAvailableForDeliverySchedule(ctx context.Context, params *DateAvailableForDeliveryScheduleParams) (*DateAvailableForDeliveryScheduleResponse, error) {
 	url := "/v1/posting/fbs/timeslot/change-restrictions"
 
 	resp := &DateAvailableForDeliveryScheduleResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1917,12 +1918,12 @@ type ListManufacturingCountriesResult struct {
 }
 
 // Method for getting a list of available manufacturing countries and their ISO codes
-func (c FBS) ListManufacturingCountries(params *ListManufacturingCountriesParams) (*ListManufacturingCountriesResponse, error) {
+func (c FBS) ListManufacturingCountries(ctx context.Context, params *ListManufacturingCountriesParams) (*ListManufacturingCountriesResponse, error) {
 	url := "/v2/posting/fbs/product/country/list"
 
 	resp := &ListManufacturingCountriesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1953,12 +1954,12 @@ type SetManufacturingCountryResponse struct {
 }
 
 // The method to set the manufacturing country to the product if it hasn't been specified
-func (c FBS) SetManufacturingCountry(params *SetManufacturingCountryParams) (*SetManufacturingCountryResponse, error) {
+func (c FBS) SetManufacturingCountry(ctx context.Context, params *SetManufacturingCountryParams) (*SetManufacturingCountryResponse, error) {
 	url := "/v2/posting/fbs/product/country/set"
 
 	resp := &SetManufacturingCountryResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2008,12 +2009,12 @@ type PartialPackOrderAdditionalData struct {
 // The primary unassembled shipment will contain some of the products that were not passed to the request.
 //
 // The status of the original shipment will only change when the split shipments status changes
-func (c FBS) PartialPackOrder(params *PartialPackOrderParams) (*PartialPackOrderResponse, error) {
+func (c FBS) PartialPackOrder(ctx context.Context, params *PartialPackOrderParams) (*PartialPackOrderResponse, error) {
 	url := "/v3/posting/fbs/ship/package"
 
 	resp := &PartialPackOrderResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2101,12 +2102,12 @@ type AvailableFreightsListResultError struct {
 }
 
 // Method for getting freights that require printing acceptance and transfer certificates and a waybill
-func (c FBS) AvailableFreightsList(params *AvailableFreightsListParams) (*AvailableFreightsListResponse, error) {
+func (c FBS) AvailableFreightsList(ctx context.Context, params *AvailableFreightsListParams) (*AvailableFreightsListResponse, error) {
 	url := "/v1/posting/carriage-available/list"
 
 	resp := &AvailableFreightsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2137,12 +2138,12 @@ type GenerateActResponse struct {
 }
 
 // Get current status of generating digital acceptance and transfer certificate and waybill
-func (c FBS) GenerateAct(params *GenerateActParams) (*GenerateActResponse, error) {
+func (c FBS) GenerateAct(ctx context.Context, params *GenerateActParams) (*GenerateActResponse, error) {
 	url := "/v2/posting/fbs/digital/act/check-status"
 
 	resp := &GenerateActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2176,12 +2177,12 @@ type GetDigitalActResponse struct {
 }
 
 // Specify the type of a certificate in the doc_type parameter: `act_of_acceptance`, `act_of_mismatch`, `act_of_excess`
-func (c FBS) GetDigitalAct(params *GetDigitalActParams) (*GetDigitalActResponse, error) {
+func (c FBS) GetDigitalAct(ctx context.Context, params *GetDigitalActParams) (*GetDigitalActResponse, error) {
 	url := "/v2/posting/fbs/digital/act/get-pdf"
 
 	resp := &GetDigitalActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/json",
 	})
 	if err != nil {
@@ -2211,12 +2212,12 @@ type PackageUnitLabelsResponse struct {
 }
 
 // Method creates package unit labels
-func (c FBS) PackageUnitLabel(params *PackageUnitLabelsParams) (*PackageUnitLabelsResponse, error) {
+func (c FBS) PackageUnitLabel(ctx context.Context, params *PackageUnitLabelsParams) (*PackageUnitLabelsResponse, error) {
 	url := "/v2/posting/fbs/act/get-container-labels"
 
 	resp := &PackageUnitLabelsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/json",
 	})
 	if err != nil {
@@ -2241,12 +2242,12 @@ type OpenDisputeOverShipmentResponse struct {
 
 // If the shipment has been handed over for delivery, but has not been scanned at the sorting center, you can open a dispute.
 // Opened dispute will put the shipment into the `arbitration` status
-func (c FBS) OpenDisputeOverShipment(params *OpenDisputeOverShipmentParams) (*OpenDisputeOverShipmentResponse, error) {
+func (c FBS) OpenDisputeOverShipment(ctx context.Context, params *OpenDisputeOverShipmentParams) (*OpenDisputeOverShipmentResponse, error) {
 	url := "/v2/posting/fbs/arbitration"
 
 	resp := &OpenDisputeOverShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2287,12 +2288,12 @@ type ShipmentCancellationReasonsResultReason struct {
 }
 
 // Returns a list of cancellation reasons for particular shipments
-func (c FBS) ShipmentCancellationReasons(params *ShipmentCancellationReasonsParams) (*ShipmentCancellationReasonsResponse, error) {
+func (c FBS) ShipmentCancellationReasons(ctx context.Context, params *ShipmentCancellationReasonsParams) (*ShipmentCancellationReasonsResponse, error) {
 	url := "/v1/posting/fbs/cancel-reason"
 
 	resp := &ShipmentCancellationReasonsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2325,12 +2326,12 @@ type ShipmentsCancellatinoReasonsResult struct {
 }
 
 // Returns a list of cancellation reasons for particular shipments
-func (c FBS) ShipmentsCancellationReasons() (*ShipmentsCancellationReasonsResponse, error) {
+func (c FBS) ShipmentsCancellationReasons(ctx context.Context) (*ShipmentsCancellationReasonsResponse, error) {
 	url := "/v2/posting/fbs/cancel-reason/list"
 
 	resp := &ShipmentsCancellationReasonsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2363,12 +2364,12 @@ type AddWeightForBulkProductResponse struct {
 }
 
 // Add weight for bulk products in a shipment
-func (c FBS) AddWeightForBulkProduct(params *AddWeightForBulkProductParams) (*AddWeightForBulkProductResponse, error) {
+func (c FBS) AddWeightForBulkProduct(ctx context.Context, params *AddWeightForBulkProductParams) (*AddWeightForBulkProductResponse, error) {
 	url := "/v2/posting/fbs/product/change"
 
 	resp := &AddWeightForBulkProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2422,12 +2423,12 @@ type CancelSendingResponse struct {
 // You can't cancel presumably delivered orders.
 //
 // If `cancel_reason_id` parameter value is 402, fill the `cancel_reason_message` field.
-func (c FBS) CancelSending(params *CancelSendingParams) (*CancelSendingResponse, error) {
+func (c FBS) CancelSending(ctx context.Context, params *CancelSendingParams) (*CancelSendingResponse, error) {
 	url := "/v2/posting/fbs/product/cancel"
 
 	resp := &CancelSendingResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2492,12 +2493,12 @@ type ListShipmentInCertificateResultProduct struct {
 }
 
 // Returns a list of shipments in the certificate by certificate identifier
-func (c FBS) ListShipmentInCertificate(params *ListShipmentInCertificateParams) (*ListShipmentInCertificateResponse, error) {
+func (c FBS) ListShipmentInCertificate(ctx context.Context, params *ListShipmentInCertificateParams) (*ListShipmentInCertificateResponse, error) {
 	url := "/v2/posting/fbs/act/get-postings"
 
 	resp := &ListShipmentInCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2529,12 +2530,12 @@ type SpecifyNumberOfBoxesResult struct {
 }
 
 // Method for passing the number of boxes for multi-box shipments when working under the rFBS Aggregator scheme (using the Ozon partner delivery)
-func (c FBS) SpecifyNumberOfBoxes(params *SpecifyNumberOfBoxesParams) (*SpecifyNumberOfBoxesResponse, error) {
+func (c FBS) SpecifyNumberOfBoxes(ctx context.Context, params *SpecifyNumberOfBoxesParams) (*SpecifyNumberOfBoxesResponse, error) {
 	url := "/v3/posting/multiboxqty/set"
 
 	resp := &SpecifyNumberOfBoxesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2600,12 +2601,12 @@ type StatusOfActResponseResult struct {
 // the method returns status of generating an acceptance and transfer certificate and a waybill.
 //
 // If you are connected to EDC, the method returns status of generating a waybill only
-func (c FBS) StatusOfAct(params *StatusOfActParams) (*StatusOfActResponse, error) {
+func (c FBS) StatusOfAct(ctx context.Context, params *StatusOfActParams) (*StatusOfActResponse, error) {
 	url := "/v2/posting/fbs/act/check-status"
 
 	resp := &StatusOfActResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2656,12 +2657,12 @@ type ETGBCustomDeclarationsResultETGB struct {
 }
 
 // Method for getting Elektronik Ticaret Gümrük Beyannamesi (ETGB) customs declarations for sellers from Turkey
-func (c FBS) ETGBCustomsDeclarations(params *ETGBCustomsDeclarationsParams) (*ETGBCustomsDeclarationsResponse, error) {
+func (c FBS) ETGBCustomsDeclarations(ctx context.Context, params *ETGBCustomsDeclarationsParams) (*ETGBCustomsDeclarationsResponse, error) {
 	url := "/v1/posting/global/etgb"
 
 	resp := &ETGBCustomsDeclarationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2689,12 +2690,12 @@ type BarcodeFromProductShipmentResponse struct {
 }
 
 // Method for getting a barcode to show at a pick-up point or sorting center during the shipment
-func (c FBS) BarcodeFromProductShipment(params *BarcodeFromProductShipmentParams) (*BarcodeFromProductShipmentResponse, error) {
+func (c FBS) BarcodeFromProductShipment(ctx context.Context, params *BarcodeFromProductShipmentParams) (*BarcodeFromProductShipmentResponse, error) {
 	url := "/v2/posting/fbs/act/get-barcode"
 
 	resp := &BarcodeFromProductShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "image/png",
 	})
 	if err != nil {
@@ -2718,12 +2719,12 @@ type BarcodeValueFromProductShipmentResponse struct {
 }
 
 // Use this method to get the barcode from the /v2/posting/fbs/act/get-barcode response in text format.
-func (c FBS) BarcodeValueFromProductShipment(params *BarcodeValueFromProductShipmentParams) (*BarcodeValueFromProductShipmentResponse, error) {
+func (c FBS) BarcodeValueFromProductShipment(ctx context.Context, params *BarcodeValueFromProductShipmentParams) (*BarcodeValueFromProductShipmentResponse, error) {
 	url := "/v2/posting/fbs/act/get-barcode/text"
 
 	resp := &BarcodeValueFromProductShipmentResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2756,12 +2757,12 @@ type GetActPDFResponse struct {
 // If you are not connected to electronic document circulation (EDC), the method returns an acceptance and transfer certificate and a waybill.
 //
 // If you are connected to EDC, the method returns a waybill only.
-func (c FBS) GetActPDF(params *GetActPDFParams) (*GetActPDFResponse, error) {
+func (c FBS) GetActPDF(ctx context.Context, params *GetActPDFParams) (*GetActPDFResponse, error) {
 	url := "/v2/posting/fbs/act/get-pdf"
 
 	resp := &GetActPDFResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/pdf",
 	})
 	if err != nil {

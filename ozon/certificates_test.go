@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 	"time"
@@ -51,7 +52,8 @@ func TestListOfAccordanceTypes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().ListOfAccordanceTypes()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().ListOfAccordanceTypes(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -113,7 +115,8 @@ func TestDirectoryOfDocumentTypes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().DirectoryOfDocumentTypes()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().DirectoryOfDocumentTypes(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -168,7 +171,8 @@ func TestListOfCertifiedCategories(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().ListOfCertifiedCategories(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().ListOfCertifiedCategories(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -215,7 +219,8 @@ func TestLinkCertificateToProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().LinkToProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().LinkToProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -264,7 +269,8 @@ func TestDeleteCertificate(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().Delete(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -322,7 +328,8 @@ func TestGetCertificateInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().GetInfo(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().GetInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -395,7 +402,8 @@ func TestListCertificates(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().List(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -441,7 +449,8 @@ func TestProductStatuses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().ProductStatuses()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().ProductStatuses(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -498,7 +507,8 @@ func TestListProductsForCertificate(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().ListProductsForCertificate(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().ListProductsForCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -551,7 +561,8 @@ func TestUnlinkFromProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().UnlinkFromProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().UnlinkFromProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -597,7 +608,8 @@ func TestPossibleRejectReasons(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().PossibleRejectReasons()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().PossibleRejectReasons(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -643,7 +655,8 @@ func TestPossibleStatuses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().PossibleStatuses()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().PossibleStatuses(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -695,7 +708,8 @@ func TestAddCertificatesForProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Certificates().AddForProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Certificates().AddForProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

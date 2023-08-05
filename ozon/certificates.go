@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -43,12 +44,12 @@ type ListOfAccordanceTypesResultHazard struct {
 }
 
 // List of accordance types (version 2)
-func (c Certificates) ListOfAccordanceTypes() (*ListOfAccordanceTypesResponse, error) {
+func (c Certificates) ListOfAccordanceTypes(ctx context.Context) (*ListOfAccordanceTypesResponse, error) {
 	url := "/v2/product/certificate/accordance-types/list"
 
 	resp := &ListOfAccordanceTypesResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -73,12 +74,12 @@ type DirectoryOfDocumentTypesResult struct {
 }
 
 // Directory of document types
-func (c Certificates) DirectoryOfDocumentTypes() (*DirectoryOfDocumentTypesResponse, error) {
+func (c Certificates) DirectoryOfDocumentTypes(ctx context.Context) (*DirectoryOfDocumentTypesResponse, error) {
 	url := "/v1/product/certificate/types"
 
 	resp := &DirectoryOfDocumentTypesResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -119,12 +120,12 @@ type ListOfCertifiedCategoriesResultCert struct {
 }
 
 // List of certified categories
-func (c Certificates) ListOfCertifiedCategories(params *ListOfCertifiedCategoriesParams) (*ListOfCertifiedCategoriesResponse, error) {
+func (c Certificates) ListOfCertifiedCategories(ctx context.Context, params *ListOfCertifiedCategoriesParams) (*ListOfCertifiedCategoriesResponse, error) {
 	url := "/v1/product/certificate/types"
 
 	resp := &ListOfCertifiedCategoriesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -149,12 +150,12 @@ type LinkCertificateToProductResponse struct {
 }
 
 // Link the certificate to the product
-func (c Certificates) LinkToProduct(params *LinkCertificateToProductParams) (*LinkCertificateToProductResponse, error) {
+func (c Certificates) LinkToProduct(ctx context.Context, params *LinkCertificateToProductParams) (*LinkCertificateToProductResponse, error) {
 	url := "/v1/product/certificate/bind"
 
 	resp := &LinkCertificateToProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -186,12 +187,12 @@ type DeleteCertificateResult struct {
 }
 
 // Delete certificate
-func (c Certificates) Delete(params *DeleteCertificateParams) (*DeleteCertificateResponse, error) {
+func (c Certificates) Delete(ctx context.Context, params *DeleteCertificateParams) (*DeleteCertificateResponse, error) {
 	url := "/v1/product/certificate/delete"
 
 	resp := &DeleteCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -248,12 +249,12 @@ type GetCertificateInfoResult struct {
 }
 
 // Certificate information
-func (c Certificates) GetInfo(params *GetCertificateInfoParams) (*GetCertificateInfoResponse, error) {
+func (c Certificates) GetInfo(ctx context.Context, params *GetCertificateInfoParams) (*GetCertificateInfoResponse, error) {
 	url := "/v1/product/certificate/info"
 
 	resp := &GetCertificateInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -331,12 +332,12 @@ type ListCertificatesResultCert struct {
 }
 
 // Certificates list
-func (c Certificates) List(params *ListCertificatesParams) (*ListCertificatesResponse, error) {
+func (c Certificates) List(ctx context.Context, params *ListCertificatesParams) (*ListCertificatesResponse, error) {
 	url := "/v1/product/certificate/list"
 
 	resp := &ListCertificatesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -360,12 +361,12 @@ type ProductStatusesResult struct {
 	Name string `json:"name"`
 }
 
-func (c Certificates) ProductStatuses() (*ProductStatusesResponse, error) {
+func (c Certificates) ProductStatuses(ctx context.Context) (*ProductStatusesResponse, error) {
 	url := "/v1/product/certificate/list"
 
 	resp := &ProductStatusesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -410,12 +411,12 @@ type ListProductsForCertificateResult struct {
 }
 
 // A method for getting a list of possible statuses of products when binding them to a certificate
-func (c Certificates) ListProductsForCertificate(params *ListProductsForCertificateParams) (*ListProductsForCertificateResponse, error) {
+func (c Certificates) ListProductsForCertificate(ctx context.Context, params *ListProductsForCertificateParams) (*ListProductsForCertificateResponse, error) {
 	url := "/v1/product/certificate/products/list"
 
 	resp := &ListProductsForCertificateResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -453,12 +454,12 @@ type UnlinkFromProductResult struct {
 }
 
 // Unbind products from a certificate
-func (c Certificates) UnlinkFromProduct(params *UnlinkFromProductParams) (*UnlinkFromProductResponse, error) {
+func (c Certificates) UnlinkFromProduct(ctx context.Context, params *UnlinkFromProductParams) (*UnlinkFromProductResponse, error) {
 	url := "/v1/product/certificate/unbind"
 
 	resp := &UnlinkFromProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -483,12 +484,12 @@ type PossibleRejectReasonsResult struct {
 }
 
 // Possible certificate rejection reasons
-func (c Certificates) PossibleRejectReasons() (*PossibleRejectReasonsResponse, error) {
+func (c Certificates) PossibleRejectReasons(ctx context.Context) (*PossibleRejectReasonsResponse, error) {
 	url := "/v1/product/certificate/rejection_reasons/list"
 
 	resp := &PossibleRejectReasonsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -512,12 +513,12 @@ type PossibleStatusesResult struct {
 	Name string `json:"name"`
 }
 
-func (c Certificates) PossibleStatuses() (*PossibleStatusesResponse, error) {
+func (c Certificates) PossibleStatuses(ctx context.Context) (*PossibleStatusesResponse, error) {
 	url := "/v1/product/certificate/status/list"
 
 	resp := &PossibleStatusesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -556,12 +557,12 @@ type AddCertificatesForProductsResponse struct {
 }
 
 // Adding certificates for products
-func (c Certificates) AddForProducts(params *AddCertificatesForProductsParams) (*AddCertificatesForProductsResponse, error) {
+func (c Certificates) AddForProducts(ctx context.Context, params *AddCertificatesForProductsParams) (*AddCertificatesForProductsResponse, error) {
 	url := "/v1/product/certificate/create"
 
 	resp := &AddCertificatesForProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, map[string]string{
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, map[string]string{
 		"Content-Type": "multipart/form-data",
 	})
 	if err != nil {

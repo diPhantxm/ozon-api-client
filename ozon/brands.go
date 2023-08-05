@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 
 	core "github.com/diphantxm/ozon-api-client"
@@ -44,12 +45,12 @@ type ListCertifiedBrandsResultCertificate struct {
 }
 
 // List of certified brands
-func (c Brands) List(params *ListCertifiedBrandsParams) (*ListCertifiedBrandsResponse, error) {
+func (c Brands) List(ctx context.Context, params *ListCertifiedBrandsParams) (*ListCertifiedBrandsResponse, error) {
 	url := "/v1/brand/company-certification/list"
 
 	resp := &ListCertifiedBrandsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

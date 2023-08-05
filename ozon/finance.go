@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -151,12 +152,12 @@ type ReportOnSoldProductsResultRow struct {
 // Returns information on products sold and returned within a month. Canceled or non-purchased products are not included.
 //
 // Report is returned no later than the 5th day of the next month
-func (c Finance) ReportOnSoldProducts(params *ReportOnSoldProductsParams) (*ReportOnSoldProductsResponse, error) {
+func (c Finance) ReportOnSoldProducts(ctx context.Context, params *ReportOnSoldProductsParams) (*ReportOnSoldProductsResponse, error) {
 	url := "/v1/finance/realization"
 
 	resp := &ReportOnSoldProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -241,12 +242,12 @@ type GetTotalTransactionsSumResult struct {
 }
 
 // Returns total sums for transactions for specified period
-func (c Finance) GetTotalTransactionsSum(params *GetTotalTransactionsSumParams) (*GetTotalTransactionsSumResponse, error) {
+func (c Finance) GetTotalTransactionsSum(ctx context.Context, params *GetTotalTransactionsSumParams) (*GetTotalTransactionsSumResponse, error) {
 	url := "/v3/finance/transaction/totals"
 
 	resp := &GetTotalTransactionsSumResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -390,12 +391,12 @@ type ListTransactionsResultOperationService struct {
 // Returns detailed information on all accruals. The maximum period for which you can get information in one request is 1 month.
 //
 // If you don't specify the posting_number in request, the response contains all shipments for the specified period or shipments of a certain type
-func (c Finance) ListTransactions(params *ListTransactionsParams) (*ListTransactionsResponse, error) {
+func (c Finance) ListTransactions(ctx context.Context, params *ListTransactionsParams) (*ListTransactionsResponse, error) {
 	url := "/v3/finance/transaction/list"
 
 	resp := &ListTransactionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

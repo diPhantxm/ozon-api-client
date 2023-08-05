@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -61,7 +62,8 @@ func TestGetFBOReturns(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Returns().GetFBOReturns(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().GetFBOReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -159,7 +161,8 @@ func TestGetFBSReturns(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Returns().GetFBSReturns(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().GetFBSReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

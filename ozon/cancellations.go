@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -81,12 +82,12 @@ type CancellationInfoState struct {
 }
 
 // Method for getting information about a rFBS cancellation request
-func (c Cancellations) GetInfo(params *GetCancellationInfoParams) (*GetCancellationInfoResponse, error) {
+func (c Cancellations) GetInfo(ctx context.Context, params *GetCancellationInfoParams) (*GetCancellationInfoResponse, error) {
 	url := "/v1/delivery-method/list"
 
 	resp := &GetCancellationInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -153,12 +154,12 @@ type ListCancellationResponseCounters struct {
 }
 
 // Method for getting a list of rFBS cancellation requests
-func (c Cancellations) List(params *ListCancellationsParams) (*ListCancellationsResponse, error) {
+func (c Cancellations) List(ctx context.Context, params *ListCancellationsParams) (*ListCancellationsResponse, error) {
 	url := "/v1/conditional-cancellation/list"
 
 	resp := &ListCancellationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -181,12 +182,12 @@ type ApproveRejectCancellationsResponse struct {
 
 // The method allows to approve an rFBS cancellation request in the ON_APPROVAL status.
 // The order will be canceled and the money will be returned to the customer
-func (c Cancellations) Approve(params *ApproveRejectCancellationsParams) (*ApproveRejectCancellationsResponse, error) {
+func (c Cancellations) Approve(ctx context.Context, params *ApproveRejectCancellationsParams) (*ApproveRejectCancellationsResponse, error) {
 	url := "/v1/conditional-cancellation/approve"
 
 	resp := &ApproveRejectCancellationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -198,12 +199,12 @@ func (c Cancellations) Approve(params *ApproveRejectCancellationsParams) (*Appro
 // The method allows to reject an rFBS cancellation request in the ON_APPROVAL status. Explain your decision in the comment parameter.
 //
 // The order will remain in the same status and must be delivered to the customer
-func (c Cancellations) Reject(params *ApproveRejectCancellationsParams) (*ApproveRejectCancellationsResponse, error) {
+func (c Cancellations) Reject(ctx context.Context, params *ApproveRejectCancellationsParams) (*ApproveRejectCancellationsResponse, error) {
 	url := "/v1/conditional-cancellation/reject"
 
 	resp := &ApproveRejectCancellationsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

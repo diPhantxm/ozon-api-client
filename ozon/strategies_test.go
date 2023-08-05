@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -49,7 +50,8 @@ func TestListCompetitors(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().ListCompetitors(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().ListCompetitors(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -108,7 +110,8 @@ func TestListStrategies(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().List(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -174,7 +177,8 @@ func TestCreateStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().Create(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().Create(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -235,7 +239,8 @@ func TestInfoStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().Info(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().Info(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -302,7 +307,8 @@ func TestUpdateStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().Update(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().Update(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -351,7 +357,8 @@ func TestAddProductsToStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().AddProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().AddProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -404,7 +411,8 @@ func TestGetStrategiesByProductIds(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().GetByProductIds(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().GetByProductIds(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -466,7 +474,8 @@ func TestListProductsInStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().ListProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().ListProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -519,7 +528,8 @@ func TestGetCompetitorPrice(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().GetCompetitorPrice(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().GetCompetitorPrice(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -567,7 +577,8 @@ func TestRemoveProductsFromStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().RemoveProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().RemoveProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -612,7 +623,8 @@ func TestChangeStrategyStatus(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().ChangeStatus(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().ChangeStatus(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -656,7 +668,8 @@ func TestRemoveStrategy(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Strategies().Remove(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Strategies().Remove(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

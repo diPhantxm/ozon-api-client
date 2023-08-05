@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -58,7 +59,8 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Rating().GetCurrentSellerRatingInfo()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Rating().GetCurrentSellerRatingInfo(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -146,7 +148,8 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Rating().GetSellerRatingInfoForPeriod(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Rating().GetSellerRatingInfoForPeriod(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

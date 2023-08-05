@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -90,7 +91,8 @@ func TestReportOnSoldProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Finance().ReportOnSoldProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Finance().ReportOnSoldProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -158,7 +160,8 @@ func TestGetTotalTransactionsSum(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Finance().GetTotalTransactionsSum(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Finance().GetTotalTransactionsSum(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -246,7 +249,8 @@ func TestListTransactions(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Finance().ListTransactions(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Finance().ListTransactions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -165,12 +166,12 @@ type FBOFinancialData struct {
 }
 
 // Returns a list of shipments for a specified period of time. You can additionally filter the shipments by their status
-func (c FBO) GetShipmentsList(params *GetFBOShipmentsListParams) (*GetFBOShipmentsListResponse, error) {
+func (c FBO) GetShipmentsList(ctx context.Context, params *GetFBOShipmentsListParams) (*GetFBOShipmentsListResponse, error) {
 	url := "/v2/posting/fbo/list"
 
 	resp := &GetFBOShipmentsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -274,12 +275,12 @@ type GetShipmentDetailsResultAnalyticsData struct {
 }
 
 // Returns information about the shipment by its identifier
-func (c FBO) GetShipmentDetails(params *GetShipmentDetailsParams) (*GetShipmentDetailsResponse, error) {
+func (c FBO) GetShipmentDetails(ctx context.Context, params *GetShipmentDetailsParams) (*GetShipmentDetailsResponse, error) {
 	url := "/v2/posting/fbo/get"
 
 	resp := &GetShipmentDetailsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -374,12 +375,12 @@ type SupplyRequestCommonResponseSupplyWarehouse struct {
 // Method for getting a list of supply requests to the Ozon warehouse.
 // Requests with supply both to a specific warehouse and via a virtual
 // distribution center (vDC) are taken into account
-func (c FBO) ListSupplyRequests(params *ListSupplyRequestsParams) (*ListSupplyRequestsResponse, error) {
+func (c FBO) ListSupplyRequests(ctx context.Context, params *ListSupplyRequestsParams) (*ListSupplyRequestsResponse, error) {
 	url := "/v1/supply-order/list"
 
 	resp := &ListSupplyRequestsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -419,12 +420,12 @@ type GetSupplyRequestInfoVehicle struct {
 // Method for getting detailed information on a supply request.
 // Requests with supply both to a specific warehouse and via a
 // virtual distribution center (vDC) are taken into account
-func (c FBO) GetSupplyRequestInfo(params *GetSupplyRequestInfoParams) (*GetSupplyRequestInfoResponse, error) {
+func (c FBO) GetSupplyRequestInfo(ctx context.Context, params *GetSupplyRequestInfoParams) (*GetSupplyRequestInfoResponse, error) {
 	url := "/v1/supply-order/get"
 
 	resp := &GetSupplyRequestInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -477,12 +478,12 @@ type ListProductsInSupplyRequestItem struct {
 }
 
 // List of products in the sullpy request
-func (c FBO) ListProductsInSupplyRequest(params *ListProductsInSupplyRequestParams) (*ListProductsInSupplyRequestResponse, error) {
+func (c FBO) ListProductsInSupplyRequest(ctx context.Context, params *ListProductsInSupplyRequestParams) (*ListProductsInSupplyRequestResponse, error) {
 	url := "/v1/supply-order/items"
 
 	resp := &ListProductsInSupplyRequestResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -534,12 +535,12 @@ type GetWarehouseWorkloadResultWarehouse struct {
 }
 
 // Method returns a list of active Ozon warehouses with information about their average workload in the nearest future
-func (c FBO) GetWarehouseWorkload() (*GetWarehouseWorkloadResponse, error) {
+func (c FBO) GetWarehouseWorkload(ctx context.Context) (*GetWarehouseWorkloadResponse, error) {
 	url := "/v1/supplier/available_warehouses"
 
 	resp := &GetWarehouseWorkloadResponse{}
 
-	response, err := c.client.Request(http.MethodGet, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodGet, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}

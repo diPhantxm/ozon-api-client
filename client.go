@@ -15,36 +15,33 @@ type HttpClient interface {
 
 type Client struct {
 	baseUrl string
-	ctx     context.Context
 	Options map[string]string
 
 	client HttpClient
 }
 
-func NewClient(baseUrl string, opts map[string]string) *Client {
+func NewClient(client HttpClient, baseUrl string, opts map[string]string) *Client {
 	return &Client{
 		Options: opts,
-		ctx:     context.Background(),
-		client:  http.DefaultClient,
+		client:  client,
 		baseUrl: baseUrl,
 	}
 }
 
 func NewMockClient(handler http.HandlerFunc) *Client {
 	return &Client{
-		ctx:    context.Background(),
 		client: NewMockHttpClient(handler),
 	}
 }
 
-func (c Client) newRequest(method string, url string, body interface{}) (*http.Request, error) {
+func (c Client) newRequest(ctx context.Context, method string, url string, body interface{}) (*http.Request, error) {
 	bodyJson, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 
 	url = c.baseUrl + url
-	req, err := http.NewRequestWithContext(c.ctx, method, url, bytes.NewBuffer(bodyJson))
+	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(bodyJson))
 	if err != nil {
 		return nil, err
 	}
@@ -56,8 +53,8 @@ func (c Client) newRequest(method string, url string, body interface{}) (*http.R
 	return req, nil
 }
 
-func (c Client) Request(method string, path string, req, resp interface{}, options map[string]string) (*Response, error) {
-	httpReq, err := c.newRequest(method, path, req)
+func (c Client) Request(ctx context.Context, method string, path string, req, resp interface{}, options map[string]string) (*Response, error) {
+	httpReq, err := c.newRequest(ctx, method, path, req)
 	if err != nil {
 		return nil, err
 	}
