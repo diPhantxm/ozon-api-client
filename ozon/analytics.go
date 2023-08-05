@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -94,12 +95,12 @@ type GetAnalyticsDataResultDimension struct {
 }
 
 // Specify the period and metrics that are required. The response will contain analytical data grouped by the `dimensions` parameter.
-func (c Analytics) GetAnalyticsData(params *GetAnalyticsDataParams) (*GetAnalyticsDataResponse, error) {
+func (c Analytics) GetAnalyticsData(ctx context.Context, params *GetAnalyticsDataParams) (*GetAnalyticsDataResponse, error) {
 	url := "/v1/analytics/data"
 
 	resp := &GetAnalyticsDataResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -157,12 +158,12 @@ type GetStocksOnWarehousesResultRow struct {
 }
 
 // Report on stocks and products movement at Ozon warehouses
-func (c Analytics) GetStocksOnWarehouses(params *GetStocksOnWarehousesParams) (*GetStocksOnWarehousesResponse, error) {
+func (c Analytics) GetStocksOnWarehouses(ctx context.Context, params *GetStocksOnWarehousesParams) (*GetStocksOnWarehousesResponse, error) {
 	url := "/v2/analytics/stock_on_warehouses"
 
 	resp := &GetStocksOnWarehousesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

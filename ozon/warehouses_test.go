@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -58,7 +59,8 @@ func TestGetListOfWarehouses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Warehouses().GetListOfWarehouses()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Warehouses().GetListOfWarehouses(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -133,7 +135,8 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Warehouses().GetListOfDeliveryMethods(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Warehouses().GetListOfDeliveryMethods(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

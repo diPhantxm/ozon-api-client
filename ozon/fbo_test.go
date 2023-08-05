@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -133,7 +134,8 @@ func TestGetFBOShipmentsList(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBO().GetShipmentsList(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetShipmentsList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -261,7 +263,8 @@ func TestGetShipmentDetails(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBO().GetShipmentDetails(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetShipmentDetails(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -339,7 +342,8 @@ func TestListSupplyRequests(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBO().ListSupplyRequests(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().ListSupplyRequests(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -414,7 +418,8 @@ func TestGetSupplyRequestInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBO().GetSupplyRequestInfo(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetSupplyRequestInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -472,7 +477,8 @@ func TestListProductsInSupplyRequest(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBO().ListProductsInSupplyRequest(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().ListProductsInSupplyRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -530,7 +536,8 @@ func TestGetWarehouseWorkload(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBO().GetWarehouseWorkload()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetWarehouseWorkload(ctx)
 		if err != nil {
 			t.Error(err)
 		}

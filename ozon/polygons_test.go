@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -42,7 +43,8 @@ func TestCreateDeliveryPolygon(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Polygons().CreateDelivery(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Polygons().CreateDelivery(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -96,7 +98,8 @@ func TestLinkDeliveryMethodToPolygon(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Polygons().Link(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Polygons().Link(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -140,7 +143,8 @@ func TestDeletePolygon(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Polygons().Delete(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Polygons().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

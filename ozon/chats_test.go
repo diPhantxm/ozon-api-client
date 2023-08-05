@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -61,7 +62,8 @@ func TestListChats(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().List(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -119,7 +121,8 @@ func TestSendMessage(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().SendMessage(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().SendMessage(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -167,7 +170,8 @@ func TestSendFile(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().SendFile(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().SendFile(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -230,7 +234,8 @@ func TestChatHistory(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().History(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().History(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -296,7 +301,8 @@ func TestUpdateChat(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().Update(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().Update(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -344,7 +350,8 @@ func TestCreateNewChat(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().Create(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().Create(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -397,7 +404,8 @@ func TestMarkAsRead(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Chats().MarkAsRead(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Chats().MarkAsRead(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -82,12 +83,12 @@ type GetStocksInfoResultItemStock struct {
 // * how many items are available,
 //
 // * how many are reserved by customers.
-func (c Products) GetStocksInfo(params *GetStocksInfoParams) (*GetStocksInfoResponse, error) {
+func (c Products) GetStocksInfo(ctx context.Context, params *GetStocksInfoParams) (*GetStocksInfoResponse, error) {
 	url := "/v3/product/info/stocks"
 
 	resp := &GetStocksInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -419,12 +420,12 @@ type GetProductDetailsResponseItemError struct {
 }
 
 // Get product details
-func (c Products) GetProductDetails(params *GetProductDetailsParams) (*GetProductDetailsResponse, error) {
+func (c Products) GetProductDetails(ctx context.Context, params *GetProductDetailsParams) (*GetProductDetailsResponse, error) {
 	url := "/v2/product/info"
 
 	resp := &GetProductDetailsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -484,12 +485,12 @@ type UpdateStocksResultError struct {
 // With one request you can change the availability for 100 products. You can send up to 80 requests in a minute.
 //
 // Availability can only be set after the product status has been changed to processed.
-func (c Products) UpdateStocks(params *UpdateStocksParams) (*UpdateStocksResponse, error) {
+func (c Products) UpdateStocks(ctx context.Context, params *UpdateStocksParams) (*UpdateStocksResponse, error) {
 	url := "/v1/product/import/stocks"
 
 	resp := &UpdateStocksResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -558,12 +559,12 @@ type UpdateQuantityStockProductsResultError struct {
 // Availability can only be set after the product status has been changed to processed.
 //
 // Bulky products stock can only be updated in the warehouses for bulky products.
-func (c Products) UpdateQuantityStockProducts(params *UpdateQuantityStockProductsParams) (*UpdateQuantityStockProductsResponse, error) {
+func (c Products) UpdateQuantityStockProducts(ctx context.Context, params *UpdateQuantityStockProductsParams) (*UpdateQuantityStockProductsResponse, error) {
 	url := "/v2/products/stocks"
 
 	resp := &UpdateQuantityStockProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -605,12 +606,12 @@ type StocksInSellersWarehouseResult struct {
 }
 
 // Get stocks in seller's warehouse
-func (c Products) StocksInSellersWarehouse(params *StocksInSellersWarehouseParams) (*StocksInSellersWarehouseResponse, error) {
+func (c Products) StocksInSellersWarehouse(ctx context.Context, params *StocksInSellersWarehouseParams) (*StocksInSellersWarehouseResponse, error) {
 	url := "/v1/product/info/stocks-by-warehouse/fbs"
 
 	resp := &StocksInSellersWarehouseResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -691,12 +692,12 @@ type UpdatePricesResultError struct {
 // To reset old_price or premium_price set these parameters to 0.
 //
 // A new price must differ from the old one by at least 5%.
-func (c Products) UpdatePrices(params *UpdatePricesParams) (*UpdatePricesResponse, error) {
+func (c Products) UpdatePrices(ctx context.Context, params *UpdatePricesParams) (*UpdatePricesResponse, error) {
 	url := "/v1/product/import/prices"
 
 	resp := &UpdatePricesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -866,12 +867,12 @@ type CreateOrUpdateProductResult struct {
 }
 
 // This method allows you to create products and update their details
-func (c Products) CreateOrUpdateProduct(params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
+func (c Products) CreateOrUpdateProduct(ctx context.Context, params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
 	url := "/v2/product/import"
 
 	resp := &CreateOrUpdateProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -932,12 +933,12 @@ type GetListOfProductsResultItem struct {
 	ProductId int64 `json:"product_id"`
 }
 
-func (c Products) GetListOfProducts(params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
+func (c Products) GetListOfProducts(ctx context.Context, params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
 	url := "/v2/product/list"
 
 	resp := &GetListOfProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1015,12 +1016,12 @@ type GetProductsRatingBySKUProductGroupImproveAttr struct {
 }
 
 // Method for getting products' content rating and recommendations on how to increase it
-func (c Products) GetProductsRatingBySKU(params *GetProductsRatingBySKUParams) (*GetProductsRatingBySKUResponse, error) {
+func (c Products) GetProductsRatingBySKU(ctx context.Context, params *GetProductsRatingBySKUParams) (*GetProductsRatingBySKUResponse, error) {
 	url := "/v1/product/rating-by-sku"
 
 	resp := &GetProductsRatingBySKUResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1076,12 +1077,12 @@ type GetProductImportStatusResultItemError struct {
 }
 
 // Allows you to get the status of a product description page creation process
-func (c Products) GetProductImportStatus(params *GetProductImportStatusParams) (*GetProductImportStatusResponse, error) {
+func (c Products) GetProductImportStatus(ctx context.Context, params *GetProductImportStatusParams) (*GetProductImportStatusResponse, error) {
 	url := "/v1/product/import/info"
 
 	resp := &GetProductImportStatusResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1144,12 +1145,12 @@ type CreateProductByOzonIDResponse struct {
 // Creates a product by the specified Ozon ID. The number of products is unlimited.
 //
 // It's not possible to update products using Ozon ID
-func (c Products) CreateProductByOzonID(params *CreateProductByOzonIDParams) (*CreateProductByOzonIDResponse, error) {
+func (c Products) CreateProductByOzonID(ctx context.Context, params *CreateProductByOzonIDParams) (*CreateProductByOzonIDResponse, error) {
 	url := "/v1/product/import-by-sku"
 
 	resp := &CreateProductByOzonIDResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1233,12 +1234,12 @@ type ProductInfoResultPicture struct {
 // first get the details using `/v2/product/info` or `/v2/product/info/list` methods.
 // Using them you can get the current list of images and their order.
 // Copy the data from the images, images360, and color_image fields and make the necessary changes to it
-func (c Products) UpdateProductImages(params *UpdateProductImagesParams) (*ProductInfoResponse, error) {
+func (c Products) UpdateProductImages(ctx context.Context, params *UpdateProductImagesParams) (*ProductInfoResponse, error) {
 	url := "/v1/product/pictures/import"
 
 	resp := &ProductInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1253,12 +1254,12 @@ type CheckImageUploadingStatusParams struct {
 }
 
 // Check products images uploading status
-func (c Products) CheckImageUploadingStatus(params *CheckImageUploadingStatusParams) (*ProductInfoResponse, error) {
+func (c Products) CheckImageUploadingStatus(ctx context.Context, params *CheckImageUploadingStatusParams) (*ProductInfoResponse, error) {
 	url := "/v1/product/pictures/info"
 
 	resp := &ProductInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1295,12 +1296,12 @@ type ListProductsByIDsResult struct {
 // The request body must contain an array of identifiers of the same type. The response will contain an items array.
 //
 // For each shipment in the items array the fields match the ones recieved in the /v2/product/info method
-func (c Products) ListProductsByIDs(params *ListProductsByIDsParams) (*ListProductsByIDsResponse, error) {
+func (c Products) ListProductsByIDs(ctx context.Context, params *ListProductsByIDsParams) (*ListProductsByIDsResponse, error) {
 	url := "/v2/product/info/list"
 
 	resp := &ListProductsByIDsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1483,12 +1484,12 @@ type GetDescriptionOfProductResultPDF struct {
 }
 
 // Returns a product characteristics description by product identifier. You can search for the product by `offer_id` or `product_id`
-func (c Products) GetDescriptionOfProduct(params *GetDescriptionOfProductParams) (*GetDescriptionOfProductResponse, error) {
+func (c Products) GetDescriptionOfProduct(ctx context.Context, params *GetDescriptionOfProductParams) (*GetDescriptionOfProductResponse, error) {
 	url := "/v3/products/info/attributes"
 
 	resp := &GetDescriptionOfProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1527,12 +1528,12 @@ type GetProductDescriptionResult struct {
 }
 
 // Get product description
-func (c Products) GetProductDescription(params *GetProductDescriptionParams) (*GetProductDescriptionResponse, error) {
+func (c Products) GetProductDescription(ctx context.Context, params *GetProductDescriptionParams) (*GetProductDescriptionResponse, error) {
 	url := "/v1/product/info/description"
 
 	resp := &GetProductDescriptionResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1579,12 +1580,12 @@ type GetProductRangeLimitUploadQuota struct {
 //   - Products update limit: how many products you can update per day.
 //
 // If you have a product range limit and you exceed it, you won't be able to create new products
-func (c Products) GetProductRangeLimit() (*GetProductRangeLimitResponse, error) {
+func (c Products) GetProductRangeLimit(ctx context.Context) (*GetProductRangeLimitResponse, error) {
 	url := "/v4/product/info/limit"
 
 	resp := &GetProductRangeLimitResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, &struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, &struct{}{}, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1626,12 +1627,12 @@ type ChangeProductIDsError struct {
 // Method for changing the offer_id linked to products. You can change multiple offer_id in this method.
 //
 // We recommend transmitting up to 250 values in an array
-func (c Products) ChangeProductIDs(params *ChangeProductIDsParams) (*ChangeProductIDsResponse, error) {
+func (c Products) ChangeProductIDs(ctx context.Context, params *ChangeProductIDsParams) (*ChangeProductIDsResponse, error) {
 	url := "/v1/product/update/offer-id"
 
 	resp := &ChangeProductIDsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1653,12 +1654,12 @@ type ArchiveProductResponse struct {
 }
 
 // Archive product
-func (c Products) ArchiveProduct(params *ArchiveProductParams) (*ArchiveProductResponse, error) {
+func (c Products) ArchiveProduct(ctx context.Context, params *ArchiveProductParams) (*ArchiveProductResponse, error) {
 	url := "/v1/product/archive"
 
 	resp := &ArchiveProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1670,12 +1671,12 @@ func (c Products) ArchiveProduct(params *ArchiveProductParams) (*ArchiveProductR
 // Warning: Since June 14, 2023 the method is disabled.
 //
 // Unarchive product
-func (c Products) UnarchiveProduct(params *ArchiveProductParams) (*ArchiveProductResponse, error) {
+func (c Products) UnarchiveProduct(ctx context.Context, params *ArchiveProductParams) (*ArchiveProductResponse, error) {
 	url := "/v1/product/unarchive"
 
 	resp := &ArchiveProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1715,12 +1716,12 @@ type RemoveProductWithoutSKUStatus struct {
 // Remove a product without an SKU from the archive
 //
 // You can pass up to 500 identifiers in one request
-func (c Products) RemoveProductWithoutSKU(params *RemoveProductWithoutSKUParams) (*RemoveProductWithoutSKUResponse, error) {
+func (c Products) RemoveProductWithoutSKU(ctx context.Context, params *RemoveProductWithoutSKUParams) (*RemoveProductWithoutSKUResponse, error) {
 	url := "/v2/products/delete"
 
 	resp := &RemoveProductWithoutSKUResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1776,12 +1777,12 @@ type ListGeoRestrictionsRestriction struct {
 }
 
 // Get a list of geo-restrictions for services
-func (c Products) ListGeoRestrictions(params *ListGeoRestrictionsParams) (*ListGeoRestrictionsResponse, error) {
+func (c Products) ListGeoRestrictions(ctx context.Context, params *ListGeoRestrictionsParams) (*ListGeoRestrictionsResponse, error) {
 	url := "/v1/products/geo-restrictions-catalog-by-filter"
 
 	resp := &ListGeoRestrictionsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1811,12 +1812,12 @@ type UploadActivationCodesResult struct {
 }
 
 // Upload activation codes when you upload service or digital products. Activation code is associated with the digital product card
-func (c Products) UploadActivationCodes(params *UploadActivationCodesParams) (*UploadActivationCodesResponse, error) {
+func (c Products) UploadActivationCodes(ctx context.Context, params *UploadActivationCodesParams) (*UploadActivationCodesResponse, error) {
 	url := "/v1/product/upload_digital_codes"
 
 	resp := &UploadActivationCodesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1846,12 +1847,12 @@ type StatusOfUploadingActivationCodesResult struct {
 }
 
 // Get status of uploading activation codes task for services and digital products
-func (c Products) StatusOfUploadingActivationCodes(params *StatusOfUploadingActivationCodesParams) (*StatusOfUploadingActivationCodesResponse, error) {
+func (c Products) StatusOfUploadingActivationCodes(ctx context.Context, params *StatusOfUploadingActivationCodesParams) (*StatusOfUploadingActivationCodesResponse, error) {
 	url := "/v1/product/upload_digital_codes/info"
 
 	resp := &StatusOfUploadingActivationCodesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2105,12 +2106,12 @@ type GetProductPriceInfoResultItemPriceIndexesSelfMarketplace struct {
 }
 
 // You can specify up to 1000 products in the request
-func (c Products) GetProductPriceInfo(params *GetProductPriceInfoParams) (*GetProductPriceInfoResponse, error) {
+func (c Products) GetProductPriceInfo(ctx context.Context, params *GetProductPriceInfoParams) (*GetProductPriceInfoResponse, error) {
 	url := "/v4/product/info/prices"
 
 	resp := &GetProductPriceInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2181,12 +2182,12 @@ type GetMarkdownInfoItem struct {
 //
 // A method for getting information about the condition and defects of a markdown product by its SKU.
 // The method also returns the SKU of the main product
-func (c Products) GetMarkdownInfo(params *GetMarkdownInfoParams) (*GetMarkdownInfoResponse, error) {
+func (c Products) GetMarkdownInfo(ctx context.Context, params *GetMarkdownInfoParams) (*GetMarkdownInfoResponse, error) {
 	url := "/v1/product/info/discounted"
 
 	resp := &GetMarkdownInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2211,12 +2212,12 @@ type SetDiscountOnMarkdownProductResponse struct {
 }
 
 // A method for setting the discount percentage on markdown products sold under the FBS scheme
-func (c Products) SetDiscountOnMarkdownProduct(params *SetDiscountOnMarkdownProductParams) (*SetDiscountOnMarkdownProductResponse, error) {
+func (c Products) SetDiscountOnMarkdownProduct(ctx context.Context, params *SetDiscountOnMarkdownProductParams) (*SetDiscountOnMarkdownProductResponse, error) {
 	url := "/v1/product/update/discount"
 
 	resp := &SetDiscountOnMarkdownProductResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2246,12 +2247,12 @@ type NumberOfSubsToProductAvailabilityResult struct {
 }
 
 // You can pass multiple products in a request
-func (c Products) NumberOfSubsToProductAvailability(params *NumberOfSubsToProductAvailabilityParams) (*NumberOfSubsToProductAvailabilityResponse, error) {
+func (c Products) NumberOfSubsToProductAvailability(ctx context.Context, params *NumberOfSubsToProductAvailabilityParams) (*NumberOfSubsToProductAvailabilityResponse, error) {
 	url := "/v1/product/info/subscription"
 
 	resp := &NumberOfSubsToProductAvailabilityResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2302,12 +2303,12 @@ type UpdateCharacteristicsResponse struct {
 	TaskId int64 `json:"task_id"`
 }
 
-func (c Products) UpdateCharacteristics(params *UpdateCharacteristicsParams) (*UpdateCharacteristicsResponse, error) {
+func (c Products) UpdateCharacteristics(ctx context.Context, params *UpdateCharacteristicsParams) (*UpdateCharacteristicsResponse, error) {
 	url := "/v1/product/attributes/update"
 
 	resp := &UpdateCharacteristicsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -90,12 +91,12 @@ type GetCurrentSellerRatingInfoGroupItemChange struct {
 	Meaning string `json:"meaning"`
 }
 
-func (c Rating) GetCurrentSellerRatingInfo() (*GetCurrentSellerRatingInfoResponse, error) {
+func (c Rating) GetCurrentSellerRatingInfo(ctx context.Context) (*GetCurrentSellerRatingInfoResponse, error) {
 	url := "/v1/rating/summary"
 
 	resp := &GetCurrentSellerRatingInfoResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -189,12 +190,12 @@ type GetSellerRatingInfoPeriodRatingValueStatus struct {
 	Warning bool `json:"warning"`
 }
 
-func (c Rating) GetSellerRatingInfoForPeriod(params *GetSellerRatingInfoForPeriodParams) (*GetSellerRatingInfoPeriodResponse, error) {
+func (c Rating) GetSellerRatingInfoForPeriod(ctx context.Context, params *GetSellerRatingInfoForPeriodParams) (*GetSellerRatingInfoPeriodResponse, error) {
 	url := "/v1/rating/history"
 
 	resp := &GetSellerRatingInfoPeriodResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

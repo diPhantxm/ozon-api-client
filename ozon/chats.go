@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -81,12 +82,12 @@ type ListChatsChatData struct {
 }
 
 // Returns information about chats by specified filters
-func (c Chats) List(params *ListChatsParams) (*ListChatsResponse, error) {
+func (c Chats) List(ctx context.Context, params *ListChatsParams) (*ListChatsResponse, error) {
 	url := "/v2/chat/list"
 
 	resp := &ListChatsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -111,12 +112,12 @@ type SendMessageResponse struct {
 }
 
 // Sends a message to an existing chat by its identifier
-func (c Chats) SendMessage(params *SendMessageParams) (*SendMessageResponse, error) {
+func (c Chats) SendMessage(ctx context.Context, params *SendMessageParams) (*SendMessageResponse, error) {
 	url := "/v1/chat/send/message"
 
 	resp := &SendMessageResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -144,12 +145,12 @@ type SendFileResponse struct {
 }
 
 // Sends a file to an existing chat by its identifier
-func (c Chats) SendFile(params *SendFileParams) (*SendFileResponse, error) {
+func (c Chats) SendFile(ctx context.Context, params *SendFileParams) (*SendFileResponse, error) {
 	url := "/v1/chat/send/file"
 
 	resp := &SendFileResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -217,12 +218,12 @@ type ChatHistoryMessageUser struct {
 }
 
 // Chat history
-func (c Chats) History(params *ChatHistoryParams) (*ChatHistoryResponse, error) {
+func (c Chats) History(ctx context.Context, params *ChatHistoryParams) (*ChatHistoryResponse, error) {
 	url := "/v2/chat/history"
 
 	resp := &ChatHistoryResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -337,12 +338,12 @@ type UpdateChatResultUser struct {
 }
 
 // Update chat
-func (c Chats) Update(params *UpdateChatParams) (*UpdateChatResponse, error) {
+func (c Chats) Update(ctx context.Context, params *UpdateChatParams) (*UpdateChatResponse, error) {
 	url := "/v1/chat/updates"
 
 	resp := &UpdateChatResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -369,12 +370,12 @@ type CreateNewChatResult struct {
 }
 
 // Creates a new chat on the shipment with the customer. For example, to clarify the address or the product model
-func (c Chats) Create(params *CreateNewChatParams) (*CreateNewChatResponse, error) {
+func (c Chats) Create(ctx context.Context, params *CreateNewChatParams) (*CreateNewChatResponse, error) {
 	url := "/v1/chat/start"
 
 	resp := &CreateNewChatResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -399,12 +400,12 @@ type MarkAsReadResponse struct {
 }
 
 // A method for marking the selected message and messages before it as read
-func (c Chats) MarkAsRead(params *MarkAsReadParams) (*MarkAsReadResponse, error) {
+func (c Chats) MarkAsRead(ctx context.Context, params *MarkAsReadParams) (*MarkAsReadResponse, error) {
 	url := "/v2/chat/read"
 
 	resp := &MarkAsReadResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

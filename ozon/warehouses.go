@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -85,12 +86,12 @@ type GetListOfWarehousesResultFirstMile struct {
 }
 
 // You do not need to specify any parameters in the request. Your company will be identified by the Warehouses ID
-func (c Warehouses) GetListOfWarehouses() (*GetListOfWarehousesResponse, error) {
+func (c Warehouses) GetListOfWarehouses(ctx context.Context) (*GetListOfWarehousesResponse, error) {
 	url := "/v1/warehouse/list"
 
 	resp := &GetListOfWarehousesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -175,12 +176,12 @@ type GetListOfDeliveryMethodsResult struct {
 }
 
 // This methods allows you to get list of all delivery methods that can be applied for this warehouse
-func (c Warehouses) GetListOfDeliveryMethods(params *GetListOfDeliveryMethodsParams) (*GetListOfDeliveryMethodsResponse, error) {
+func (c Warehouses) GetListOfDeliveryMethods(ctx context.Context, params *GetListOfDeliveryMethodsParams) (*GetListOfDeliveryMethodsResponse, error) {
 	url := "/v1/delivery-method/list"
 
 	resp := &GetListOfDeliveryMethodsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}

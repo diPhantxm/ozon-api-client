@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 
 	core "github.com/diphantxm/ozon-api-client"
@@ -25,12 +26,12 @@ type CreateDeliveryPolygonResponse struct {
 // You can link a polygon to the delivery method.
 //
 // Create a polygon getting its coordinates on https://geojson.io: mark at least 3 points on the map and connect them
-func (c Polygons) CreateDelivery(params *CreateDeliveryPolygonParams) (*CreateDeliveryPolygonResponse, error) {
+func (c Polygons) CreateDelivery(ctx context.Context, params *CreateDeliveryPolygonParams) (*CreateDeliveryPolygonResponse, error) {
 	url := "/v1/polygon/create"
 
 	resp := &CreateDeliveryPolygonResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -71,12 +72,12 @@ type LinkDeliveryMethodToPolygonResponse struct {
 }
 
 // Link delivery method to a delivery polygon
-func (c Polygons) Link(params *LinkDeliveryMethodToPolygonParams) (*LinkDeliveryMethodToPolygonResponse, error) {
+func (c Polygons) Link(ctx context.Context, params *LinkDeliveryMethodToPolygonParams) (*LinkDeliveryMethodToPolygonResponse, error) {
 	url := "/v1/polygon/bind"
 
 	resp := &LinkDeliveryMethodToPolygonResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -95,12 +96,12 @@ type DeletePolygonResponse struct {
 }
 
 // Delete polygon
-func (c Polygons) Delete(params *DeletePolygonParams) (*DeletePolygonResponse, error) {
+func (c Polygons) Delete(ctx context.Context, params *DeletePolygonParams) (*DeletePolygonResponse, error) {
 	url := "/v1/polygon/delete"
 
 	resp := &DeletePolygonResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

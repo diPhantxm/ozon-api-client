@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -56,7 +57,8 @@ func TestGetAvailablePromotions(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().GetAvailablePromotions()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().GetAvailablePromotions(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -125,7 +127,8 @@ func TestAddToPromotion(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().AddToPromotion(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().AddToPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -201,7 +204,8 @@ func TestProductsAvailableForPromotion(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().ProductsAvailableForPromotion(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().ProductsAvailableForPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -262,7 +266,8 @@ func TestProductsInPromotion(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().ProductsInPromotion(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().ProductsInPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -314,7 +319,8 @@ func TestRemoveProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().RemoveProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().RemoveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -373,7 +379,8 @@ func TestListHotSalePromotions(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().ListHotSalePromotions()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().ListHotSalePromotions(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -434,7 +441,8 @@ func TestProductsAvailableForHotSalePromotion(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().ProductsAvailableForHotSalePromotion(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().ProductsAvailableForHotSalePromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -494,7 +502,8 @@ func TestAddProductsToHotSale(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().AddProductsToHotSale(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().AddProductsToHotSale(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -548,7 +557,8 @@ func TestRemoveProductsToHotSale(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().RemoveProductsToHotSale(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().RemoveProductsToHotSale(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -634,7 +644,8 @@ func TestListDiscountRequests(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().ListDiscountRequests(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().ListDiscountRequests(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -661,9 +672,9 @@ func TestApproveDiscountRequest(t *testing.T) {
 			&DiscountRequestParams{
 				Tasks: []DiscountRequestTask{
 					{
-						Id: 123,
-						ApprovedPrice: 11,
-						SellerComment: "string",
+						Id:                  123,
+						ApprovedPrice:       11,
+						SellerComment:       "string",
 						ApprovedQuantityMin: 1,
 						ApprovedQuantityMax: 2,
 					},
@@ -697,7 +708,8 @@ func TestApproveDiscountRequest(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().ApproveDiscountRequest(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().ApproveDiscountRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -724,9 +736,9 @@ func TestDeclineDiscountRequest(t *testing.T) {
 			&DiscountRequestParams{
 				Tasks: []DiscountRequestTask{
 					{
-						Id: 123,
-						ApprovedPrice: 11,
-						SellerComment: "string",
+						Id:                  123,
+						ApprovedPrice:       11,
+						SellerComment:       "string",
 						ApprovedQuantityMin: 1,
 						ApprovedQuantityMax: 2,
 					},
@@ -760,7 +772,8 @@ func TestDeclineDiscountRequest(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Promotions().DeclineDiscountRequest(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Promotions().DeclineDiscountRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

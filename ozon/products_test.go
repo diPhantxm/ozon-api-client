@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -70,7 +71,8 @@ func TestGetStocksInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetStocksInfo(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetStocksInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -267,7 +269,8 @@ func TestGetProductDetails(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetProductDetails(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetProductDetails(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -341,7 +344,8 @@ func TestUpdateStocks(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UpdateStocks(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UpdateStocks(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -410,7 +414,8 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().StocksInSellersWarehouse(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().StocksInSellersWarehouse(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -484,7 +489,8 @@ func TestUpdatePrices(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UpdatePrices(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UpdatePrices(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -556,7 +562,8 @@ func TestUpdateQuantityStockProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UpdateQuantityStockProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UpdateQuantityStockProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -690,7 +697,8 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().CreateOrUpdateProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().CreateOrUpdateProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -757,7 +765,8 @@ func TestGetListOfProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetListOfProducts(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetListOfProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1003,7 +1012,8 @@ func TestGetProductsRatingBySKU(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetProductsRatingBySKU(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetProductsRatingBySKU(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1070,7 +1080,8 @@ func TestGetProductImportStatus(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetProductImportStatus(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetProductImportStatus(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1141,7 +1152,8 @@ func TestCreateProductByOzonID(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().CreateProductByOzonID(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().CreateProductByOzonID(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1209,7 +1221,8 @@ func TestUpdateProductImages(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UpdateProductImages(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UpdateProductImages(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1277,7 +1290,8 @@ func TestCheckImageUploadingStatus(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().CheckImageUploadingStatus(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().CheckImageUploadingStatus(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1472,7 +1486,8 @@ func TestListProductsByIDs(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().ListProductsByIDs(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().ListProductsByIDs(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1706,7 +1721,8 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetDescriptionOfProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetDescriptionOfProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1764,7 +1780,8 @@ func TestGetProductDescription(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetProductDescription(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetProductDescription(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1827,7 +1844,8 @@ func TestGetProductRangeLimit(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetProductRangeLimit()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetProductRangeLimit(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1883,7 +1901,8 @@ func TestChangeProductIDs(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().ChangeProductIDs(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().ChangeProductIDs(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1929,7 +1948,8 @@ func TestArchiveProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().ArchiveProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().ArchiveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1975,7 +1995,8 @@ func TestUnarchiveProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UnarchiveProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UnarchiveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2031,7 +2052,8 @@ func TestRemoveProductWithoutSKU(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().RemoveProductWithoutSKU(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().RemoveProductWithoutSKU(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2108,7 +2130,8 @@ func TestListGeoRestrictions(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().ListGeoRestrictions(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().ListGeoRestrictions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2157,7 +2180,8 @@ func TestUploadActivationCodes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UploadActivationCodes(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UploadActivationCodes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2205,7 +2229,8 @@ func TestStatusOfUploadingActivationCodes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().StatusOfUploadingActivationCodes(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().StatusOfUploadingActivationCodes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2318,7 +2343,8 @@ func TestGetProductPriceInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetProductPriceInfo(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetProductPriceInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2380,7 +2406,8 @@ func TestGetMarkdownInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().GetMarkdownInfo(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetMarkdownInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2435,7 +2462,8 @@ func TestSetDiscountOnMarkdownProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().SetDiscountOnMarkdownProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().SetDiscountOnMarkdownProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2486,7 +2514,8 @@ func TestNumberOfSubsToProductAvailability(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().NumberOfSubsToProductAvailability(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().NumberOfSubsToProductAvailability(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2560,7 +2589,8 @@ func TestUpdateCharacteristics(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Products().UpdateCharacteristics(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UpdateCharacteristics(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

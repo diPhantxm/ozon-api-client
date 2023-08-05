@@ -1,5 +1,11 @@
 package ozon
 
+import "time"
+
+const (
+	testTimeout = 5 * time.Second
+)
+
 type Order string
 
 const (

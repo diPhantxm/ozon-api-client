@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -83,12 +84,12 @@ type GetReportsListResultReport struct {
 }
 
 // Returns the list of reports that have been generated before
-func (c Reports) GetList(params *GetReportsListParams) (*GetReportsListResponse, error) {
+func (c Reports) GetList(ctx context.Context, params *GetReportsListParams) (*GetReportsListResponse, error) {
 	url := "/v1/report/list"
 
 	resp := &GetReportsListResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -143,12 +144,12 @@ type GetReportDetailResult struct {
 }
 
 // Returns information about a created report by its identifier
-func (c Reports) GetReportDetails(params *GetReportDetailsParams) (*GetReportDetailsResponse, error) {
+func (c Reports) GetReportDetails(ctx context.Context, params *GetReportDetailsParams) (*GetReportDetailsResponse, error) {
 	url := "/v1/report/info"
 
 	resp := &GetReportDetailsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -392,12 +393,12 @@ type GetFinancialResultResultDetailOthersItem struct {
 }
 
 // Returns information about a created report by its identifier
-func (c Reports) GetFinancial(params *GetFinancialReportParams) (*GetFinancialReportResponse, error) {
+func (c Reports) GetFinancial(ctx context.Context, params *GetFinancialReportParams) (*GetFinancialReportResponse, error) {
 	url := "/v1/finance/cash-flow-statement/list"
 
 	resp := &GetFinancialReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -440,12 +441,12 @@ type GetProductsReportResult struct {
 }
 
 // Method for getting a report with products data. For example, Ozon ID, number of products, prices, status
-func (c Reports) GetProducts(params *GetProductsReportParams) (*GetProductsReportResponse, error) {
+func (c Reports) GetProducts(ctx context.Context, params *GetProductsReportParams) (*GetProductsReportResponse, error) {
 	url := "/v1/report/products/create"
 
 	resp := &GetProductsReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -475,12 +476,12 @@ type GetStocksReportResult struct {
 }
 
 // Report with information about the number of available and reserved products in stock
-func (c Reports) GetStocks(params *GetStocksReportParams) (*GetStocksReportResponse, error) {
+func (c Reports) GetStocks(ctx context.Context, params *GetStocksReportParams) (*GetStocksReportResponse, error) {
 	url := "/v1/report/stock/create"
 
 	resp := &GetStocksReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -520,12 +521,12 @@ type GetProductsMovementReportResult struct {
 //   - products in transit between the fulfillment centers,
 //   - products in delivery,
 //   - products to be sold
-func (c Reports) GetProductsMovement(params *GetProductsMovementReportParams) (*GetProductsMovementReportResponse, error) {
+func (c Reports) GetProductsMovement(ctx context.Context, params *GetProductsMovementReportParams) (*GetProductsMovementReportResponse, error) {
 	url := "/v1/report/products/movement/create"
 
 	resp := &GetProductsMovementReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -571,12 +572,12 @@ type GetReturnReportResult struct {
 // The report contains information about returned products that were accepted from the customer, ready for pickup, or delivered to the seller.
 //
 // The method is only suitable for orders shipped from the seller's warehouse
-func (c Reports) GetReturns(params *GetReturnsReportParams) (*GetReturnsReportResponse, error) {
+func (c Reports) GetReturns(ctx context.Context, params *GetReturnsReportParams) (*GetReturnsReportResponse, error) {
 	url := "/v1/report/returns/create"
 
 	resp := &GetReturnsReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -646,12 +647,12 @@ type GetShipmentReportResult struct {
 //   - shipment numbers
 //   - shipment costs
 //   - shipments contents
-func (c Reports) GetShipment(params *GetShipmentReportParams) (*GetShipmentReportResponse, error) {
+func (c Reports) GetShipment(ctx context.Context, params *GetShipmentReportParams) (*GetShipmentReportResponse, error) {
 	url := "/v1/report/postings/create"
 
 	resp := &GetShipmentReportResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -671,12 +672,12 @@ type IssueOnDiscountedProductsResponse struct {
 // For example, Ozon can discount a product due to damage when delivering.
 //
 // Returns report identifier. To get the report, send the identifier in the request body of a method `/v1/report/discounted/info`
-func (c Reports) IssueOnDiscountedProducts() (*IssueOnDiscountedProductsResponse, error) {
+func (c Reports) IssueOnDiscountedProducts(ctx context.Context) (*IssueOnDiscountedProductsResponse, error) {
 	url := "/v1/report/discounted/create"
 
 	resp := &IssueOnDiscountedProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -716,12 +717,12 @@ type ReportonDiscountedProductsReport struct {
 }
 
 // By report identifier, returns information about the report generated earlier
-func (c Reports) ReportOnDiscountedProducts(params *ReportOnDiscountedProductsParams) (*ReportOnDiscountedProductsResponse, error) {
+func (c Reports) ReportOnDiscountedProducts(ctx context.Context, params *ReportOnDiscountedProductsParams) (*ReportOnDiscountedProductsResponse, error) {
 	url := "/v1/report/discounted/info"
 
 	resp := &ReportOnDiscountedProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -731,12 +732,12 @@ func (c Reports) ReportOnDiscountedProducts(params *ReportOnDiscountedProductsPa
 }
 
 // By report identifier, returns information about the report generated earlier
-func (c Reports) ListReportsOnDiscountedProducts() (*ReportOnDiscountedProductsResponse, error) {
+func (c Reports) ListReportsOnDiscountedProducts(ctx context.Context) (*ReportOnDiscountedProductsResponse, error) {
 	url := "/v1/report/discounted/list"
 
 	resp := &ReportOnDiscountedProductsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}

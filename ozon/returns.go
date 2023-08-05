@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -78,12 +79,12 @@ type GetFBOReturnsReturn struct {
 }
 
 // Method for getting information on returned products that are sold from the Ozon warehouse
-func (c Returns) GetFBOReturns(params *GetFBOReturnsParams) (*GetFBOReturnsResponse, error) {
+func (c Returns) GetFBOReturns(ctx context.Context, params *GetFBOReturnsParams) (*GetFBOReturnsResponse, error) {
 	url := "/v3/returns/company/fbo"
 
 	resp := &GetFBOReturnsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -247,12 +248,12 @@ type GetFBSReturnResultReturn struct {
 }
 
 // Method for getting information on returned products that are sold from the seller's warehouse
-func (c Returns) GetFBSReturns(params *GetFBSReturnsParams) (*GetFBSReturnsResponse, error) {
+func (c Returns) GetFBSReturns(ctx context.Context, params *GetFBSReturnsParams) (*GetFBSReturnsResponse, error) {
 	url := "/v3/returns/company/fbs"
 
 	resp := &GetFBSReturnsResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

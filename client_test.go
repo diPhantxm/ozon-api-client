@@ -1,8 +1,14 @@
 package core
 
 import (
+	"context"
 	"net/http"
 	"testing"
+	"time"
+)
+
+const (
+	testTimeout = 5 * time.Second
 )
 
 type TestRequestRequest struct {
@@ -55,7 +61,8 @@ func TestRequest(t *testing.T) {
 		c := NewMockClient(NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		respStruct := &TestRequestResponse{}
-		resp, err := c.Request(http.MethodPost, "/", test.params, respStruct, nil)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Request(ctx, http.MethodPost, "/", test.params, respStruct, nil)
 
 		if err != nil {
 			t.Error(err)

@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -167,7 +168,8 @@ func TestListUnprocessedShipments(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ListUnprocessedShipments(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ListUnprocessedShipments(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -278,7 +280,8 @@ func TestGetFBSShipmentsList(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetFBSShipmentsList(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetFBSShipmentsList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -339,7 +342,8 @@ func TestPackOrder(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().PackOrder(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().PackOrder(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -416,7 +420,8 @@ func TestValidateLabelingCodes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ValidateLabelingCodes(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ValidateLabelingCodes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -529,7 +534,8 @@ func TestGetShipmentDataByBarcode(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetShipmentDataByBarcode(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetShipmentDataByBarcode(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -642,7 +648,8 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetShipmentDataByIdentifier(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetShipmentDataByIdentifier(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -714,7 +721,8 @@ func TestAddTrackingNumbers(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().AddTrackingNumbers(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().AddTrackingNumbers(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -807,7 +815,8 @@ func TestListOfShipmentCertificates(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ListOfShipmentCertificates(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ListOfShipmentCertificates(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -868,7 +877,8 @@ func TestSignShipmentCertificate(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().SignShipmentCertificate(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().SignShipmentCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -943,22 +953,26 @@ func TestChangeStatusTo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		deliveringResp, err := c.FBS().ChangeStatusToDelivering(test.params)
+		deliveringctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		deliveringResp, err := c.FBS().ChangeStatusToDelivering(deliveringctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
 
-		lastMileResp, err := c.FBS().ChangeStatusToLastMile(test.params)
+		lastMilectx, _ := context.WithTimeout(context.Background(), testTimeout)
+		lastMileResp, err := c.FBS().ChangeStatusToLastMile(lastMilectx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
 
-		deliveredResp, err := c.FBS().ChangeStatusToDelivered(test.params)
+		deliveredctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		deliveredResp, err := c.FBS().ChangeStatusToDelivered(deliveredctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
 
-		sendBySellerResp, err := c.FBS().ChangeStatusToSendBySeller(test.params)
+		sendBySellerctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		sendBySellerResp, err := c.FBS().ChangeStatusToSendBySeller(sendBySellerctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1005,7 +1019,8 @@ func TestPassShipmentToShipping(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().PassShipmentToShipping(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().PassShipmentToShipping(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1053,7 +1068,8 @@ func TestCancelShipment(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().CancelShipment(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().CancelShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1103,7 +1119,8 @@ func TestCreateAct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().CreateAct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().CreateAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1152,7 +1169,8 @@ func TestGetLabeling(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetLabeling(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetLabeling(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1205,7 +1223,8 @@ func TestPrintLabeling(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().PrintLabeling(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().PrintLabeling(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1259,7 +1278,8 @@ func TestCreateTaskForGeneratingLabel(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().CreateTaskForGeneratingLabel(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().CreateTaskForGeneratingLabel(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1319,7 +1339,8 @@ func TestGetDropOffPointRestrictions(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetDropOffPointRestrictions(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetDropOffPointRestrictions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1379,7 +1400,8 @@ func TestCheckProductItemsData(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().CheckproductItemsData(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().CheckproductItemsData(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1442,7 +1464,8 @@ func TestGetProductItemsCheckStatuses(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetProductItemsCheckStatuses(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetProductItemsCheckStatuses(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1510,7 +1533,8 @@ func TestRescheduleShipmentDeliveryDate(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().RescheduleShipmentDeliveryDate(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().RescheduleShipmentDeliveryDate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1561,7 +1585,8 @@ func TestDateAvailableForDeliverySchedule(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().DateAvailableForDeliverySchedule(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().DateAvailableForDeliverySchedule(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1620,7 +1645,8 @@ func TestListManufactoruingCountries(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ListManufacturingCountries(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ListManufacturingCountries(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1680,7 +1706,8 @@ func TestSetManufacturingCountry(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().SetManufacturingCountry(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().SetManufacturingCountry(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1747,7 +1774,8 @@ func TestPartialPackOrder(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().PartialPackOrder(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().PartialPackOrder(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1819,7 +1847,8 @@ func TestAvailableFreightsList(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().AvailableFreightsList(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().AvailableFreightsList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1866,7 +1895,8 @@ func TestGenerateAct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GenerateAct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GenerateAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1915,7 +1945,8 @@ func TestGetDigitalAct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetDigitalAct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetDigitalAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -1969,7 +2000,8 @@ func TestPackageUnitLabels(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().PackageUnitLabel(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().PackageUnitLabel(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2021,7 +2053,8 @@ func TestOpenDisputeOverShipment(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().OpenDisputeOverShipment(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().OpenDisputeOverShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2088,7 +2121,8 @@ func TestShipmentCancellationReasons(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ShipmentCancellationReasons(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ShipmentCancellationReasons(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2183,7 +2217,8 @@ func TestShipmentsCancellationReasons(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ShipmentsCancellationReasons()
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ShipmentsCancellationReasons(ctx)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2244,7 +2279,8 @@ func TestAddWeightForBulkProduct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().AddWeightForBulkProduct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().AddWeightForBulkProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2304,7 +2340,8 @@ func TestCancelSending(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().CancelSending(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().CancelSending(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2369,7 +2406,8 @@ func TestListShipmentInCertificate(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ListShipmentInCertificate(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ListShipmentInCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2417,7 +2455,8 @@ func TestSpecifyNumberOfBoxes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().SpecifyNumberOfBoxes(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().SpecifyNumberOfBoxes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2465,7 +2504,8 @@ func TestStatusOfAct(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().StatusOfAct(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().StatusOfAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2523,7 +2563,8 @@ func TestETGBCustomsDeclarations(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().ETGBCustomsDeclarations(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ETGBCustomsDeclarations(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2571,7 +2612,8 @@ func TestBarcodeFromProductShipment(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().BarcodeFromProductShipment(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().BarcodeFromProductShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2629,7 +2671,8 @@ func TestBarcodeValueFromProductShipment(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().BarcodeValueFromProductShipment(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().BarcodeValueFromProductShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -2683,7 +2726,8 @@ func TestGetActPDF(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.FBS().GetActPDF(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetActPDF(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

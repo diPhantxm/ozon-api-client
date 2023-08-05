@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -62,7 +63,8 @@ func TestGetCancellationInfo(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Cancellations().GetInfo(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Cancellations().GetInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -171,7 +173,8 @@ func TestListCancellations(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Cancellations().List(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Cancellations().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -215,7 +218,8 @@ func TestApproveCancellations(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Cancellations().Approve(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Cancellations().Approve(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -259,7 +263,8 @@ func TestRejectCancellations(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Cancellations().Reject(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Cancellations().Reject(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

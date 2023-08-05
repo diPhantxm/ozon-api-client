@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -48,7 +49,8 @@ func TestGetProductTree(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Categories().Tree(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Categories().Tree(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -119,7 +121,8 @@ func TestGetCategoryAttributes(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Categories().Attributes(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Categories().Attributes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -199,7 +202,8 @@ func TestGetAttributeDictionary(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Categories().AttributesDictionary(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Categories().AttributesDictionary(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

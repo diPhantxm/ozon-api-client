@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 
 	core "github.com/diphantxm/ozon-api-client"
@@ -40,12 +41,12 @@ type GetProductTreeResult struct {
 // New products can be created in the last level categories only.
 // This means that you need to match these particular categories with the categories of your site.
 // It is not possible to create categories by user request
-func (c Categories) Tree(params *GetProductTreeParams) (*GetProductTreeResponse, error) {
+func (c Categories) Tree(ctx context.Context, params *GetProductTreeParams) (*GetProductTreeResponse, error) {
 	url := "/v2/category/tree"
 
 	resp := &GetProductTreeResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -134,12 +135,12 @@ type GetCategoryAttributesResultAttribute struct {
 // You can check whether the attribute has a nested directory by the `dictionary_id` parameter.
 // The 0 value means there is no directory. If the value is different, then there are directories.
 // You can get them using the `/v2/category/attribute/values` method
-func (c Categories) Attributes(params *GetCategoryAttributesParams) (*GetCategoryAttributesResponse, error) {
+func (c Categories) Attributes(ctx context.Context, params *GetCategoryAttributesParams) (*GetCategoryAttributesResponse, error) {
 	url := "/v3/category/attribute"
 
 	resp := &GetCategoryAttributesResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -187,12 +188,12 @@ type GetAttributeDictionaryResult struct {
 
 // You can use the `/v3/category/attribute` method to check if an attribute has a nested directory.
 // If there are directories, get them using this method
-func (c Categories) AttributesDictionary(params *GetAttributeDictionaryParams) (*GetAttributeDictionaryResponse, error) {
+func (c Categories) AttributesDictionary(ctx context.Context, params *GetAttributeDictionaryParams) (*GetAttributeDictionaryResponse, error) {
 	url := "/v2/category/attribute/values"
 
 	resp := &GetAttributeDictionaryResponse{}
 
-	response, err := c.client.Request(http.MethodPost, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

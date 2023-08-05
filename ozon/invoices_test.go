@@ -1,6 +1,7 @@
 package ozon
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -48,7 +49,8 @@ func TestCreateUpdateProformaLink(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Invoices().CreateUpdate(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Invoices().CreateUpdate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -96,7 +98,8 @@ func TestGetProformaLink(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Invoices().Get(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Invoices().Get(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
@@ -142,7 +145,8 @@ func TestDeleteProformaLink(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		resp, err := c.Invoices().Delete(test.params)
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Invoices().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
