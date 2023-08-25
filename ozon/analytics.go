@@ -20,6 +20,21 @@ type GetAnalyticsDataParams struct {
 	DateTo time.Time `json:"date_to"`
 
 	// Items Enum: "unknownDimension" "sku" "spu" "day" "week" "month" "year" "category1" "category2" "category3" "category4" "brand" "modelID"
+	// Data grouping available to all sellers:
+	//   - unknownDimension—unknown,
+	//   - sku—product identifier,
+	//   - spu—product identifier,
+	//   - day—day,
+	//   - week—week,
+	//   - month—month.
+	// Data grouping available to sellers with Premium subscription:
+	//   - year—year,
+	//   - category1—first level category,
+	//   - category2—second level category,
+	//   - category3—third level category,
+	//   - category4—fourth level category,
+	//   - brand—brand,
+	//   - modelID—model.
 	Dimension []GetAnalyticsDataDimension `json:"dimension"`
 
 	// Filters
@@ -31,6 +46,30 @@ type GetAnalyticsDataParams struct {
 	Limit int64 `json:"limit"`
 
 	// Specify up to 14 metrics. If there are more, you will get an error with the InvalidArgument code
+	// The list of metrics for which the report will be generated.
+	//
+	// Metrics available to all sellers:
+	//
+	// 	 - revenue—ordered amount,
+	//   - ordered_units—ordered products.
+	// Metrics available to sellers with Premium subscription:
+	//   - unknown_metric—unknown metric,
+	//   - hits_view_search—impressions in search and category,
+	//   - hits_view_pdp—impressions on the product description page,
+	//   - hits_view—total impressions,
+	//   - hits_tocart_search—added to cart from search or category,
+	//   - hits_tocart_pdp—added to cart from the product description page,
+	//   - hits_tocart—added to cart total,
+	//   - session_view_search—sessions with impressions in search or category,
+	//   - session_view_pdp—sessions with impressions on the product description page,
+	//   - session_view—sessions total,
+	//   - conv_tocart_search—conversion to cart from search or category,
+	//   - conv_tocart_pdp—conversion to cart from a product description page,
+	//   - conv_tocart—total conversion to cart,
+	//   - returns—returned products,
+	//   - cancellations—canceled products,
+	//   - delivered_units—delivered products,
+	//   - position_category—position in search and category.
 	Metrics []GetAnalyticsDataFilterMetric `json:"metrics"`
 
 	// Number of elements that will be skipped in the response. For example, if `offset=10`, the response will start with the 11th element found
@@ -95,6 +134,13 @@ type GetAnalyticsDataResultDimension struct {
 }
 
 // Specify the period and metrics that are required. The response will contain analytical data grouped by the `dimensions` parameter.
+//
+// There are restrictions for sellers without Premium subscription:
+//
+//   - data is available for the last 3 months,
+//   - some of the data grouping methods and metrics aren't available.
+//
+// There are no restrictions for sellers with Premium subscription
 func (c Analytics) GetAnalyticsData(ctx context.Context, params *GetAnalyticsDataParams) (*GetAnalyticsDataResponse, error) {
 	url := "/v1/analytics/data"
 
