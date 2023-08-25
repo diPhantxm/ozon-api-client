@@ -641,12 +641,24 @@ type UpdatePricesPrice struct {
 	OfferId string `json:"offer_id"`
 
 	// Price before discounts. Displayed strikethrough on the product description page.
-	// Specified in rubles. The fractional part is separated by decimal point, up to two digits after the decimal point.
+	// Specified in rubles.
+	// The fractional part is separated by decimal point,
+	// up to two digits after the decimal point.
+	//
+	// If there are no discounts on the product, pass 0 to this field and specify the correct price in the price field
 	OldPrice string `json:"old_price"`
 
 	// Product price including discounts. This value is displayed on the product description page.
 	//
-	// If the current price of the product is from 400 to 10 000 rubles inclusive, the difference between the values of price and old_price fields should be more than 5%, but not less than 20 rubles.
+	// If the old_price parameter value is greater than 0,
+	// there should be a certain difference between price and old_price.
+	// It depends on the price value
+	//
+	// < 400 - min diff. 20 rubles
+	//
+	// 400-10,000 - min diff. 5%
+	//
+	// > 10,000 - min diff. 500 rubles
 	Price string `json:"price"`
 
 	// Attribute for enabling and disabling pricing strategies auto-application
