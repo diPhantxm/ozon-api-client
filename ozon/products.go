@@ -420,6 +420,9 @@ type GetProductDetailsResponseItemError struct {
 }
 
 // Get product details
+//
+// Check a minimum product price with all promotions applied in your personal account.
+// The min_price parameter from the method response is in development and returns 0
 func (c Products) GetProductDetails(ctx context.Context, params *GetProductDetailsParams) (*GetProductDetailsResponse, error) {
 	url := "/v2/product/info"
 
@@ -2118,6 +2121,10 @@ type GetProductPriceInfoResultItemPriceIndexesSelfMarketplace struct {
 }
 
 // You can specify up to 1000 products in the request
+//
+// Check minimum and maximum commissions for FBO pipeline in your personal account.
+// The `fbo_direct_flow_trans_max_amount` and `fbo_direct_flow_trans_min_amount` parameters
+// from the method response are in development and return 0
 func (c Products) GetProductPriceInfo(ctx context.Context, params *GetProductPriceInfoParams) (*GetProductPriceInfoResponse, error) {
 	url := "/v4/product/info/prices"
 
