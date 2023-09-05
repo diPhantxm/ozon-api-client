@@ -85,27 +85,3 @@ func (c Polygons) Link(ctx context.Context, params *LinkDeliveryMethodToPolygonP
 
 	return resp, nil
 }
-
-type DeletePolygonParams struct {
-	// Polygons identifiers list
-	PolygonIds []int64 `json:"polygon_ids"`
-}
-
-type DeletePolygonResponse struct {
-	core.CommonResponse
-}
-
-// Delete polygon
-func (c Polygons) Delete(ctx context.Context, params *DeletePolygonParams) (*DeletePolygonResponse, error) {
-	url := "/v1/polygon/delete"
-
-	resp := &DeletePolygonResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
