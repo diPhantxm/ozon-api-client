@@ -22,14 +22,17 @@ func TestGetProductTree(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetProductTreeParams{
-				CategoryId: 17034410,
+				Language: English,
 			},
 			`{
 				"result": [
 				  {
-					"category_id": 17034410,
-					"title": "Развивающие игрушки",
-					"children": []
+					"category_id": 0,
+					"category_name": "string",
+					"children": [],
+					"disabled": true,
+					"type_id": 0,
+					"type_name": "string"
 				  }
 				]
 			}`,
@@ -58,14 +61,6 @@ func TestGetProductTree(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
-
-		if resp.StatusCode == http.StatusOK {
-			if len(resp.Result) > 0 {
-				if resp.Result[0].CategoryId != test.params.CategoryId {
-					t.Errorf("First category ids in request and response are not equal")
-				}
-			}
-		}
 	}
 }
 
@@ -83,25 +78,23 @@ func TestGetCategoryAttributes(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetCategoryAttributesParams{
-				CategoryId: []int64{17034410},
+				CategoryId: 12345,
+				Language:   English,
+				TypeId:     2,
 			},
 			`{
 				"result": [
 				  {
-					"category_id": 17034410,
-					"attributes": [
-					  {
-						"id": 85,
-						"name": "Бренд",
-						"description": "Укажите наименование бренда, под которым произведен товар. Если товар не имеет бренда, используйте значение \"Нет бренда\"",
-						"type": "String",
-						"is_collection": false,
-						"is_required": true,
-						"group_id": 0,
-						"group_name": "",
-						"dictionary_id": 28732849
-					  }
-					]
+					"description": "string",
+					"dictionary_id": 0,
+					"group_id": 0,
+					"group_name": "string",
+					"id": 0,
+					"is_aspect": true,
+					"is_collection": true,
+					"is_required": true,
+					"name": "string",
+					"type": "string"
 				  }
 				]
 			}`,
@@ -130,17 +123,6 @@ func TestGetCategoryAttributes(t *testing.T) {
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
-
-		if resp.StatusCode == http.StatusOK {
-			if len(resp.Result) != len(test.params.CategoryId) {
-				t.Errorf("Length of categories in request and response are not equal")
-			}
-			if len(resp.Result) > 0 {
-				if resp.Result[0].CategoryId != test.params.CategoryId[0] {
-					t.Errorf("Category ids in request and response are not equal")
-				}
-			}
-		}
 	}
 }
 
@@ -158,33 +140,23 @@ func TestGetAttributeDictionary(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetAttributeDictionaryParams{
-				AttributeId: 10096,
-				CategoryId:  17028968,
-				LastValueId: 0,
-				Limit:       3,
+				AttributeId: 123456,
+				CategoryId:  12,
+				Language:    English,
+				LastValueId: 1,
+				Limit:       5,
+				TypeId:      6,
 			},
 			`{
+				"has_next": true,
 				"result": [
 				  {
-					"id": 61571,
-					"value": "белый",
-					"info": "",
-					"picture": ""
-				  },
-				  {
-					"id": 61572,
-					"value": "прозрачный",
-					"info": "",
-					"picture": ""
-				  },
-				  {
-					"id": 61573,
-					"value": "бежевый",
-					"info": "",
-					"picture": ""
+					"id": 0,
+					"info": "string",
+					"picture": "string",
+					"value": "string"
 				  }
-				],
-				"has_next": true
+				]
 			}`,
 		},
 		// Test No Client-Id or Api-Key

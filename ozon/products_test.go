@@ -124,7 +124,7 @@ func TestGetProductDetails(t *testing.T) {
 					"7533900005"
 				  ],
 				  "buybox_price": "",
-				  "category_id": 17038062,
+				  "description_category_id": 17038062,
 				  "created_at": "2021-10-21T15:48:03.529178Z",
 				  "images": [
 					"https://cdn1.ozone.ru/s3/multimedia-5/6088931525.jpg",
@@ -286,7 +286,7 @@ func TestGetProductDetails(t *testing.T) {
 			if resp.Result.OfferId == "" {
 				t.Errorf("Offer id cannot be empty")
 			}
-			if resp.Result.CategoryId == 0 {
+			if resp.Result.DescriptionCategoryId == 0 {
 				t.Errorf("Category id cannot be 0")
 			}
 			if resp.Result.CurrencyCode == "" {
@@ -658,21 +658,21 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 								},
 							},
 						},
-						Barcode:       "112772873170",
-						CategoryId:    17033876,
-						CurrencyCode:  "RUB",
-						Depth:         10,
-						DimensionUnit: "mm",
-						Height:        250,
-						Name:          "Комплект защитных плёнок для X3 NFC. Темный хлопок",
-						OfferId:       "143210608",
-						OldPrice:      "1100",
-						PremiumPrice:  "900",
-						Price:         "1000",
-						VAT:           "0.1",
-						Weight:        100,
-						WeightUnit:    "g",
-						Width:         150,
+						Barcode:               "112772873170",
+						DescriptionCategoryId: 17033876,
+						CurrencyCode:          "RUB",
+						Depth:                 10,
+						DimensionUnit:         "mm",
+						Height:                250,
+						Name:                  "Комплект защитных плёнок для X3 NFC. Темный хлопок",
+						OfferId:               "143210608",
+						OldPrice:              "1100",
+						PremiumPrice:          "900",
+						Price:                 "1000",
+						VAT:                   "0.1",
+						Weight:                100,
+						WeightUnit:            "g",
+						Width:                 150,
 					},
 				},
 			},
@@ -1339,7 +1339,7 @@ func TestListProductsByIDs(t *testing.T) {
 						"7533900005"
 					  ],
 					  "buybox_price": "",
-					  "category_id": 93726157,
+					  "description_category_id": 93726157,
 					  "created_at": "2021-06-03T03:40:05.871465Z",
 					  "images": [],
 					  "has_discounted_item": true,
@@ -1536,7 +1536,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 				  {
 					"id": 213761435,
 					"barcode": "",
-					"category_id": 17038062,
+					"description_category_id": 17038062,
 					"name": "Пленка защитная для Xiaomi Redmi Note 10 Pro 5G",
 					"offer_id": "21470",
 					"height": 10,
