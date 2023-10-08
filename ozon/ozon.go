@@ -31,6 +31,7 @@ type Client struct {
 	chats         *Chats
 	certificates  *Certificates
 	strategies    *Strategies
+	barcodes      *Barcodes
 }
 
 func (c Client) Analytics() *Analytics {
@@ -105,6 +106,10 @@ func (c Client) Strategies() *Strategies {
 	return c.strategies
 }
 
+func (c Client) Barcodes() *Barcodes {
+	return c.barcodes
+}
+
 func NewClient(httpClient core.HttpClient, clientId, apiKey string) *Client {
 	coreClient := core.NewClient(httpClient, DefaultAPIBaseUrl, map[string]string{
 		"Client-Id": clientId,
@@ -131,6 +136,7 @@ func NewClient(httpClient core.HttpClient, clientId, apiKey string) *Client {
 		chats:         &Chats{client: coreClient},
 		certificates:  &Certificates{client: coreClient},
 		strategies:    &Strategies{client: coreClient},
+		barcodes:      &Barcodes{client: coreClient},
 	}
 }
 
@@ -157,5 +163,6 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 		chats:         &Chats{client: coreClient},
 		certificates:  &Certificates{client: coreClient},
 		strategies:    &Strategies{client: coreClient},
+		barcodes:      &Barcodes{client: coreClient},
 	}
 }
