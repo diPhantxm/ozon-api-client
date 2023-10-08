@@ -12,17 +12,14 @@ type Categories struct {
 }
 
 type GetProductTreeParams struct {
-	// Category identifier
-	CategoryId int64 `json:"category_id"`
-
 	// Response language
-	Language Language `json:"language" default:"DEFAULT"`
+	Language Language `json:"language"`
 }
 
 type GetProductTreeResponse struct {
 	core.CommonResponse
 
-	// Category list
+	// Categories list
 	Result []GetProductTreeResult `json:"result"`
 }
 
@@ -30,19 +27,29 @@ type GetProductTreeResult struct {
 	// Category identifier
 	CategoryId int64 `json:"category_id"`
 
-	// Subcategory tree
-	Children []GetProductTreeResponse `json:"children"`
-
 	// Category name
-	Title string `json:"title"`
+	CategoryName string `json:"category_name"`
+
+	// `true`, if you can't create products in the category. `false`, if you can
+	Disabled bool `json:"disabled"`
+
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
+
+	// Product type name
+	TypeName string `json:"type_name"`
+
+	// Subcategory tree
+	Children []GetProductTreeResult `json:"children"`
 }
 
 // Returns product categories in the tree view.
+//
 // New products can be created in the last level categories only.
 // This means that you need to match these particular categories with the categories of your site.
-// It is not possible to create categories by user request
-func (c Categories) Tree(ctx context.Context, params *GetProductTreeParams) (*GetProductTreeResponse, error) {
-	url := "/v2/category/tree"
+// We don't create new categories by user request.
+func (c *Categories) Tree(ctx context.Context, params *GetProductTreeParams) (*GetProductTreeResponse, error) {
+	url := "/v1/description-category/tree"
 
 	resp := &GetProductTreeResponse{}
 
@@ -56,14 +63,14 @@ func (c Categories) Tree(ctx context.Context, params *GetProductTreeParams) (*Ge
 }
 
 type GetCategoryAttributesParams struct {
-	// Filter by characteristics
-	AttributeType AttributeType `json:"attribute_type" default:"ALL"`
-
 	// Category identifier
-	CategoryId []int64 `json:"category_id"`
+	CategoryId int64 `json:"category_id"`
 
 	// Response language
-	Language Language `json:"language" default:"DEFAULT"`
+	Language Language `json:"language"`
+
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
 }
 
 type GetCategoryAttributesResponse struct {
@@ -74,19 +81,6 @@ type GetCategoryAttributesResponse struct {
 }
 
 type GetCategoryAttributesResult struct {
-	// Array of product characteristics
-	Attributes []GetCategoryAttributesResultAttribute `json:"attributes"`
-
-	// Category identifier
-	CategoryId int64 `json:"category_id"`
-}
-
-type GetCategoryAttributesResultAttribute struct {
-	// Indication that the dictionary attribute values depend on the category:
-	//   - true — the attribute has its own set of values for each category.
-	//   - false — the attribute has the same set of values for all categories
-	CategoryDependent bool `json:"category_dependent"`
-
 	// Characteristic description
 	Description string `json:"description"`
 
@@ -99,26 +93,29 @@ type GetCategoryAttributesResultAttribute struct {
 	// Characteristics group name
 	GroupName string `json:"group_name"`
 
-	// Document generation task number
+	// Number of document generation task
 	Id int64 `json:"id"`
 
 	// Indicates that the attribute is aspect. An aspect attribute is a characteristic that distinguishes products of the same model.
 	//
-	// For example, clothes and shoes of the same model may have different colors and sizes. That is, color and size are aspect attributes.
+	// For example, clothes or shoes of the same model may have different colors and sizes. That is, color and size are aspect attributes.
 	//
 	// Values description:
-	//   - true — the attribute is aspect and cannot be changed after the products are delivered to the warehouse or sold from the seller's warehouse.
-	//   - false — the attribute is not aspect and can be changed at any time
+	//
+	// 	- `true`—the attribute is aspect and can't be changed after the products are delivered to the warehouse or sold from the seller's warehouse.
+	// 	- `false`—the attribute is not aspect and can be changed at any time
 	IsAspect bool `json:"is_aspect"`
 
 	// Indicates that the characteristic is a set of values:
-	//   - true — the characteristic is a set of values,
-	//   - false — the characteristic consists of a single value
+	//
+	// 	- `true`—the characteristic is a set of values,
+	// 	- `false`—the characteristic consists of a single value
 	IsCollection bool `json:"is_collection"`
 
 	// Indicates that the characteristic is mandatory:
-	//   - true — a mandatory characteristic,
-	//   - false — you can leave the characteristic out
+	//
+	// 	- `true`—a mandatory characteristic,
+	// 	- `false`—an optional characteristic
 	IsRequired bool `json:"is_required"`
 
 	// Name
@@ -128,15 +125,13 @@ type GetCategoryAttributesResultAttribute struct {
 	Type string `json:"type"`
 }
 
-// Getting characteristics for specified product category.
+// Getting characteristics for specified product category and type.
 //
-// Pass up to 20 category identifiers in the `category_id` list.
-//
-// You can check whether the attribute has a nested directory by the `dictionary_id` parameter.
-// The 0 value means there is no directory. If the value is different, then there are directories.
-// You can get them using the `/v2/category/attribute/values` method
-func (c Categories) Attributes(ctx context.Context, params *GetCategoryAttributesParams) (*GetCategoryAttributesResponse, error) {
-	url := "/v3/category/attribute"
+// If the dictionary_id value is 0, there is no directory.
+// If the value is different, there are directories.
+// Get them using the `/v1/description-category/attribute/values` method.
+func (c *Categories) Attributes(ctx context.Context, params *GetCategoryAttributesParams) (*GetCategoryAttributesResponse, error) {
+	url := "/v1/description-category/attribute"
 
 	resp := &GetCategoryAttributesResponse{}
 
@@ -157,39 +152,55 @@ type GetAttributeDictionaryParams struct {
 	CategoryId int64 `json:"category_id"`
 
 	// Response language
-	// The default language is Russian
-	Language Language `json:"language" default:"DEFAULT"`
+	Language Language `json:"language"`
 
+	// Identifier of the directory to start the response with.
+	// If `last_value_id` is 10, the response will contain directories starting from the 11th
 	LastValueId int64 `json:"last_value_id"`
 
 	// Number of values in the response:
-	//   - maximum — 5000
-	//   - minimum — 1
+	//
+	// 	- maximum—5000,
+	// 	- minimum—1.
 	Limit int64 `json:"limit"`
+
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
 }
 
 type GetAttributeDictionaryResponse struct {
 	core.CommonResponse
 
+	// Indication that only part of characteristic values was returned in the response:
+	//
+	// 	- true—make a request with a new last_value_id parameter value for getting the rest of characteristic values;
+	// 	- false—all characteristic values were returned
 	HasNext bool `json:"has_next"`
 
-	// Method result
+	// Characteristic values
 	Result []GetAttributeDictionaryResult `json:"result"`
 }
 
 type GetAttributeDictionaryResult struct {
-	Id      int64  `json:"id"`
-	Info    string `json:"info"`
+	// Characteristic value identifier
+	Id int64 `json:"id"`
+
+	// Additional description
+	Info string `json:"info"`
+
+	// Image link
 	Picture string `json:"picture"`
 
 	// Product characteristic value
 	Value string `json:"value"`
 }
 
-// You can use the `/v3/category/attribute` method to check if an attribute has a nested directory.
-// If there are directories, get them using this method
-func (c Categories) AttributesDictionary(ctx context.Context, params *GetAttributeDictionaryParams) (*GetAttributeDictionaryResponse, error) {
-	url := "/v2/category/attribute/values"
+// Returns characteristics value directory.
+//
+// To check if an attribute has a nested directory,
+// use the `/v1/description-category/attribute` method.
+func (c *Categories) AttributesDictionary(ctx context.Context, params *GetAttributeDictionaryParams) (*GetAttributeDictionaryResponse, error) {
+	url := "/v1/description-category/attribute"
 
 	resp := &GetAttributeDictionaryResponse{}
 

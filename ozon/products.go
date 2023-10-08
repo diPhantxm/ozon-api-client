@@ -128,7 +128,7 @@ type ProductDetails struct {
 	BuyboxPrice string `json:"buybox_price"`
 
 	// Category identifier
-	CategoryId int64 `json:"category_id"`
+	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Marketing color
 	ColorImage string `json:"color_image"`
@@ -736,7 +736,7 @@ type CreateOrUpdateProductItem struct {
 	Barcode string `json:"barcode"`
 
 	// Category identifier
-	CategoryId int64 `json:"category_id"`
+	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Marketing color.
 	//
@@ -1378,7 +1378,7 @@ type GetDescriptionOfProductResult struct {
 	Barcode string `json:"barcode"`
 
 	// Category identifier
-	CategoryId int64 `json:"category_id"`
+	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Marketing color
 	ColorImage string `json:"color_image"`
