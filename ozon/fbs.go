@@ -306,7 +306,7 @@ type FBSRequirements struct {
 	//
 	// To pack the shipment, pass the CCD number for all listed SKUs.
 	// If you do not have a CCD number, pass the value `is_gtd_absent` = true
-	// via the `/v3/posting/fbs/ship/package` or `/v3/posting/fbs/ship` method
+	// via the `/v3/posting/fbs/ship/package`
 	ProductsRequiringGTD []string `json:"products_requiring_gtd"`
 
 	// Array of Ozon Product IDs (SKU) for which
