@@ -540,3 +540,40 @@ const (
 	// pound sterling
 	InvoiceCurrencyGBP InvoiceCurrency = "GBP"
 )
+
+type ReportType string
+
+const (
+	// products report
+	ReportTypeSellerProducts ReportType = "SELLER_PRODUCTS"
+
+	// transactions report
+	ReportTypeSellerTransactions ReportType = "SELLER_TRANSACTIONS"
+
+	// product prices report
+	ReportTypeSellerProductPrices ReportType = "SELLER_PRODUCT_PRICES"
+
+	// stocks report
+	ReportTypeSellerStock ReportType = "SELLER_STOCK"
+
+	// products movement report
+	ReportTypeSellerProductMovement ReportType = "SELLER_PRODUCT_MOVEMENT"
+
+	// returns report
+	ReportTypeSellerReturns ReportType = "SELLER_RETURNS"
+
+	// shipments report
+	ReportTypeSellerPostings ReportType = "SELLER_POSTINGS"
+
+	// financial report
+	ReportTypeSellerFinance ReportType = "SELLER_FINANCE"
+)
+
+type ReportInfoStatus string
+
+const (
+	ReportInfoWaiting    ReportInfoStatus = "waiting"
+	ReportInfoProcessing ReportInfoStatus = "processing"
+	ReportInfoSuccess    ReportInfoStatus = "success"
+	ReportInfoFailed     ReportInfoStatus = "failed"
+)

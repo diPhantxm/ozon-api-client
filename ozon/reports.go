@@ -126,21 +126,11 @@ type GetReportDetailResult struct {
 	// Array with the filters specified when the seller created the report
 	Params map[string]string `json:"params"`
 
-	// Report type:
-	//   - SELLER_PRODUCTS — products report,
-	//   - SELLER_TRANSACTIONS — transactions report,
-	//   - SELLER_PRODUCT_PRICES — product prices report,
-	//   - SELLER_STOCK — stocks report,
-	//   - SELLER_PRODUCT_MOVEMENT — products movement report,
-	//   - SELLER_RETURNS — returns report,
-	//   - SELLER_POSTINGS — shipments report,
-	//   - SELLER_FINANCE — financial report
-	ReportType string `json:"report_type"`
+	// Report type
+	ReportType ReportType `json:"report_type"`
 
-	// Report generation status:
-	//   - success
-	//   - failed
-	Status string `json:"status"`
+	// Report generation status
+	Status ReportInfoStatus `json:"status"`
 }
 
 // Returns information about a created report by its identifier
