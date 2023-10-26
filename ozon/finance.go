@@ -272,7 +272,7 @@ type ListTransactionsFilter struct {
 	Date ListTransactionsFilterDate `json:"date"`
 
 	// Operation type
-	OperationType string `json:"operation_type"`
+	OperationType []string `json:"operation_type"`
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
