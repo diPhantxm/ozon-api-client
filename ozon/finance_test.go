@@ -25,55 +25,51 @@ func TestReportOnSoldProducts(t *testing.T) {
 			&ReportOnSoldProductsParams{
 				Date: "2022-09",
 			},
-			`{
-				"result": [
-					{
-						"header": [
-							{
-								"doc_date": "2022-09-22",
-								"num": "string",
-								"start_date": "2022-09-02",
-								"stop_date": "2022-09-22",
-								"contract_date": "2022-09-02",
-								"contract_num": "string",
-								"payer_name": "string",
-								"payer_inn": "string",
-								"payer_kpp": "string",
-								"rcv_name": "string",
-								"rcv_inn": "string",
-								"rcv_kpp": "string",
-								"doc_amount": 1,
-								"vat_amount": 1,
-								"currency_code": "string"
-							}
-						],
-						"rows": [
-							{
-								"row_number": 0,
-								"product_id": 0,
-								"product_name": "string",
-								"offer_id": "string",
-								"barcode": "string",
-								"price": 0,
-								"commission_percent": 0,
-								"price_sale": 0,
-								"sale_qty": 0,
-								"sale_amount": 0,
-								"sale_discount": 0,
-								"sale_commission": 0,
-								"sale_price_seller": 0,
-								"return_sale": 0,
-								"return_qty": 0,
-								"return_amount": 0,
-								"return_discount": 0,
-								"return_commission": 0,
-								"return_price_seller": 0
-							}
-						]
-					}
-				]
-			}`,
-			"",
+            `{
+                "result": {
+                    "header": {
+                        "doc_date": "2022-09-22",
+                        "num": "string",
+                        "start_date": "2022-09-02",
+                        "stop_date": "2022-09-22",
+                        "contract_date": "2022-09-02",
+                        "contract_num": "string",
+                        "payer_name": "string",
+                        "payer_inn": "string",
+                        "payer_kpp": "string",
+                        "rcv_name": "string",
+                        "rcv_inn": "string",
+                        "rcv_kpp": "string",
+                        "doc_amount": 1,
+                        "vat_amount": 1,
+                        "currency_code": "string"
+                    },
+                    "rows": [
+                    {
+                        "row_number": 0,
+                        "product_id": 0,
+                        "product_name": "string",
+                        "offer_id": "string",
+                        "barcode": "string",
+                        "price": 0,
+                        "commission_percent": 0,
+                        "price_sale": 0,
+                        "sale_qty": 0,
+                        "sale_amount": 0,
+                        "sale_discount": 0,
+                        "sale_commission": 0,
+                        "sale_price_seller": 0,
+                        "return_sale": 0,
+                        "return_qty": 0,
+                        "return_amount": 0,
+                        "return_discount": 0,
+                        "return_commission": 0,
+                        "return_price_seller": 0
+                    }
+                    ]
+                }
+            }`,
+            "",
 		},
 		// Test No Client-Id or Api-Key
 		{

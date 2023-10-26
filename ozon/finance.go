@@ -21,12 +21,12 @@ type ReportOnSoldProductsResponse struct {
 	core.CommonResponse
 
 	// Query result
-	Result []ReportonSoldProductsResult `json:"result"`
+	Result ReportonSoldProductsResult `json:"result"`
 }
 
 type ReportonSoldProductsResult struct {
 	// Report title page
-	Header []ReportOnSoldProductsResultHeader `json:"header"`
+	Header ReportOnSoldProductsResultHeader `json:"header"`
 
 	// Report table
 	Rows []ReportOnSoldProductsResultRow `json:"rows"`
