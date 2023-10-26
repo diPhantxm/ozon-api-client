@@ -21,12 +21,12 @@ type ReportOnSoldProductsResponse struct {
 	core.CommonResponse
 
 	// Query result
-	Result []ReportonSoldProductsResult `json:"result"`
+	Result ReportonSoldProductsResult `json:"result"`
 }
 
 type ReportonSoldProductsResult struct {
 	// Report title page
-	Header []ReportOnSoldProductsResultHeader `json:"header"`
+	Header ReportOnSoldProductsResultHeader `json:"header"`
 
 	// Report table
 	Rows []ReportOnSoldProductsResultRow `json:"rows"`
@@ -272,7 +272,7 @@ type ListTransactionsFilter struct {
 	Date ListTransactionsFilterDate `json:"date"`
 
 	// Operation type
-	OperationType string `json:"operation_type"`
+	OperationType []string `json:"operation_type"`
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
