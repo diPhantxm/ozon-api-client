@@ -577,3 +577,13 @@ const (
 	ReportInfoSuccess    ReportInfoStatus = "success"
 	ReportInfoFailed     ReportInfoStatus = "failed"
 )
+
+type SKUAvailability string
+
+const (
+	SKUAvailabilityHidden    = "HIDDEN"
+	SKUAvailabilityAvailable = "AVAILABLE"
+
+	// SKU is deleted
+	SKUAvailabilityUnavailable = "UNAVAILABLE"
+)

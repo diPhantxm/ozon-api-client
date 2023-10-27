@@ -2335,3 +2335,64 @@ func (c Products) UpdateCharacteristics(ctx context.Context, params *UpdateChara
 
 	return resp, nil
 }
+
+type GetRelatedSKUsParams struct {
+	// List of SKUs
+	SKUs []string `json:"sku"`
+}
+
+type GetRelatedSKUsResponse struct {
+	core.CommonResponse
+
+	// Related SKUs information
+	Items []GetRelatedSKUsItem `json:"items"`
+
+	// Errors
+	Errors []GetRelatedSKUsError `json:"errors"`
+}
+
+type GetRelatedSKUsItem struct {
+	// Product availability attribute by SKU
+	Availability SKUAvailability `json:"availability"`
+
+	// Date and time of deletion
+	DeletedAt time.Time `json:"deleted_at"`
+
+	// Delivery scheme
+	DeliverySchema string `json:"delivery_schema"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+}
+
+type GetRelatedSKUsError struct {
+	// Error code
+	Code string `json:"code"`
+
+	// SKU, in which the error occurred
+	SKU int `json:"sku"`
+
+	// Error text
+	Message string `json:"message"`
+}
+
+// You can pass any SKU in the request, even a deleted one.
+// The response will contain all SKUs related to the passed ones.
+//
+// In one request, you can pass up to 200 SKUs.
+func (c Products) GetRelatedSKUs(ctx context.Context, params *GetRelatedSKUsParams) (*GetRelatedSKUsResponse, error) {
+	url := "/v1/product/related-sku/get"
+
+	resp := &GetRelatedSKUsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

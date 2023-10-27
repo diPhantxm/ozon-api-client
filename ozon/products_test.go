@@ -2600,3 +2600,69 @@ func TestUpdateCharacteristics(t *testing.T) {
 		}
 	}
 }
+
+func TestGetRelatedSKUs(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetRelatedSKUsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetRelatedSKUsParams{
+				SKUs: []string{"321", "322"},
+			},
+			`{
+				"items": [
+				  {
+					"availability": "HIDDEN",
+					"deleted_at": "2019-08-24T14:15:22Z",
+					"delivery_schema": "fbs",
+					"product_id": 123,
+					"sku": 321
+				  }
+				],
+				"errors": [
+				  {
+					"code": "test_code",
+					"sku": 322,
+					"message": "test_message"
+				  }
+				]
+			  }`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetRelatedSKUsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().GetRelatedSKUs(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if len(resp.Errors)+len(resp.Items) != len(test.params.SKUs) {
+			t.Errorf("expected equal length of skus in request and response")
+		}
+	}
+}
