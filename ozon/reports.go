@@ -591,9 +591,12 @@ type GetShipmentReportFilter struct {
 	// Cancellation reason identifier
 	CancelReasonId []int64 `json:"cancel_reason_id"`
 
-	// Work scheme: FBO or FBS.
+	// The scheme of operation is FBO or FBS.
 	//
-	// To get an FBO scheme report, pass fbo in this parameter. For an FBS scheme report pass fbs
+	// Only one of the parameters can be passed to the array per query:
+	//
+	// fbo - to get a report by FBO scheme,
+	// fbs - to get a report by FBS scheme
 	DeliverySchema []string `json:"delivery_schema"`
 
 	// Product identifier
