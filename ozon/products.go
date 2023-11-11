@@ -374,6 +374,8 @@ type ProductDetailStock struct {
 
 type ProductDetailVisibilityDetails struct {
 	// If the product is active, the value is true
+	//
+	// Deprecated: Use `visible` parameter of `ProductDetails`
 	ActiveProduct bool `json:"active_product"`
 
 	// If the price is set, the value is true
@@ -559,7 +561,7 @@ type UpdateQuantityStockProductsResultError struct {
 //
 // You can update the stock of one product in one warehouse only once in 2 minutes, otherwise there will be the TOO_MANY_REQUESTS error in the response.
 //
-// Availability can only be set after the product status has been changed to processed.
+// You can set the availability of an item only after the product status is changed to price_sent
 //
 // Bulky products stock can only be updated in the warehouses for bulky products.
 func (c Products) UpdateQuantityStockProducts(ctx context.Context, params *UpdateQuantityStockProductsParams) (*UpdateQuantityStockProductsResponse, error) {

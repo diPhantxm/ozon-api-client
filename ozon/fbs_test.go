@@ -196,16 +196,22 @@ func TestGetFBSShipmentsList(t *testing.T) {
 			&GetFBSShipmentsListParams{
 				Direction: "ASC",
 				Filter: GetFBSShipmentsListFilter{
-					Since:  core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-01T00:00:00.000Z"),
-					To:     core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-12-01T23:59:59.000Z"),
-					Status: "awaiting_packaging",
+					Since:            core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-01T00:00:00.000Z"),
+					To:               core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-12-01T23:59:59.000Z"),
+					Status:           "awaiting_packaging",
+					WarehouseId:      []int64{123},
+					ProviderId:       []int64{223},
+					FBPFilter:        FBPFilterAll,
+					DeliveryMethodId: []int64{456},
+					OrderId:          0,
 				},
-				Limit:  100,
+				Limit:  0,
 				Offset: 0,
 				With: GetFBSShipmentsListWith{
 					AnalyticsData: true,
 					FinancialData: true,
 					Translit:      true,
+					Barcodes:      true,
 				},
 			},
 			`{
@@ -216,6 +222,7 @@ func TestGetFBSShipmentsList(t *testing.T) {
 					  "order_id": 680420041,
 					  "order_number": "05708065-0029",
 					  "status": "awaiting_deliver",
+					  "substatus": "posting_awaiting_passport_data",
 					  "delivery_method": {
 						"id": 21321684811000,
 						"name": "Ozon Логистика самостоятельно, Красногорск",
