@@ -61,6 +61,9 @@ type GetReportsListResultReport struct {
 	Error string `json:"error"`
 
 	// Link to CSV file
+	//
+	// For a report with the SELLER_RETURNS type,
+	// the link is available within 5 minutes after making a request.
 	File string `json:"file"`
 
 	// Array with the filters specified when the seller created the report
@@ -445,86 +448,6 @@ func (c Reports) GetProducts(ctx context.Context, params *GetProductsReportParam
 	return resp, nil
 }
 
-type GetStocksReportParams struct {
-	// Default: "DEFAULT"
-	// Response language:
-	//   - RU — Russian
-	//   - EN — English
-	Language string `json:"language" default:"DEFAULT"`
-}
-
-type GetStocksReportResponse struct {
-	core.CommonResponse
-
-	// Method result
-	Result GetStocksReportResult `json:"result"`
-}
-
-type GetStocksReportResult struct {
-	// Unique report identifier
-	Code string `json:"code"`
-}
-
-// Report with information about the number of available and reserved products in stock
-func (c Reports) GetStocks(ctx context.Context, params *GetStocksReportParams) (*GetStocksReportResponse, error) {
-	url := "/v1/report/stock/create"
-
-	resp := &GetStocksReportResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
-type GetProductsMovementReportParams struct {
-	// Date from which the data will be in the report
-	DateFrom time.Time `json:"date_from"`
-
-	// Date up to which the data will be in the report
-	DateTo time.Time `json:"date_to"`
-
-	// Default: "DEFAULT"
-	// Response language:
-	//   - RU — Russian
-	//   - EN — English
-	Language string `json:"language" default:"DEFAULT"`
-}
-
-type GetProductsMovementReportResponse struct {
-	core.CommonResponse
-
-	// Method result
-	Result GetProductsMovementReportResult `json:"result"`
-}
-
-type GetProductsMovementReportResult struct {
-	// Unique report identifier
-	Code string `json:"code"`
-}
-
-// Report with complete information on products, as well as the number of products with statuses:
-//   - products with defects or in inventory,
-//   - products in transit between the fulfillment centers,
-//   - products in delivery,
-//   - products to be sold
-func (c Reports) GetProductsMovement(ctx context.Context, params *GetProductsMovementReportParams) (*GetProductsMovementReportResponse, error) {
-	url := "/v1/report/products/movement/create"
-
-	resp := &GetProductsMovementReportResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
 type GetReturnsReportParams struct {
 	// Filter
 	Filter GetReturnsReportsFilter `json:"filter"`
@@ -555,7 +478,7 @@ type GetReturnsReportResponse struct {
 }
 
 type GetReturnReportResult struct {
-	// Unique report identifier
+	// Unique report identifier. The report is available for downloading within 3 days after making a request.
 	Code string `json:"code"`
 }
 
@@ -679,56 +602,29 @@ func (c Reports) IssueOnDiscountedProducts(ctx context.Context) (*IssueOnDiscoun
 	return resp, nil
 }
 
-type ReportOnDiscountedProductsParams struct {
+type GetFBSStocksParams struct {
+	// Response language
+	Language string `json:"language"`
+
+	// Warehouses identifiers
+	WarehouseIds []int64 `json:"warehouse_id"`
+}
+
+type GetFBSStocksResponse struct {
+	core.CommonResponse
+
 	// Unique report identifier
 	Code string `json:"code"`
 }
 
-type ReportOnDiscountedProductsResponse struct {
-	core.CommonResponse
+// Report with information about the number of available and reserved products in stock.
+//
+// The method returns a report identifier.
+// To get the report, send the identifier in the request of the `/v1/report/info` method.
+func (c Reports) GetFBSStocks(ctx context.Context, params *GetFBSStocksParams) (*GetFBSStocksResponse, error) {
+	url := "/v1/report/warehouse/stock"
 
-	// Report information
-	Report ReportonDiscountedProductsReport `json:"report"`
-}
-
-type ReportonDiscountedProductsReport struct {
-	// Report creation date
-	CreatedAt time.Time `json:"created_at"`
-
-	// Link to report file
-	File string `json:"file"`
-
-	// Report status:
-	//   - success — created
-	//   - pending — waiting to be processed
-	//   - processing — processed
-	//   - failed — generation error
-	Status string `json:"status"`
-
-	// Report generation error code
-	Error string `json:"error"`
-}
-
-// By report identifier, returns information about the report generated earlier
-func (c Reports) ReportOnDiscountedProducts(ctx context.Context, params *ReportOnDiscountedProductsParams) (*ReportOnDiscountedProductsResponse, error) {
-	url := "/v1/report/discounted/info"
-
-	resp := &ReportOnDiscountedProductsResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
-// By report identifier, returns information about the report generated earlier
-func (c Reports) ListReportsOnDiscountedProducts(ctx context.Context) (*ReportOnDiscountedProductsResponse, error) {
-	url := "/v1/report/discounted/list"
-
-	resp := &ReportOnDiscountedProductsResponse{}
+	resp := &GetFBSStocksResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {

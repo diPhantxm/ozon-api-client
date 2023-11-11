@@ -350,115 +350,6 @@ func TestGetProductsReport(t *testing.T) {
 	}
 }
 
-func TestGetStocksReport(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		statusCode int
-		headers    map[string]string
-		params     *GetStocksReportParams
-		response   string
-	}{
-		// Test Ok
-		{
-			http.StatusOK,
-			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&GetStocksReportParams{},
-			`{
-				"result": {
-				  "code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
-				}
-			}`,
-		},
-		// Test No Client-Id or Api-Key
-		{
-			http.StatusUnauthorized,
-			map[string]string{},
-			&GetStocksReportParams{},
-			`{
-				"code": 16,
-				"message": "Client-Id and Api-Key headers are required"
-			}`,
-		},
-	}
-
-	for _, test := range tests {
-		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
-
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.Reports().GetStocks(ctx, test.params)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if resp.StatusCode != test.statusCode {
-			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
-		}
-
-		if resp.StatusCode == http.StatusOK {
-			if resp.Result.Code == "" {
-				t.Errorf("Code cannot be empty")
-			}
-		}
-	}
-}
-
-func TestGetProductsMovementReport(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		statusCode int
-		headers    map[string]string
-		params     *GetProductsMovementReportParams
-		response   string
-	}{
-		// Test Ok
-		{
-			http.StatusOK,
-			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&GetProductsMovementReportParams{
-				DateFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2020-08-01T14:15:22Z"),
-				DateTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2020-08-01T14:15:22Z"),
-			},
-			`{
-				"result": {
-				  "code": "h56f4917-1346-4e64-9d90-с6e736c1e07c"
-				}
-			}`,
-		},
-		// Test No Client-Id or Api-Key
-		{
-			http.StatusUnauthorized,
-			map[string]string{},
-			&GetProductsMovementReportParams{},
-			`{
-				"code": 16,
-				"message": "Client-Id and Api-Key headers are required"
-			}`,
-		},
-	}
-
-	for _, test := range tests {
-		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
-
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.Reports().GetProductsMovement(ctx, test.params)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if resp.StatusCode != test.statusCode {
-			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
-		}
-
-		if resp.StatusCode == http.StatusOK {
-			if resp.Result.Code == "" {
-				t.Errorf("Code cannot be empty")
-			}
-		}
-	}
-}
-
 func TestGetReturnsReport(t *testing.T) {
 	t.Parallel()
 
@@ -623,36 +514,32 @@ func TestIssueOnDiscountedProducts(t *testing.T) {
 	}
 }
 
-func TestReportOnDiscountedProducts(t *testing.T) {
+func TestGetFBSStocks(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
-		params     *ReportOnDiscountedProductsParams
+		params     *GetFBSStocksParams
 		response   string
 	}{
 		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&ReportOnDiscountedProductsParams{
-				Code: "d55f4517-8347-4e24-9d93-d6e736c1c07c",
+			&GetFBSStocksParams{
+				Language:     "EN",
+				WarehouseIds: []int64{123},
 			},
 			`{
-				"report": {
-				  "created_at": "2022-10-04T10:07:08.146Z",
-				  "error": "string",
-				  "file": "string",
-				  "status": "string"
-				}
+				"code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
 			}`,
 		},
 		// Test No Client-Id or Api-Key
 		{
 			http.StatusUnauthorized,
 			map[string]string{},
-			&ReportOnDiscountedProductsParams{},
+			&GetFBSStocksParams{},
 			`{
 				"code": 16,
 				"message": "Client-Id and Api-Key headers are required"
@@ -664,56 +551,7 @@ func TestReportOnDiscountedProducts(t *testing.T) {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.Reports().ReportOnDiscountedProducts(ctx, test.params)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if resp.StatusCode != test.statusCode {
-			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
-		}
-	}
-}
-
-func TestListReportsOnDiscountedProducts(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		statusCode int
-		headers    map[string]string
-		response   string
-	}{
-		// Test Ok
-		{
-			http.StatusOK,
-			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			`{
-				"reports": [
-				  {
-					"created_at": "2022-10-04T10:07:08.146Z",
-					"error": "string",
-					"file": "string",
-					"status": "string"
-				  }
-				]
-			}`,
-		},
-		// Test No Client-Id or Api-Key
-		{
-			http.StatusUnauthorized,
-			map[string]string{},
-			`{
-				"code": 16,
-				"message": "Client-Id and Api-Key headers are required"
-			}`,
-		},
-	}
-
-	for _, test := range tests {
-		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
-
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.Reports().ListReportsOnDiscountedProducts(ctx)
+		resp, err := c.Reports().GetFBSStocks(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}
