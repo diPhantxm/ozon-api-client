@@ -535,3 +535,30 @@ func (c Returns) RejectRFBSReturn(ctx context.Context, params *RejectRFBSReturnP
 
 	return resp, nil
 }
+
+type CompensateRFBSParams struct {
+	// Compensation amount
+	CompensationAmount string `json:"compensation_amount"`
+
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+}
+
+type CompensateRFBSResponse struct {
+	core.CommonResponse
+}
+
+// Using this method you can confirm the partial compensation and agree to keep the product with the customer
+func (c Returns) CompensateRFBS(ctx context.Context, params *CompensateRFBSParams) (*CompensateRFBSResponse, error) {
+	url := "/v2/returns/rfbs/compensate"
+
+	resp := &CompensateRFBSResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
