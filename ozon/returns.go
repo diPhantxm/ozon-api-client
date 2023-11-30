@@ -498,3 +498,40 @@ func (c Returns) GetRFBSReturn(ctx context.Context, params *GetRFBSReturnParams)
 
 	return resp, nil
 }
+
+type RejectRFBSReturnParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Comment
+	//
+	// The comment is required if the
+	// `rejection_reason.is_comment_required` parameter is `true`
+	// in the response of the `/v2/returns/rfbs/get` method
+	Comment string `json:"comment"`
+
+	// Rejection reason identifier.
+	//
+	// Pass the value from the list of reasons received in the response
+	// of the `/v2/returns/rfbs/get` method in the `rejection_reason` parameter
+	RejectionReasonId int64 `json:"rejection_reason_id"`
+}
+
+type RejectRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// The method rejects an rFBS return request. Explain your decision in the `comment` parameter
+func (c Returns) RejectRFBSReturn(ctx context.Context, params *RejectRFBSReturnParams) (*RejectRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/reject"
+
+	resp := &RejectRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
