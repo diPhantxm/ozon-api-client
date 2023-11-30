@@ -615,3 +615,35 @@ func (c Returns) ReceiveRFBSReturn(ctx context.Context, params *ReceiveRFBSRetur
 
 	return resp, nil
 }
+
+type RefundRFBSParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Refund amount for shipping the product
+	ReturnForBackWay int64 `json:"return_for_back_way"`
+}
+
+type RefundRFBSResponse struct {
+	core.CommonResponse
+}
+
+// The method confirms the refund of the full product cost.
+// Use the method if you agree to refund the customer:
+//
+// Immediately without receiving the product.
+// After you received and checked the product.
+// If the product is defective or damaged, you also refund its return shipment cost.
+func (c Returns) RefundRFBS(ctx context.Context, params *RefundRFBSParams) (*RefundRFBSResponse, error) {
+	url := "/v2/returns/rfbs/return-money"
+
+	resp := &RefundRFBSResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
