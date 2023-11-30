@@ -204,10 +204,10 @@ func TestGetRFBSReturns(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetRFBSReturnsParams{
-				LastID: 999,
+				LastId: 999,
 				Limit:  555,
 				Filter: GetRFBSReturnsFilter{
-					OfferID:       "123",
+					OfferId:       "123",
 					PostingNumber: "111",
 					GroupState:    []RFBSReturnsGroupState{RFBSReturnsGroupStateAll},
 					CreatedAt: GetRFBSReturnsFilterCreatedAt{
@@ -266,8 +266,8 @@ func TestGetRFBSReturns(t *testing.T) {
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			if resp.Returns.Product.OfferID != test.params.Filter.OfferID {
-				t.Errorf("expected offer ID %s, but got: %s", test.params.Filter.OfferID, resp.Returns.Product.OfferID)
+			if resp.Returns.Product.OfferId != test.params.Filter.OfferId {
+				t.Errorf("expected offer ID %s, but got: %s", test.params.Filter.OfferId, resp.Returns.Product.OfferId)
 			}
 			if resp.Returns.PostingNumber != test.params.Filter.PostingNumber {
 				t.Errorf("expected posting number %s, but got: %s", test.params.Filter.PostingNumber, resp.Returns.PostingNumber)
@@ -275,6 +275,101 @@ func TestGetRFBSReturns(t *testing.T) {
 			if resp.Returns.State.GroupState != test.params.Filter.GroupState[0] {
 				t.Errorf("expected group state %s, but got: %s", test.params.Filter.GroupState[0], resp.Returns.State.GroupState)
 			}
+		}
+	}
+}
+
+func TestGetRFBSReturn(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetRFBSReturnParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetRFBSReturnParams{
+				ReturnId: 123,
+			},
+			`{
+				"returns": {
+				  "available_actions": [
+					{
+					  "id": 0,
+					  "name": "string"
+					}
+				  ],
+				  "client_name": "string",
+				  "client_photo": [
+					"string"
+				  ],
+				  "client_return_method_type": {
+					"id": 0,
+					"name": "string"
+				  },
+				  "comment": "string",
+				  "created_at": "2019-08-24T14:15:22Z",
+				  "order_number": "string",
+				  "posting_number": "string",
+				  "product": {
+					"name": "string",
+					"offer_id": "string",
+					"currency_code": "string",
+					"price": "string",
+					"sku": 0
+				  },
+				  "rejection_comment": "string",
+				  "rejection_reason": [
+					{
+					  "hint": "string",
+					  "id": 0,
+					  "is_comment_required": true,
+					  "name": "string"
+					}
+				  ],
+				  "return_method_description": "string",
+				  "return_number": "string",
+				  "return_reason": {
+					"id": 0,
+					"is_defect": true,
+					"name": "string"
+				  },
+				  "ru_post_tracking_number": "string",
+				  "state": {
+					"state": "string",
+					"state_name": "string"
+				  },
+				  "warehouse_id": 0
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetRFBSReturnParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().GetRFBSReturn(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 	}
 }
