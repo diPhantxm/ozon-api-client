@@ -591,3 +591,27 @@ func (c Returns) ApproveRFBSReturn(ctx context.Context, params *ApproveRFBSRetur
 
 	return resp, nil
 }
+
+type ReceiveRFBSReturnParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+}
+
+type ReceiveRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// Confirm receipt of a product for check
+func (c Returns) ReceiveRFBSReturn(ctx context.Context, params *ReceiveRFBSReturnParams) (*ReceiveRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/receive-return"
+
+	resp := &ReceiveRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
