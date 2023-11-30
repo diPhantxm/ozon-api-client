@@ -421,20 +421,20 @@ func TestRejectRFBSReturn(t *testing.T) {
 	}
 }
 
-func TestCompensateRFBS(t *testing.T) {
+func TestCompensateRFBSreturn(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
-		params     *CompensateRFBSParams
+		params     *CompensateRFBSReturnParams
 		response   string
 	}{
 		// Test Ok
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&CompensateRFBSParams{
+			&CompensateRFBSReturnParams{
 				ReturnId:           123,
 				CompensationAmount: "11",
 			},
@@ -444,7 +444,7 @@ func TestCompensateRFBS(t *testing.T) {
 		{
 			http.StatusUnauthorized,
 			map[string]string{},
-			&CompensateRFBSParams{},
+			&CompensateRFBSReturnParams{},
 			`{
 				"code": 16,
 				"message": "Client-Id and Api-Key headers are required"
@@ -456,7 +456,53 @@ func TestCompensateRFBS(t *testing.T) {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
 		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.Returns().CompensateRFBS(ctx, test.params)
+		resp, err := c.Returns().CompensateRFBSReturn(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestApproveRFBSReturn(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ApproveRFBSReturnParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ApproveRFBSReturnParams{
+				ReturnId:                123,
+				ReturnMethodDescription: "some description",
+			},
+			`{}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ApproveRFBSReturnParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().ApproveRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 		}

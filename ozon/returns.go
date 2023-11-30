@@ -536,7 +536,7 @@ func (c Returns) RejectRFBSReturn(ctx context.Context, params *RejectRFBSReturnP
 	return resp, nil
 }
 
-type CompensateRFBSParams struct {
+type CompensateRFBSReturnParams struct {
 	// Compensation amount
 	CompensationAmount string `json:"compensation_amount"`
 
@@ -544,15 +544,44 @@ type CompensateRFBSParams struct {
 	ReturnId int64 `json:"return_id"`
 }
 
-type CompensateRFBSResponse struct {
+type CompensateRFBSReturnResponse struct {
 	core.CommonResponse
 }
 
 // Using this method you can confirm the partial compensation and agree to keep the product with the customer
-func (c Returns) CompensateRFBS(ctx context.Context, params *CompensateRFBSParams) (*CompensateRFBSResponse, error) {
+func (c Returns) CompensateRFBSReturn(ctx context.Context, params *CompensateRFBSReturnParams) (*CompensateRFBSReturnResponse, error) {
 	url := "/v2/returns/rfbs/compensate"
 
-	resp := &CompensateRFBSResponse{}
+	resp := &CompensateRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ApproveRFBSReturnParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Method of product return
+	ReturnMethodDescription string `json:"return_method_description"`
+}
+
+type ApproveRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// The method allows to approve an rFBS return request and agree to receive products for verification.
+//
+// Confirm that you've received the product using the `/v2/returns/rfbs/receive-return` method.
+func (c Returns) ApproveRFBSReturn(ctx context.Context, params *ApproveRFBSReturnParams) (*ApproveRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/verify"
+
+	resp := &ApproveRFBSReturnResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
