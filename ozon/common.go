@@ -587,3 +587,50 @@ const (
 	// SKU is deleted
 	SKUAvailabilityUnavailable = "UNAVAILABLE"
 )
+
+type RFBSReturnsGroupState string
+
+const (
+	// All requests
+	RFBSReturnsGroupStateAll RFBSReturnsGroupState = "All"
+
+	// New
+	RFBSReturnsGroupStateNew RFBSReturnsGroupState = "New"
+
+	// Returned product is on the way for check
+	RFBSReturnsGroupStateDelivering RFBSReturnsGroupState = "Delivering"
+
+	// Returned product is being checked
+	RFBSReturnsGroupStateCheckout RFBSReturnsGroupState = "Checkout"
+
+	// Disputed
+	RFBSReturnsGroupStateArbitration RFBSReturnsGroupState = "Arbitration"
+
+	// Approved
+	RFBSReturnsGroupStateApproved RFBSReturnsGroupState = "Approved"
+
+	// Rejected
+	RFBSReturnsGroupStateRejected RFBSReturnsGroupState = "Rejected"
+)
+
+type GetRFBSReturnsCurrency string
+
+const (
+	// Russian ruble
+	GetRFBSReturnsCurrencyRUB GetRFBSReturnsCurrency = "RUB"
+
+	// Belarusian ruble
+	GetRFBSReturnsCurrencyBYN GetRFBSReturnsCurrency = "BYN"
+
+	// Tenge
+	GetRFBSReturnsCurrencyKZT GetRFBSReturnsCurrency = "KZT"
+
+	// Euro
+	GetRFBSReturnsCurrencyEUR GetRFBSReturnsCurrency = "EUR"
+
+	// US dollar
+	GetRFBSReturnsCurrencyUSD GetRFBSReturnsCurrency = "USD"
+
+	// Yuan
+	GetRFBSReturnsCurrencyCNY GetRFBSReturnsCurrency = "CNY"
+)

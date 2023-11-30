@@ -189,3 +189,92 @@ func TestGetFBSReturns(t *testing.T) {
 		}
 	}
 }
+
+func TestGetRFBSReturns(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetRFBSReturnsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetRFBSReturnsParams{
+				LastID: 999,
+				Limit:  555,
+				Filter: GetRFBSReturnsFilter{
+					OfferID:       "123",
+					PostingNumber: "111",
+					GroupState:    []RFBSReturnsGroupState{RFBSReturnsGroupStateAll},
+					CreatedAt: GetRFBSReturnsFilterCreatedAt{
+						From: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+						To:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+					},
+				},
+			},
+			`{
+				"returns": {
+				  "client_name": "string",
+				  "created_at": "2019-08-24T14:15:22Z",
+				  "order_number": "string",
+				  "posting_number": "111",
+				  "product": {
+					"name": "string",
+					"offer_id": "123",
+					"currency_code": "string",
+					"price": "string",
+					"sku": 123
+				  },
+				  "return_id": 0,
+				  "return_number": "string",
+				  "state": {
+					"group_state": "All",
+					"money_return_state_name": "string",
+					"state": "string",
+					"state_name": "string"
+				  }
+				}
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetRFBSReturnsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().GetRFBSReturns(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if resp.Returns.Product.OfferID != test.params.Filter.OfferID {
+				t.Errorf("expected offer ID %s, but got: %s", test.params.Filter.OfferID, resp.Returns.Product.OfferID)
+			}
+			if resp.Returns.PostingNumber != test.params.Filter.PostingNumber {
+				t.Errorf("expected posting number %s, but got: %s", test.params.Filter.PostingNumber, resp.Returns.PostingNumber)
+			}
+			if resp.Returns.State.GroupState != test.params.Filter.GroupState[0] {
+				t.Errorf("expected group state %s, but got: %s", test.params.Filter.GroupState[0], resp.Returns.State.GroupState)
+			}
+		}
+	}
+}

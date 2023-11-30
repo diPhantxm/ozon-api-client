@@ -261,3 +261,115 @@ func (c Returns) GetFBSReturns(ctx context.Context, params *GetFBSReturnsParams)
 
 	return resp, nil
 }
+
+type GetRFBSReturnsParams struct {
+	// Filter
+	Filter GetRFBSReturnsFilter `json:"filter"`
+
+	// Identifier of the last value on the page.
+	// Leave this field blank in the first request
+	LastID int32 `json:"last_id"`
+
+	// Number of values per page
+	Limit int32 `json:"limit"`
+}
+
+type GetRFBSReturnsFilter struct {
+	// Product identifier in the seller's system
+	OfferID string `json:"offer_id"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Filter by request statuses
+	GroupState []RFBSReturnsGroupState `json:"group_state"`
+
+	// Period of request creation
+	CreatedAt GetRFBSReturnsFilterCreatedAt `json:"created_at"`
+}
+
+type GetRFBSReturnsFilterCreatedAt struct {
+	// Period start date
+	From time.Time `json:"from"`
+
+	// Period end date
+	To time.Time `json:"to"`
+}
+
+type GetRFBSReturnsResponse struct {
+	core.CommonResponse
+
+	// Information on return requests
+	Returns GetRFBSReturnsReturn `json:"returns"`
+}
+
+type GetRFBSReturnsReturn struct {
+	// Customer name
+	ClientName string `json:"client_name"`
+
+	// Request creation date
+	CreatedAt time.Time `json:"created_at"`
+
+	// Order number
+	OrderNumber string `json:"order_number"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Product details
+	Product GetRFBSReturnsProduct `json:"product"`
+
+	// Return request identifier
+	ReturnID int64 `json:"return_id"`
+
+	// Return request number
+	ReturnNumber string `json:"return_number"`
+
+	// Request and refund statuses
+	State GetRFBSReturnsState `json:"state"`
+}
+
+type GetRFBSReturnsProduct struct {
+	// Product name
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferID string `json:"offer_id"`
+
+	// Currency of your prices. It matches the currency set in your personal account
+	CurrencyCode GetRFBSReturnsCurrency `json:"currency_code"`
+
+	// Product price
+	Price string `json:"price"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+}
+
+type GetRFBSReturnsState struct {
+	// Request status by the applied filter
+	GroupState RFBSReturnsGroupState `json:"group_state"`
+
+	// Refund status
+	MoneyReturnStateName string `json:"money_return_state_name"`
+
+	// Request status
+	State string `json:"state"`
+
+	// Request status name in Russian
+	StateName string `json:"state_name"`
+}
+
+func (c Returns) GetRFBSReturns(ctx context.Context, params *GetRFBSReturnsParams) (*GetRFBSReturnsResponse, error) {
+	url := "/v2/returns/rfbs/list"
+
+	resp := &GetRFBSReturnsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
