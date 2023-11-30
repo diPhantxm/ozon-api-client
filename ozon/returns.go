@@ -261,3 +261,389 @@ func (c Returns) GetFBSReturns(ctx context.Context, params *GetFBSReturnsParams)
 
 	return resp, nil
 }
+
+type GetRFBSReturnsParams struct {
+	// Filter
+	Filter GetRFBSReturnsFilter `json:"filter"`
+
+	// Identifier of the last value on the page.
+	// Leave this field blank in the first request
+	LastId int32 `json:"last_id"`
+
+	// Number of values per page
+	Limit int32 `json:"limit"`
+}
+
+type GetRFBSReturnsFilter struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Filter by request statuses
+	GroupState []RFBSReturnsGroupState `json:"group_state"`
+
+	// Period of request creation
+	CreatedAt GetRFBSReturnsFilterCreatedAt `json:"created_at"`
+}
+
+type GetRFBSReturnsFilterCreatedAt struct {
+	// Period start date
+	From time.Time `json:"from"`
+
+	// Period end date
+	To time.Time `json:"to"`
+}
+
+type GetRFBSReturnsResponse struct {
+	core.CommonResponse
+
+	// Information on return requests
+	Returns GetRFBSReturnsReturn `json:"returns"`
+}
+
+type GetRFBSReturnsReturn struct {
+	// Customer name
+	ClientName string `json:"client_name"`
+
+	// Request creation date
+	CreatedAt time.Time `json:"created_at"`
+
+	// Order number
+	OrderNumber string `json:"order_number"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Product details
+	Product GetRFBSReturnsProduct `json:"product"`
+
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Return request number
+	ReturnNumber string `json:"return_number"`
+
+	// Request and refund statuses
+	State GetRFBSReturnsState `json:"state"`
+}
+
+type GetRFBSReturnsProduct struct {
+	// Product name
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Currency of your prices. It matches the currency set in your personal account
+	CurrencyCode GetRFBSReturnsCurrency `json:"currency_code"`
+
+	// Product price
+	Price string `json:"price"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+}
+
+type GetRFBSReturnsState struct {
+	// Request status by the applied filter
+	GroupState RFBSReturnsGroupState `json:"group_state"`
+
+	// Refund status
+	MoneyReturnStateName string `json:"money_return_state_name"`
+
+	// Request status
+	State string `json:"state"`
+
+	// Request status name in Russian
+	StateName string `json:"state_name"`
+}
+
+// Get a list of return requests
+func (c Returns) GetRFBSReturns(ctx context.Context, params *GetRFBSReturnsParams) (*GetRFBSReturnsResponse, error) {
+	url := "/v2/returns/rfbs/list"
+
+	resp := &GetRFBSReturnsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetRFBSReturnParams struct {
+	// Request identifier
+	ReturnId int64 `json:"return_id"`
+}
+
+type GetRFBSReturnResponse struct {
+	core.CommonResponse
+
+	// List of available actions on the request
+	AvailableActions []GetRFBSReturnAction `json:"available_actions"`
+
+	// Customer name
+	ClientName string `json:"client_name"`
+
+	// Links to product images
+	ClientPhoto []string `json:"client_photo"`
+
+	// Information on return method
+	ClientReturnMethodType GetRFBSReturnMethodType `json:"client_return_method_type"`
+
+	// Customer comment
+	Comment string `json:"comment"`
+
+	// Request creation date
+	CreatedAt time.Time `json:"created_at"`
+
+	// Order number
+	OrderNumber string `json:"order_number"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Product details
+	Product GetRFBSReturnsProduct `json:"product"`
+
+	// Comment on request rejection
+	RejectionComment string `json:"rejection_comment"`
+
+	// Information on rejection reason
+	RejectionReason []GetRFBSReturnRejectionReason `json:"rejection_reason"`
+
+	// Method of product return
+	ReturnMethodDescription string `json:"return_method_description"`
+
+	// Return request number
+	ReturnNumber string `json:"return_number"`
+
+	// Information on return reason
+	ReturnReason GetRFBSReturnReason `json:"return_reason"`
+
+	// Postal tracking number
+	RUPostTrackingNumber string `json:"ru_post_tracking_number"`
+
+	// Information on return status
+	State GetRFBSReturnState `json:"state"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type GetRFBSReturnAction struct {
+	// Action identifier
+	Id int32 `json:"id"`
+
+	// Action name
+	Name string `json:"name"`
+}
+
+type GetRFBSReturnMethodType struct {
+	// Identifier
+	Id int32 `json:"id"`
+
+	// Name
+	Name string `json:"name"`
+}
+
+type GetRFBSReturnRejectionReason struct {
+	// Hint on further actions with the return
+	Hint string `json:"hint"`
+
+	// Reason identifier
+	Id int32 `json:"id"`
+
+	// `true` if you need to attach a comment
+	IsCommentRequired bool `json:"is_comment_required"`
+
+	// Reason description
+	Name string `json:"name"`
+}
+
+type GetRFBSReturnReason struct {
+	// Reason identifier
+	Id int32 `json:"id"`
+
+	// `true` if the product is defective
+	IsDefect bool `json:"is_defect"`
+
+	// Reason description
+	Name string `json:"name"`
+}
+
+type GetRFBSReturnState struct {
+	// Status
+	State string `json:"state"`
+
+	// Status name in Russian
+	StateName string `json:"state_name"`
+}
+
+// Get information about a return request
+func (c Returns) GetRFBSReturn(ctx context.Context, params *GetRFBSReturnParams) (*GetRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/get"
+
+	resp := &GetRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type RejectRFBSReturnParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Comment
+	//
+	// The comment is required if the
+	// `rejection_reason.is_comment_required` parameter is `true`
+	// in the response of the `/v2/returns/rfbs/get` method
+	Comment string `json:"comment"`
+
+	// Rejection reason identifier.
+	//
+	// Pass the value from the list of reasons received in the response
+	// of the `/v2/returns/rfbs/get` method in the `rejection_reason` parameter
+	RejectionReasonId int64 `json:"rejection_reason_id"`
+}
+
+type RejectRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// The method rejects an rFBS return request. Explain your decision in the `comment` parameter
+func (c Returns) RejectRFBSReturn(ctx context.Context, params *RejectRFBSReturnParams) (*RejectRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/reject"
+
+	resp := &RejectRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CompensateRFBSReturnParams struct {
+	// Compensation amount
+	CompensationAmount string `json:"compensation_amount"`
+
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+}
+
+type CompensateRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// Using this method you can confirm the partial compensation and agree to keep the product with the customer
+func (c Returns) CompensateRFBSReturn(ctx context.Context, params *CompensateRFBSReturnParams) (*CompensateRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/compensate"
+
+	resp := &CompensateRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ApproveRFBSReturnParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Method of product return
+	ReturnMethodDescription string `json:"return_method_description"`
+}
+
+type ApproveRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// The method allows to approve an rFBS return request and agree to receive products for verification.
+//
+// Confirm that you've received the product using the `/v2/returns/rfbs/receive-return` method.
+func (c Returns) ApproveRFBSReturn(ctx context.Context, params *ApproveRFBSReturnParams) (*ApproveRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/verify"
+
+	resp := &ApproveRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ReceiveRFBSReturnParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+}
+
+type ReceiveRFBSReturnResponse struct {
+	core.CommonResponse
+}
+
+// Confirm receipt of a product for check
+func (c Returns) ReceiveRFBSReturn(ctx context.Context, params *ReceiveRFBSReturnParams) (*ReceiveRFBSReturnResponse, error) {
+	url := "/v2/returns/rfbs/receive-return"
+
+	resp := &ReceiveRFBSReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type RefundRFBSParams struct {
+	// Return request identifier
+	ReturnId int64 `json:"return_id"`
+
+	// Refund amount for shipping the product
+	ReturnForBackWay int64 `json:"return_for_back_way"`
+}
+
+type RefundRFBSResponse struct {
+	core.CommonResponse
+}
+
+// The method confirms the refund of the full product cost.
+// Use the method if you agree to refund the customer:
+//
+// Immediately without receiving the product.
+// After you received and checked the product.
+// If the product is defective or damaged, you also refund its return shipment cost.
+func (c Returns) RefundRFBS(ctx context.Context, params *RefundRFBSParams) (*RefundRFBSResponse, error) {
+	url := "/v2/returns/rfbs/return-money"
+
+	resp := &RefundRFBSResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
