@@ -718,3 +718,28 @@ func (c Returns) GetGiveoutPNG(ctx context.Context) (*GetGiveoutResponse, error)
 
 	return resp, nil
 }
+
+type GetGiveoutBarcodeResponse struct {
+	core.CommonResponse
+
+	// Barcode value in text format
+	Barcode string `json:"barcode"`
+}
+
+// Value of barcode for return shipments
+//
+// Use this method to get the barcode from the response of the
+// `/v1/return/giveout/get-png` and `/v1/return/giveout/get-pdf` methods in text format
+func (c Returns) GetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeResponse, error) {
+	url := "/v1/return/giveout/get-png"
+
+	resp := &GetGiveoutBarcodeResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
