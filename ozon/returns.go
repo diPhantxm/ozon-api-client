@@ -647,3 +647,27 @@ func (c Returns) RefundRFBS(ctx context.Context, params *RefundRFBSParams) (*Ref
 
 	return resp, nil
 }
+
+type IsGiveoutEnabledResponse struct {
+	core.CommonResponse
+
+	// `true` if you can pick up a return shipment by barcode.
+	Enabled bool `json:"enabled"`
+}
+
+// Check the ability to receive return shipments by barcode
+//
+// The `enabled` parameter is true if you can pick up return shipments by barcode.
+func (c Returns) IsGiveoutEnabled(ctx context.Context) (*IsGiveoutEnabledResponse, error) {
+	url := "/v1/return/giveout/is-enabled"
+
+	resp := &IsGiveoutEnabledResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
