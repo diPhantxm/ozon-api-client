@@ -634,3 +634,35 @@ const (
 	// Yuan
 	GetRFBSReturnsCurrencyCNY GetRFBSReturnsCurrency = "CNY"
 )
+
+type GiveoutStatus string
+
+const (
+	// Undefined, contact support team
+	GiveoutStatusUnspecified GiveoutStatus = "GIVEOUT_STATUS_UNSPECIFIED"
+
+	// Created
+	GiveoutStatusCreated GiveoutStatus = "GIVEOUT_STATUS_CREATED"
+
+	// Approved
+	GiveoutStatusApproved GiveoutStatus = "GIVEOUT_STATUS_APPROVED"
+
+	// Completed
+	GiveoutStatusCompleted GiveoutStatus = "GIVEOUT_STATUS_COMPLETED"
+
+	// Cancelled
+	GiveoutStatusCancelled GiveoutStatus = "GIVEOUT_STATUS_CANCELLED"
+)
+
+type GiveoutDeliverySchema string
+
+const (
+	// Undefined, contact support team
+	GiveoutDeliverySchemaUnspecified GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_UNSPECIFIED"
+
+	// FBO
+	GiveoutDeliverySchemaFBO GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_FBO"
+
+	// FBS
+	GiveoutDeliverySchemaFBS GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_FBS"
+)

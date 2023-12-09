@@ -647,3 +647,227 @@ func (c Returns) RefundRFBS(ctx context.Context, params *RefundRFBSParams) (*Ref
 
 	return resp, nil
 }
+
+type IsGiveoutEnabledResponse struct {
+	core.CommonResponse
+
+	// `true` if you can pick up a return shipment by barcode.
+	Enabled bool `json:"enabled"`
+}
+
+// Check the ability to receive return shipments by barcode
+//
+// The `enabled` parameter is true if you can pick up return shipments by barcode.
+func (c Returns) IsGiveoutEnabled(ctx context.Context) (*IsGiveoutEnabledResponse, error) {
+	url := "/v1/return/giveout/is-enabled"
+
+	resp := &IsGiveoutEnabledResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetGiveoutResponse struct {
+	core.CommonResponse
+
+	// PDF file with barcode in binary format
+	FileContent string `json:"file_content"`
+
+	// File name
+	FileName string `json:"file_name"`
+
+	// File type
+	ContentType string `json:"content_type"`
+}
+
+// Barcode for return shipment in PDF format
+//
+// Returns a PDF file with a barcode
+func (c Returns) GetGiveoutPDF(ctx context.Context) (*GetGiveoutResponse, error) {
+	url := "/v1/return/giveout/get-pdf"
+
+	resp := &GetGiveoutResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Barcode for return shipment in PNG format
+//
+// Returns a PNG file with a barcode
+func (c Returns) GetGiveoutPNG(ctx context.Context) (*GetGiveoutResponse, error) {
+	url := "/v1/return/giveout/get-png"
+
+	resp := &GetGiveoutResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetGiveoutBarcodeResponse struct {
+	core.CommonResponse
+
+	// Barcode value in text format
+	Barcode string `json:"barcode"`
+}
+
+// Value of barcode for return shipments
+//
+// Use this method to get the barcode from the response of the
+// `/v1/return/giveout/get-png` and `/v1/return/giveout/get-pdf` methods in text format
+func (c Returns) GetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeResponse, error) {
+	url := "/v1/return/giveout/barcode"
+
+	resp := &GetGiveoutBarcodeResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Use this method if an unauthorized person has gained access to your barcode.
+//
+// The method returns a PNG file with the new barcode. Once the method is used,
+// you won't be able to get a return shipment using the old barcodes.
+// To get a new barcode in PDF format, use the /v1/return/giveout/get-pdf method
+func (c Returns) ResetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeResponse, error) {
+	url := "/v1/return/giveout/barcode-reset"
+
+	resp := &GetGiveoutBarcodeResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetGiveoutListParams struct {
+	// Identifier of the last value on the page
+	LastId int64 `json:"last_id"`
+
+	// Number of values in the response
+	Limit int64 `json:"limit"`
+}
+
+type GetGiveoutListResponse struct {
+	core.CommonResponse
+
+	// Shipment identifier
+	Giveouts []GetGiveoutListGiveout `json:"giveouts"`
+}
+
+type GetGiveoutListGiveout struct {
+	// Number of products in shipment
+	ApprovedArticlesCount int32 `json:"approved_articles_count"`
+
+	// Creation date and time
+	CreatedAt time.Time `json:"created_at"`
+
+	// Shipment identifier
+	GiveoutId int64 `json:"giveout_id"`
+
+	// Return shipment status
+	GiveoutStatus GiveoutStatus `json:"giveout_status"`
+
+	// Total number of products to be picked up from the warehouse
+	TotalArticlesCount int32 `json:"total_articles_count"`
+
+	// Warehouse address
+	WarehouseAddress string `json:"warehouse_address"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
+}
+
+// Return shipments list
+func (c Returns) GetGiveoutList(ctx context.Context, params *GetGiveoutListParams) (*GetGiveoutListResponse, error) {
+	url := "/v1/return/giveout/list"
+
+	resp := &GetGiveoutListResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetGiveoutInfoParams struct {
+	// Shipment identifier
+	GiveoutId int64 `json:"giveout_id"`
+}
+
+type GetGiveoutInfoResponse struct {
+	core.CommonResponse
+
+	// Product IDs
+	Articles []GetGiveoutInfoArticle `json:"articles"`
+
+	// Shipment identifier
+	GiveoutId int64 `json:"giveout_id"`
+
+	// Return shipment status
+	GiveoutStatus GiveoutStatus `json:"giveout_status"`
+
+	// Warehouse address
+	WarehouseAddress string `json:"warehouse_address"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
+}
+
+type GetGiveoutInfoArticle struct {
+	// `true` if the shipment is confirmed
+	Approved bool `json:"approved"`
+
+	// Delivery schema
+	DeliverySchema GiveoutDeliverySchema `json:"delivery_schema"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Seller identifier
+	SellerId int64 `json:"seller_id"`
+}
+
+// Information on return shipment
+func (c Returns) GetGiveoutInfo(ctx context.Context, params *GetGiveoutInfoParams) (*GetGiveoutInfoResponse, error) {
+	url := "/v1/return/giveout/info"
+
+	resp := &GetGiveoutInfoResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
