@@ -653,3 +653,16 @@ const (
 	// Cancelled
 	GiveoutStatusCancelled GiveoutStatus = "GIVEOUT_STATUS_CANCELLED"
 )
+
+type GiveoutDeliverySchema string
+
+const (
+	// Undefined, contact support team
+	GiveoutDeliverySchemaUnspecified GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_UNSPECIFIED"
+
+	// FBO
+	GiveoutDeliverySchemaFBO GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_FBO"
+
+	// FBS
+	GiveoutDeliverySchemaFBS GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_FBS"
+)

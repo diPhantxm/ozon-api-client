@@ -818,3 +818,56 @@ func (c Returns) GetGiveoutList(ctx context.Context, params *GetGiveoutListParam
 
 	return resp, nil
 }
+
+type GetGiveoutInfoParams struct {
+	// Shipment identifier
+	GiveoutId int64 `json:"giveout_id"`
+}
+
+type GetGiveoutInfoResponse struct {
+	core.CommonResponse
+
+	// Product IDs
+	Articles []GetGiveoutInfoArticle `json:"articles"`
+
+	// Shipment identifier
+	GiveoutId int64 `json:"giveout_id"`
+
+	// Return shipment status
+	GiveoutStatus GiveoutStatus `json:"giveout_status"`
+
+	// Warehouse address
+	WarehouseAddress string `json:"warehouse_address"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
+}
+
+type GetGiveoutInfoArticle struct {
+	// `true` if the shipment is confirmed
+	Approved bool `json:"approved"`
+
+	// Delivery schema
+	DeliverySchema GiveoutDeliverySchema `json:"delivery_schema"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Seller identifier
+	SellerId int64 `json:"seller_id"`
+}
+
+// Information on return shipment
+func (c Returns) GetGiveoutInfo(ctx context.Context, params *GetGiveoutInfoParams) (*GetGiveoutInfoResponse, error) {
+	url := "/v1/return/giveout/info"
+
+	resp := &GetGiveoutInfoResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
