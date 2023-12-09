@@ -762,3 +762,59 @@ func (c Returns) ResetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeRes
 
 	return resp, nil
 }
+
+type GetGiveoutListParams struct {
+	// Identifier of the last value on the page
+	LastId int64 `json:"last_id"`
+
+	// Number of values in the response
+	Limit int64 `json:"limit"`
+}
+
+type GetGiveoutListResponse struct {
+	core.CommonResponse
+
+	// Shipment identifier
+	Giveouts []GetGiveoutListGiveout `json:"giveouts"`
+}
+
+type GetGiveoutListGiveout struct {
+	// Number of products in shipment
+	ApprovedArticlesCount int32 `json:"approved_articles_count"`
+
+	// Creation date and time
+	CreatedAt time.Time `json:"created_at"`
+
+	// Shipment identifier
+	GiveoutId int64 `json:"giveout_id"`
+
+	// Return shipment status
+	GiveoutStatus GiveoutStatus `json:"giveout_status"`
+
+	// Total number of products to be picked up from the warehouse
+	TotalArticlesCount int32 `json:"total_articles_count"`
+
+	// Warehouse address
+	WarehouseAddress string `json:"warehouse_address"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
+}
+
+// Return shipments list
+func (c Returns) GetGiveoutList(ctx context.Context, params *GetGiveoutListParams) (*GetGiveoutListResponse, error) {
+	url := "/v1/return/giveout/list"
+
+	resp := &GetGiveoutListResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

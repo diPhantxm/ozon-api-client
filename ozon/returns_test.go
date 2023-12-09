@@ -819,3 +819,62 @@ func TestResetGiveoutBarcode(t *testing.T) {
 		}
 	}
 }
+
+func TestGetGiveoutList(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetGiveoutListParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetGiveoutListParams{
+				LastId: 0,
+				Limit:  0,
+			},
+			`{
+				"giveouts": [
+				  {
+					"approved_articles_count": 0,
+					"created_at": "2019-08-24T14:15:22Z",
+					"giveout_id": 0,
+					"giveout_status": "string",
+					"total_articles_count": 0,
+					"warehouse_address": "string",
+					"warehouse_id": 0,
+					"warehouse_name": "string"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetGiveoutListParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().GetGiveoutList(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
