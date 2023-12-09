@@ -731,7 +731,26 @@ type GetGiveoutBarcodeResponse struct {
 // Use this method to get the barcode from the response of the
 // `/v1/return/giveout/get-png` and `/v1/return/giveout/get-pdf` methods in text format
 func (c Returns) GetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeResponse, error) {
-	url := "/v1/return/giveout/get-png"
+	url := "/v1/return/giveout/barcode"
+
+	resp := &GetGiveoutBarcodeResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Use this method if an unauthorized person has gained access to your barcode.
+//
+// The method returns a PNG file with the new barcode. Once the method is used,
+// you won't be able to get a return shipment using the old barcodes.
+// To get a new barcode in PDF format, use the /v1/return/giveout/get-pdf method
+func (c Returns) ResetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeResponse, error) {
+	url := "/v1/return/giveout/barcode-reset"
 
 	resp := &GetGiveoutBarcodeResponse{}
 
