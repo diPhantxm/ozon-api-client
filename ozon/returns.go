@@ -671,3 +671,50 @@ func (c Returns) IsGiveoutEnabled(ctx context.Context) (*IsGiveoutEnabledRespons
 
 	return resp, nil
 }
+
+type GetGiveoutResponse struct {
+	core.CommonResponse
+
+	// PDF file with barcode in binary format
+	FileContent string `json:"file_content"`
+
+	// File name
+	FileName string `json:"file_name"`
+
+	// File type
+	ContentType string `json:"content_type"`
+}
+
+// Barcode for return shipment in PDF format
+//
+// Returns a PDF file with a barcode
+func (c Returns) GetGiveoutPDF(ctx context.Context) (*GetGiveoutResponse, error) {
+	url := "/v1/return/giveout/get-pdf"
+
+	resp := &GetGiveoutResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Barcode for return shipment in PNG format
+//
+// Returns a PNG file with a barcode
+func (c Returns) GetGiveoutPNG(ctx context.Context) (*GetGiveoutResponse, error) {
+	url := "/v1/return/giveout/get-png"
+
+	resp := &GetGiveoutResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
