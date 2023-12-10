@@ -69,6 +69,8 @@ func TestGetCancellationInfo(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetCancellationInfoResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -179,6 +181,8 @@ func TestListCancellations(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ListCancellationsResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -224,6 +228,8 @@ func TestApproveCancellations(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ApproveRejectCancellationsResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -268,6 +274,8 @@ func TestRejectCancellations(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &ApproveRejectCancellationsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

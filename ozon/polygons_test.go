@@ -49,6 +49,8 @@ func TestCreateDeliveryPolygon(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &CreateDeliveryPolygonResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -103,6 +105,8 @@ func TestLinkDeliveryMethodToPolygon(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &LinkDeliveryMethodToPolygonResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

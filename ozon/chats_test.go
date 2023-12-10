@@ -68,6 +68,8 @@ func TestListChats(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ListChatsResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -127,6 +129,8 @@ func TestSendMessage(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &SendMessageResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -175,6 +179,8 @@ func TestSendFile(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &SendFileResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -239,6 +245,8 @@ func TestChatHistory(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &ChatHistoryResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -307,6 +315,8 @@ func TestUpdateChat(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &UpdateChatResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -355,6 +365,8 @@ func TestCreateNewChat(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &CreateNewChatResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -409,6 +421,8 @@ func TestMarkAsRead(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &MarkAsReadResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

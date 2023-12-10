@@ -56,6 +56,8 @@ func TestGenerateBarcodes(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GenerateBarcodesResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -122,6 +124,8 @@ func TestBindBarcodes(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &BindBarcodesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

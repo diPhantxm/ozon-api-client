@@ -56,6 +56,8 @@ func TestListCompetitors(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ListCompetitorsResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -115,6 +117,8 @@ func TestListStrategies(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &ListStrategiesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -183,6 +187,8 @@ func TestCreateStrategy(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &CreateStrategyResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -244,6 +250,8 @@ func TestInfoStrategy(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &InfoStrategyResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -313,6 +321,8 @@ func TestUpdateStrategy(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &UpdateStrategyResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -362,6 +372,8 @@ func TestAddProductsToStrategy(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &AddProductsToStrategyResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -416,6 +428,8 @@ func TestGetStrategiesByProductIds(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &GetStrategiesByProductIdsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -480,6 +494,8 @@ func TestListProductsInStrategy(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ListProductsInStrategyResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -534,6 +550,8 @@ func TestGetCompetitorPrice(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetCompetitorPriceResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -583,6 +601,8 @@ func TestRemoveProductsFromStrategy(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &RemoveProductsFromStrategyResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -629,6 +649,8 @@ func TestChangeStrategyStatus(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ChangeStatusToResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -673,6 +695,8 @@ func TestRemoveStrategy(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &RemoveStrategyResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

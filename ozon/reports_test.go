@@ -76,6 +76,8 @@ func TestGetList(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetReportsListResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -137,6 +139,8 @@ func TestGetReportDetails(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &GetReportDetailsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -283,6 +287,8 @@ func TestGetFinancialReport(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetFinancialReportResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -337,6 +343,8 @@ func TestGetProductsReport(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &GetProductsReportResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -394,6 +402,8 @@ func TestGetReturnsReport(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &GetReturnsReportResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -454,6 +464,8 @@ func TestGetShipmentReport(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetShipmentReportResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -501,6 +513,8 @@ func TestIssueOnDiscountedProducts(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &IssueOnDiscountedProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -555,6 +569,8 @@ func TestGetFBSStocks(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &GetFBSStocksResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

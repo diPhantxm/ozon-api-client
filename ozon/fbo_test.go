@@ -140,6 +140,8 @@ func TestGetFBOShipmentsList(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetFBSShipmentsListResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -269,6 +271,8 @@ func TestGetShipmentDetails(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetShipmentDetailsResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -348,6 +352,8 @@ func TestListSupplyRequests(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ListSupplyRequestsResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -424,6 +430,8 @@ func TestGetSupplyRequestInfo(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &GetSupplyRequestInfoResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -483,6 +491,8 @@ func TestListProductsInSupplyRequest(t *testing.T) {
 			t.Error(err)
 		}
 
+		compareJsonResponse(t, test.response, &ListProductsInSupplyRequestResponse{})
+
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
@@ -541,6 +551,8 @@ func TestGetWarehouseWorkload(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
+
+		compareJsonResponse(t, test.response, &GetWarehouseWorkloadResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

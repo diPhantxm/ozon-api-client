@@ -1767,7 +1767,7 @@ type CheckProductItemsDataResponse struct {
 // For example, you have 10 product items in your system.
 // You have passed them for checking and saving. Then they added another 60 product items to your system.
 // When you pass product items for checking and saving again, pass all of them: both old and newly added
-func (c FBS) CheckproductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
+func (c FBS) CheckProductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/set"
 
 	resp := &CheckProductItemsDataResponse{}
