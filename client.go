@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 )
 
 type HttpClient interface {
@@ -34,14 +35,17 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 	}
 }
 
-func (c Client) newRequest(ctx context.Context, method string, url string, body interface{}) (*http.Request, error) {
+func (c Client) newRequest(ctx context.Context, method string, uri string, body interface{}) (*http.Request, error) {
 	bodyJson, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 
-	url = c.baseUrl + url
-	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(bodyJson))
+	uri, err = url.JoinPath(c.baseUrl, uri)
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequestWithContext(ctx, method, uri, bytes.NewBuffer(bodyJson))
 	if err != nil {
 		return nil, err
 	}
