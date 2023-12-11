@@ -211,7 +211,7 @@ type GetTotalTransactionsSumResult struct {
 	AccrualsForSale float64 `json:"accruals_for_sale"`
 
 	// Compensations
-	CompensationAmount float64 `json:"compensatino_amount"`
+	CompensationAmount float64 `json:"compensation_amount"`
 
 	// Charges for delivery and returns when working under rFBS scheme
 	MoneyTransfer float64 `json:"money_transfer"`

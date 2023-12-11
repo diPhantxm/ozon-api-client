@@ -66,6 +66,7 @@ func TestRequest(t *testing.T) {
 
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		if resp.StatusCode != test.statusCode {

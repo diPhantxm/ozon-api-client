@@ -63,6 +63,7 @@ func TestGetListOfWarehouses(t *testing.T) {
 		resp, err := c.Warehouses().GetListOfWarehouses(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetListOfWarehousesResponse{})
@@ -141,6 +142,7 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 		resp, err := c.Warehouses().GetListOfDeliveryMethods(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetListOfDeliveryMethodsResponse{})

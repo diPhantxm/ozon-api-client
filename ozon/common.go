@@ -666,3 +666,16 @@ const (
 	// FBS
 	GiveoutDeliverySchemaFBS GiveoutDeliverySchema = "GIVEOUT_DELIVERY_SCHEMA_FBS"
 )
+
+type MandatoryMarkStatus string
+
+const (
+	// Labeling is processed
+	MandatoryMarkStatusProcessing MandatoryMarkStatus = "processing"
+
+	// Check is passed
+	MandatoryMarkStatusPassed MandatoryMarkStatus = "passed"
+
+	// Check is failed
+	MandatoryMarkStatusFailed MandatoryMarkStatus = "failed"
+)

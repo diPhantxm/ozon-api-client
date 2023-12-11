@@ -54,6 +54,7 @@ func TestListCompetitors(t *testing.T) {
 		resp, err := c.Strategies().ListCompetitors(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListCompetitorsResponse{})
@@ -116,6 +117,7 @@ func TestListStrategies(t *testing.T) {
 		resp, err := c.Strategies().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListStrategiesResponse{})
@@ -162,7 +164,7 @@ func TestCreateStrategy(t *testing.T) {
 			},
 			`{
 				"result": {
-				  "id": "4f3a1d4c-5833-4f04-b69b-495cbc1f6f1c"
+				  "strategy_id": "4f3a1d4c-5833-4f04-b69b-495cbc1f6f1c"
 				}
 			}`,
 		},
@@ -185,6 +187,7 @@ func TestCreateStrategy(t *testing.T) {
 		resp, err := c.Strategies().Create(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CreateStrategyResponse{})
@@ -213,7 +216,7 @@ func TestInfoStrategy(t *testing.T) {
 			},
 			`{
 				"result": {
-				  "strategy_name": "test1",
+				  "name": "test1",
 				  "enabled": true,
 				  "update_type": "strategyItemsListChanged",
 				  "type": "COMP_PRICE",
@@ -249,6 +252,7 @@ func TestInfoStrategy(t *testing.T) {
 		resp, err := c.Strategies().Info(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &InfoStrategyResponse{})
@@ -319,6 +323,7 @@ func TestUpdateStrategy(t *testing.T) {
 		resp, err := c.Strategies().Update(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &UpdateStrategyResponse{})
@@ -371,6 +376,7 @@ func TestAddProductsToStrategy(t *testing.T) {
 		resp, err := c.Strategies().AddProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &AddProductsToStrategyResponse{})
@@ -427,6 +433,7 @@ func TestGetStrategiesByProductIds(t *testing.T) {
 		resp, err := c.Strategies().GetByProductIds(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetStrategiesByProductIdsResponse{})
@@ -492,6 +499,7 @@ func TestListProductsInStrategy(t *testing.T) {
 		resp, err := c.Strategies().ListProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListProductsInStrategyResponse{})
@@ -548,6 +556,7 @@ func TestGetCompetitorPrice(t *testing.T) {
 		resp, err := c.Strategies().GetCompetitorPrice(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetCompetitorPriceResponse{})
@@ -599,6 +608,7 @@ func TestRemoveProductsFromStrategy(t *testing.T) {
 		resp, err := c.Strategies().RemoveProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &RemoveProductsFromStrategyResponse{})
@@ -647,6 +657,7 @@ func TestChangeStrategyStatus(t *testing.T) {
 		resp, err := c.Strategies().ChangeStatus(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ChangeStatusToResponse{})
@@ -694,6 +705,7 @@ func TestRemoveStrategy(t *testing.T) {
 		resp, err := c.Strategies().Remove(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &RemoveStrategyResponse{})

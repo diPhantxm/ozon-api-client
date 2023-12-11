@@ -25,7 +25,7 @@ func TestCreateDeliveryPolygon(t *testing.T) {
 				Coordinates: "[[[30.149574279785153,59.86550435303646],[30.21205902099609,59.846884387977326],[30.255661010742184,59.86240174913176],[30.149574279785153,59.86550435303646]]]",
 			},
 			`{
-				"polygonId": "1323"
+				"polygon_id": 1323
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -47,6 +47,7 @@ func TestCreateDeliveryPolygon(t *testing.T) {
 		resp, err := c.Polygons().CreateDelivery(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CreateDeliveryPolygonResponse{})
@@ -104,6 +105,7 @@ func TestLinkDeliveryMethodToPolygon(t *testing.T) {
 		resp, err := c.Polygons().Link(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &LinkDeliveryMethodToPolygonResponse{})

@@ -91,6 +91,7 @@ func TestReportOnSoldProducts(t *testing.T) {
 		resp, err := c.Finance().ReportOnSoldProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ReportOnSoldProductsResponse{})
@@ -162,6 +163,7 @@ func TestGetTotalTransactionsSum(t *testing.T) {
 		resp, err := c.Finance().GetTotalTransactionsSum(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetTotalTransactionsSumResponse{})
@@ -253,6 +255,7 @@ func TestListTransactions(t *testing.T) {
 		resp, err := c.Finance().ListTransactions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListTransactionsResponse{})

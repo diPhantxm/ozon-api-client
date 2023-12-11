@@ -66,6 +66,7 @@ func TestGetFBOReturns(t *testing.T) {
 		resp, err := c.Returns().GetFBOReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetFBOReturnsResponse{})
@@ -167,6 +168,7 @@ func TestGetFBSReturns(t *testing.T) {
 		resp, err := c.Returns().GetFBSReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetFBSReturnsResponse{})
@@ -263,6 +265,7 @@ func TestGetRFBSReturns(t *testing.T) {
 		resp, err := c.Returns().GetRFBSReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetRFBSReturnsResponse{})
@@ -372,6 +375,7 @@ func TestGetRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().GetRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetRFBSReturnResponse{})
@@ -421,6 +425,7 @@ func TestRejectRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().RejectRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &RejectRFBSReturnResponse{})
@@ -469,6 +474,7 @@ func TestCompensateRFBSreturn(t *testing.T) {
 		resp, err := c.Returns().CompensateRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CompensateRFBSReturnResponse{})
@@ -517,6 +523,7 @@ func TestApproveRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().ApproveRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ApproveRFBSReturnResponse{})
@@ -564,6 +571,7 @@ func TestReceiveRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().ReceiveRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ReceiveRFBSReturnResponse{})
@@ -612,6 +620,7 @@ func TestRefundRFBS(t *testing.T) {
 		resp, err := c.Returns().RefundRFBS(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &RefundRFBSResponse{})
@@ -656,6 +665,7 @@ func TestIsGiveoutEnabled(t *testing.T) {
 		resp, err := c.Returns().IsGiveoutEnabled(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &IsGiveoutEnabledResponse{})
@@ -702,6 +712,7 @@ func TestGetGiveoutPDF(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutPDF(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetGiveoutResponse{})
@@ -748,6 +759,7 @@ func TestGetGiveoutPNG(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutPNG(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetGiveoutResponse{})
@@ -792,6 +804,7 @@ func TestGetGiveoutBarcode(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutBarcode(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetGiveoutBarcodeResponse{})
@@ -838,9 +851,10 @@ func TestResetGiveoutBarcode(t *testing.T) {
 		resp, err := c.Returns().ResetGiveoutBarcode(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
-		compareJsonResponse(t, test.response, &GetGiveoutBarcodeResponse{})
+		compareJsonResponse(t, test.response, &GetGiveoutResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -899,6 +913,7 @@ func TestGetGiveoutList(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetGiveoutListResponse{})
@@ -959,6 +974,7 @@ func TestGetGiveoutInfo(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetGiveoutInfoResponse{})

@@ -196,7 +196,7 @@ type GetFinancialResultResultCashflow struct {
 	Period GetFinancialResultResultCashflowPeriod `json:"period"`
 
 	// Sum of sold products prices
-	OrdersAmount float64 `json:"order_amount"`
+	OrdersAmount float64 `json:"orders_amount"`
 
 	// Sum of returned products prices
 	ReturnsAmount float64 `json:"returns_amount"`
@@ -613,6 +613,11 @@ type GetFBSStocksParams struct {
 type GetFBSStocksResponse struct {
 	core.CommonResponse
 
+	// Method result
+	Result GetFBSStocksResult `json:"result"`
+}
+
+type GetFBSStocksResult struct {
 	// Unique report identifier
 	Code string `json:"code"`
 }

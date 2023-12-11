@@ -56,6 +56,7 @@ func TestListOfAccordanceTypes(t *testing.T) {
 		resp, err := c.Certificates().ListOfAccordanceTypes(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListOfAccordanceTypesResponse{})
@@ -121,6 +122,7 @@ func TestDirectoryOfDocumentTypes(t *testing.T) {
 		resp, err := c.Certificates().DirectoryOfDocumentTypes(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &DirectoryOfDocumentTypesResponse{})
@@ -179,6 +181,7 @@ func TestListOfCertifiedCategories(t *testing.T) {
 		resp, err := c.Certificates().ListOfCertifiedCategories(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListOfCertifiedCategoriesResponse{})
@@ -229,6 +232,7 @@ func TestLinkCertificateToProduct(t *testing.T) {
 		resp, err := c.Certificates().LinkToProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &LinkCertificateToProductResponse{})
@@ -281,6 +285,7 @@ func TestDeleteCertificate(t *testing.T) {
 		resp, err := c.Certificates().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &DeleteCertificateResponse{})
@@ -342,6 +347,7 @@ func TestGetCertificateInfo(t *testing.T) {
 		resp, err := c.Certificates().GetInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetCertificateInfoResponse{})
@@ -418,6 +424,7 @@ func TestListCertificates(t *testing.T) {
 		resp, err := c.Certificates().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListCertificatesResponse{})
@@ -467,6 +474,7 @@ func TestProductStatuses(t *testing.T) {
 		resp, err := c.Certificates().ProductStatuses(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ProductStatusesResponse{})
@@ -527,6 +535,7 @@ func TestListProductsForCertificate(t *testing.T) {
 		resp, err := c.Certificates().ListProductsForCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListProductsForCertificateResponse{})
@@ -583,6 +592,7 @@ func TestUnlinkFromProduct(t *testing.T) {
 		resp, err := c.Certificates().UnlinkFromProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &UnlinkFromProductResponse{})
@@ -632,6 +642,7 @@ func TestPossibleRejectReasons(t *testing.T) {
 		resp, err := c.Certificates().PossibleRejectReasons(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PossibleRejectReasonsResponse{})
@@ -681,6 +692,7 @@ func TestPossibleStatuses(t *testing.T) {
 		resp, err := c.Certificates().PossibleStatuses(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PossibleStatusesResponse{})
@@ -736,6 +748,7 @@ func TestAddCertificatesForProducts(t *testing.T) {
 		resp, err := c.Certificates().AddForProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &AddCertificatesForProductsResponse{})

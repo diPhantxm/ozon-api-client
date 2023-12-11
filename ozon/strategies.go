@@ -24,7 +24,7 @@ type ListCompetitorsResponse struct {
 	core.CommonResponse
 
 	// List of competitors
-	Competitors []ListCompetitorsCompetitor `json:"competitors"`
+	Competitor []ListCompetitorsCompetitor `json:"competitor"`
 
 	// Total number of competitors
 	Total int32 `json:"total"`
@@ -32,10 +32,10 @@ type ListCompetitorsResponse struct {
 
 type ListCompetitorsCompetitor struct {
 	// Competitor's name
-	Name string `json:"name"`
+	Name string `json:"competitor_name"`
 
 	// Competitor identifier
-	Id int64 `json:"id"`
+	Id int64 `json:"competitor_id"`
 }
 
 // Method for getting a list of competitors—sellers with similar products in other online stores and marketplaces
@@ -74,10 +74,10 @@ type ListStrategiesResponse struct {
 
 type ListStrategiesStrategy struct {
 	// Strategy identifier
-	Id string `json:"id"`
+	Id string `json:"strategy_id"`
 
 	// Strategy name
-	Name string `json:"name"`
+	Name string `json:"strategy_name"`
 
 	// Strategy type
 	Type StrategyType `json:"type"`

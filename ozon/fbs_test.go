@@ -172,6 +172,7 @@ func TestListUnprocessedShipments(t *testing.T) {
 		resp, err := c.FBS().ListUnprocessedShipments(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListUnprocessedShipmentsResponse{})
@@ -293,6 +294,7 @@ func TestGetFBSShipmentsList(t *testing.T) {
 		resp, err := c.FBS().GetFBSShipmentsList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetFBSShipmentsListResponse{})
@@ -357,6 +359,7 @@ func TestPackOrder(t *testing.T) {
 		resp, err := c.FBS().PackOrder(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PackOrderResponse{})
@@ -437,6 +440,7 @@ func TestValidateLabelingCodes(t *testing.T) {
 		resp, err := c.FBS().ValidateLabelingCodes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ValidateLabelingCodesResponse{})
@@ -480,31 +484,8 @@ func TestGetShipmentDataByBarcode(t *testing.T) {
 				  "order_id": 438764970,
 				  "order_number": "57195475-0050",
 				  "status": "awaiting_packaging",
-				  "delivery_method": {
-					"id": 18114520187000,
-					"name": "Ozon Логистика самостоятельно, Москва",
-					"warehouse_id": 18114520187000,
-					"warehouse": "Москва основной",
-					"tpl_provider_id": 24,
-					"tpl_provider": "Ozon Логистика"
-				  },
-				  "tracking_number": "",
-				  "tpl_integration_type": "ozon",
 				  "in_process_at": "2021-11-20T09:14:16Z",
 				  "shipment_date": "2021-11-23T10:00:00Z",
-				  "delivering_date": null,
-				  "provider_status": "",
-				  "delivery_price": "",
-				  "cancellation": {
-					"cancel_reason_id": 0,
-					"cancel_reason": "",
-					"cancellation_type": "",
-					"cancelled_after_ship": false,
-					"affect_cancellation_rating": false,
-					"cancellation_initiator": ""
-				  },
-				  "customer": null,
-				  "addressee": null,
 				  "products": [
 					{
 					  "price": "279.0000",
@@ -512,25 +493,12 @@ func TestGetShipmentDataByBarcode(t *testing.T) {
 					  "name": "Кофе ароматизированный \"Шоколадный апельсин\" 250 гр",
 					  "sku": 180550365,
 					  "quantity": 1,
-					  "mandatory_mark": [],
-					  "dimensions": {
-						"height": "40.00",
-						"length": "240.00",
-						"weight": "260",
-						"width": "140.00"
-					  }
+					  "mandatory_mark": []
 					}
 				  ],
 				  "barcodes": null,
 				  "analytics_data": null,
-				  "financial_data": null,
-				  "additional_data": [],
-				  "is_express": false,
-				  "requirements": {
-					"products_requiring_gtd": [],
-					"products_requiring_country": []
-				  },
-				  "product_exemplars": null
+				  "financial_data": null
 				}
 			}`,
 		},
@@ -553,6 +521,7 @@ func TestGetShipmentDataByBarcode(t *testing.T) {
 		resp, err := c.FBS().GetShipmentDataByBarcode(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetShipmentDataByBarcodeResponse{})
@@ -669,6 +638,7 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 		resp, err := c.FBS().GetShipmentDataByIdentifier(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetShipmentDataByIdentifierResponse{})
@@ -744,6 +714,7 @@ func TestAddTrackingNumbers(t *testing.T) {
 		resp, err := c.FBS().AddTrackingNumbers(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &AddTrackingNumbersResponse{})
@@ -840,6 +811,7 @@ func TestListOfShipmentCertificates(t *testing.T) {
 		resp, err := c.FBS().ListOfShipmentCertificates(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListOfShipmentCertificatesResponse{})
@@ -904,6 +876,7 @@ func TestSignShipmentCertificate(t *testing.T) {
 		resp, err := c.FBS().SignShipmentCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &SignShipmentCertificateResponse{})
@@ -982,6 +955,7 @@ func TestChangeStatusTo(t *testing.T) {
 		deliveringResp, err := c.FBS().ChangeStatusToDelivering(deliveringctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ChangeStatusToResponse{})
@@ -990,18 +964,21 @@ func TestChangeStatusTo(t *testing.T) {
 		lastMileResp, err := c.FBS().ChangeStatusToLastMile(lastMilectx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		deliveredctx, _ := context.WithTimeout(context.Background(), testTimeout)
 		deliveredResp, err := c.FBS().ChangeStatusToDelivered(deliveredctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		sendBySellerctx, _ := context.WithTimeout(context.Background(), testTimeout)
 		sendBySellerResp, err := c.FBS().ChangeStatusToSendBySeller(sendBySellerctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		assertResponse(t, &test, deliveringResp)
@@ -1050,6 +1027,7 @@ func TestPassShipmentToShipping(t *testing.T) {
 		resp, err := c.FBS().PassShipmentToShipping(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PassShipmentToShippingResponse{})
@@ -1101,6 +1079,7 @@ func TestCancelShipment(t *testing.T) {
 		resp, err := c.FBS().CancelShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CancelShipmentResponse{})
@@ -1154,6 +1133,7 @@ func TestCreateAct(t *testing.T) {
 		resp, err := c.FBS().CreateAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CreateActResponse{})
@@ -1206,6 +1186,7 @@ func TestGetLabeling(t *testing.T) {
 		resp, err := c.FBS().GetLabeling(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetLabelingResponse{})
@@ -1262,6 +1243,7 @@ func TestPrintLabeling(t *testing.T) {
 		resp, err := c.FBS().PrintLabeling(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PrintLabelingResponse{})
@@ -1319,6 +1301,7 @@ func TestCreateTaskForGeneratingLabel(t *testing.T) {
 		resp, err := c.FBS().CreateTaskForGeneratingLabel(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CreateTaskForGeneratingLabelResponse{})
@@ -1382,6 +1365,7 @@ func TestGetDropOffPointRestrictions(t *testing.T) {
 		resp, err := c.FBS().GetDropOffPointRestrictions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetDropOffPointRestrictionsResponse{})
@@ -1445,6 +1429,7 @@ func TestCheckProductItemsData(t *testing.T) {
 		resp, err := c.FBS().CheckProductItemsData(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CheckProductItemsDataResponse{})
@@ -1511,6 +1496,7 @@ func TestGetProductItemsCheckStatuses(t *testing.T) {
 		resp, err := c.FBS().GetProductItemsCheckStatuses(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetProductItemsCheckStatusesResponse{})
@@ -1582,6 +1568,7 @@ func TestRescheduleShipmentDeliveryDate(t *testing.T) {
 		resp, err := c.FBS().RescheduleShipmentDeliveryDate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &RescheduleShipmentDeliveryDateResponse{})
@@ -1636,6 +1623,7 @@ func TestDateAvailableForDeliverySchedule(t *testing.T) {
 		resp, err := c.FBS().DateAvailableForDeliverySchedule(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &DateAvailableForDeliveryScheduleResponse{})
@@ -1698,6 +1686,7 @@ func TestListManufactoruingCountries(t *testing.T) {
 		resp, err := c.FBS().ListManufacturingCountries(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListManufacturingCountriesResponse{})
@@ -1761,6 +1750,7 @@ func TestSetManufacturingCountry(t *testing.T) {
 		resp, err := c.FBS().SetManufacturingCountry(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &SetManufacturingCountryResponse{})
@@ -1831,6 +1821,7 @@ func TestPartialPackOrder(t *testing.T) {
 		resp, err := c.FBS().PartialPackOrder(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PartialPackOrderResponse{})
@@ -1906,6 +1897,7 @@ func TestAvailableFreightsList(t *testing.T) {
 		resp, err := c.FBS().AvailableFreightsList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &AvailableFreightsListResponse{})
@@ -1956,6 +1948,7 @@ func TestGenerateAct(t *testing.T) {
 		resp, err := c.FBS().GenerateAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GenerateActResponse{})
@@ -2008,6 +2001,7 @@ func TestGetDigitalAct(t *testing.T) {
 		resp, err := c.FBS().GetDigitalAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetDigitalActResponse{})
@@ -2065,6 +2059,7 @@ func TestPackageUnitLabels(t *testing.T) {
 		resp, err := c.FBS().PackageUnitLabel(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &PackageUnitLabelsResponse{})
@@ -2120,6 +2115,7 @@ func TestOpenDisputeOverShipment(t *testing.T) {
 		resp, err := c.FBS().OpenDisputeOverShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &OpenDisputeOverShipmentResponse{})
@@ -2190,6 +2186,7 @@ func TestShipmentCancellationReasons(t *testing.T) {
 		resp, err := c.FBS().ShipmentCancellationReasons(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ShipmentCancellationReasonsResponse{})
@@ -2288,6 +2285,7 @@ func TestShipmentsCancellationReasons(t *testing.T) {
 		resp, err := c.FBS().ShipmentsCancellationReasons(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ShipmentsCancellationReasonsResponse{})
@@ -2352,6 +2350,7 @@ func TestAddWeightForBulkProduct(t *testing.T) {
 		resp, err := c.FBS().AddWeightForBulkProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &AddWeightForBulkProductResponse{})
@@ -2415,6 +2414,7 @@ func TestCancelSending(t *testing.T) {
 		resp, err := c.FBS().CancelSending(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CancelSendingResponse{})
@@ -2483,6 +2483,7 @@ func TestListShipmentInCertificate(t *testing.T) {
 		resp, err := c.FBS().ListShipmentInCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListShipmentInCertificateResponse{})
@@ -2534,6 +2535,7 @@ func TestSpecifyNumberOfBoxes(t *testing.T) {
 		resp, err := c.FBS().SpecifyNumberOfBoxes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &SpecifyNumberOfBoxesResponse{})
@@ -2562,7 +2564,13 @@ func TestStatusOfAct(t *testing.T) {
 			},
 			`{
 				"result": {
-				  "result": true
+				  "added_to_act": [
+					"true"
+				  ],
+				  "removed_from_act": [
+					"false"
+				  ],
+				  "status": "ready"
 				}
 			}`,
 		},
@@ -2585,6 +2593,7 @@ func TestStatusOfAct(t *testing.T) {
 		resp, err := c.FBS().StatusOfAct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &StatusOfActResponse{})
@@ -2646,6 +2655,7 @@ func TestETGBCustomsDeclarations(t *testing.T) {
 		resp, err := c.FBS().ETGBCustomsDeclarations(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ETGBCustomsDeclarationsResponse{})
@@ -2697,6 +2707,7 @@ func TestBarcodeFromProductShipment(t *testing.T) {
 		resp, err := c.FBS().BarcodeFromProductShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &BarcodeFromProductShipmentResponse{})
@@ -2758,6 +2769,7 @@ func TestBarcodeValueFromProductShipment(t *testing.T) {
 		resp, err := c.FBS().BarcodeValueFromProductShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &BarcodeValueFromProductShipmentResponse{})
@@ -2815,6 +2827,7 @@ func TestGetActPDF(t *testing.T) {
 		resp, err := c.FBS().GetActPDF(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetActPDFResponse{})

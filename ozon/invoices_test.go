@@ -53,6 +53,7 @@ func TestCreateUpdateProformaLink(t *testing.T) {
 		resp, err := c.Invoices().CreateUpdate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CreateUpdateProformaLinkResponse{})
@@ -104,6 +105,7 @@ func TestGetProformaLink(t *testing.T) {
 		resp, err := c.Invoices().Get(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetProformaLinkResponse{})
@@ -153,6 +155,7 @@ func TestDeleteProformaLink(t *testing.T) {
 		resp, err := c.Invoices().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &DeleteProformaLinkResponse{})

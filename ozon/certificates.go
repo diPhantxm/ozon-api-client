@@ -100,7 +100,7 @@ type ListOfCertifiedCategoriesResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result ListOfCertifiedCategoriesResult `json:"reult"`
+	Result ListOfCertifiedCategoriesResult `json:"result"`
 }
 
 type ListOfCertifiedCategoriesResult struct {
@@ -233,7 +233,7 @@ type GetCertificateInfoResult struct {
 	AccordanceTypeCode string `json:"accordance_type_code"`
 
 	// Certificate rejection reason
-	RejectionReasonCode string `json:"rejectio_reason_code"`
+	RejectionReasonCode string `json:"rejection_reason_code"`
 
 	// Moderator's comment
 	VerificationComment string `json:"verification_comment"`
@@ -307,7 +307,7 @@ type ListCertificatesResultCert struct {
 	CertificateName string `json:"certificate_name"`
 
 	// Type
-	TypeCode string `json:"type"`
+	TypeCode string `json:"type_code"`
 
 	// Status
 	StatusCode string `json:"status_code"`
@@ -316,13 +316,13 @@ type ListCertificatesResultCert struct {
 	AccordanceTypecode string `json:"accordance_type_code"`
 
 	// Certificate rejection reason
-	RejectionReasonCode string `json:"rejectio_reason_code"`
+	RejectionReasonCode string `json:"rejection_reason_code"`
 
 	// Moderator's comment
 	VerificationComment string `json:"verification_comment"`
 
 	// Issue date
-	IssueDate time.Time `json:"issue_data"`
+	IssueDate time.Time `json:"issue_date"`
 
 	// Expire date
 	ExpireDate time.Time `json:"expire_date"`

@@ -66,6 +66,7 @@ func TestListChats(t *testing.T) {
 		resp, err := c.Chats().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListChatsResponse{})
@@ -127,6 +128,7 @@ func TestSendMessage(t *testing.T) {
 		resp, err := c.Chats().SendMessage(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &SendMessageResponse{})
@@ -178,6 +180,7 @@ func TestSendFile(t *testing.T) {
 		resp, err := c.Chats().SendFile(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &SendFileResponse{})
@@ -244,6 +247,7 @@ func TestChatHistory(t *testing.T) {
 		resp, err := c.Chats().History(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ChatHistoryResponse{})
@@ -313,6 +317,7 @@ func TestUpdateChat(t *testing.T) {
 		resp, err := c.Chats().Update(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &UpdateChatResponse{})
@@ -364,6 +369,7 @@ func TestCreateNewChat(t *testing.T) {
 		resp, err := c.Chats().Create(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &CreateNewChatResponse{})
@@ -420,6 +426,7 @@ func TestMarkAsRead(t *testing.T) {
 		resp, err := c.Chats().MarkAsRead(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &MarkAsReadResponse{})

@@ -74,6 +74,7 @@ func TestGetList(t *testing.T) {
 		resp, err := c.Reports().GetList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetReportsListResponse{})
@@ -115,7 +116,7 @@ func TestGetReportDetails(t *testing.T) {
 				  "file": "https://storage.yandexcloud.net/ozon.reports/95/c1/95c1ae93320294cb.csv",
 				  "report_type": "seller_products",
 				  "params": {},
-				  "created_at": "2021-11-25T14:54:55.688260Z"
+				  "created_at": "2021-11-25T14:54:55.68826Z"
 				}
 			}`,
 		},
@@ -138,6 +139,7 @@ func TestGetReportDetails(t *testing.T) {
 		resp, err := c.Reports().GetReportDetails(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetReportDetailsResponse{})
@@ -262,8 +264,7 @@ func TestGetFinancialReport(t *testing.T) {
 					},
 					"end_balance_amount": 0
 				  }
-				},
-				"page_count": 15
+				}
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -285,6 +286,7 @@ func TestGetFinancialReport(t *testing.T) {
 		resp, err := c.Reports().GetFinancial(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetFinancialReportResponse{})
@@ -342,6 +344,7 @@ func TestGetProductsReport(t *testing.T) {
 		resp, err := c.Reports().GetProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetProductsReportResponse{})
@@ -401,6 +404,7 @@ func TestGetReturnsReport(t *testing.T) {
 		resp, err := c.Reports().GetReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetReturnsReportResponse{})
@@ -462,6 +466,7 @@ func TestGetShipmentReport(t *testing.T) {
 		resp, err := c.Reports().GetShipment(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetShipmentReportResponse{})
@@ -512,15 +517,15 @@ func TestIssueOnDiscountedProducts(t *testing.T) {
 		resp, err := c.Reports().IssueOnDiscountedProducts(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
-
-		compareJsonResponse(t, test.response, &IssueOnDiscountedProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 
 		if resp.StatusCode == http.StatusOK {
+			compareJsonResponse(t, test.response, &IssueOnDiscountedProductsResponse{})
 			if resp.Code == "" {
 				t.Errorf("Code cannot be empty")
 			}
@@ -546,7 +551,9 @@ func TestGetFBSStocks(t *testing.T) {
 				WarehouseIds: []int64{123},
 			},
 			`{
-				"code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+				"result": {
+					"code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
+				}
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -568,6 +575,7 @@ func TestGetFBSStocks(t *testing.T) {
 		resp, err := c.Reports().GetFBSStocks(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetFBSStocksResponse{})

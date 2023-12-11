@@ -64,6 +64,7 @@ func TestGetAnalyticsData(t *testing.T) {
 		resp, err := c.Analytics().GetAnalyticsData(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetAnalyticsDataResponse{})
@@ -127,6 +128,7 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 		resp, err := c.Analytics().GetStocksOnWarehouses(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetStocksOnWarehousesResponse{})

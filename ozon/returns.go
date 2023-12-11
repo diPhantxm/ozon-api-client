@@ -161,7 +161,7 @@ type GetFBSReturnsResponse struct {
 
 type GetFBSReturnResultReturn struct {
 	// Time of receiving the return from the customer
-	AcceptedFromCustomerAmount string `json:"accepted_from_customer_amount"`
+	AcceptedFromCustomerMoment string `json:"accepted_from_customer_moment"`
 
 	// Bottom barcode on the product label
 	ClearingId int64 `json:"clearing_id"`
@@ -383,6 +383,10 @@ type GetRFBSReturnParams struct {
 type GetRFBSReturnResponse struct {
 	core.CommonResponse
 
+	Returns GetRFBSReturn `json:"returns"`
+}
+
+type GetRFBSReturn struct {
 	// List of available actions on the request
 	AvailableActions []GetRFBSReturnAction `json:"available_actions"`
 
@@ -749,10 +753,10 @@ func (c Returns) GetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeRespo
 // The method returns a PNG file with the new barcode. Once the method is used,
 // you won't be able to get a return shipment using the old barcodes.
 // To get a new barcode in PDF format, use the /v1/return/giveout/get-pdf method
-func (c Returns) ResetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeResponse, error) {
+func (c Returns) ResetGiveoutBarcode(ctx context.Context) (*GetGiveoutResponse, error) {
 	url := "/v1/return/giveout/barcode-reset"
 
-	resp := &GetGiveoutBarcodeResponse{}
+	resp := &GetGiveoutResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
 	if err != nil {

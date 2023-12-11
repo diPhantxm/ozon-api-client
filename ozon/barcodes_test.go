@@ -54,6 +54,7 @@ func TestGenerateBarcodes(t *testing.T) {
 		resp, err := c.Barcodes().Generate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GenerateBarcodesResponse{})
@@ -123,6 +124,7 @@ func TestBindBarcodes(t *testing.T) {
 		resp, err := c.Barcodes().Bind(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &BindBarcodesResponse{})

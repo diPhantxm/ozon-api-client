@@ -61,6 +61,7 @@ func TestGetAvailablePromotions(t *testing.T) {
 		resp, err := c.Promotions().GetAvailablePromotions(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetAvailablePromotionsResponse{})
@@ -133,6 +134,7 @@ func TestAddToPromotion(t *testing.T) {
 		resp, err := c.Promotions().AddToPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &AddProductToPromotionResponse{})
@@ -212,6 +214,7 @@ func TestProductsAvailableForPromotion(t *testing.T) {
 		resp, err := c.Promotions().ProductsAvailableForPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ProductsAvailableForPromotionResponse{})
@@ -276,6 +279,7 @@ func TestProductsInPromotion(t *testing.T) {
 		resp, err := c.Promotions().ProductsInPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ProductsInPromotionResponse{})
@@ -331,6 +335,7 @@ func TestRemoveProduct(t *testing.T) {
 		resp, err := c.Promotions().RemoveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &RemoveProductFromPromotionResponse{})
@@ -393,6 +398,7 @@ func TestListHotSalePromotions(t *testing.T) {
 		resp, err := c.Promotions().ListHotSalePromotions(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListHotSalePromotionsResponse{})
@@ -457,6 +463,7 @@ func TestProductsAvailableForHotSalePromotion(t *testing.T) {
 		resp, err := c.Promotions().ProductsAvailableForHotSalePromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ProductsAvailableForHotSalePromotionResponse{})
@@ -520,6 +527,7 @@ func TestAddProductsToHotSale(t *testing.T) {
 		resp, err := c.Promotions().AddProductsToHotSale(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ProductsToHotSaleResponse{})
@@ -577,6 +585,7 @@ func TestRemoveProductsToHotSale(t *testing.T) {
 		resp, err := c.Promotions().RemoveProductsToHotSale(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ProductsToHotSaleResponse{})
@@ -666,6 +675,7 @@ func TestListDiscountRequests(t *testing.T) {
 		resp, err := c.Promotions().ListDiscountRequests(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListDiscountRequestsResponse{})
@@ -732,6 +742,7 @@ func TestApproveDiscountRequest(t *testing.T) {
 		resp, err := c.Promotions().ApproveDiscountRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &DiscountRequestResponse{})
@@ -798,6 +809,7 @@ func TestDeclineDiscountRequest(t *testing.T) {
 		resp, err := c.Promotions().DeclineDiscountRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &DiscountRequestResponse{})

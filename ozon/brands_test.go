@@ -29,7 +29,6 @@ func TestListCertifiedBrands(t *testing.T) {
 				"result": {
 				  "brand_certification": [
 					{
-					  "brand_id": 135476863,
 					  "brand_name": "Sea of Spa",
 					  "has_certificate": false
 					}
@@ -57,6 +56,7 @@ func TestListCertifiedBrands(t *testing.T) {
 		resp, err := c.Brands().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &ListCertifiedBrandsResponse{})

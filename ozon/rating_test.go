@@ -63,6 +63,7 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 		resp, err := c.Rating().GetCurrentSellerRatingInfo(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetCurrentSellerRatingInfoResponse{})
@@ -154,6 +155,7 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 		resp, err := c.Rating().GetSellerRatingInfoForPeriod(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		compareJsonResponse(t, test.response, &GetSellerRatingInfoPeriodResponse{})
