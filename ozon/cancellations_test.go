@@ -67,7 +67,10 @@ func TestGetCancellationInfo(t *testing.T) {
 		resp, err := c.Cancellations().GetInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetCancellationInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -123,9 +126,9 @@ func TestListCancellations(t *testing.T) {
 					  "state": "APPROVED"
 					},
 					"cancellation_initiator": "CLIENT",
-					"order_date": "2021-09-03T07:04:53.220Z",
+					"order_date": "2021-09-03T07:04:53.22Z",
 					"approve_comment": "",
-					"approve_date": "2021-09-03T09:13:12.614200Z",
+					"approve_date": "2021-09-03T09:13:12.6142Z",
 					"auto_approve_date": "2021-09-06T07:17:12.116114Z"
 				  },
 				  {
@@ -177,7 +180,10 @@ func TestListCancellations(t *testing.T) {
 		resp, err := c.Cancellations().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListCancellationsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -222,7 +228,10 @@ func TestApproveCancellations(t *testing.T) {
 		resp, err := c.Cancellations().Approve(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ApproveRejectCancellationsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -267,7 +276,10 @@ func TestRejectCancellations(t *testing.T) {
 		resp, err := c.Cancellations().Reject(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ApproveRejectCancellationsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

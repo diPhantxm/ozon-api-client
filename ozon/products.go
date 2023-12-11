@@ -16,66 +16,66 @@ type GetStocksInfoParams struct {
 	// Identifier of the last value on the page. Leave this field blank in the first request.
 	//
 	// To get the next values, specify last_id from the response of the previous request.
-	LastId string `json:"last_id,omitempty"`
+	LastId string `json:"last_id"`
 
 	// Number of values per page. Minimum is 1, maximum is 1000
-	Limit int64 `json:"limit,omitempty"`
+	Limit int64 `json:"limit"`
 
 	// Filter by product
-	Filter GetStocksInfoFilter `json:"filter,omitempty"`
+	Filter GetStocksInfoFilter `json:"filter"`
 }
 
 type GetStocksInfoFilter struct {
 	// Filter by the offer_id parameter. It is possible to pass a list of values
-	OfferId string `json:"offer_id,omitempty"`
+	OfferId string `json:"offer_id"`
 
 	// Filter by the product_id parameter. It is possible to pass a list of values
-	ProductId int64 `json:"product_id,omitempty"`
+	ProductId int64 `json:"product_id"`
 
 	// Filter by product visibility
-	Visibility string `json:"visibility,omitempty"`
+	Visibility string `json:"visibility"`
 }
 
 type GetStocksInfoResponse struct {
 	core.CommonResponse
 
 	// Method Result
-	Result GetStocksInfoResult `json:"result,omitempty"`
+	Result GetStocksInfoResult `json:"result"`
 }
 
 type GetStocksInfoResult struct {
 	// Identifier of the last value on the page
 	//
 	// To get the next values, specify the recieved value in the next request in the last_id parameter
-	LastId string `json:"last_id,omitempty"`
+	LastId string `json:"last_id"`
 
 	// The number of unique products for which information about stocks is displayed
-	Total int32 `json:"total,omitempty"`
+	Total int32 `json:"total"`
 
 	// Product details
-	Items []GetStocksInfoResultItem `json:"items,omitempty"`
+	Items []GetStocksInfoResultItem `json:"items"`
 }
 
 type GetStocksInfoResultItem struct {
 	// Product identifier in the seller's system
-	OfferId string `json:"offer_id,omitempty"`
+	OfferId string `json:"offer_id"`
 
 	// Product identifier
-	ProductId int64 `json:"product_id,omitempty"`
+	ProductId int64 `json:"product_id"`
 
 	// Stock details
-	Stocks []GetStocksInfoResultItemStock `json:"stocks,omitempty"`
+	Stocks []GetStocksInfoResultItemStock `json:"stocks"`
 }
 
 type GetStocksInfoResultItemStock struct {
 	// In a warehouse
-	Present int32 `json:"present,omitempty"`
+	Present int32 `json:"present"`
 
 	// Reserved
-	Reserved int32 `json:"reserved,omitempty"`
+	Reserved int32 `json:"reserved"`
 
 	// Warehouse type
-	Type string `json:"type,omitempty" default:"ALL"`
+	Type string `json:"type" default:"ALL"`
 }
 
 // Returns information about the quantity of products in stock:
@@ -112,7 +112,7 @@ type GetProductDetailsResponse struct {
 	core.CommonResponse
 
 	// Request results
-	Result ProductDetails `json:"Result"`
+	Result ProductDetails `json:"result"`
 }
 
 type ProductDetails struct {
@@ -210,12 +210,12 @@ type ProductDetails struct {
 	Price string `json:"price"`
 
 	// Product price indexes
-	PriceIndexes ProductDetailPriceIndex `json:"prices_indexes"`
+	PriceIndexes ProductDetailPriceIndex `json:"price_indexes"`
 
 	// Deprecated: Price index. Learn more in Help Center
 	//
 	// Use PriceIndexes instead
-	PriceIndex string `json:"price_idnex"`
+	PriceIndex string `json:"price_index"`
 
 	// Product price suggested by the system based on similar offers
 	RecommendedPrice string `json:"recommended_price"`
@@ -242,7 +242,7 @@ type ProductDetails struct {
 	Visible bool `json:"visible"`
 
 	// Product volume weight
-	VolumeWeight float64 `json:"volume_weights"`
+	VolumeWeight float64 `json:"volume_weight"`
 }
 
 type ProductDetailCommission struct {
@@ -276,7 +276,7 @@ type ProductDetailPriceIndex struct {
 	PriceIndex string `json:"price_index"`
 
 	// Price of your product on other marketplaces
-	SelfMarketplaceIndexData ProductDetailPriceIndexSelfMarketplace `json:"self_marketplace_index_data"`
+	SelfMarketplaceIndexData ProductDetailPriceIndexSelfMarketplace `json:"self_marketplaces_index_data"`
 }
 
 type ProductDetailPriceIndexExternal struct {
@@ -383,6 +383,9 @@ type ProductDetailVisibilityDetails struct {
 
 	// If there is stock at the warehouses, the value is true
 	HasStock bool `json:"has_stock"`
+
+	// Reason why the product is hidden
+	Reasons map[string]interface{} `json:"reasons"`
 }
 
 type ProductDiscountedStocks struct {
@@ -1152,6 +1155,10 @@ type CreateProductsByOzonIDItem struct {
 type CreateProductByOzonIDResponse struct {
 	core.CommonResponse
 
+	Result CreateProductByOzonIDResult `json:"result"`
+}
+
+type CreateProductByOzonIDResult struct {
 	// Products import task code
 	TaskId int64 `json:"task_id"`
 
@@ -1944,7 +1951,7 @@ type GetPRoductPriceInfoResultItem struct {
 	PriceIndex string `json:"price_index"`
 
 	// Product price indexes
-	PriceIndexes GetProductPriceInfoResultItemPriceIndexes `json:"prices_indexes"`
+	PriceIndexes GetProductPriceInfoResultItemPriceIndexes `json:"price_indexes"`
 
 	// Product identifier
 	ProductId int64 `json:"product_id"`
@@ -1988,7 +1995,7 @@ type GetProductPriceInfoResultItemCommission struct {
 	FBSShipmentProcessingToFee float64 `json:"fbs_first_mile_min_amount"`
 
 	// Maximal shipment processing fee (FBS) — 25 rubles
-	FBSShipmentProcessingFromFee float64 `json:"Shipment processing fee from (FBS)"`
+	FBSShipmentProcessingFromFee float64 `json:"fbs_first_mile_max_amount"`
 
 	// Return and cancellation fees, shipment processing (FBS)
 	FBSReturnCancellationProcessingFee float64 `json:"fbs_return_flow_amount"`
@@ -2086,7 +2093,7 @@ type GetProductPriceInfoResultItemPriceIndexes struct {
 	PriceIndex string `json:"price_index"`
 
 	// Price of your product on other marketplaces
-	SelfMarketplaceIndexData GetProductPriceInfoResultItemPriceIndexesSelfMarketplace `json:"self_marketplace_index_data"`
+	SelfMarketplaceIndexData GetProductPriceInfoResultItemPriceIndexesSelfMarketplace `json:"self_marketplaces_index_data"`
 }
 
 type GetProductPriceInfoResultItemPriceIndexesExternal struct {
@@ -2166,7 +2173,7 @@ type GetMarkdownInfoItem struct {
 	//   - 3 — very good,
 	//   - 4 — excellent,
 	//   - 5–7 — like new
-	ConditionEstimate string `json:"condition_estimate"`
+	ConditionEstimation string `json:"condition_estimation"`
 
 	// Product defects
 	Defects string `json:"defects"`

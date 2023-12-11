@@ -25,7 +25,7 @@ func TestReportOnSoldProducts(t *testing.T) {
 			&ReportOnSoldProductsParams{
 				Date: "2022-09",
 			},
-            `{
+			`{
                 "result": {
                     "header": {
                         "doc_date": "2022-09-22",
@@ -69,7 +69,7 @@ func TestReportOnSoldProducts(t *testing.T) {
                     ]
                 }
             }`,
-            "",
+			"",
 		},
 		// Test No Client-Id or Api-Key
 		{
@@ -91,7 +91,10 @@ func TestReportOnSoldProducts(t *testing.T) {
 		resp, err := c.Finance().ReportOnSoldProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ReportOnSoldProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -160,7 +163,10 @@ func TestGetTotalTransactionsSum(t *testing.T) {
 		resp, err := c.Finance().GetTotalTransactionsSum(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetTotalTransactionsSumResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -249,7 +255,10 @@ func TestListTransactions(t *testing.T) {
 		resp, err := c.Finance().ListTransactions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListTransactionsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

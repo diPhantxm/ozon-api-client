@@ -626,11 +626,13 @@ func TestNotificationServerErrors(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 			continue
+			continue
 		}
 
 		gotJson, err := ioutil.ReadAll(httpResp.Body)
 		if err != nil {
 			t.Error(err)
+			continue
 			continue
 		}
 
@@ -640,15 +642,18 @@ func TestNotificationServerErrors(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 			continue
+			continue
 		}
 		err = json.Unmarshal([]byte(testCase.response), &expected)
 		if err != nil {
 			t.Error(err)
 			continue
+			continue
 		}
 
 		if err := compare(expected, got); err != nil {
 			t.Error(err)
+			continue
 			continue
 		}
 	}

@@ -64,7 +64,10 @@ func TestGetAnalyticsData(t *testing.T) {
 		resp, err := c.Analytics().GetAnalyticsData(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetAnalyticsDataResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -125,7 +128,10 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 		resp, err := c.Analytics().GetStocksOnWarehouses(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetStocksOnWarehousesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

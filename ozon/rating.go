@@ -17,6 +17,12 @@ type GetCurrentSellerRatingInfoResponse struct {
 
 	// Rating groups list
 	Groups []GetCurrentSellerRatingInfoGroup `json:"groups"`
+
+	// An indication that the penalty points balance is exceeded
+	PenaltyScoreExceeded bool `json:"penalty_score_exceeded"`
+
+	// An indication that you participate in the Premium program
+	Premium bool `json:"premium"`
 }
 
 type GetCurrentSellerRatingInfoGroup struct {
@@ -25,12 +31,6 @@ type GetCurrentSellerRatingInfoGroup struct {
 
 	// Ratings list
 	Items []GetCurrentSellerRatingInfoGroupItem `json:"items"`
-
-	// An indication that the penalty points balance is exceeded
-	PenaltyScoreExceeded bool `json:"penalty_score_exceeded"`
-
-	// An indication that you participate in the Premium program
-	Premium bool `json:"premium"`
 }
 
 type GetCurrentSellerRatingInfoGroupItem struct {

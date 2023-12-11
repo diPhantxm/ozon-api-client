@@ -66,7 +66,10 @@ func TestGetFBOReturns(t *testing.T) {
 		resp, err := c.Returns().GetFBOReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetFBOReturnsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -165,7 +168,10 @@ func TestGetFBSReturns(t *testing.T) {
 		resp, err := c.Returns().GetFBSReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetFBSReturnsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -259,7 +265,10 @@ func TestGetRFBSReturns(t *testing.T) {
 		resp, err := c.Returns().GetRFBSReturns(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetRFBSReturnsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -366,7 +375,10 @@ func TestGetRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().GetRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetRFBSReturnResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -413,7 +425,10 @@ func TestRejectRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().RejectRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &RejectRFBSReturnResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -459,7 +474,10 @@ func TestCompensateRFBSreturn(t *testing.T) {
 		resp, err := c.Returns().CompensateRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &CompensateRFBSReturnResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -505,7 +523,10 @@ func TestApproveRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().ApproveRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ApproveRFBSReturnResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -550,7 +571,10 @@ func TestReceiveRFBSReturn(t *testing.T) {
 		resp, err := c.Returns().ReceiveRFBSReturn(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ReceiveRFBSReturnResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -596,7 +620,10 @@ func TestRefundRFBS(t *testing.T) {
 		resp, err := c.Returns().RefundRFBS(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &RefundRFBSResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -638,7 +665,10 @@ func TestIsGiveoutEnabled(t *testing.T) {
 		resp, err := c.Returns().IsGiveoutEnabled(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &IsGiveoutEnabledResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -682,7 +712,10 @@ func TestGetGiveoutPDF(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutPDF(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetGiveoutResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -726,7 +759,10 @@ func TestGetGiveoutPNG(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutPNG(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetGiveoutResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -768,7 +804,10 @@ func TestGetGiveoutBarcode(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutBarcode(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetGiveoutBarcodeResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -812,7 +851,10 @@ func TestResetGiveoutBarcode(t *testing.T) {
 		resp, err := c.Returns().ResetGiveoutBarcode(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetGiveoutResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -871,7 +913,10 @@ func TestGetGiveoutList(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetGiveoutListResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -929,7 +974,10 @@ func TestGetGiveoutInfo(t *testing.T) {
 		resp, err := c.Returns().GetGiveoutInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetGiveoutInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

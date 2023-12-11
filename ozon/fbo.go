@@ -248,7 +248,7 @@ type GetShipmentDetailsResultAdditionalData struct {
 
 type GetShipmentDetailsResultAnalyticsData struct {
 	// Delivery city
-	City string `json:"Delivery city"`
+	City string `json:"city"`
 
 	// Delivery method
 	DeliveryType string `json:"delivery_type"`
@@ -323,10 +323,14 @@ type SupplyRequestCommonResponse struct {
 	LocalTimeslot SupplyRequestCommonResponseLocalTimeslot `json:"local_timeslot"`
 
 	// Date from which you want to bring the supply to the warehouse. Only for supplies via vDC
-	PreferredSupplyDataFrom string `json:"preferred_supply_data_from"`
+	PreferredSupplyDateFrom string `json:"preferred_supply_date_from"`
 
 	// Date by which you want to bring the supply to the warehouse. Only for supplies via vDC
-	PreferredSupplyDataTo string `json:"preferred_supply_data_to"`
+	PreferredSupplyDateTo string `json:"preferred_supply_date_to"`
+
+	// Your own warehouse from which you'll take the products to the supply warehouse.
+	// Only for supplies via vDC
+	SellerWarehouse SupplyRequestSellerWarehouse `json:"seller_warehouse"`
 
 	// Status of a supply by request
 	State string `json:"state"`
@@ -351,6 +355,17 @@ type SupplyRequestCommonResponse struct {
 
 	// Total number of items in the request
 	TotalQuantity int32 `json:"total_quantity"`
+}
+
+type SupplyRequestSellerWarehouse struct {
+	// Warehouse address
+	Address string `json:"address"`
+
+	// Warehouse name
+	Name string `json:"name"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
 }
 
 type SupplyRequestCommonResponseLocalTimeslot struct {

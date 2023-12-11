@@ -63,7 +63,10 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 		resp, err := c.Rating().GetCurrentSellerRatingInfo(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetCurrentSellerRatingInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -152,7 +155,10 @@ func TestGetRatingInfoForPeriod(t *testing.T) {
 		resp, err := c.Rating().GetSellerRatingInfoForPeriod(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetSellerRatingInfoPeriodResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

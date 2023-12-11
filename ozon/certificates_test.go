@@ -56,7 +56,10 @@ func TestListOfAccordanceTypes(t *testing.T) {
 		resp, err := c.Certificates().ListOfAccordanceTypes(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListOfAccordanceTypesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -119,7 +122,10 @@ func TestDirectoryOfDocumentTypes(t *testing.T) {
 		resp, err := c.Certificates().DirectoryOfDocumentTypes(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &DirectoryOfDocumentTypesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -175,7 +181,10 @@ func TestListOfCertifiedCategories(t *testing.T) {
 		resp, err := c.Certificates().ListOfCertifiedCategories(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListOfCertifiedCategoriesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -223,7 +232,10 @@ func TestLinkCertificateToProduct(t *testing.T) {
 		resp, err := c.Certificates().LinkToProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &LinkCertificateToProductResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -273,7 +285,10 @@ func TestDeleteCertificate(t *testing.T) {
 		resp, err := c.Certificates().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &DeleteCertificateResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -332,7 +347,10 @@ func TestGetCertificateInfo(t *testing.T) {
 		resp, err := c.Certificates().GetInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetCertificateInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -406,7 +424,10 @@ func TestListCertificates(t *testing.T) {
 		resp, err := c.Certificates().List(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListCertificatesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -453,7 +474,10 @@ func TestProductStatuses(t *testing.T) {
 		resp, err := c.Certificates().ProductStatuses(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductStatusesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -511,7 +535,10 @@ func TestListProductsForCertificate(t *testing.T) {
 		resp, err := c.Certificates().ListProductsForCertificate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListProductsForCertificateResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -565,7 +592,10 @@ func TestUnlinkFromProduct(t *testing.T) {
 		resp, err := c.Certificates().UnlinkFromProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &UnlinkFromProductResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -612,7 +642,10 @@ func TestPossibleRejectReasons(t *testing.T) {
 		resp, err := c.Certificates().PossibleRejectReasons(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &PossibleRejectReasonsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -659,7 +692,10 @@ func TestPossibleStatuses(t *testing.T) {
 		resp, err := c.Certificates().PossibleStatuses(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &PossibleStatusesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -712,7 +748,10 @@ func TestAddCertificatesForProducts(t *testing.T) {
 		resp, err := c.Certificates().AddForProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &AddCertificatesForProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

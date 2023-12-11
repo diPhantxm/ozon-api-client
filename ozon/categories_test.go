@@ -56,7 +56,10 @@ func TestGetProductTree(t *testing.T) {
 		resp, err := c.Categories().Tree(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductTreeResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -118,7 +121,10 @@ func TestGetCategoryAttributes(t *testing.T) {
 		resp, err := c.Categories().Attributes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetCategoryAttributesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -178,7 +184,10 @@ func TestGetAttributeDictionary(t *testing.T) {
 		resp, err := c.Categories().AttributesDictionary(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetAttributeDictionaryResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

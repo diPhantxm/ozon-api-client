@@ -52,7 +52,7 @@ type GetAvailablePromotionsResult struct {
 	ParticipatingProductsCount float64 `json:"participating_products_count"`
 
 	// Whether or not you participate in the promotion
-	IsParticipating bool `json:"participating"`
+	IsParticipating bool `json:"is_participating"`
 
 	// Indication that customers need a promo code to participate in the promotion
 	IsVoucherAction bool `json:"is_voucher_action"`
@@ -183,7 +183,7 @@ type PromotionProduct struct {
 	ActionPrice float64 `json:"action_price"`
 
 	// Maximum possible promotional product price
-	MaxActionType float64 `json:"max_action_type"`
+	MaxActionPrice float64 `json:"max_action_price"`
 
 	// Type of adding a product to the promotion: automatically or manually by the seller
 	AddMode string `json:"add_mode"`
@@ -225,7 +225,7 @@ type ProductsInPromotionResponse struct {
 	core.CommonResponse
 
 	// Method result
-	Result ProductsInPromotionResult `json:"reuslt"`
+	Result ProductsInPromotionResult `json:"result"`
 }
 
 type ProductsInPromotionResult struct {
@@ -387,7 +387,7 @@ type ProductsAvailableForHotSalePromotionResultProduct struct {
 	IsActive bool `json:"is_active"`
 
 	// Maximum possible promotional price of the product
-	MaxActionPrice float64 `json:"max_action_type"`
+	MaxActionPrice float64 `json:"max_action_price"`
 
 	// Minimum number of product units in a stock discount type promotion
 	MinStock float64 `json:"min_stock"`

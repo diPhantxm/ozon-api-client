@@ -63,7 +63,10 @@ func TestGetListOfWarehouses(t *testing.T) {
 		resp, err := c.Warehouses().GetListOfWarehouses(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetListOfWarehousesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -139,7 +142,10 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 		resp, err := c.Warehouses().GetListOfDeliveryMethods(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetListOfDeliveryMethodsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

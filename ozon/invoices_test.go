@@ -53,7 +53,10 @@ func TestCreateUpdateProformaLink(t *testing.T) {
 		resp, err := c.Invoices().CreateUpdate(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &CreateUpdateProformaLinkResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -102,7 +105,10 @@ func TestGetProformaLink(t *testing.T) {
 		resp, err := c.Invoices().Get(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProformaLinkResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -149,7 +155,10 @@ func TestDeleteProformaLink(t *testing.T) {
 		resp, err := c.Invoices().Delete(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &DeleteProformaLinkResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

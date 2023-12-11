@@ -75,7 +75,10 @@ func TestGetStocksInfo(t *testing.T) {
 		resp, err := c.Products().GetStocksInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetStocksInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -161,7 +164,6 @@ func TestGetProductDetails(t *testing.T) {
 					"present": 0,
 					"reserved": 0
 				  },
-				  "errors": [],
 				  "updated_at": "2023-02-09T06:46:44.152Z",
 				  "vat": "0.0",
 				  "visible": false,
@@ -273,7 +275,10 @@ func TestGetProductDetails(t *testing.T) {
 		resp, err := c.Products().GetProductDetails(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductDetailsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -348,7 +353,10 @@ func TestUpdateStocks(t *testing.T) {
 		resp, err := c.Products().UpdateStocks(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &UpdateStocksResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -418,7 +426,10 @@ func TestStocksInSellersWarehouse(t *testing.T) {
 		resp, err := c.Products().StocksInSellersWarehouse(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &StocksInSellersWarehouseResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -493,7 +504,10 @@ func TestUpdatePrices(t *testing.T) {
 		resp, err := c.Products().UpdatePrices(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &UpdatePricesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -566,7 +580,10 @@ func TestUpdateQuantityStockProducts(t *testing.T) {
 		resp, err := c.Products().UpdateQuantityStockProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &UpdateQuantityStockProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -701,7 +718,10 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 		resp, err := c.Products().CreateOrUpdateProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &CreateOrUpdateProductResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -769,7 +789,10 @@ func TestGetListOfProducts(t *testing.T) {
 		resp, err := c.Products().GetListOfProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetListOfProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1016,7 +1039,10 @@ func TestGetProductsRatingBySKU(t *testing.T) {
 		resp, err := c.Products().GetProductsRatingBySKU(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductsRatingBySKUResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1084,7 +1110,10 @@ func TestGetProductImportStatus(t *testing.T) {
 		resp, err := c.Products().GetProductImportStatus(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductImportStatusResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1156,7 +1185,10 @@ func TestCreateProductByOzonID(t *testing.T) {
 		resp, err := c.Products().CreateProductByOzonID(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &CreateProductByOzonIDResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1225,7 +1257,10 @@ func TestUpdateProductImages(t *testing.T) {
 		resp, err := c.Products().UpdateProductImages(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1294,7 +1329,10 @@ func TestCheckImageUploadingStatus(t *testing.T) {
 		resp, err := c.Products().CheckImageUploadingStatus(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1368,13 +1406,11 @@ func TestListProductsByIDs(t *testing.T) {
 						  "source": "fbs"
 						}
 					  ],
-					  "state": "",
 					  "stocks": {
 						"coming": 0,
 						"present": 13,
 						"reserved": 0
 					  },
-					  "errors": [],
 					  "updated_at": "2023-02-09T06:46:44.152Z",
 					  "vat": "0.0",
 					  "visible": true,
@@ -1410,7 +1446,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "offer_id": "23",
 					  "barcode": "",
 					  "buybox_price": "",
-					  "category_id": 90635895,
 					  "created_at": "2021-05-26T20:26:07.565586Z",
 					  "images": [],
 					  "marketing_price": "",
@@ -1431,13 +1466,11 @@ func TestListProductsByIDs(t *testing.T) {
 						  "source": "fbs"
 						}
 					  ],
-					  "state": "",
 					  "stocks": {
 						"coming": 0,
 						"present": 19,
 						"reserved": 0
 					  },
-					  "errors": [],
 					  "updated_at": "2023-02-09T06:46:44.152Z",
 					  "vat": "0.0",
 					  "visible": true,
@@ -1490,7 +1523,10 @@ func TestListProductsByIDs(t *testing.T) {
 		resp, err := c.Products().ListProductsByIDs(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListProductsByIDsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1698,8 +1734,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 					  }
 					],
 					"complex_attributes": [],
-					"color_image": "",
-					"last_id": ""
+					"color_image": ""
 				  }
 				],
 				"total": 1,
@@ -1725,7 +1760,10 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 		resp, err := c.Products().GetDescriptionOfProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetDescriptionOfProductResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1784,7 +1822,10 @@ func TestGetProductDescription(t *testing.T) {
 		resp, err := c.Products().GetProductDescription(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductDescriptionResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1848,7 +1889,10 @@ func TestGetProductRangeLimit(t *testing.T) {
 		resp, err := c.Products().GetProductRangeLimit(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductRangeLimitResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1905,7 +1949,10 @@ func TestChangeProductIDs(t *testing.T) {
 		resp, err := c.Products().ChangeProductIDs(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ChangeProductIDsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1952,7 +1999,10 @@ func TestArchiveProduct(t *testing.T) {
 		resp, err := c.Products().ArchiveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ArchiveProductResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -1999,7 +2049,10 @@ func TestUnarchiveProduct(t *testing.T) {
 		resp, err := c.Products().UnarchiveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ArchiveProductResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -2056,7 +2109,10 @@ func TestRemoveProductWithoutSKU(t *testing.T) {
 		resp, err := c.Products().RemoveProductWithoutSKU(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &RemoveProductWithoutSKUResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -2134,7 +2190,10 @@ func TestListGeoRestrictions(t *testing.T) {
 		resp, err := c.Products().ListGeoRestrictions(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListGeoRestrictionsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -2184,7 +2243,10 @@ func TestUploadActivationCodes(t *testing.T) {
 		resp, err := c.Products().UploadActivationCodes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &UploadActivationCodesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -2233,7 +2295,10 @@ func TestStatusOfUploadingActivationCodes(t *testing.T) {
 		resp, err := c.Products().StatusOfUploadingActivationCodes(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &StatusOfUploadingActivationCodesResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -2347,7 +2412,10 @@ func TestGetProductPriceInfo(t *testing.T) {
 		resp, err := c.Products().GetProductPriceInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetProductPriceInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -2410,6 +2478,7 @@ func TestGetMarkdownInfo(t *testing.T) {
 		resp, err := c.Products().GetMarkdownInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		if resp.StatusCode != test.statusCode {
@@ -2417,6 +2486,8 @@ func TestGetMarkdownInfo(t *testing.T) {
 		}
 
 		if resp.StatusCode == http.StatusOK {
+			compareJsonResponse(t, test.response, &GetMarkdownInfoResponse{})
+
 			if len(resp.Items) > 0 {
 				if fmt.Sprint(resp.Items[0].DiscountedSKU) != test.params.DiscountedSKUs[0] {
 					t.Errorf("SKUs in reqest and resonse are not equal")
@@ -2466,11 +2537,14 @@ func TestSetDiscountOnMarkdownProduct(t *testing.T) {
 		resp, err := c.Products().SetDiscountOnMarkdownProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		compareJsonResponse(t, test.response, &SetDiscountOnMarkdownProductResponse{})
 	}
 }
 
@@ -2518,11 +2592,14 @@ func TestNumberOfSubsToProductAvailability(t *testing.T) {
 		resp, err := c.Products().NumberOfSubsToProductAvailability(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		compareJsonResponse(t, test.response, &NumberOfSubsToProductAvailabilityResponse{})
 
 		if resp.StatusCode == http.StatusOK {
 			if len(resp.Result) != len(test.params.SKUS) {
@@ -2593,11 +2670,14 @@ func TestUpdateCharacteristics(t *testing.T) {
 		resp, err := c.Products().UpdateCharacteristics(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		compareJsonResponse(t, test.response, &UpdateCharacteristicsResponse{})
 	}
 }
 
@@ -2634,7 +2714,7 @@ func TestGetRelatedSKUs(t *testing.T) {
 					"message": "test_message"
 				  }
 				]
-			  }`,
+			}`,
 		},
 		// Test No Client-Id or Api-Key
 		{
@@ -2655,11 +2735,14 @@ func TestGetRelatedSKUs(t *testing.T) {
 		resp, err := c.Products().GetRelatedSKUs(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
+
+		compareJsonResponse(t, test.response, &GetRelatedSKUsResponse{})
 
 		if len(resp.Errors)+len(resp.Items) != len(test.params.SKUs) {
 			t.Errorf("expected equal length of skus in request and response")

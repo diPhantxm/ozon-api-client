@@ -408,7 +408,7 @@ type MarketplaceServices struct {
 	DirectFlowTrans float64 `json:"marketplace_service_item_direct_flow_trans"`
 
 	// Shipment processing in the fulfilment warehouse (FF)
-	DropoffFF float64 `json:"marketplace_service_item_item_dropoff_ff"`
+	DropoffFF float64 `json:"marketplace_service_item_dropoff_ff"`
 
 	// Shipment processing at the pick up point
 	DropoffPVZ float64 `json:"marketplace_service_item_dropoff_pvz"`
@@ -910,7 +910,7 @@ type GetShipmentDataByIdentifierResult struct {
 	Barcodes FBSBarcode `json:"barcodes"`
 
 	// Cancellation details
-	Cancellation FBSCancellation `json:"calcellation"`
+	Cancellation FBSCancellation `json:"cancellation"`
 
 	// Courier information
 	Courier GetShipmentDataByIdentifierResultCourier `json:"courier"`
@@ -925,10 +925,10 @@ type GetShipmentDataByIdentifierResult struct {
 	DeliveryMethod FBSDeliveryMethod `json:"delivery_method"`
 
 	// Delivery cost
-	DeliveryPrice string `json:"delivery_type"`
+	DeliveryPrice string `json:"delivery_price"`
 
 	// Data on the product cost, discount amount, payout and commission
-	FinancialData FBSFinancialData `json:"financial_date"`
+	FinancialData FBSFinancialData `json:"financial_data"`
 
 	// Start date and time of shipment processing
 	InProcessAt time.Time `json:"in_process_at"`
@@ -1118,20 +1118,39 @@ type ProductDimension struct {
 }
 
 type FBSProductExemplar struct {
+	// Product item validation errors
+	Errors []string `json:"errors"`
+
 	// Mandatory “Chestny ZNAK” labeling
 	MandatoryMark string `json:"mandatory_mark"`
+
+	// "Chestny ZNAK" labeling check status
+	MandatoryMarkCheckStatus MandatoryMarkStatus `json:"mandatory_mark_check_status"`
+
+	// "Chestny ZNAK" labeling check error codes
+	MandatoryMarkErrorCodes []string `json:"mandatory_mark_error_codes"`
 
 	// Сustoms cargo declaration (CCD) number
 	GTD string `json:"gtd"`
 
+	// Сustoms cargo declaration (CCD) check status
+	GTDCheckStatus string `json:"gtd_check_status"`
+
 	// Indication that a сustoms cargo declaration (CCD) number hasn't been specified
 	IsGTDAbsest bool `json:"is_gtd_absent"`
+
+	// Сustoms cargo declaration (CCD) check error codes
+	GTDErrorCodes []string `json:"gtd_error_codes"`
 
 	// Product batch registration number
 	RNPT string `json:"rnpt"`
 
 	// Indication that a product batch registration number hasn't been specified
 	IsRNPTAbsent bool `json:"is_rnpt_absent"`
+
+	// Check result.
+	// `true` if the labeling code of product item meets the requirements
+	Valid bool `json:"valid"`
 }
 
 // Method for getting shipment details by identifier
@@ -1244,7 +1263,7 @@ type ListOfShipmentCertificatesResult struct {
 	IntegrationType string `json:"integration_type"`
 
 	// Number of package units
-	ContainersCount int32 `json:"container_count"`
+	ContainersCount int32 `json:"containers_count"`
 
 	// Shipping status
 	Status string `json:"status"`
@@ -1767,7 +1786,7 @@ type CheckProductItemsDataResponse struct {
 // For example, you have 10 product items in your system.
 // You have passed them for checking and saving. Then they added another 60 product items to your system.
 // When you pass product items for checking and saving again, pass all of them: both old and newly added
-func (c FBS) CheckproductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
+func (c FBS) CheckProductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/set"
 
 	resp := &CheckProductItemsDataResponse{}
@@ -2466,7 +2485,7 @@ type ListShipmentInCertificateResult struct {
 	SellerError string `json:"seller_error"`
 
 	// Shipment record update date and time
-	UpdatedAt time.Time `json:"update_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 
 	// Shipment record creation date and time
 	CreatedAt time.Time `json:"created_at"`

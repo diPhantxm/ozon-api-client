@@ -44,8 +44,8 @@ func TestGetFBOShipmentsList(t *testing.T) {
 					"posting_number": "16965409-0014-1",
 					"status": "delivered",
 					"cancel_reason_id": 0,
-					"created_at": "2021-09-01T00:23:45.607000Z",
-					"in_process_at": "2021-09-01T00:25:30.120000Z",
+					"created_at": "2021-09-01T00:23:45.607Z",
+					"in_process_at": "2021-09-01T00:25:30.12Z",
 					"products": [
 					  {
 						"sku": 160249683,
@@ -138,7 +138,10 @@ func TestGetFBOShipmentsList(t *testing.T) {
 		resp, err := c.FBO().GetShipmentsList(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetFBOShipmentsListResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -267,7 +270,10 @@ func TestGetShipmentDetails(t *testing.T) {
 		resp, err := c.FBO().GetShipmentDetails(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetShipmentDetailsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -346,7 +352,10 @@ func TestListSupplyRequests(t *testing.T) {
 		resp, err := c.FBO().ListSupplyRequests(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListSupplyRequestsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -422,7 +431,10 @@ func TestGetSupplyRequestInfo(t *testing.T) {
 		resp, err := c.FBO().GetSupplyRequestInfo(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetSupplyRequestInfoResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -481,7 +493,10 @@ func TestListProductsInSupplyRequest(t *testing.T) {
 		resp, err := c.FBO().ListProductsInSupplyRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListProductsInSupplyRequestResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -540,7 +555,10 @@ func TestGetWarehouseWorkload(t *testing.T) {
 		resp, err := c.FBO().GetWarehouseWorkload(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetWarehouseWorkloadResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)

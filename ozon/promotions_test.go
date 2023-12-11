@@ -61,7 +61,10 @@ func TestGetAvailablePromotions(t *testing.T) {
 		resp, err := c.Promotions().GetAvailablePromotions(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &GetAvailablePromotionsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -131,7 +134,10 @@ func TestAddToPromotion(t *testing.T) {
 		resp, err := c.Promotions().AddToPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &AddProductToPromotionResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -208,7 +214,10 @@ func TestProductsAvailableForPromotion(t *testing.T) {
 		resp, err := c.Promotions().ProductsAvailableForPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductsAvailableForPromotionResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -270,7 +279,10 @@ func TestProductsInPromotion(t *testing.T) {
 		resp, err := c.Promotions().ProductsInPromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductsInPromotionResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -323,7 +335,10 @@ func TestRemoveProduct(t *testing.T) {
 		resp, err := c.Promotions().RemoveProduct(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &RemoveProductFromPromotionResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -383,7 +398,10 @@ func TestListHotSalePromotions(t *testing.T) {
 		resp, err := c.Promotions().ListHotSalePromotions(ctx)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListHotSalePromotionsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -445,7 +463,10 @@ func TestProductsAvailableForHotSalePromotion(t *testing.T) {
 		resp, err := c.Promotions().ProductsAvailableForHotSalePromotion(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductsAvailableForHotSalePromotionResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -506,7 +527,10 @@ func TestAddProductsToHotSale(t *testing.T) {
 		resp, err := c.Promotions().AddProductsToHotSale(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductsToHotSaleResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -561,7 +585,10 @@ func TestRemoveProductsToHotSale(t *testing.T) {
 		resp, err := c.Promotions().RemoveProductsToHotSale(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ProductsToHotSaleResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -648,7 +675,10 @@ func TestListDiscountRequests(t *testing.T) {
 		resp, err := c.Promotions().ListDiscountRequests(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &ListDiscountRequestsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -712,7 +742,10 @@ func TestApproveDiscountRequest(t *testing.T) {
 		resp, err := c.Promotions().ApproveDiscountRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &DiscountRequestResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
@@ -776,7 +809,10 @@ func TestDeclineDiscountRequest(t *testing.T) {
 		resp, err := c.Promotions().DeclineDiscountRequest(ctx, test.params)
 		if err != nil {
 			t.Error(err)
+			continue
 		}
+
+		compareJsonResponse(t, test.response, &DiscountRequestResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
