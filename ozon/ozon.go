@@ -10,6 +10,15 @@ const (
 	DefaultAPIBaseUrl = "https://api-seller.ozon.ru"
 )
 
+type ClientOptions struct {
+	client core.HttpClient
+
+	baseUri string
+
+	apiKey   string
+	clientId string
+}
+
 type Client struct {
 	client *core.Client
 
@@ -110,10 +119,46 @@ func (c Client) Barcodes() *Barcodes {
 	return c.barcodes
 }
 
-func NewClient(httpClient core.HttpClient, clientId, apiKey string) *Client {
-	coreClient := core.NewClient(httpClient, DefaultAPIBaseUrl, map[string]string{
-		"Client-Id": clientId,
-		"Api-Key":   apiKey,
+type ClientOption func(c *ClientOptions)
+
+func WithHttpClient(httpClient core.HttpClient) ClientOption {
+	return func(c *ClientOptions) {
+		c.client = httpClient
+	}
+}
+
+func WithURI(uri string) ClientOption {
+	return func(c *ClientOptions) {
+		c.baseUri = uri
+	}
+}
+
+func WithClientId(clientId string) ClientOption {
+	return func(c *ClientOptions) {
+		c.clientId = clientId
+	}
+}
+
+func WithAPIKey(apiKey string) ClientOption {
+	return func(c *ClientOptions) {
+		c.apiKey = apiKey
+	}
+}
+
+func NewClient(opts ...ClientOption) *Client {
+	// default values
+	options := &ClientOptions{
+		client:  http.DefaultClient,
+		baseUri: DefaultAPIBaseUrl,
+	}
+
+	for _, opt := range opts {
+		opt(options)
+	}
+
+	coreClient := core.NewClient(options.client, options.baseUri, map[string]string{
+		"Client-Id": options.clientId,
+		"Api-Key":   options.apiKey,
 	})
 
 	return &Client{
