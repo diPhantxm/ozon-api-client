@@ -2834,3 +2834,36 @@ func (c FBS) GetActPDF(ctx context.Context, params *GetActPDFParams) (*GetActPDF
 
 	return resp, nil
 }
+
+type CreateOrGetProductExemplarParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type CreateOrGetProductExemplarResponse struct {
+	core.CommonResponse
+
+	// Quantity of boxes the product is packed in
+	MultiBoxQuantity int32 `json:"multi_box_qty"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Product list
+	Products []CheckProductItemsDataProduct `json:"products"`
+}
+
+// Method returns the created items data passed in the `/v5/fbs/posting/product/exemplar/set` method.
+func (c FBS) CreateOrGetProductExemplar(ctx context.Context, params *CreateOrGetProductExemplarParams) (*CreateOrGetProductExemplarResponse, error) {
+	url := "/v5/fbs/posting/product/exemplar/create-or-get"
+
+	resp := &CreateOrGetProductExemplarResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
