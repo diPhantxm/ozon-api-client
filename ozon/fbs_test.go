@@ -1796,22 +1796,15 @@ func TestPartialPackOrder(t *testing.T) {
 				PostingNumber: "48173252-0034-4",
 				Products: []PartialPackOrderProduct{
 					{
-						ExemplarInfo: []FBSProductExemplar{
-							{
-								MandatoryMark: "mark",
-								GTD:           "gtd",
-								IsGTDAbsest:   true,
-							},
-						},
-						ProductId: 247508873,
-						Quantity:  1,
+						ExemplarIds: []string{"string"},
+						ProductId:   247508873,
+						Quantity:    1,
 					},
 				},
 			},
-			`{
-				"result": [
-				  "48173252-0034-9"
-				]
+			`
+			{
+				"result": "48173252-0034-9"
 			}`,
 		},
 		// Test No Client-Id or Api-Key

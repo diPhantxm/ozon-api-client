@@ -2039,8 +2039,8 @@ type PartialPackOrderParams struct {
 }
 
 type PartialPackOrderProduct struct {
-	// Data array on product items
-	ExemplarInfo []FBSProductExemplar `json:"exemplar_info"`
+	// Product item identifiers
+	ExemplarIds []string `json:"exemplarIds"`
 
 	// FBS product identifier in the Ozon system, SKU
 	ProductId int64 `json:"product_id"`
@@ -2052,11 +2052,8 @@ type PartialPackOrderProduct struct {
 type PartialPackOrderResponse struct {
 	core.CommonResponse
 
-	// Additional data about shipments
-	AdditionalData []PartialPackOrderAdditionalData `json:"additional_data"`
-
-	// Identifiers of shipments that were created after package
-	Result []string `json:"result"`
+	// Shipments numbers formed after packaging
+	Result string `json:"result"`
 }
 
 type PartialPackOrderAdditionalData struct {
@@ -2072,7 +2069,7 @@ type PartialPackOrderAdditionalData struct {
 //
 // The status of the original shipment will only change when the split shipments status changes
 func (c FBS) PartialPackOrder(ctx context.Context, params *PartialPackOrderParams) (*PartialPackOrderResponse, error) {
-	url := "/v3/posting/fbs/ship/package"
+	url := "/v4/posting/fbs/ship/package"
 
 	resp := &PartialPackOrderResponse{}
 
