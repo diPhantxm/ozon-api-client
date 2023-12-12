@@ -1395,15 +1395,27 @@ func TestCheckProductItemsData(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&CheckProductItemsDataParams{
-				PostingNumber: "48173252-0034-4",
-				Products: CheckProductItemsDataProduct{
-					Exemplars: []FBSProductExemplar{
-						{
-							IsGTDAbsest:   true,
-							MandatoryMark: "010290000151642731tVMohkbfFgunB",
+				MultiBoxQuantity: 0,
+				PostingNumber:    "1234",
+				Products: []CheckProductItemsDataProduct{
+					{
+						Exemplars: []CheckProductItemsDataProductExemplar{
+							{
+								ExemplarId:    1,
+								GTD:           "string",
+								IsGTDAbsent:   true,
+								IsRNPTAbsent:  true,
+								MandatoryMark: "string",
+								RNPT:          "string",
+								JWUIN:         "string",
+							},
 						},
+						IsGTDNeeded:           true,
+						IsMandatoryMarkNeeded: true,
+						IsRNPTNeeded:          true,
+						ProductId:             22,
+						Quantity:              11,
 					},
-					ProductId: 476925391,
 				},
 			},
 			`{
@@ -1784,22 +1796,15 @@ func TestPartialPackOrder(t *testing.T) {
 				PostingNumber: "48173252-0034-4",
 				Products: []PartialPackOrderProduct{
 					{
-						ExemplarInfo: []FBSProductExemplar{
-							{
-								MandatoryMark: "mark",
-								GTD:           "gtd",
-								IsGTDAbsest:   true,
-							},
-						},
-						ProductId: 247508873,
-						Quantity:  1,
+						ExemplarIds: []string{"string"},
+						ProductId:   247508873,
+						Quantity:    1,
 					},
 				},
 			},
-			`{
-				"result": [
-				  "48173252-0034-9"
-				]
+			`
+			{
+				"result": "48173252-0034-9"
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -2840,6 +2845,77 @@ func TestGetActPDF(t *testing.T) {
 			if resp.FileContent == "" {
 				t.Errorf("result cannot be empty")
 			}
+		}
+	}
+}
+
+func TestCreateOrGetProductExemplar(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreateOrGetProductExemplarParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreateOrGetProductExemplarParams{
+				PostingNumber: "string",
+			},
+			`{
+				"multi_box_qty": 0,
+				"posting_number": "string",
+				"products": [
+				  {
+					"exemplars": [
+					  {
+						"exemplar_id": 0,
+						"gtd": "string",
+						"is_gtd_absent": true,
+						"is_rnpt_absent": true,
+						"mandatory_mark": "string",
+						"rnpt": "string",
+						"jw_uin": "string"
+					  }
+					],
+					"is_gtd_needed": true,
+					"is_mandatory_mark_needed": true,
+					"is_rnpt_needed": true,
+					"product_id": 0,
+					"quantity": 0
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CreateOrGetProductExemplarParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().CreateOrGetProductExemplar(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &CreateOrGetProductExemplarResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 	}
 }

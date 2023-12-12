@@ -1750,18 +1750,76 @@ func (c FBS) GetDropOffPointRestrictions(ctx context.Context, params *GetDropOff
 }
 
 type CheckProductItemsDataParams struct {
+	// Quantity of boxes the product is packed in
+	MultiBoxQuantity int32 `json:"multi_box_qty"`
+
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
-	Products CheckProductItemsDataProduct `json:"products"`
+	// Product list
+	Products []CheckProductItemsDataProduct `json:"products"`
 }
 
 type CheckProductItemsDataProduct struct {
 	// Product items data
-	Exemplars []FBSProductExemplar `json:"exemplars"`
+	Exemplars []CheckProductItemsDataProductExemplar `json:"exemplars"`
 
-	// SKU, FBS product identifier in the Ozon system
+	// Indication that you need to pass the сustoms cargo declaration
+	// (CCD) number for the product and shipment
+	IsGTDNeeded bool `json:"is_gtd_needed"`
+
+	// Indication that you need to pass the "Chestny ZNAK" labeling
+	IsMandatoryMarkNeeded bool `json:"is_mandatory_mark_needed"`
+
+	// Indication that you need to pass the product batch registration number
+	IsRNPTNeeded bool `json:"is_rnpt_needed"`
+
+	// Product ID
 	ProductId int64 `json:"product_id"`
+
+	// Items quantity
+	Quantity int32 `json:"quantity"`
+}
+
+type CheckProductItemsDataProductExemplar struct {
+	// Item identifier
+	ExemplarId int64 `json:"exemplar_id"`
+
+	// Customs cargo declaration (CCD) number
+	GTD string `json:"gtd"`
+
+	// Сustoms cargo declaration (CCD) check status
+	GTDCheckStatus string `json:"gtd_check_status"`
+
+	// Сustoms cargo declaration (CCD) check error codes
+	GTDErrorCodes []string `json:"gtd_error_codes"`
+
+	// Indication that the customs cargo declaration (CCD) number isn't specified
+	IsGTDAbsent bool `json:"is_gtd_absent"`
+
+	// "Chestny ZNAK" labeling check status
+	MandatoryMarkCheckStatus MandatoryMarkStatus `json:"mandatory_mark_check_status"`
+
+	// "Chestny ZNAK" labeling check error codes
+	MandatoryMarkErrorCodes []string `json:"mandatory_mark_error_codes"`
+
+	// Indication that the product batch registration number isn't specified
+	IsRNPTAbsent bool `json:"is_rnpt_absent"`
+
+	// Mandatory "Chestny ZNAK" labeling
+	MandatoryMark string `json:"mandatory_mark"`
+
+	// Product batch registration number
+	RNPT string `json:"rnpt"`
+
+	// Product batch registration number check status
+	RNPTCheckStatus string `json:"rnpt_check_status"`
+
+	// Product batch registration number check error codes
+	RNPTErrorCodes []string `json:"rnpt_error_codes"`
+
+	// Unique identifier of charges of the jewelry
+	JWUIN string `json:"jw_uin"`
 }
 
 type CheckProductItemsDataResponse struct {
@@ -1772,20 +1830,23 @@ type CheckProductItemsDataResponse struct {
 }
 
 // Asynchronous method:
-//   - for checking the availability of product items in the “Chestny ZNAK” labeling system
-//   - for saving product items data
 //
-// To get the checks results, use the `/v4/fbs/posting/product/exemplar/status method`
+// for checking the availability of product items in the “Chestny ZNAK” labeling system;
+// for saving product items data.
+// To get the checks results, use the `/v4/fbs/posting/product/exemplar/status` method.
+// To get data about created items, use the `/v5/fbs/fbs/posting/product/exemplar/create-or-get` method.
 //
-// If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value `is_gtd_absent` = true
+// If necessary, specify the number of the cargo customs declaration in the gtd parameter.
+// If it is missing, pass the value `is_gtd_absent` = true.
 //
-// If you have multiple identical products in a shipment, specify one `product_id` and `exemplars` array for each product in the shipment
+// If you have multiple identical products in a shipment, specify one `product_id` and exemplars array for each product in the shipment.
 //
-// # Always pass a complete set of product items data
+// Always pass a complete set of product items data.
 //
 // For example, you have 10 product items in your system.
-// You have passed them for checking and saving. Then they added another 60 product items to your system.
-// When you pass product items for checking and saving again, pass all of them: both old and newly added
+// You've passed them for checking and saving.
+// Then you added another 60 product items to your system.
+// When you pass product items for checking and saving again, pass all of them: both old and newly added.
 func (c FBS) CheckProductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/set"
 
@@ -1996,8 +2057,8 @@ type PartialPackOrderParams struct {
 }
 
 type PartialPackOrderProduct struct {
-	// Data array on product items
-	ExemplarInfo []FBSProductExemplar `json:"exemplar_info"`
+	// Product item identifiers
+	ExemplarIds []string `json:"exemplarIds"`
 
 	// FBS product identifier in the Ozon system, SKU
 	ProductId int64 `json:"product_id"`
@@ -2009,11 +2070,8 @@ type PartialPackOrderProduct struct {
 type PartialPackOrderResponse struct {
 	core.CommonResponse
 
-	// Additional data about shipments
-	AdditionalData []PartialPackOrderAdditionalData `json:"additional_data"`
-
-	// Identifiers of shipments that were created after package
-	Result []string `json:"result"`
+	// Shipments numbers formed after packaging
+	Result string `json:"result"`
 }
 
 type PartialPackOrderAdditionalData struct {
@@ -2029,7 +2087,7 @@ type PartialPackOrderAdditionalData struct {
 //
 // The status of the original shipment will only change when the split shipments status changes
 func (c FBS) PartialPackOrder(ctx context.Context, params *PartialPackOrderParams) (*PartialPackOrderResponse, error) {
-	url := "/v3/posting/fbs/ship/package"
+	url := "/v4/posting/fbs/ship/package"
 
 	resp := &PartialPackOrderResponse{}
 
@@ -2784,6 +2842,39 @@ func (c FBS) GetActPDF(ctx context.Context, params *GetActPDFParams) (*GetActPDF
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, map[string]string{
 		"Content-Type": "application/pdf",
 	})
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CreateOrGetProductExemplarParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type CreateOrGetProductExemplarResponse struct {
+	core.CommonResponse
+
+	// Quantity of boxes the product is packed in
+	MultiBoxQuantity int32 `json:"multi_box_qty"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Product list
+	Products []CheckProductItemsDataProduct `json:"products"`
+}
+
+// Method returns the created items data passed in the `/v5/fbs/posting/product/exemplar/set` method.
+func (c FBS) CreateOrGetProductExemplar(ctx context.Context, params *CreateOrGetProductExemplarParams) (*CreateOrGetProductExemplarResponse, error) {
+	url := "/v5/fbs/posting/product/exemplar/create-or-get"
+
+	resp := &CreateOrGetProductExemplarResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
