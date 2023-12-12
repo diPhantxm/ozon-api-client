@@ -1750,18 +1750,58 @@ func (c FBS) GetDropOffPointRestrictions(ctx context.Context, params *GetDropOff
 }
 
 type CheckProductItemsDataParams struct {
+	// Quantity of boxes the product is packed in
+	MultiBoxQuantity int32 `json:"multi_box_qty"`
+
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
-	Products CheckProductItemsDataProduct `json:"products"`
+	// Product list
+	Products []CheckProductItemsDataProduct `json:"products"`
 }
 
 type CheckProductItemsDataProduct struct {
 	// Product items data
-	Exemplars []FBSProductExemplar `json:"exemplars"`
+	Exemplars []CheckProductItemsDataProductExemplar `json:"exemplars"`
 
-	// SKU, FBS product identifier in the Ozon system
+	// Indication that you need to pass the сustoms cargo declaration
+	// (CCD) number for the product and shipment
+	IsGTDNeeded bool `json:"is_gtd_needed"`
+
+	// Indication that you need to pass the "Chestny ZNAK" labeling
+	IsMandatoryMarkNeeded bool `json:"is_mandatory_mark_needed"`
+
+	// Indication that you need to pass the product batch registration number
+	IsRNTPNeeded bool `json:"is_rntp_needed"`
+
+	// Product ID
 	ProductId int64 `json:"product_id"`
+
+	// Items quantity
+	Quantity int32 `json:"quantity"`
+}
+
+type CheckProductItemsDataProductExemplar struct {
+	// Item identifier
+	ExemplarId int64 `json:"exemplar_id"`
+
+	// Customs cargo declaration (CCD) number
+	GTD string `json:"gtd"`
+
+	// Indication that the customs cargo declaration (CCD) number isn't specified
+	IsGTDAbsent bool `json:"is_gtd_absent"`
+
+	// Indication that the product batch registration number isn't specified
+	IsRNTPAbsent bool `json:"is_rntp_absent"`
+
+	// Mandatory "Chestny ZNAK" labeling
+	MandatoryMark string `json:"mandatory_mark"`
+
+	// Product batch registration number
+	RNTP string `json:"rntp"`
+
+	// Unique identifier of charges of the jewelry
+	JWUIN string `json:"jw_uin"`
 }
 
 type CheckProductItemsDataResponse struct {
@@ -1772,20 +1812,23 @@ type CheckProductItemsDataResponse struct {
 }
 
 // Asynchronous method:
-//   - for checking the availability of product items in the “Chestny ZNAK” labeling system
-//   - for saving product items data
 //
-// To get the checks results, use the `/v4/fbs/posting/product/exemplar/status method`
+// for checking the availability of product items in the “Chestny ZNAK” labeling system;
+// for saving product items data.
+// To get the checks results, use the `/v4/fbs/posting/product/exemplar/status` method.
+// To get data about created items, use the `/v5/fbs/fbs/posting/product/exemplar/create-or-get` method.
 //
-// If necessary, specify the number of the cargo customs declaration in the gtd parameter. If it is missing, pass the value `is_gtd_absent` = true
+// If necessary, specify the number of the cargo customs declaration in the gtd parameter.
+// If it is missing, pass the value `is_gtd_absent` = true.
 //
-// If you have multiple identical products in a shipment, specify one `product_id` and `exemplars` array for each product in the shipment
+// If you have multiple identical products in a shipment, specify one `product_id` and exemplars array for each product in the shipment.
 //
-// # Always pass a complete set of product items data
+// Always pass a complete set of product items data.
 //
 // For example, you have 10 product items in your system.
-// You have passed them for checking and saving. Then they added another 60 product items to your system.
-// When you pass product items for checking and saving again, pass all of them: both old and newly added
+// You've passed them for checking and saving.
+// Then you added another 60 product items to your system.
+// When you pass product items for checking and saving again, pass all of them: both old and newly added.
 func (c FBS) CheckProductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
 	url := "/v4/fbs/posting/product/exemplar/set"
 

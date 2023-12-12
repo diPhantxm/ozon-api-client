@@ -1395,15 +1395,27 @@ func TestCheckProductItemsData(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&CheckProductItemsDataParams{
-				PostingNumber: "48173252-0034-4",
-				Products: CheckProductItemsDataProduct{
-					Exemplars: []FBSProductExemplar{
-						{
-							IsGTDAbsest:   true,
-							MandatoryMark: "010290000151642731tVMohkbfFgunB",
+				MultiBoxQuantity: 0,
+				PostingNumber:    "1234",
+				Products: []CheckProductItemsDataProduct{
+					{
+						Exemplars: []CheckProductItemsDataProductExemplar{
+							{
+								ExemplarId:    1,
+								GTD:           "string",
+								IsGTDAbsent:   true,
+								IsRNTPAbsent:  true,
+								MandatoryMark: "string",
+								RNTP:          "string",
+								JWUIN:         "string",
+							},
 						},
+						IsGTDNeeded:           true,
+						IsMandatoryMarkNeeded: true,
+						IsRNTPNeeded:          true,
+						ProductId:             22,
+						Quantity:              11,
 					},
-					ProductId: 476925391,
 				},
 			},
 			`{
