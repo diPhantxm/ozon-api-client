@@ -1772,7 +1772,7 @@ type CheckProductItemsDataProduct struct {
 	IsMandatoryMarkNeeded bool `json:"is_mandatory_mark_needed"`
 
 	// Indication that you need to pass the product batch registration number
-	IsRNTPNeeded bool `json:"is_rntp_needed"`
+	IsRNPTNeeded bool `json:"is_rnpt_needed"`
 
 	// Product ID
 	ProductId int64 `json:"product_id"`
@@ -1788,17 +1788,35 @@ type CheckProductItemsDataProductExemplar struct {
 	// Customs cargo declaration (CCD) number
 	GTD string `json:"gtd"`
 
+	// Сustoms cargo declaration (CCD) check status
+	GTDCheckStatus string `json:"gtd_check_status"`
+
+	// Сustoms cargo declaration (CCD) check error codes
+	GTDErrorCodes []string `json:"gtd_error_codes"`
+
 	// Indication that the customs cargo declaration (CCD) number isn't specified
 	IsGTDAbsent bool `json:"is_gtd_absent"`
 
+	// "Chestny ZNAK" labeling check status
+	MandatoryMarkCheckStatus MandatoryMarkStatus `json:"mandatory_mark_check_status"`
+
+	// "Chestny ZNAK" labeling check error codes
+	MandatoryMarkErrorCodes []string `json:"mandatory_mark_error_codes"`
+
 	// Indication that the product batch registration number isn't specified
-	IsRNTPAbsent bool `json:"is_rntp_absent"`
+	IsRNPTAbsent bool `json:"is_rnpt_absent"`
 
 	// Mandatory "Chestny ZNAK" labeling
 	MandatoryMark string `json:"mandatory_mark"`
 
 	// Product batch registration number
-	RNTP string `json:"rntp"`
+	RNPT string `json:"rnpt"`
+
+	// Product batch registration number check status
+	RNPTCheckStatus string `json:"rnpt_check_status"`
+
+	// Product batch registration number check error codes
+	RNPTErrorCodes []string `json:"rnpt_error_codes"`
 
 	// Unique identifier of charges of the jewelry
 	JWUIN string `json:"jw_uin"`

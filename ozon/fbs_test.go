@@ -1404,15 +1404,15 @@ func TestCheckProductItemsData(t *testing.T) {
 								ExemplarId:    1,
 								GTD:           "string",
 								IsGTDAbsent:   true,
-								IsRNTPAbsent:  true,
+								IsRNPTAbsent:  true,
 								MandatoryMark: "string",
-								RNTP:          "string",
+								RNPT:          "string",
 								JWUIN:         "string",
 							},
 						},
 						IsGTDNeeded:           true,
 						IsMandatoryMarkNeeded: true,
-						IsRNTPNeeded:          true,
+						IsRNPTNeeded:          true,
 						ProductId:             22,
 						Quantity:              11,
 					},
@@ -2912,7 +2912,7 @@ func TestCreateOrGetProductExemplar(t *testing.T) {
 			continue
 		}
 
-		compareJsonResponse(t, test.response, &GetActPDFResponse{})
+		compareJsonResponse(t, test.response, &CreateOrGetProductExemplarResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
