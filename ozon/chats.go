@@ -16,8 +16,8 @@ type ListChatsParams struct {
 	// Chats filter
 	Filter ListChatsFilter `json:"filter"`
 
-	// Number of values in the response. Default value is 1
-	Limit int64 `json:"limit" default:"1"`
+	// Number of values in the response. The default value is 30. The maximum value is 1000
+	Limit int64 `json:"limit" default:"30"`
 
 	// Number of elements that will be skipped in the response.
 	// For example, if offset=10, the response will start with the 11th element found
@@ -173,7 +173,7 @@ type ChatHistoryParams struct {
 	// Default value is the last visible message
 	FromMessageId string `json:"from_message_id"`
 
-	// Number of messages in the response. The default value is 50
+	// Number of messages in the response. The default value is 50. The maximum value is 1000
 	Limit int64 `json:"limit" default:"50"`
 }
 
