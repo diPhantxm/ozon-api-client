@@ -130,6 +130,9 @@ type ProductDetails struct {
 	// Category identifier
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
+
 	// Marketing color
 	ColorImage string `json:"color_image"`
 
@@ -888,7 +891,7 @@ type CreateOrUpdateProductResult struct {
 
 // This method allows you to create products and update their details
 func (c Products) CreateOrUpdateProduct(ctx context.Context, params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
-	url := "/v2/product/import"
+	url := "/v3/product/import"
 
 	resp := &CreateOrUpdateProductResponse{}
 
