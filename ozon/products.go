@@ -888,7 +888,7 @@ type CreateOrUpdateProductResult struct {
 
 // This method allows you to create products and update their details
 func (c Products) CreateOrUpdateProduct(ctx context.Context, params *CreateOrUpdateProductParams) (*CreateOrUpdateProductResponse, error) {
-	url := "/v2/product/import"
+	url := "/v3/product/import"
 
 	resp := &CreateOrUpdateProductResponse{}
 
