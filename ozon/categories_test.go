@@ -97,7 +97,9 @@ func TestGetCategoryAttributes(t *testing.T) {
 					"is_collection": true,
 					"is_required": true,
 					"name": "string",
-					"type": "string"
+					"type": "string",
+					"attribute_complex_id": 0,
+					"max_value_count": 0
 				  }
 				]
 			}`,

@@ -123,6 +123,12 @@ type GetCategoryAttributesResult struct {
 
 	// Characteristic type
 	Type string `json:"type"`
+
+	// Complex attribute identifier
+	AttributeComplexId int64 `json:"attribute_complex_id"`
+
+	// Maximum number of values for attribute
+	MaxValueCount int64 `json:"max_value_count"`
 }
 
 // Getting characteristics for specified product category and type.
@@ -200,7 +206,7 @@ type GetAttributeDictionaryResult struct {
 // To check if an attribute has a nested directory,
 // use the `/v1/description-category/attribute` method.
 func (c *Categories) AttributesDictionary(ctx context.Context, params *GetAttributeDictionaryParams) (*GetAttributeDictionaryResponse, error) {
-	url := "/v1/description-category/attribute"
+	url := "/v1/description-category/attribute/values"
 
 	resp := &GetAttributeDictionaryResponse{}
 
