@@ -25,7 +25,7 @@ type GetProductTreeResponse struct {
 
 type GetProductTreeResult struct {
 	// Category identifier
-	CategoryId int64 `json:"category_id"`
+	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Category name
 	CategoryName string `json:"category_name"`
@@ -64,7 +64,7 @@ func (c *Categories) Tree(ctx context.Context, params *GetProductTreeParams) (*G
 
 type GetCategoryAttributesParams struct {
 	// Category identifier
-	CategoryId int64 `json:"category_id"`
+	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Response language
 	Language Language `json:"language"`
@@ -155,7 +155,7 @@ type GetAttributeDictionaryParams struct {
 	AttributeId int64 `json:"attribute_id"`
 
 	// Category identifier
-	CategoryId int64 `json:"category_id"`
+	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Response language
 	Language Language `json:"language"`

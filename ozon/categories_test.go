@@ -27,7 +27,7 @@ func TestGetProductTree(t *testing.T) {
 			`{
 				"result": [
 				  {
-					"category_id": 0,
+					"description_category_id": 0,
 					"category_name": "string",
 					"children": [],
 					"disabled": true,
@@ -81,9 +81,9 @@ func TestGetCategoryAttributes(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetCategoryAttributesParams{
-				CategoryId: 12345,
-				Language:   English,
-				TypeId:     2,
+				DescriptionCategoryId: 12345,
+				Language:              English,
+				TypeId:                2,
 			},
 			`{
 				"result": [
@@ -148,12 +148,12 @@ func TestGetAttributeDictionary(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetAttributeDictionaryParams{
-				AttributeId: 123456,
-				CategoryId:  12,
-				Language:    English,
-				LastValueId: 1,
-				Limit:       5,
-				TypeId:      6,
+				AttributeId:           123456,
+				DescriptionCategoryId: 12,
+				Language:              English,
+				LastValueId:           1,
+				Limit:                 5,
+				TypeId:                6,
 			},
 			`{
 				"has_next": true,
