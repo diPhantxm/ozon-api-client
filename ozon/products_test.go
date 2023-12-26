@@ -127,7 +127,7 @@ func TestGetProductDetails(t *testing.T) {
 					"7533900005"
 				  ],
 				  "buybox_price": "",
-				  "description_category_id": 17038062,
+				  "type_id": 0,
 				  "created_at": "2021-10-21T15:48:03.529178Z",
 				  "images": [
 					"https://cdn1.ozone.ru/s3/multimedia-5/6088931525.jpg",
@@ -141,6 +141,7 @@ func TestGetProductDetails(t *testing.T) {
 					"reserved": 0
 				  },
 				  "currency_code": "RUB",
+				  "description_category_id": 12,
 				  "marketing_price": "",
 				  "min_price": "",
 				  "old_price": "",
@@ -1378,6 +1379,7 @@ func TestListProductsByIDs(t *testing.T) {
 					  ],
 					  "buybox_price": "",
 					  "description_category_id": 93726157,
+					  "type_id": 0,
 					  "created_at": "2021-06-03T03:40:05.871465Z",
 					  "images": [],
 					  "has_discounted_item": true,
@@ -1420,7 +1422,24 @@ func TestListProductsByIDs(t *testing.T) {
 						"active_product": false,
 						"reasons": {}
 					  },
-					  "price_index": "0.00",
+					  "price_indexes": {
+						"external_index_data": {
+						  "minimal_price": "string",
+						  "minimal_price_currency": "string",
+						  "price_index_value": 0
+						},
+						"ozon_index_data": {
+						  "minimal_price": "string",
+						  "minimal_price_currency": "string",
+						  "price_index_value": 0
+						},
+						"price_index": "WITHOUT_INDEX",
+						"self_marketplaces_index_data": {
+						  "minimal_price": "string",
+						  "minimal_price_currency": "string",
+						  "price_index_value": 0
+						}
+					  },
 					  "images360": [],
 					  "is_kgt": false,
 					  "color_image": "",

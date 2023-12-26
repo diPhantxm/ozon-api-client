@@ -130,6 +130,9 @@ type ProductDetails struct {
 	// Category identifier
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
+
 	// Marketing color
 	ColorImage string `json:"color_image"`
 
