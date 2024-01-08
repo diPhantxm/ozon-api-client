@@ -23,6 +23,7 @@ A simple example on how to use this library:
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -33,11 +34,14 @@ import (
 func main() {
 	// Create a client with your Client-Id and Api-Key
 	// [Documentation]: https://docs.ozon.ru/api/seller/en/#tag/Auth
-	client := ozon.NewClient("my-client-id", "my-api-key")
+	opts := []ozon.ClientOption{
+		ozon.WithAPIKey("api-key"),
+		ozon.WithClientId("client-id"),
+	}
+	c := ozon.NewClient(opts...)
 
 	// Send request with parameters
-	ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-resp, err := client.Products().GetProductDetails(&ozon.GetProductDetailsParams{
+	resp, err := client.Products().GetProductDetails(context.Background(), &ozon.GetProductDetailsParams{
 		ProductId: 123456789,
 	})
 	if err != nil || resp.StatusCode != http.StatusOK {
