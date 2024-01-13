@@ -1940,7 +1940,7 @@ type GetPRoductPriceInfoResultItem struct {
 	Commissions GetProductPriceInfoResultItemCommission `json:"commissions"`
 
 	// Promotions information
-	MarketingActions []GetProductPriceInfoResultItemMarketingActions `json:"marketing_actions"`
+	MarketingActions *GetProductPriceInfoResultItemMarketingActions `json:"marketing_actions"`
 
 	// Seller product identifier
 	OfferId string `json:"offer_id"`
