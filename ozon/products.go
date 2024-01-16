@@ -145,6 +145,12 @@ type ProductDetails struct {
 	// Product SKU
 	SKU int64 `json:"sku"`
 
+	// SKU of the product that is sold from the Ozon warehouse (FBO)
+	FBOSKU int64 `json:"fbo_sku,omitempty"`
+
+	// SKU of the product that is sold from the seller's warehouse (FBS and rFBS)
+	FBSSKU int64 `json:"fbs_sku,omitempty"`
+
 	// Document generation task number
 	Id int64 `json:"id"`
 
