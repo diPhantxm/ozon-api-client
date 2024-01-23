@@ -450,7 +450,7 @@ func (c Reports) GetProducts(ctx context.Context, params *GetProductsReportParam
 
 type GetReturnsReportParams struct {
 	// Filter
-	Filter GetReturnsReportsFilter `json:"filter"`
+	Filter *GetReturnsReportsFilter `json:"filter,omitempty"`
 
 	// Default: "DEFAULT"
 	// Response language:
@@ -501,7 +501,7 @@ func (c Reports) GetReturns(ctx context.Context, params *GetReturnsReportParams)
 
 type GetShipmentReportParams struct {
 	// Filter
-	Filter GetShipmentReportFilter `json:"filter"`
+	Filter *GetShipmentReportFilter `json:"filter,omitempty"`
 
 	// Default: "DEFAULT"
 	// Response language:

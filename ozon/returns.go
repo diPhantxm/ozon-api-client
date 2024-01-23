@@ -14,7 +14,7 @@ type Returns struct {
 
 type GetFBOReturnsParams struct {
 	// Filter
-	Filter GetFBOReturnsFilter `json:"filter"`
+	Filter *GetFBOReturnsFilter `json:"filter,omitempty"`
 
 	// Identifier of the last value on the page. Leave this field blank in the first request.
 	//
@@ -95,7 +95,7 @@ func (c Returns) GetFBOReturns(ctx context.Context, params *GetFBOReturnsParams)
 
 type GetFBSReturnsParams struct {
 	// Filter
-	Filter GetFBSReturnsFilter `json:"filter"`
+	Filter *GetFBSReturnsFilter `json:"filter,omitempty"`
 
 	// Number of values in the response:
 	//   - maximum — 1000,
@@ -264,7 +264,7 @@ func (c Returns) GetFBSReturns(ctx context.Context, params *GetFBSReturnsParams)
 
 type GetRFBSReturnsParams struct {
 	// Filter
-	Filter GetRFBSReturnsFilter `json:"filter"`
+	Filter *GetRFBSReturnsFilter `json:"filter,omitempty"`
 
 	// Identifier of the last value on the page.
 	// Leave this field blank in the first request

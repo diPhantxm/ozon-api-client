@@ -29,7 +29,7 @@ func TestListUnprocessedShipments(t *testing.T) {
 					Status:     "awaiting_packaging",
 				},
 				Limit: 100,
-				With: ListUnprocessedShipmentsWith{
+				With: &ListUnprocessedShipmentsWith{
 					AnalyticsData: true,
 					Barcodes:      true,
 					FinancialData: true,
@@ -210,7 +210,7 @@ func TestGetFBSShipmentsList(t *testing.T) {
 				},
 				Limit:  0,
 				Offset: 0,
-				With: GetFBSShipmentsListWith{
+				With: &GetFBSShipmentsListWith{
 					AnalyticsData: true,
 					FinancialData: true,
 					Translit:      true,
@@ -330,7 +330,7 @@ func TestPackOrder(t *testing.T) {
 					},
 				},
 				PostingNumber: "89491381-0072-1",
-				With: PackOrderWith{
+				With: &PackOrderWith{
 					AdditionalData: true,
 				},
 			},
@@ -556,7 +556,7 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetShipmentDataByIdentifierParams{
 				PostingNumber: "57195475-0050-3",
-				With:          GetShipmentDataByIdentifierWith{},
+				With:          &GetShipmentDataByIdentifierWith{},
 			},
 			`{
 				"result": {

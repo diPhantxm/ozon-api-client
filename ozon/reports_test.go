@@ -375,7 +375,7 @@ func TestGetReturnsReport(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetReturnsReportParams{
-				Filter: GetReturnsReportsFilter{
+				Filter: &GetReturnsReportsFilter{
 					DeliverySchema: "fbs",
 				},
 			},
@@ -435,7 +435,7 @@ func TestGetShipmentReport(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetShipmentReportParams{
-				Filter: GetShipmentReportFilter{
+				Filter: &GetShipmentReportFilter{
 					DeliverySchema:  []string{"fbs", "fbo", "crossborder"},
 					ProcessedAtFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-09-02T17:10:54.861Z"),
 					ProcessedAtTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-02T17:10:54.861Z"),

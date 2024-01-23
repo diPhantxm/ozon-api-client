@@ -165,7 +165,7 @@ type GetStocksOnWarehousesParams struct {
 	Offset int64 `json:"offset"`
 
 	// Warehouse type filter:
-	WarehouseType WarehouseType `json:"warehouse_type"`
+	WarehouseType WarehouseType `json:"warehouse_type" default:"ALL"`
 }
 
 type GetStocksOnWarehousesResponse struct {

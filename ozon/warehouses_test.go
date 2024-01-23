@@ -99,7 +99,7 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetListOfDeliveryMethodsParams{
-				Filter: GetListOfDeliveryMethodsFilter{
+				Filter: &GetListOfDeliveryMethodsFilter{
 					WarehouseId: 15588127982000,
 				},
 				Limit:  100,

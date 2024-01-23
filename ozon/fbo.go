@@ -14,7 +14,7 @@ type FBO struct {
 
 type GetFBOShipmentsListParams struct {
 	// Sorting direction
-	Direction string `json:"dir"`
+	Direction string `json:"dir,omitempty"`
 
 	// Shipment search filter
 	Filter GetFBOShipmentsListFilter `json:"filter"`
@@ -23,13 +23,13 @@ type GetFBOShipmentsListParams struct {
 	Limit int64 `json:"limit"`
 
 	// Number of elements that will be skipped in the response. For example, if offset=10, the response will start with the 11th element found
-	Offset int64 `json:"offset"`
+	Offset int64 `json:"offset,omitempty"`
 
 	// true if the address transliteration from Cyrillic to Latin is enabled
-	Translit bool `json:"translit"`
+	Translit bool `json:"translit,omitempty"`
 
 	// Additional fields to add to the response
-	With GetFBOShipmentsListWith `json:"with"`
+	With *GetFBOShipmentsListWith `json:"with,omitempty"`
 }
 
 // Shipment search filter
@@ -185,10 +185,10 @@ type GetShipmentDetailsParams struct {
 	PostingNumber string `json:"posting_number"`
 
 	// true if the address transliteration from Cyrillic to Latin is enabled
-	Translit bool `json:"translit"`
+	Translit bool `json:"translit,omitempty"`
 
 	// Additional fields to add to the response
-	With GetShipmentDetailsWith `json:"with"`
+	With *GetShipmentDetailsWith `json:"with,omitempty"`
 }
 
 type GetShipmentDetailsWith struct {

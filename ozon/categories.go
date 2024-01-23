@@ -67,7 +67,7 @@ type GetCategoryAttributesParams struct {
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Response language
-	Language Language `json:"language"`
+	Language Language `json:"language,omitempty"`
 
 	// Product type identifier
 	TypeId int64 `json:"type_id"`
@@ -158,7 +158,7 @@ type GetAttributeDictionaryParams struct {
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
 	// Response language
-	Language Language `json:"language"`
+	Language Language `json:"language,omitempty"`
 
 	// Identifier of the directory to start the response with.
 	// If `last_value_id` is 10, the response will contain directories starting from the 11th
@@ -168,7 +168,7 @@ type GetAttributeDictionaryParams struct {
 	//
 	// 	- maximum—5000,
 	// 	- minimum—1.
-	Limit int64 `json:"limit"`
+	Limit int64 `json:"limit,omitempty"`
 
 	// Product type identifier
 	TypeId int64 `json:"type_id"`

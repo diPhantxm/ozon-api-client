@@ -102,7 +102,7 @@ func (c Warehouses) GetListOfWarehouses(ctx context.Context) (*GetListOfWarehous
 
 type GetListOfDeliveryMethodsParams struct {
 	// Search filter for delivery methods
-	Filter GetListOfDeliveryMethodsFilter `json:"filter"`
+	Filter *GetListOfDeliveryMethodsFilter `json:"filter,omitempty"`
 
 	// Number of items in a response. Maximum is 50, minimum is 1
 	Limit int64 `json:"limit"`

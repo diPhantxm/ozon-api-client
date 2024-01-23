@@ -31,7 +31,7 @@ func TestGetFBOShipmentsList(t *testing.T) {
 				Limit:    5,
 				Offset:   0,
 				Translit: true,
-				With: GetFBOShipmentsListWith{
+				With: &GetFBOShipmentsListWith{
 					AnalyticsData: true,
 					FinancialData: true,
 				},
@@ -165,7 +165,7 @@ func TestGetShipmentDetails(t *testing.T) {
 			&GetShipmentDetailsParams{
 				PostingNumber: "50520644-0012-7",
 				Translit:      true,
-				With: GetShipmentDetailsWith{
+				With: &GetShipmentDetailsWith{
 					AnalyticsData: true,
 					FinancialData: true,
 				},

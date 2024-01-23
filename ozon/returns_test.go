@@ -22,7 +22,7 @@ func TestGetFBOReturns(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetFBOReturnsParams{
-				Filter: GetFBOReturnsFilter{
+				Filter: &GetFBOReturnsFilter{
 					PostingNumber: "some number",
 				},
 				LastId: 123,
@@ -105,7 +105,7 @@ func TestGetFBSReturns(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetFBSReturnsParams{
-				Filter: GetFBSReturnsFilter{
+				Filter: &GetFBSReturnsFilter{
 					PostingNumber: []string{"07402477-0022-2"},
 					Status:        "returned_to_seller",
 				},
@@ -212,7 +212,7 @@ func TestGetRFBSReturns(t *testing.T) {
 			&GetRFBSReturnsParams{
 				LastId: 999,
 				Limit:  555,
-				Filter: GetRFBSReturnsFilter{
+				Filter: &GetRFBSReturnsFilter{
 					OfferId:       "123",
 					PostingNumber: "111",
 					GroupState:    []RFBSReturnsGroupState{RFBSReturnsGroupStateAll},

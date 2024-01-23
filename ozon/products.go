@@ -1356,10 +1356,10 @@ type GetDescriptionOfProductParams struct {
 	Limit int64 `json:"limit"`
 
 	// The parameter by which the products will be sorted
-	SortBy string `json:"sort_by"`
+	SortBy string `json:"sort_by,omitempty"`
 
 	// Sorting direction
-	SortDirection string `json:"sort_direction"`
+	SortDirection string `json:"sort_dir,omitempty"`
 }
 
 type GetDescriptionOfProductFilter struct {
