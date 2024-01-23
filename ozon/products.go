@@ -27,13 +27,13 @@ type GetStocksInfoParams struct {
 
 type GetStocksInfoFilter struct {
 	// Filter by the offer_id parameter. It is possible to pass a list of values
-	OfferId string `json:"offer_id"`
+	OfferId string `json:"offer_id,omitempty"`
 
 	// Filter by the product_id parameter. It is possible to pass a list of values
-	ProductId int64 `json:"product_id"`
+	ProductId int64 `json:"product_id,omitempty"`
 
 	// Filter by product visibility
-	Visibility string `json:"visibility"`
+	Visibility string `json:"visibility,omitempty"`
 }
 
 type GetStocksInfoResponse struct {
@@ -144,6 +144,12 @@ type ProductDetails struct {
 
 	// Product SKU
 	SKU int64 `json:"sku"`
+
+	// SKU of the product that is sold from the Ozon warehouse (FBO)
+	FBOSKU int64 `json:"fbo_sku,omitempty"`
+
+	// SKU of the product that is sold from the seller's warehouse (FBS and rFBS)
+	FBSSKU int64 `json:"fbs_sku,omitempty"`
 
 	// Document generation task number
 	Id int64 `json:"id"`
@@ -1940,7 +1946,7 @@ type GetPRoductPriceInfoResultItem struct {
 	Commissions GetProductPriceInfoResultItemCommission `json:"commissions"`
 
 	// Promotions information
-	MarketingActions []GetProductPriceInfoResultItemMarketingActions `json:"marketing_actions"`
+	MarketingActions *GetProductPriceInfoResultItemMarketingActions `json:"marketing_actions"`
 
 	// Seller product identifier
 	OfferId string `json:"offer_id"`

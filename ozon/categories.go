@@ -13,7 +13,7 @@ type Categories struct {
 
 type GetProductTreeParams struct {
 	// Response language
-	Language Language `json:"language"`
+	Language Language `json:"language,omitempty"`
 }
 
 type GetProductTreeResponse struct {
