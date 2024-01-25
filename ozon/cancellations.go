@@ -98,7 +98,7 @@ func (c Cancellations) GetInfo(ctx context.Context, params *GetCancellationInfoP
 
 type ListCancellationsParams struct {
 	// Filters
-	Filter *ListCancellationsFilter `json:"filter"`
+	Filter *ListCancellationsFilter `json:"filter,omitempty"`
 
 	// Number of cancellation requests in the response
 	Limit int32 `json:"limit,omitempty"`
@@ -108,7 +108,7 @@ type ListCancellationsParams struct {
 	Offset int32 `json:"offset,omitempty"`
 
 	// Additional information
-	With *ListCancellationWith `json:"with"`
+	With *ListCancellationWith `json:"with,omitempty"`
 }
 
 type ListCancellationsFilter struct {

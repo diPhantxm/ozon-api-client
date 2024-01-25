@@ -14,7 +14,7 @@ type Chats struct {
 
 type ListChatsParams struct {
 	// Chats filter
-	Filter *ListChatsFilter `json:"filter"`
+	Filter *ListChatsFilter `json:"filter,omitempty"`
 
 	// Number of values in the response. The default value is 30. The maximum value is 1000
 	Limit int64 `json:"limit" default:"30"`
