@@ -121,7 +121,7 @@ type ListOfCertifiedCategoriesResultCert struct {
 
 // List of certified categories
 func (c Certificates) ListOfCertifiedCategories(ctx context.Context, params *ListOfCertifiedCategoriesParams) (*ListOfCertifiedCategoriesResponse, error) {
-	url := "/v1/product/certificate/types"
+	url := "/v1/product/certification/list"
 
 	resp := &ListOfCertifiedCategoriesResponse{}
 

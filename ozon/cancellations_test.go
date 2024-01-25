@@ -98,13 +98,13 @@ func TestListCancellations(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&ListCancellationsParams{
-				Filter: ListCancellationsFilter{
+				Filter: &ListCancellationsFilter{
 					CancellationInitiator: []string{"CLIENT"},
 					State:                 "ALL",
 				},
 				Limit:  2,
 				Offset: 0,
-				With: ListCancellationWith{
+				With: &ListCancellationWith{
 					Counters: true,
 				},
 			},

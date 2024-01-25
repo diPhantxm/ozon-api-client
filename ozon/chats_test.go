@@ -22,7 +22,7 @@ func TestListChats(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&ListChatsParams{
-				Filter: ListChatsFilter{
+				Filter: &ListChatsFilter{
 					ChatStatus: "Opened",
 					UnreadOnly: true,
 				},

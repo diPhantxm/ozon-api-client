@@ -14,7 +14,7 @@ type FBS struct {
 
 type ListUnprocessedShipmentsParams struct {
 	// Sorting direction
-	Direction Order `json:"dir"`
+	Direction Order `json:"dir,omitempty"`
 
 	// Request filter
 	Filter ListUnprocessedShipmentsFilter `json:"filter"`
@@ -27,10 +27,10 @@ type ListUnprocessedShipmentsParams struct {
 
 	// Number of elements that will be skipped in the response.
 	// For example, if `offset` = 10, the response will start with the 11th element found
-	Offset int64 `json:"offset"`
+	Offset int64 `json:"offset,omitempty"`
 
 	// Additional fields that should be added to the response
-	With ListUnprocessedShipmentsWith `json:"with"`
+	With *ListUnprocessedShipmentsWith `json:"with,omitempty"`
 }
 
 type ListUnprocessedShipmentsFilter struct {
@@ -511,9 +511,9 @@ func (c FBS) ListUnprocessedShipments(ctx context.Context, params *ListUnprocess
 
 type GetFBSShipmentsListParams struct {
 	// Sorting direction
-	Direction string `json:"direction"`
+	Direction string `json:"dir,omitempty"`
 
-	//Filter
+	// Filter
 	Filter GetFBSShipmentsListFilter `json:"filter"`
 
 	// Number of shipments in the response:
@@ -522,10 +522,10 @@ type GetFBSShipmentsListParams struct {
 	Limit int64 `json:"limit"`
 
 	// Number of elements that will be skipped in the response. For example, if offset=10, the response will start with the 11th element found
-	Offset int64 `json:"offset"`
+	Offset int64 `json:"offset,omitempty"`
 
 	// Additional fields that should be added to the response
-	With GetFBSShipmentsListWith `json:"with"`
+	With *GetFBSShipmentsListWith `json:"with,omitempty"`
 }
 
 type GetFBSShipmentsListFilter struct {
@@ -625,7 +625,7 @@ type PackOrderParams struct {
 	PostingNumber string `json:"posting_number"`
 
 	// Additional information
-	With PackOrderWith `json:"with"`
+	With *PackOrderWith `json:"with,omitempty"`
 }
 
 type PackOrderPackage struct {
@@ -865,7 +865,7 @@ type GetShipmentDataByIdentifierParams struct {
 	PostingNumber string `json:"posting_number"`
 
 	// Additional fields that should be added to the response
-	With GetShipmentDataByIdentifierWith `json:"with"`
+	With *GetShipmentDataByIdentifierWith `json:"with,omitempty"`
 }
 
 type GetShipmentDataByIdentifierWith struct {

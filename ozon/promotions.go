@@ -154,7 +154,7 @@ type ProductsAvailableForPromotionParams struct {
 
 	// Number of elements that will be skipped in the response.
 	// For example, if offset=10, the response will start with the 11th element found
-	Offset float64 `json:"offset"`
+	Offset float64 `json:"offset,omitempty"`
 }
 
 type ProductsAvailableForPromotionResponse struct {
@@ -218,7 +218,7 @@ type ProductsInPromotionParams struct {
 	Limit float64 `json:"limit"`
 
 	// Number of elements that will be skipped in the response. For example, if offset=10, the response will start with the 11th element found
-	Offset float64 `json:"offset"`
+	Offset float64 `json:"offset,omitempty"`
 }
 
 type ProductsInPromotionResponse struct {
@@ -355,7 +355,7 @@ type ProductsAvailableForHotSalePromotionParams struct {
 	Limit float64 `json:"limit"`
 
 	// Number of elements that will be skipped in the response. For example, if offset=10, the response will start with the 11th element found
-	Offset float64 `json:"offset"`
+	Offset float64 `json:"offset,omitempty"`
 }
 
 type ProductsAvailableForHotSalePromotionResponse struct {

@@ -14,14 +14,14 @@ type Chats struct {
 
 type ListChatsParams struct {
 	// Chats filter
-	Filter ListChatsFilter `json:"filter"`
+	Filter *ListChatsFilter `json:"filter,omitempty"`
 
 	// Number of values in the response. The default value is 30. The maximum value is 1000
 	Limit int64 `json:"limit" default:"30"`
 
 	// Number of elements that will be skipped in the response.
 	// For example, if offset=10, the response will start with the 11th element found
-	Offset int64 `json:"offset"`
+	Offset int64 `json:"offset,omitempty"`
 }
 
 type ListChatsFilter struct {
@@ -240,7 +240,7 @@ type UpdateChatParams struct {
 	FromMessageId uint64 `json:"from_message_id"`
 
 	// Number of messages in the response
-	Limit int64 `json:"limit"`
+	Limit int64 `json:"limit,omitempty"`
 }
 
 type UpdateChatResponse struct {

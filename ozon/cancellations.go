@@ -83,7 +83,7 @@ type CancellationInfoState struct {
 
 // Method for getting information about a rFBS cancellation request
 func (c Cancellations) GetInfo(ctx context.Context, params *GetCancellationInfoParams) (*GetCancellationInfoResponse, error) {
-	url := "/v1/delivery-method/list"
+	url := "/v1/conditional-cancellation/get"
 
 	resp := &GetCancellationInfoResponse{}
 
@@ -98,17 +98,17 @@ func (c Cancellations) GetInfo(ctx context.Context, params *GetCancellationInfoP
 
 type ListCancellationsParams struct {
 	// Filters
-	Filter ListCancellationsFilter `json:"filter"`
+	Filter *ListCancellationsFilter `json:"filter,omitempty"`
 
 	// Number of cancellation requests in the response
-	Limit int32 `json:"limit"`
+	Limit int32 `json:"limit,omitempty"`
 
 	// Number of elements that will be skipped in the response.
 	// For example, if offset=10, the response will start with the 11th element found
-	Offset int32 `json:"offset"`
+	Offset int32 `json:"offset,omitempty"`
 
 	// Additional information
-	With ListCancellationWith `json:"with"`
+	With *ListCancellationWith `json:"with,omitempty"`
 }
 
 type ListCancellationsFilter struct {
@@ -173,7 +173,7 @@ type ApproveRejectCancellationsParams struct {
 	CancellationId int64 `json:"cancellation_id"`
 
 	// Comment
-	Comment string `json:"comment"`
+	Comment string `json:"comment,omitempty"`
 }
 
 type ApproveRejectCancellationsResponse struct {
