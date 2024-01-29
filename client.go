@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"reflect"
 )
 
 type HttpClient interface {
@@ -36,6 +37,14 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 }
 
 func (c Client) newRequest(ctx context.Context, method string, uri string, body interface{}) (*http.Request, error) {
+	// Set default values for empty fields if `default` tag is present
+	// And body is not nil
+	if body != nil {
+		if err := getDefaultValues(reflect.ValueOf(body)); err != nil {
+			return nil, err
+		}
+	}
+
 	bodyJson, err := json.Marshal(body)
 	if err != nil {
 		return nil, err

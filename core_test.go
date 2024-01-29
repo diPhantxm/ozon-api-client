@@ -1,34 +1,56 @@
 package core
 
 import (
-	"log"
+	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type TestTagDefaultValueStruct struct {
-	TestString string `json:"test_string" default:"something"`
-	TestNumber int    `json:"test_number" default:"12"`
+type DefaultStructure struct {
+	EmptyField string `json:"empty_field" default:"empty_string"`
+	Field      string `json:"field" default:"string"`
 }
 
-func TestTagDefaultValue(t *testing.T) {
-	testStruct := &TestTagDefaultValueStruct{}
+type DefaultRequest struct {
+	Field                  int                `json:"field" default:"100"`
+	EmptyField             int                `json:"empty_field" default:"14"`
+	Structure              DefaultStructure   `json:"structure"`
+	Slice                  []DefaultStructure `json:"slice"`
+	OptionalStructure      *DefaultStructure  `json:"optional_structure"`
+	EmptyOptionalStructure *DefaultStructure  `json:"empty_optional_structure"`
+}
 
-	values, err := getDefaultValues(testStruct)
-	if err != nil {
-		log.Fatalf("error when getting default values from tags: %s", err)
+func TestDefaultValues(t *testing.T) {
+	req := &DefaultRequest{
+		Field: 50,
+		Structure: DefaultStructure{
+			Field: "something",
+		},
+		Slice: []DefaultStructure{
+			{
+				Field: "something",
+			},
+			{
+				Field: "something",
+			},
+		},
+		OptionalStructure: &DefaultStructure{
+			Field: "something",
+		},
 	}
+	err := getDefaultValues(reflect.ValueOf(req))
+	assert.Nil(t, err)
 
-	expected := map[string]string{
-		"test_string": "something",
-		"test_number": "12",
-	}
-
-	if len(values) != len(expected) {
-		log.Fatalf("expected equal length of values and expected: expected: %d, got: %d", len(expected), len(values))
-	}
-	for expKey, expValue := range expected {
-		if expValue != values[expKey] {
-			log.Fatalf("not equal values for key %s", expKey)
-		}
-	}
+	assert.Equal(t, 50, req.Field)
+	assert.Equal(t, 14, req.EmptyField)
+	assert.Equal(t, "something", req.Structure.Field)
+	assert.Equal(t, "empty_string", req.Structure.EmptyField)
+	assert.Equal(t, "something", req.Slice[0].Field)
+	assert.Equal(t, "something", req.Slice[1].Field)
+	assert.Equal(t, "empty_string", req.Slice[1].EmptyField)
+	assert.Equal(t, "empty_string", req.Slice[1].EmptyField)
+	assert.Equal(t, "something", req.OptionalStructure.Field)
+	assert.Equal(t, "empty_string", req.OptionalStructure.EmptyField)
+	assert.Equal(t, (*DefaultStructure)(nil), req.EmptyOptionalStructure)
 }

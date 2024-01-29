@@ -181,7 +181,7 @@ func (c Warehouses) GetListOfDeliveryMethods(ctx context.Context, params *GetLis
 
 	resp := &GetListOfDeliveryMethodsResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
