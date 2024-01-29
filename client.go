@@ -62,11 +62,6 @@ func (c Client) Request(ctx context.Context, method string, path string, req, re
 	if err != nil {
 		return nil, err
 	}
-	rawQuery, err := buildRawQuery(httpReq, req)
-	if err != nil {
-		return nil, err
-	}
-	httpReq.URL.RawQuery = rawQuery
 
 	httpResp, err := c.client.Do(httpReq)
 	if err != nil {
