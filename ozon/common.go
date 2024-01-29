@@ -468,8 +468,10 @@ const (
 type GetFBOReturnsFilterStatus string
 
 const (
-	GetFBOReturnsFilterStatusReturnedToOzon GetFBOReturnsFilterStatus = "ReturnedToOzon"
-	GetFBOReturnsFilterStatusCancelled      GetFBOReturnsFilterStatus = "Cancelled"
+	GetFBOReturnsFilterStatusCreated                   GetFBOReturnsFilterStatus = "Created"
+	GetFBOReturnsFilterStatusReturnedToOzon            GetFBOReturnsFilterStatus = "ReturnedToOzon"
+	GetFBOReturnsFilterStatusCancelled                 GetFBOReturnsFilterStatus = "Cancelled"
+	GetFBOReturnsFilterStatusCancelledWithCompensation GetFBOReturnsFilterStatus = "CancelledWithCompensation"
 )
 
 type GetFBOReturnsReturnStatus string
