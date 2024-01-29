@@ -667,7 +667,7 @@ func (c Returns) IsGiveoutEnabled(ctx context.Context) (*IsGiveoutEnabledRespons
 
 	resp := &IsGiveoutEnabledResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -697,7 +697,7 @@ func (c Returns) GetGiveoutPDF(ctx context.Context) (*GetGiveoutResponse, error)
 
 	resp := &GetGiveoutResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -714,7 +714,7 @@ func (c Returns) GetGiveoutPNG(ctx context.Context) (*GetGiveoutResponse, error)
 
 	resp := &GetGiveoutResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -739,7 +739,7 @@ func (c Returns) GetGiveoutBarcode(ctx context.Context) (*GetGiveoutBarcodeRespo
 
 	resp := &GetGiveoutBarcodeResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -758,7 +758,7 @@ func (c Returns) ResetGiveoutBarcode(ctx context.Context) (*GetGiveoutResponse, 
 
 	resp := &GetGiveoutResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -814,7 +814,7 @@ func (c Returns) GetGiveoutList(ctx context.Context, params *GetGiveoutListParam
 
 	resp := &GetGiveoutListResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -867,7 +867,7 @@ func (c Returns) GetGiveoutInfo(ctx context.Context, params *GetGiveoutInfoParam
 
 	resp := &GetGiveoutInfoResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}

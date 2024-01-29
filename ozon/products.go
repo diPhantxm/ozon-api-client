@@ -1618,7 +1618,7 @@ func (c Products) GetProductRangeLimit(ctx context.Context) (*GetProductRangeLim
 
 	resp := &GetProductRangeLimitResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, &struct{}{}, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
 	if err != nil {
 		return nil, err
 	}
