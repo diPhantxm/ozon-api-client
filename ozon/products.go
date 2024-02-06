@@ -862,7 +862,7 @@ type CreateOrUpdateAttribute struct {
 
 type CreateOrUpdateAttributeValue struct {
 	// Directory identifier
-	DictionaryValueId int64 `json:"dictrionary_value_id"`
+	DictionaryValueId int64 `json:"dictionary_value_id"`
 
 	// Value from the directory
 	Value string `json:"value"`
