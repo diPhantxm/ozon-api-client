@@ -56,7 +56,7 @@ type GetFBOReturnsReturn struct {
 	// Return destination
 	DestinationPlaceName string `json:"dst_place_name"`
 
-	// Return identifier
+	// Return shipment identifier
 	Id int64 `json:"id"`
 
 	// Indication that the package has been opened. true, if it has been
@@ -64,6 +64,9 @@ type GetFBOReturnsReturn struct {
 
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
+
+	// Unique return record identifier
+	ReturnId int64 `json:"return_id"`
 
 	// Return reason
 	ReturnReasonName string `json:"return_reason_name"`
