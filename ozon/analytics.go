@@ -126,7 +126,7 @@ type GetAnalyticsDataResultData struct {
 }
 
 type GetAnalyticsDataResultDimension struct {
-	// Identifier
+	// Product SKU
 	Id string `json:"id"`
 
 	// Name

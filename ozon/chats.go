@@ -217,7 +217,7 @@ type ChatHistoryMessageUser struct {
 	Type string `json:"type"`
 }
 
-// Chat history
+// Returns the history of chat messages. By default messages are shown from newest to oldest.
 func (c Chats) History(ctx context.Context, params *ChatHistoryParams) (*ChatHistoryResponse, error) {
 	url := "/v2/chat/history"
 
