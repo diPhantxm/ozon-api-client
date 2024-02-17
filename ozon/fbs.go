@@ -1831,24 +1831,37 @@ type CheckProductItemsDataResponse struct {
 
 // Asynchronous method:
 //
-// for checking the availability of product items in the “Chestny ZNAK” labeling system;
-// for saving product items data.
-// To get the checks results, use the `/v4/fbs/posting/product/exemplar/status` method.
-// To get data about created items, use the `/v5/fbs/fbs/posting/product/exemplar/create-or-get` method.
+//	for checking the availability of product items in the “Chestny ZNAK” labeling system;
+//	for saving product items data.
 //
-// If necessary, specify the number of the cargo customs declaration in the gtd parameter.
-// If it is missing, pass the value `is_gtd_absent` = true.
+// To get the checks results,
+// use the /v4/fbs/posting/product/exemplar/status method.
+// To get data about created items,
+// use the /v5/fbs/fbs/posting/product/exemplar/create-or-get method.
 //
-// If you have multiple identical products in a shipment, specify one `product_id` and exemplars array for each product in the shipment.
+// If necessary, specify the number of the cargo customs declaration
+// in the gtd parameter. If it is missing,
+// pass the value is_gtd_absent = true.
+//
+// If you have multiple identical products in a shipment,
+// specify one product_id and exemplars array for each product in the shipment.
 //
 // Always pass a complete set of product items data.
 //
 // For example, you have 10 product items in your system.
 // You've passed them for checking and saving.
 // Then you added another 60 product items to your system.
-// When you pass product items for checking and saving again, pass all of them: both old and newly added.
+// When you pass product items for checking and saving again,
+// pass all of them: both old and newly added.
+//
+// Unlike /v4/fbs/posting/product/exemplar/set,
+// you can pass more item information in the request.
+//
+// The 200 response code doesn't guarantee that instance data has been received.
+// It indicates that a task for adding the information has been created.
+// To check the task status, use the /v4/fbs/posting/product/exemplar/status method.
 func (c FBS) CheckProductItemsData(ctx context.Context, params *CheckProductItemsDataParams) (*CheckProductItemsDataResponse, error) {
-	url := "/v4/fbs/posting/product/exemplar/set"
+	url := "/v5/fbs/posting/product/exemplar/set"
 
 	resp := &CheckProductItemsDataResponse{}
 
@@ -2082,10 +2095,15 @@ type PartialPackOrderAdditionalData struct {
 	Products []PostingProduct `json:"products"`
 }
 
-// If you pass to the request a part of the products from the shipment, the primary shipment will split into two parts.
-// The primary unassembled shipment will contain some of the products that were not passed to the request.
+// If you pass some of the shipped products through the request,
+// the primary shipment will split into two parts.
+// The primary unassembled shipment will contain some of the products
+// that weren't passed to the request.
 //
-// The status of the original shipment will only change when the split shipments status changes
+// Default status of created shipments is awaiting_deliver.
+//
+// The status of the original shipment will only change
+// when the split shipments status changes
 func (c FBS) PartialPackOrder(ctx context.Context, params *PartialPackOrderParams) (*PartialPackOrderResponse, error) {
 	url := "/v4/posting/fbs/ship/package"
 
@@ -2869,6 +2887,8 @@ type CreateOrGetProductExemplarResponse struct {
 }
 
 // Method returns the created items data passed in the `/v5/fbs/posting/product/exemplar/set` method.
+//
+// Use this method to get the `exemplar_id`
 func (c FBS) CreateOrGetProductExemplar(ctx context.Context, params *CreateOrGetProductExemplarParams) (*CreateOrGetProductExemplarResponse, error) {
 	url := "/v5/fbs/posting/product/exemplar/create-or-get"
 
