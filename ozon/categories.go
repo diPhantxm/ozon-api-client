@@ -81,6 +81,12 @@ type GetCategoryAttributesResponse struct {
 }
 
 type GetCategoryAttributesResult struct {
+	// Indication that the dictionary attribute values depend on the category:
+	//
+	// 	true — the attribute has its own set of values for each category.
+	// 	false — the attribute has the same set of values for all categories
+	CategoryDependent bool `json:"category_dependent"`
+
 	// Characteristic description
 	Description string `json:"description"`
 

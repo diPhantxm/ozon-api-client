@@ -88,6 +88,7 @@ func TestGetCategoryAttributes(t *testing.T) {
 			`{
 				"result": [
 				  {
+					"category_dependent": true,
 					"description": "string",
 					"dictionary_id": 0,
 					"group_id": 0,
