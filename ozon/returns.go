@@ -112,9 +112,6 @@ type GetFBSReturnsParams struct {
 }
 
 type GetFBSReturnsFilter struct {
-	// Time of receiving the return from the customer
-	AcceptedFromCustomerMoment GetFBSReturnsFilterTimeRange `json:"accepted_from_customer_moment"`
-
 	// Last day of free storage
 	LastFreeWaitingDay GetFBSReturnsFilterTimeRange `json:"last_free_waiting_dat"`
 
@@ -163,9 +160,6 @@ type GetFBSReturnsResponse struct {
 }
 
 type GetFBSReturnResultReturn struct {
-	// Time of receiving the return from the customer
-	AcceptedFromCustomerMoment string `json:"accepted_from_customer_moment"`
-
 	// Bottom barcode on the product label
 	ClearingId int64 `json:"clearing_id"`
 

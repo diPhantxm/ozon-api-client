@@ -116,7 +116,6 @@ func TestGetFBSReturns(t *testing.T) {
 				"last_id": 0,
 				"returns": [
 				  {
-					"accepted_from_customer_moment": "string",
 					"clearing_id": 23,
 					"commission": 21,
 					"commission_percent": 0,
