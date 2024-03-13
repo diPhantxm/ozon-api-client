@@ -41,7 +41,7 @@ type CancellationInfo struct {
 	CancellationReasonMessage string `json:"cancellation_reason_message"`
 
 	// Delivery service integration type
-	TPLIntegrationType string `json:"tpl_integration_type"`
+	TPLIntegrationType TPLIntegrationType `json:"tpl_integration_type"`
 
 	// Cancellation request status
 	State CancellationInfoState `json:"state"`
