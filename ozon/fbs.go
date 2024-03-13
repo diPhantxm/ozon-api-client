@@ -174,7 +174,7 @@ type FBSPosting struct {
 	Substatus string `json:"substatus"`
 
 	// Type of integration with the delivery service
-	TPLIntegrationType string `json:"tpl_integration_type"`
+	TPLIntegrationType TPLIntegrationType `json:"tpl_integration_type"`
 
 	// Shipment tracking number
 	TrackingNumber string `json:"tracking_number"`

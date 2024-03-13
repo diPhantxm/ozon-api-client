@@ -312,6 +312,9 @@ const (
 
 	// delivery by the seller
 	NonIntegratedTPLType TPLIntegrationType = "non_integrated"
+
+	// Russian Post delivery scheme
+	HybrydTPLType TPLIntegrationType = "hybryd"
 )
 
 type DetailsDeliveryItemName string
