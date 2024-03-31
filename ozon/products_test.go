@@ -1394,7 +1394,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "old_price": "1000.0000",
 					  "premium_price": "590.0000",
 					  "price": "690.0000",
-					  "recommended_price": "",
 					  "sources": [
 						{
 						  "is_enabled": true,
@@ -1471,7 +1470,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "old_price": "12200.0000",
 					  "premium_price": "5490.0000",
 					  "price": "6100.0000",
-					  "recommended_price": "",
 					  "sources": [
 						{
 						  "is_enabled": true,

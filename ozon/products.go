@@ -1921,7 +1921,7 @@ type GetProductPriceInfoResponse struct {
 
 type GetProductPriceInfoResult struct {
 	// Products list
-	Items []GetPRoductPriceInfoResultItem `json:"items"`
+	Items []GetProductPriceInfoResultItem `json:"items"`
 
 	// Identifier of the last value on page. Leave this field blank in the first request.
 	//
