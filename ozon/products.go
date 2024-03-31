@@ -226,9 +226,6 @@ type ProductDetails struct {
 	// Use PriceIndexes instead
 	PriceIndex string `json:"price_index"`
 
-	// Product price suggested by the system based on similar offers
-	RecommendedPrice string `json:"recommended_price"`
-
 	// Product state description
 	Status ProductDetailStatus `json:"status"`
 
@@ -257,9 +254,6 @@ type ProductDetails struct {
 type ProductDetailCommission struct {
 	// Delivery cost
 	DeliveryAmount float64 `json:"deliveryAmount"`
-
-	// Minimum commission fee
-	MinValue float64 `json:"minValue"`
 
 	// Commission percentage
 	Percent float64 `json:"percent"`
@@ -1927,7 +1921,7 @@ type GetProductPriceInfoResponse struct {
 
 type GetProductPriceInfoResult struct {
 	// Products list
-	Items []GetPRoductPriceInfoResultItem `json:"items"`
+	Items []GetProductPriceInfoResultItem `json:"items"`
 
 	// Identifier of the last value on page. Leave this field blank in the first request.
 	//
@@ -1938,7 +1932,7 @@ type GetProductPriceInfoResult struct {
 	Total int32 `json:"total"`
 }
 
-type GetPRoductPriceInfoResultItem struct {
+type GetProductPriceInfoResultItem struct {
 	// Maximum acquiring fee
 	Acquiring int32 `json:"acquiring"`
 
@@ -2080,9 +2074,6 @@ type GetProductPriceInfoResultItemPrice struct {
 
 	// Product price including discounts. This value is shown on the product description page
 	Price string `json:"price"`
-
-	// Product price suggested by the system based on similar offers
-	RecommendedPrice string `json:"recommended_price"`
 
 	// Retailer price
 	RetailPrice string `json:"retail_price"`

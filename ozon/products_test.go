@@ -147,7 +147,6 @@ func TestGetProductDetails(t *testing.T) {
 				  "old_price": "",
 				  "premium_price": "",
 				  "price": "590.0000",
-				  "recommended_price": "",
 				  "sources": [
 					{
 					  "is_enabled": true,
@@ -1395,7 +1394,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "old_price": "1000.0000",
 					  "premium_price": "590.0000",
 					  "price": "690.0000",
-					  "recommended_price": "",
 					  "sources": [
 						{
 						  "is_enabled": true,
@@ -1472,7 +1470,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "old_price": "12200.0000",
 					  "premium_price": "5490.0000",
 					  "price": "6100.0000",
-					  "recommended_price": "",
 					  "sources": [
 						{
 						  "is_enabled": true,
@@ -2357,7 +2354,6 @@ func TestGetProductPriceInfo(t *testing.T) {
 						"price": "499.0000",
 						"old_price": "579.0000",
 						"premium_price": "",
-						"recommended_price": "",
 						"retail_price": "",
 						"vat": "0.200000",
 						"min_ozon_price": "",
