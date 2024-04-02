@@ -872,3 +872,82 @@ func (c Returns) GetGiveoutInfo(ctx context.Context, params *GetGiveoutInfoParam
 
 	return resp, nil
 }
+
+type GetFBSQuantityReturnsParams struct {
+	Filter GetFBSQuantityReturnsFilter `json:"filter"`
+
+	// Split the method response
+	Pagination GetFBSQuantityReturnsPagination `json:"pagination"`
+}
+
+type GetFBSQuantityReturnsFilter struct {
+	// Filter by drop-off point identifier
+	PlaceId int64 `json:"place_id"`
+}
+
+type GetFBSQuantityReturnsPagination struct {
+	// Identifier of the last drop-off point on the page. Leave this field blank in the first request.
+	//
+	// To get the next values, specify id of the last drop-off point from the response of the previous request
+	LastId int64 `json:"last_id"`
+
+	// Number of drop-off points per page. Maximum is 500
+	Limit int32 `json:"limit"`
+}
+
+type GetFBSQuantityReturnsResponse struct {
+	core.CommonResponse
+
+	// Seller identifier
+	CompanyId int64 `json:"company_id"`
+
+	DropoffPoints []GetFBSQuantityDropoffPoint `json:"drop_off_points"`
+
+	// true if there are any other points where sellers have orders waiting
+	HasNext bool `json:"has_next"`
+}
+
+type GetFBSQuantityDropoffPoint struct {
+	// Drop-off point address
+	Address string `json:"address"`
+
+	// Drop-off point identifier
+	Id int64 `json:"id"`
+
+	// Drop-off point name
+	Name string `json:"name"`
+
+	// Pass information
+	PassInfo GetFBSQuantityDropoffPointPassInfo `json:"pass_info"`
+
+	// The warehouse identifier to which the shipment will arrive
+	PlaceId int64 `json:"place_id"`
+
+	// Quantity of returns at the drop-off point
+	ReturnsCount int32 `json:"returns_count"`
+
+	// Seller's warehouses identifiers
+	WarehouseIds []string `json:"warehouses_ids"`
+}
+
+type GetFBSQuantityDropoffPointPassInfo struct {
+	// Quantity of drop-off point passes
+	Count int32 `json:"count"`
+
+	// true if you need a pass to the drop-off point
+	IsRequired bool `json:"is_required"`
+}
+
+func (c Returns) FBSQuantity(ctx context.Context, params *GetFBSQuantityReturnsParams) (*GetFBSQuantityReturnsResponse, error) {
+	url := "/v1/returns/company/fbs/info"
+
+	resp := &GetFBSQuantityReturnsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

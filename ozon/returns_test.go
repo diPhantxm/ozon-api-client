@@ -986,3 +986,76 @@ func TestGetGiveoutInfo(t *testing.T) {
 		}
 	}
 }
+
+func TestFBSQuantity(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetFBSQuantityReturnsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetFBSQuantityReturnsParams{
+				Filter: GetFBSQuantityReturnsFilter{
+					PlaceId: 1,
+				},
+				Pagination: GetFBSQuantityReturnsPagination{
+					LastId: 2,
+					Limit:  3,
+				},
+			},
+			`{
+				"company_id": 0,
+				"drop_off_points": [
+				  {
+					"address": "string",
+					"id": 0,
+					"name": "string",
+					"pass_info": {
+					  "count": 0,
+					  "is_required": true
+					},
+					"place_id": 0,
+					"returns_count": 0,
+					"warehouses_ids": [
+					  "string"
+					]
+				  }
+				],
+				"has_next": true
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetFBSQuantityReturnsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().FBSQuantity(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetFBSQuantityReturnsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
