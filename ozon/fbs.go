@@ -2902,3 +2902,96 @@ func (c FBS) CreateOrGetProductExemplar(ctx context.Context, params *CreateOrGet
 
 	return resp, nil
 }
+
+type GetCarriageParams struct {
+	CarriageId int64 `json:"carriage_id"`
+}
+
+type GetCarriageResponse struct {
+	core.CommonResponse
+
+	// Acceptance certificate type for FBS sellers
+	ActType string `json:"act_type"`
+
+	// Pass identifiers for the freight
+	ArrivalPassIds []string `json:"arrival_pass_ids"`
+
+	// List of available actions on the freight
+	AvailableActions []string `json:"available_actions"`
+
+	// Cancel availability
+	CancelAvailability GetCarriageCancelAvailability `json:"cancel_availability"`
+
+	// Freight identifier
+	CarriageId int64 `json:"carriage_id"`
+
+	// Company identifier
+	CompanyId int64 `json:"company_id"`
+
+	// Number of package units
+	ContainersCount int32 `json:"containers_count"`
+
+	// Date and time of freight creation
+	CreatedAt time.Time `json:"created_at"`
+
+	// Delivery method identifier
+	DeliveryMethodId int64 `json:"delivery_method_id"`
+
+	// Shipping date
+	DepartureDate string `json:"departure_date"`
+
+	// First mile type
+	FirstMileType string `json:"first_mile_type"`
+
+	// true if there are shipments subject to shipping that are not in the current freight
+	HasPostingsForNextCarriage bool `json:"has_postings_for_next_carriage"`
+
+	// Delivery service integration type
+	IntegrationType string `json:"integration_type"`
+
+	// true if you already printed shipping labels
+	IsContainerLabelPrinted bool `json:"is_container_label_printed"`
+
+	// true if the freight is partial
+	IsPartial bool `json:"is_partial"`
+
+	// Serial number of the partial freight
+	PartialNum int64 `json:"partial_num"`
+
+	// The number of retries to create a freight
+	RetryCount int32 `json:"retry_count"`
+
+	// Freight status
+	Status string `json:"status"`
+
+	// Delivery method identifier
+	TPLProviderId int64 `json:"tpl_provider_id"`
+
+	// Date and time when the freight was last updated
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type GetCarriageCancelAvailability struct {
+	// true if the freight can be cancelled
+	IsCancelAvailable bool `json:"is_cancel_available"`
+
+	// Reason why freight can't be cancelled
+	Reason string `json:"reason"`
+}
+
+func (c FBS) GetCarriage(ctx context.Context, params *GetCarriageParams) (*GetCarriageResponse, error) {
+	url := "/v1/carriage/get"
+
+	resp := &GetCarriageResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

@@ -2919,3 +2919,84 @@ func TestCreateOrGetProductExemplar(t *testing.T) {
 		}
 	}
 }
+
+func TestGetCarriage(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetCarriageParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetCarriageParams{
+				CarriageId: 15,
+			},
+			`{
+				"act_type": "string",
+				"arrival_pass_ids": [
+				  "string"
+				],
+				"available_actions": [
+				  "string"
+				],
+				"cancel_availability": {
+				  "is_cancel_available": true,
+				  "reason": "string"
+				},
+				"carriage_id": 15,
+				"company_id": 0,
+				"containers_count": 0,
+				"created_at": "2019-08-24T14:15:22Z",
+				"delivery_method_id": 0,
+				"departure_date": "string",
+				"first_mile_type": "string",
+				"has_postings_for_next_carriage": true,
+				"integration_type": "string",
+				"is_container_label_printed": true,
+				"is_partial": true,
+				"partial_num": 0,
+				"retry_count": 0,
+				"status": "string",
+				"tpl_provider_id": 0,
+				"updated_at": "2019-08-24T14:15:22Z",
+				"warehouse_id": 0
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetCarriageParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetCarriage(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetCarriageResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.CarriageId != test.params.CarriageId {
+			t.Errorf("carriage id in request and response should be equal")
+		}
+	}
+}
