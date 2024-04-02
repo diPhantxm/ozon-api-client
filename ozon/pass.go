@@ -101,3 +101,49 @@ func (c Passes) List(ctx context.Context, params *ListPassesParams) (*ListPasses
 
 	return resp, nil
 }
+
+type CreateCarriageParams struct {
+	// List of passes
+	ArrivalPasses []CreateCarriageArrivalPass `json:"arrival_passes"`
+
+	// Freight identifier
+	CarriageId int64 `json:"carriage_id"`
+}
+
+type CreateCarriageArrivalPass struct {
+	// Driver full name
+	DriverName string `json:"driver_name"`
+
+	// Driver phone number
+	DriverPhone string `json:"driver_phone"`
+
+	// Car license plate
+	VehicleLicensePlate string `json:"vehicle_license_plate"`
+
+	// Car model
+	VehicleModel string `json:"vehicle_model"`
+
+	// true if you will export returns. Default is false
+	WithReturns bool `json:"with_returns"`
+}
+
+type CreateCarriageResponse struct {
+	core.CommonResponse
+
+	// Pass identifiers
+	ArrivalPassIds []string `json:"arrival_pass_ids"`
+}
+
+func (c Passes) CreateCarriage(ctx context.Context, params *CreateCarriageParams) (*CreateCarriageResponse, error) {
+	url := "/v1/carriage/pass/create"
+
+	resp := &CreateCarriageResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
