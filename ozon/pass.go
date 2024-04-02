@@ -177,3 +177,29 @@ func (c Passes) UpdateCarriage(ctx context.Context, params *UpdateCarriageParams
 
 	return resp, nil
 }
+
+type DeleteCarriageParams struct {
+	// Pass identifiers
+	ArrivalPassIds []int64 `json:"arrival_pass_ids"`
+
+	// Freight identifier
+	CarriageId int64 `json:"carriage_id"`
+}
+
+type DeleteCarriageResponse struct {
+	core.CommonResponse
+}
+
+func (c Passes) DeleteCarriage(ctx context.Context, params *DeleteCarriageParams) (*DeleteCarriageResponse, error) {
+	url := "/v1/carriage/pass/delete"
+
+	resp := &DeleteCarriageResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
