@@ -203,3 +203,100 @@ func (c Passes) DeleteCarriage(ctx context.Context, params *DeleteCarriageParams
 
 	return resp, nil
 }
+
+type CreateReturnParams struct {
+	// Array of passes
+	ArrivalPasses []ReturnArrivalPass `json:"arrival_passes"`
+}
+
+type ReturnArrivalPass struct {
+	// Date and time of arrival in UTC format. At that time, the pass will become valid
+	ArrivalTime time.Time `json:"arrival_time"`
+
+	// Driver full name
+	DriverName string `json:"driver_name"`
+
+	// Driver phone number
+	DriverPhone string `json:"driver_phone"`
+
+	// Car license plate
+	VehicleLicensePlate string `json:"vehicle_license_plate"`
+
+	// Car model
+	VehicleModel string `json:"vehicle_model"`
+
+	// Drop-off point identifier for which the pass is issued
+	DropoffPointId int64 `json:"dropoff_point_id"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type CreateReturnResponse struct {
+	core.CommonResponse
+
+	// Pass identifiers
+	ArrivalPassIds []string `json:"arrival_pass_ids"`
+}
+
+func (c Passes) CreateReturn(ctx context.Context, params *CreateReturnParams) (*CreateReturnResponse, error) {
+	url := "/v1/return/pass/create"
+
+	resp := &CreateReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type UpdateReturnParams struct {
+	ArrivalPasses []ReturnArrivalPass `json:"arrival_passes"`
+}
+
+type UpdateReturnResponse struct {
+	core.CommonResponse
+
+	// Pass identifiers
+	ArrivalPassIds []string `json:"arrival_pass_ids"`
+}
+
+func (c Passes) UpdateReturn(ctx context.Context, params *UpdateReturnParams) (*UpdateReturnResponse, error) {
+	url := "/v1/return/pass/update"
+
+	resp := &UpdateReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type DeleteReturnParams struct {
+	// Pass identifiers
+	ArrivalPassIds []int64 `json:"arrival_pass_ids"`
+}
+
+type DeleteReturnResponse struct {
+	core.CommonResponse
+}
+
+func (c Passes) DeleteReturn(ctx context.Context, params *DeleteReturnParams) (*DeleteReturnResponse, error) {
+	url := "/v1/return/pass/delete"
+
+	resp := &DeleteReturnResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
