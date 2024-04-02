@@ -104,13 +104,13 @@ func (c Passes) List(ctx context.Context, params *ListPassesParams) (*ListPasses
 
 type CreateCarriageParams struct {
 	// List of passes
-	ArrivalPasses []CreateCarriageArrivalPass `json:"arrival_passes"`
+	ArrivalPasses []CarriageArrivalPass `json:"arrival_passes"`
 
 	// Freight identifier
 	CarriageId int64 `json:"carriage_id"`
 }
 
-type CreateCarriageArrivalPass struct {
+type CarriageArrivalPass struct {
 	// Driver full name
 	DriverName string `json:"driver_name"`
 
@@ -138,6 +138,36 @@ func (c Passes) CreateCarriage(ctx context.Context, params *CreateCarriageParams
 	url := "/v1/carriage/pass/create"
 
 	resp := &CreateCarriageResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type UpdateCarriageParams struct {
+	ArrivalPasses []UpdateCarriageArrivalPass `json:"arrival_passes"`
+
+	CarriageId int64 `json:"carriage_id"`
+}
+
+type UpdateCarriageArrivalPass struct {
+	CarriageArrivalPass
+
+	Id int64 `json:"id"`
+}
+
+type UpdateCarriageResponse struct {
+	core.CommonResponse
+}
+
+func (c Passes) UpdateCarriage(ctx context.Context, params *UpdateCarriageParams) (*UpdateCarriageResponse, error) {
+	url := "/v1/carriage/pass/update"
+
+	resp := &UpdateCarriageResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
