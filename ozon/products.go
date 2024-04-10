@@ -1235,7 +1235,7 @@ type ProductInfoResultPicture struct {
 	//
 	// If you called the `/v1/product/pictures/info` method, one of the statuses will appear:
 	//   - uploaded — image uploaded;
-	//   - failed — image was not uploaded
+	//   - pending — image was not uploaded
 	State string `json:"state"`
 
 	// The link to the image in the public cloud storage. The image format is JPG or PNG
