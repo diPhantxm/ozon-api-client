@@ -684,3 +684,17 @@ const (
 	// Check is failed
 	MandatoryMarkStatusFailed MandatoryMarkStatus = "failed"
 )
+
+type GetCarriageStatus string
+
+const (
+	// acceptance in progress
+	GetCarriageStatusReceived GetCarriageStatus = "received"
+
+	// closed after acceptance
+	GetCarriageStatusClosed GetCarriageStatus = "closed"
+
+	GetCarriageStatusSended GetCarriageStatus = "sended"
+
+	GetCarriageStatusCancelled GetCarriageStatus = "cancelled"
+)

@@ -2962,7 +2962,7 @@ type GetCarriageResponse struct {
 	RetryCount int32 `json:"retry_count"`
 
 	// Freight status
-	Status string `json:"status"`
+	Status GetCarriageStatus `json:"status"`
 
 	// Delivery method identifier
 	TPLProviderId int64 `json:"tpl_provider_id"`
