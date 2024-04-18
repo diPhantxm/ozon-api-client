@@ -382,7 +382,7 @@ type ListTransactionsResultOperationPosting struct {
 
 type ListTransactionsResultOperationService struct {
 	// Service name
-	Name string `json:"name"`
+	Name TransactionOperationService `json:"name"`
 
 	// Price
 	Price float64 `json:"price"`
