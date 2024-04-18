@@ -698,3 +698,109 @@ const (
 
 	GetCarriageStatusCancelled GetCarriageStatus = "cancelled"
 )
+
+type TransactionOperationService string
+
+const (
+	// return of unclaimed products from the customer to the warehouse
+	TransactionNotDelivered TransactionOperationService = "MarketplaceNotDeliveredCostItem"
+
+	// return from the customer to the warehouse after delivery
+	TransactionReturnAfterDelivery TransactionOperationService = "TransactionOperationServiceNotDelivered"
+
+	// product delivery to the customer
+	TransactionDelivery TransactionOperationService = "MarketplaceDeliveryCostItem"
+
+	// purchasing reviews on the platform
+	TransactionSaleReviews TransactionOperationService = "MarketplaceSaleReviewsItem"
+
+	// products delivery to the Ozon warehouse (cross docking)
+	TransactionItemAdForSupplierLogistic TransactionOperationService = "ItemAdvertisementForSupplierLogistic"
+
+	// product placement service
+	TransactionServiceStorageItem TransactionOperationService = "MarketplaceServiceStorageItem"
+
+	// products promotion
+	TransactionMarketingActionCost TransactionOperationService = "MarketplaceMarketingActionCostItem"
+
+	// promotion and selling on an instalment plan
+	TransactionServiceItemInstallment TransactionOperationService = "MarketplaceServiceItemInstallment"
+
+	// mandatory products labeling
+	TransactionServiceMarkingItems TransactionOperationService = "MarketplaceServiceItemMarkingItems"
+
+	// flexible payment schedule
+	TransactionServiceFlexiblePaymentSchedule TransactionOperationService = "MarketplaceServiceItemFlexiblePaymentSchedule"
+
+	// picking up products for removal by the seller
+	TransactionServiceReturnFromStock TransactionOperationService = "MarketplaceServiceItemReturnFromStock"
+
+	// forwarding trade
+	TransactionItemAdForSupplierLogisticSeller TransactionOperationService = "ItemAdvertisementForSupplierLogisticSeller"
+
+	// last mile
+	TransactionServiceDeliveryToCustomer TransactionOperationService = "MarketplaceServiceItemDelivToCustomer"
+
+	// pipeline
+	TransactionServiceDirectFlowTrans TransactionOperationService = "MarketplaceServiceItemDirectFlowTrans"
+
+	// shipment processing
+	TransactionServiceDropoffFF TransactionOperationService = "MarketplaceServiceItemDropoffFF"
+
+	// shipment processing
+	TransactionServiceDropoffPVZ TransactionOperationService = "MarketplaceServiceItemDropoffPVZ"
+
+	// shipment processing
+	TransactionServiceDropoffSC TransactionOperationService = "MarketplaceServiceItemDropoffSC"
+
+	// order packaging
+	TransactionServiceFulfillment TransactionOperationService = "MarketplaceServiceItemFulfillment"
+
+	// picking products up by car from the seller's address (Pick-up)
+	TransactionServicePickup TransactionOperationService = "MarketplaceServiceItemPickup"
+
+	// return processing
+	TransactionServiceReturnAfterDelivToCustomer TransactionOperationService = "MarketplaceServiceItemReturnAfterDelivToCustomer"
+
+	// reverse pipeline
+	TransactionServiceReturnFlowTrans TransactionOperationService = "MarketplaceServiceItemReturnFlowTrans"
+
+	// cancellation processing
+	TransactionServiceReturnNotDelivToCustomer TransactionOperationService = "MarketplaceServiceItemReturnNotDelivToCustomer"
+
+	// unredeemed order processing
+	TransactionServiceReturnPartGoodsCustomer TransactionOperationService = "MarketplaceServiceItemReturnPartGoodsCustomer"
+
+	// acquiring payment
+	TransactionRedistributionOfAcquiringOperation TransactionOperationService = "MarketplaceRedistributionOfAcquiringOperation"
+
+	// FBS return short-term placement
+	TransactionServiceAtPickupPointFBS TransactionOperationService = "MarketplaceReturnStorageServiceAtThePickupPointFbsItem"
+
+	// FBS return long-term placement
+	TransactionServiceInWarehouseFBS TransactionOperationService = "MarketplaceReturnStorageServiceInTheWarehouseFbsItem"
+
+	// bulky products delivery
+	TransactionServiceDeliveryKGT TransactionOperationService = "MarketplaceServiceItemDeliveryKGT"
+
+	// logistics
+	TransactionServiceDirectFlowLogistic TransactionOperationService = "MarketplaceServiceItemDirectFlowLogistic"
+
+	// reverse logistics
+	TransactionServiceReturnFlowLogistic TransactionOperationService = "MarketplaceServiceItemReturnFlowLogistic"
+
+	// "Seller's Bonus" promotion service
+	TransactionServicePremiumCashbackIndPoints TransactionOperationService = "MarketplaceServicePremiumCashbackIndividualPoints"
+
+	// Premium promotion service, fixed commission
+	TransactionServicePremiumPromotion TransactionOperationService = "MarketplaceServicePremiumPromotion"
+
+	// withholding for product shortage
+	TransactionServiceWithHoldingForUndeliverableGoods TransactionOperationService = "OperationMarketplaceWithHoldingForUndeliverableGoods"
+
+	// drop-off service at the pick-up point
+	TransactionServiceDropoffPPZ TransactionOperationService = "MarketplaceServiceItemDropoffPPZ"
+
+	// reissue of returns at the pick-up point
+	TransactionServiceRedistributionReturnsPVZ TransactionOperationService = "MarketplaceServiceItemRedistributionReturnsPVZ"
+)

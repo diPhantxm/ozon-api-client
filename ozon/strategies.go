@@ -377,6 +377,7 @@ type GetCompetitorPriceResult struct {
 	StrategyCompetitorProductURL string `json:"strategy_competitor_product_url"`
 }
 
+// If you add a product to your pricing strategy, the method returns you the price and a link to the competitor's product
 func (c Strategies) GetCompetitorPrice(ctx context.Context, params *GetCompetitorPriceParams) (*GetCompetitorPriceResponse, error) {
 	url := "/v1/pricing-strategy/product/info"
 
