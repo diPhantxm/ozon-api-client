@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"testing"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -22,8 +23,8 @@ func TestGetAnalyticsData(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetAnalyticsDataParams{
-				DateFrom:  core.TimeFromString(t, "2006-01-02", "2020-09-01"),
-				DateTo:    core.TimeFromString(t, "2006-01-02", "2021-10-15"),
+				DateFrom:  core.NewRequestDate(time.Now().Add(time.Duration(30)*24*time.Hour), core.LayoutRequestDateDefault),
+				DateTo:    core.NewRequestDate(time.Now(), core.LayoutRequestDateDefault),
 				Dimension: []GetAnalyticsDataDimension{SKUDimension, DayDimension},
 				Metrics:   []GetAnalyticsDataFilterMetric{HistViewPDP},
 				Sort: []GetAnalyticsDataSort{

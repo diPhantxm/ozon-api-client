@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 )
@@ -161,4 +162,34 @@ func TimeFromString(t *testing.T, format, datetime string) time.Time {
 		t.Errorf("error when parsing time: %s", err)
 	}
 	return dt
+}
+
+const LayoutRequestDateDefault = "2006-01-02"
+
+type RequestDate struct {
+	time.Time
+	layout string
+}
+
+func NewRequestDate(t time.Time, layout string) *RequestDate {
+	return &RequestDate{
+		Time:   t,
+		layout: layout,
+	}
+}
+
+func (rd *RequestDate) UnmarshalJSON(b []byte) (err error) {
+	s := strings.Trim(string(b), `"`) // remove quotes
+	if s == "null" {
+		return
+	}
+	rd.Time, err = time.Parse(rd.layout, s)
+	return
+}
+
+func (rd *RequestDate) MarshalJSON() ([]byte, error) {
+	if rd.Time.IsZero() {
+		return nil, nil
+	}
+	return []byte(fmt.Sprintf(`"%s"`, rd.Time.Format(rd.layout))), nil
 }
