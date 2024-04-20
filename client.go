@@ -37,17 +37,20 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 }
 
 func (c Client) newRequest(ctx context.Context, method string, uri string, body interface{}) (*http.Request, error) {
+	var err error
+	var bodyJson []byte
+
 	// Set default values for empty fields if `default` tag is present
 	// And body is not nil
 	if body != nil {
 		if err := getDefaultValues(reflect.ValueOf(body)); err != nil {
 			return nil, err
 		}
-	}
 
-	bodyJson, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
+		bodyJson, err = json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	uri, err = url.JoinPath(c.baseUrl, uri)
