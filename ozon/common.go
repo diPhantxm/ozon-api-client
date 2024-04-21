@@ -91,16 +91,16 @@ const (
 	Purchased      ListDiscountRequestsStatus = "PURCHASED"
 )
 
-type WorkingDay string
+type WorkingDay int
 
 const (
-	Mon WorkingDay = "1"
-	Tue WorkingDay = "2"
-	Wed WorkingDay = "3"
-	Thu WorkingDay = "4"
-	Fri WorkingDay = "5"
-	Sat WorkingDay = "6"
-	Sun WorkingDay = "7"
+	Mon WorkingDay = 1
+	Tue WorkingDay = 2
+	Wed WorkingDay = 3
+	Thu WorkingDay = 4
+	Fri WorkingDay = 5
+	Sat WorkingDay = 6
+	Sun WorkingDay = 7
 )
 
 type GetAnalyticsDataDimension string

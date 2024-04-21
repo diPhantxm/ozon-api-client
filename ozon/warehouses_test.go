@@ -21,27 +21,37 @@ func TestGetListOfWarehouses(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			`{
-				"result": [
-				  {
-					"warehouse_id": 15588127982000,
-					"name": "Proffi (Панорама Групп)",
-					"is_rfbs": false
-				  },
-				  {
-					"warehouse_id": 22142605386000,
-					"name": "Склад на производственной",
-					"is_rfbs": true
-				  },
-				  {
-					"warehouse_id": 22208673494000,
-					"name": "Тест 37349",
-					"is_rfbs": true
-				  },
-				  {
-					"warehouse_id": 22240462819000,
-					"name": "Тест12",
-					"is_rfbs": true
-				  }
+    			"result": [
+					{
+						"warehouse_id": 1020000177886000,
+						"name": "This is a test",
+						"is_rfbs": false,
+						"has_entrusted_acceptance": false,
+						"first_mile_type": {
+							"dropoff_point_id": "",
+							"dropoff_timeslot_id": 0,
+							"first_mile_is_changing": false,
+							"first_mile_type": ""
+						},
+						"is_kgt": false,
+						"can_print_act_in_advance": false,
+						"min_working_days": 5,
+						"is_karantin": false,
+						"has_postings_limit": false,
+						"postings_limit": -1,
+						"working_days": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7
+						],
+						"min_postings_limit": 10,
+						"is_timetable_editable": true,
+						"status": "disabled"
+					}
 				]
 			}`,
 		},
