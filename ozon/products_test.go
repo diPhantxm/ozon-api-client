@@ -26,7 +26,7 @@ func TestGetStocksInfo(t *testing.T) {
 				Limit:  100,
 				LastId: "",
 				Filter: GetStocksInfoFilter{
-					OfferId:    "136834",
+					OfferId:    []string{"136834"},
 					ProductId:  214887921,
 					Visibility: "ALL",
 				},
