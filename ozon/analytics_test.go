@@ -23,8 +23,8 @@ func TestGetAnalyticsData(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetAnalyticsDataParams{
-				DateFrom:  core.NewRequestDate(time.Now().Add(time.Duration(30)*24*time.Hour), core.LayoutRequestDateDefault),
-				DateTo:    core.NewRequestDate(time.Now(), core.LayoutRequestDateDefault),
+				DateFrom:  core.NewTimeFormat(time.Now().Add(time.Duration(30)*24*time.Hour), core.ShortDateLayout),
+				DateTo:    core.NewTimeFormat(time.Now(), core.ShortDateLayout),
 				Dimension: []GetAnalyticsDataDimension{SKUDimension, DayDimension},
 				Metrics:   []GetAnalyticsDataFilterMetric{HistViewPDP},
 				Sort: []GetAnalyticsDataSort{
