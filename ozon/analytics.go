@@ -3,7 +3,6 @@ package ozon
 import (
 	"context"
 	"net/http"
-	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -14,10 +13,10 @@ type Analytics struct {
 
 type GetAnalyticsDataParams struct {
 	// Date from which the data will be in the report
-	DateFrom time.Time `json:"date_from"`
+	DateFrom *core.RequestDate `json:"date_from"`
 
 	// Date up to which the data will be in the report
-	DateTo time.Time `json:"date_to"`
+	DateTo *core.RequestDate `json:"date_to"`
 
 	// Items Enum: "unknownDimension" "sku" "spu" "day" "week" "month" "year" "category1" "category2" "category3" "category4" "brand" "modelID"
 	// Data grouping available to all sellers:

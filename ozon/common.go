@@ -1,6 +1,8 @@
 package ozon
 
-import "time"
+import (
+	"time"
+)
 
 const (
 	testTimeout = 5 * time.Second
