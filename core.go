@@ -164,32 +164,43 @@ func TimeFromString(t *testing.T, format, datetime string) time.Time {
 	return dt
 }
 
-const LayoutRequestDateDefault = "2006-01-02"
+const ShortDateLayout = "2006-01-02"
 
-type RequestDate struct {
+// Do not use this structure for responses
+// as there are no ways to unmarshal to any layout
+// and leave nil if json field is null
+type TimeFormat struct {
 	time.Time
 	layout string
 }
 
-func NewRequestDate(t time.Time, layout string) *RequestDate {
-	return &RequestDate{
+func NewTimeFormat(t time.Time, layout string) *TimeFormat {
+	return &TimeFormat{
 		Time:   t,
 		layout: layout,
 	}
 }
 
-func (rd *RequestDate) UnmarshalJSON(b []byte) (err error) {
-	s := strings.Trim(string(b), `"`) // remove quotes
-	if s == "null" {
-		return
+func newTimeLayout(layout string) *TimeFormat {
+	return &TimeFormat{
+		layout: layout,
 	}
-	rd.Time, err = time.Parse(rd.layout, s)
-	return
 }
 
-func (rd *RequestDate) MarshalJSON() ([]byte, error) {
-	if rd.Time.IsZero() {
-		return nil, nil
+func (rd *TimeFormat) UnmarshalJSON(b []byte) error {
+	var err error
+
+	s := strings.Trim(string(b), `"`) // remove quotes
+
+	// Added for extra accuracy
+	// encoding/json won't invoke this method if field is null
+	if s == "null" {
+		return nil
 	}
-	return []byte(fmt.Sprintf(`"%s"`, rd.Time.Format(rd.layout))), nil
+	rd.Time, err = time.Parse(rd.layout, s)
+	return err
+}
+
+func (rd *TimeFormat) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`%q`, rd.Time.Format(rd.layout))), nil
 }
