@@ -24,7 +24,16 @@ func TestCreateUpdateProformaLink(t *testing.T) {
 			&CreateUpdateProformaLinkParams{
 				PostingNumber: "33920146-0252-1",
 				URL:           "https://cdn.ozone.ru/s3/ozon-disk-api/techdoc/seller-api/earsivfatura_1690960445.pdf",
-				HSCode:        "2134322",
+				HSCodes: []CreateUpdateProformaLinkHSCode{
+					{
+						Code: "534758761999",
+						SKU:  "SKU123",
+					},
+					{
+						Code: "534758761000",
+						SKU:  "SKU456",
+					},
+				},
 				Date:          core.TimeFromString(t, "2006-01-02T15:04:05Z", "2023-08-01T12:08:44.342Z"),
 				Number:        "424fdsf234",
 				Price:         234.34,
@@ -82,7 +91,17 @@ func TestGetProformaLink(t *testing.T) {
 			},
 			`{
 				"result": {
-				  "file_url": "string"
+				  "date": "2019-08-24T14:15:22Z",
+				  "file_url": "string",
+				  "hs_codes": [
+					{
+					  "code": "string",
+					  "sku": "string"
+					}
+				  ],
+				  "number": "string",
+				  "price": 0,
+				  "price_currency": "string"
 				}
 			}`,
 		},
@@ -159,6 +178,57 @@ func TestDeleteProformaLink(t *testing.T) {
 		}
 
 		compareJsonResponse(t, test.response, &DeleteProformaLinkResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUploadInvoice(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UploadInvoiceParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UploadInvoiceParams{
+				PostingNumber: "posting number",
+				Content:       "content",
+			},
+			`{
+				"url": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&UploadInvoiceParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Invoices().Upload(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &UploadInvoiceResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
