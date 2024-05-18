@@ -212,9 +212,6 @@ type ProductDetails struct {
 	// Price before discounts. Displayed strikethrough on the product description page
 	OldPrice string `json:"old_price"`
 
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
-
 	// Product price including discounts. This value is shown on the product description page
 	Price string `json:"price"`
 
@@ -712,9 +709,7 @@ type UpdatePricesResultError struct {
 
 // Allows you to change a price of one or more products.
 // You can change prices for 1000 products in one request.
-// To reset old_price or premium_price set these parameters to 0.
-//
-// A new price must differ from the old one by at least 5%.
+// To reset old_price, set 0 for this parameter
 func (c Products) UpdatePrices(ctx context.Context, params *UpdatePricesParams) (*UpdatePricesResponse, error) {
 	url := "/v1/product/import/prices"
 
@@ -807,9 +802,6 @@ type CreateOrUpdateProductItem struct {
 
 	// List of PDF files
 	PDFList []CreateOrUpdateProductPDF `json:"pdf_list"`
-
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
 
 	// Product price including discounts. This value is shown on the product description card.
 	// If there are no discounts on the product, specify the old_price value
@@ -1132,9 +1124,6 @@ type CreateProductsByOzonIDItem struct {
 	// Price before discounts. Displayed strikethrough on the product description page. Specified in rubles.
 	// The fractional part is separated by decimal point, up to two digits after the decimal point
 	OldPrice string `json:"old_price"`
-
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
 
 	// Product price including discounts. This value is shown on the product description page.
 	// If there are no discounts, pass the old_price value in this parameter

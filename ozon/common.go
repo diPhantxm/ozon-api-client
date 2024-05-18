@@ -463,11 +463,14 @@ const (
 type GetFBSReturnsFilterStatus string
 
 const (
+	Moving                    GetFBSReturnsFilterStatus = "moving"
 	ReturnedToSeller          GetFBSReturnsFilterStatus = "returned_to_seller"
 	WaitingForSeller          GetFBSReturnsFilterStatus = "waiting_for_seller"
 	AcceptedFromCustomer      GetFBSReturnsFilterStatus = "accepted_from_customer"
 	CancelledWithCompensation GetFBSReturnsFilterStatus = "cancelled_with_compensation"
 	ReadyForShipment          GetFBSReturnsFilterStatus = "ready_for_shipment"
+	Disposing                 GetFBSReturnsFilterStatus = "disposing"
+	Disposed                  GetFBSReturnsFilterStatus = "disposed"
 )
 
 type GetFBOReturnsFilterStatus string
