@@ -212,9 +212,6 @@ type ProductDetails struct {
 	// Price before discounts. Displayed strikethrough on the product description page
 	OldPrice string `json:"old_price"`
 
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
-
 	// Product price including discounts. This value is shown on the product description page
 	Price string `json:"price"`
 
@@ -808,9 +805,6 @@ type CreateOrUpdateProductItem struct {
 	// List of PDF files
 	PDFList []CreateOrUpdateProductPDF `json:"pdf_list"`
 
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
-
 	// Product price including discounts. This value is shown on the product description card.
 	// If there are no discounts on the product, specify the old_price value
 	Price string `json:"price"`
@@ -1132,9 +1126,6 @@ type CreateProductsByOzonIDItem struct {
 	// Price before discounts. Displayed strikethrough on the product description page. Specified in rubles.
 	// The fractional part is separated by decimal point, up to two digits after the decimal point
 	OldPrice string `json:"old_price"`
-
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
 
 	// Product price including discounts. This value is shown on the product description page.
 	// If there are no discounts, pass the old_price value in this parameter

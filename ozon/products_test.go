@@ -145,7 +145,6 @@ func TestGetProductDetails(t *testing.T) {
 				  "marketing_price": "",
 				  "min_price": "",
 				  "old_price": "",
-				  "premium_price": "",
 				  "price": "590.0000",
 				  "sources": [
 					{
@@ -684,7 +683,6 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 						Name:                  "Комплект защитных плёнок для X3 NFC. Темный хлопок",
 						OfferId:               "143210608",
 						OldPrice:              "1100",
-						PremiumPrice:          "900",
 						Price:                 "1000",
 						VAT:                   "0.1",
 						Weight:                100,
@@ -1152,7 +1150,6 @@ func TestCreateProductByOzonID(t *testing.T) {
 						OfferId:      "91132",
 						OldPrice:     "2590",
 						Price:        "2300",
-						PremiumPrice: "2200",
 						CurrencyCode: "RUB",
 						SKU:          298789742,
 						VAT:          "0.1",
@@ -1392,7 +1389,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "marketing_price": "",
 					  "min_price": "",
 					  "old_price": "1000.0000",
-					  "premium_price": "590.0000",
 					  "price": "690.0000",
 					  "sources": [
 						{
@@ -1468,7 +1464,6 @@ func TestListProductsByIDs(t *testing.T) {
 					  "marketing_price": "",
 					  "min_price": "",
 					  "old_price": "12200.0000",
-					  "premium_price": "5490.0000",
 					  "price": "6100.0000",
 					  "sources": [
 						{
@@ -2353,7 +2348,6 @@ func TestGetProductPriceInfo(t *testing.T) {
 						"currency_code": "RUB",
 						"price": "499.0000",
 						"old_price": "579.0000",
-						"premium_price": "",
 						"retail_price": "",
 						"vat": "0.200000",
 						"min_ozon_price": "",
