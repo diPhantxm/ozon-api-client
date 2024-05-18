@@ -204,7 +204,7 @@ type GetFBSReturnResultReturn struct {
 	// Product price without commission
 	PriceWithoutCommission float64 `json:"price_without_commission"`
 
-	// Product identifier
+	// Product identifier — SKU
 	ProductId int64 `json:"product_id"`
 
 	// Product name

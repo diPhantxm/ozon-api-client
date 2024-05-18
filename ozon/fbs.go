@@ -2100,7 +2100,8 @@ type PartialPackOrderAdditionalData struct {
 // The primary unassembled shipment will contain some of the products
 // that weren't passed to the request.
 //
-// Default status of created shipments is awaiting_deliver.
+// Default status of created shipments is awaiting_packaging,
+// which indicates that the shipment is awaiting assembly.
 //
 // The status of the original shipment will only change
 // when the split shipments status changes
