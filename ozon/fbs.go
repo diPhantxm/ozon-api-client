@@ -37,18 +37,18 @@ type ListUnprocessedShipmentsFilter struct {
 	// Filter by the time by which the seller should pack the order. Period start.
 	//
 	// Format: YYYY-MM-DDThh: mm:ss. mcsZ. Example: 2020-03-18T07:34:50.359 Z
-	CutoffFrom time.Time `json:"cutoff_from"`
+	CutoffFrom *core.TimeFormat `json:"cutoff_from,omitempty"`
 
 	// Filter by the time by which the seller should pack the order. Period end.
 	//
 	// Format: YYYY-MM-DDThh: mm:ss. mcsZ. Example: 2020-03-18T07:34:50.359 Z
-	CutoffTo time.Time `json:"cutoff_to"`
+	CutoffTo *core.TimeFormat `json:"cutoff_to,omitempty"`
 
 	// Minimum date when shipment should be handed over for delivery
-	DeliveringDateFrom time.Time `json:"delivering_date_from"`
+	DeliveringDateFrom *core.TimeFormat `json:"delivering_date_from,omitempty"`
 
 	// Maximum date when shipment should be handed over for delivery
-	DeliveringDateTo time.Time `json:"delivering_date_to"`
+	DeliveringDateTo *core.TimeFormat `json:"delivering_date_to,omitempty"`
 
 	// Delivery method identifier
 	DeliveryMethodId []int64 `json:"delivery_method_id"`
@@ -58,7 +58,7 @@ type ListUnprocessedShipmentsFilter struct {
 	// Default value is all.
 	//
 	// The FBP scheme is available only for sellers from China
-	FBPFilter FBPFilter `json:"fbpFilter"`
+	FBPFilter FBPFilter `json:"fbpFilter" default:"all"`
 
 	// Delivery service identifier
 	ProviderId []int64 `json:"provider_id"`
@@ -511,7 +511,7 @@ func (c FBS) ListUnprocessedShipments(ctx context.Context, params *ListUnprocess
 
 type GetFBSShipmentsListParams struct {
 	// Sorting direction
-	Direction string `json:"dir,omitempty"`
+	Direction Order `json:"dir,omitempty"`
 
 	// Filter
 	Filter GetFBSShipmentsListFilter `json:"filter"`
@@ -532,12 +532,12 @@ type GetFBSShipmentsListFilter struct {
 	// Delivery method identifier
 	DeliveryMethodId []int64 `json:"delivery_method_id"`
 
-	// Filter for shipments delivered from partner warehouse (FBP). You can pass one of the following values:
+	// Filter for shipments delivered from partner warehouse (FBP)
 	//
 	// Default value is all.
 	//
 	// The FBP scheme is available only for sellers from China
-	FBPFilter FBPFilter `json:"fbpFilter"`
+	FBPFilter FBPFilter `json:"fbpFilter" default:"all"`
 
 	// Order identifier
 	OrderId int64 `json:"order_id"`

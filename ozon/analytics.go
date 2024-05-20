@@ -163,7 +163,7 @@ type GetStocksOnWarehousesParams struct {
 	// Number of elements that will be skipped in the response. For example, if `offset=10`, the response will start with the 11th element found
 	Offset int64 `json:"offset"`
 
-	// Warehouse type filter:
+	// Warehouse type filter
 	WarehouseType WarehouseType `json:"warehouse_type" default:"ALL"`
 }
 

@@ -113,15 +113,15 @@ type ListCancellationsParams struct {
 
 type ListCancellationsFilter struct {
 	// Filter by cancellation initiator
-	CancellationInitiator []string `json:"cancellation_initiator"`
+	CancellationInitiator []string `json:"cancellation_initiator,omitempty"`
 
 	// Filter by shipment number.
 	//
 	// Optional parameter. You can pass several values here
-	PostingNumber string `json:"posting_number"`
+	PostingNumber string `json:"posting_number,omitempty"`
 
 	// Filter by cancellation request status
-	State string `json:"state"`
+	State string `json:"state,omitempty"`
 }
 
 type ListCancellationWith struct {

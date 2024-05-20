@@ -99,13 +99,13 @@ func (c Products) GetStocksInfo(ctx context.Context, params *GetStocksInfoParams
 
 type GetProductDetailsParams struct {
 	// Product identifier in the seller's system
-	OfferId string `json:"offer_id"`
+	OfferId string `json:"offer_id,omitempty"`
 
 	// Product identifier
-	ProductId int64 `json:"product_id"`
+	ProductId int64 `json:"product_id,omitempty"`
 
 	// Product identifier in the Ozon system, SKU
-	SKU int64 `json:"sku"`
+	SKU int64 `json:"sku,omitempty"`
 }
 
 type GetProductDetailsResponse struct {

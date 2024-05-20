@@ -526,10 +526,10 @@ type GetShipmentReportFilter struct {
 	OfferId string `json:"offer_id"`
 
 	// Order processing start date and time
-	ProcessedAtFrom time.Time `json:"processed_at_from"`
+	ProcessedAtFrom *core.TimeFormat `json:"processed_at_from,omitempty"`
 
 	// Time when the order appeared in your personal account
-	ProcessedAtTo time.Time `json:"processed_at_to"`
+	ProcessedAtTo *core.TimeFormat `json:"processed_at_to,omitempty"`
 
 	// Product identifier in the Ozon system, SKU
 	SKU []int64 `json:"sku"`

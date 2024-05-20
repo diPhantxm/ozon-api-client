@@ -400,7 +400,7 @@ func TestMarkAsRead(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&MarkAsReadParams{
-				Chatid:        "99feb3fc-a474-469f-95d5-268b470cc607",
+				ChatId:        "99feb3fc-a474-469f-95d5-268b470cc607",
 				FromMessageId: 3000000000118032000,
 			},
 			`{
