@@ -1672,15 +1672,25 @@ type CreateTaskForGeneratingLabelResponse struct {
 }
 
 type CreateTaskForGeneratingLabelResult struct {
+	Tasks []CreateTaskForGeneratingLabelTask `json:"tasks"`
+}
+
+type CreateTaskForGeneratingLabelTask struct {
 	// Task identifier for labeling generation
 	TaskId int64 `json:"task_id"`
+
+	// Type of label generation task:
+	//
+	// 	big_label — for a regular label,
+	// 	small_label — for a small label
+	TaskType string `json:"task_type"`
 }
 
 // Method for creating a task for asynchronous labeling generation.
 //
 // To get labels created as a result of the method, use the /v1/posting/fbs/package-label/get method
 func (c FBS) CreateTaskForGeneratingLabel(ctx context.Context, params *CreateTaskForGeneratingLabelParams) (*CreateTaskForGeneratingLabelResponse, error) {
-	url := "/v1/posting/fbs/package-label/create"
+	url := "/v2/posting/fbs/package-label/create"
 
 	resp := &CreateTaskForGeneratingLabelResponse{}
 
