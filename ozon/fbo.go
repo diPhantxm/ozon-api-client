@@ -14,7 +14,7 @@ type FBO struct {
 
 type GetFBOShipmentsListParams struct {
 	// Sorting direction
-	Direction string `json:"dir,omitempty"`
+	Direction Order `json:"dir,omitempty"`
 
 	// Shipment search filter
 	Filter GetFBOShipmentsListFilter `json:"filter"`
@@ -35,13 +35,13 @@ type GetFBOShipmentsListParams struct {
 // Shipment search filter
 type GetFBOShipmentsListFilter struct {
 	// Period start in YYYY-MM-DD format
-	Since time.Time `json:"since"`
+	Since *core.TimeFormat `json:"since,omitempty"`
 
 	// Shipment status
-	Status string `json:"status"`
+	Status string `json:"status,omitempty"`
 
 	// Period end in YYYY-MM-DD format
-	To time.Time `json:"to"`
+	To *core.TimeFormat `json:"to,omitempty"`
 }
 
 // Additional fields to add to the response

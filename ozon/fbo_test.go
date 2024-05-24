@@ -24,9 +24,9 @@ func TestGetFBOShipmentsList(t *testing.T) {
 			&GetFBOShipmentsListParams{
 				Direction: "ASC",
 				Filter: GetFBOShipmentsListFilter{
-					Since:  core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-09-01T00:00:00.000Z"),
+					Since:  core.NewTimeFormat(core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-09-01T00:00:00.000Z"), "2006-01-02T15:04:05Z"),
 					Status: "awaiting_packaging",
-					To:     core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-17T10:44:12.828Z"),
+					To:     core.NewTimeFormat(core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-17T10:44:12.828Z"), "2006-01-02T15:04:05Z"),
 				},
 				Limit:    5,
 				Offset:   0,

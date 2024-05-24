@@ -386,7 +386,7 @@ func (c Chats) Create(ctx context.Context, params *CreateNewChatParams) (*Create
 
 type MarkAsReadParams struct {
 	// Chat identifier
-	Chatid string `json:"chat_id"`
+	ChatId string `json:"chat_id"`
 
 	// Message identifier
 	FromMessageId uint64 `json:"from_message_id"`

@@ -437,8 +437,8 @@ func TestGetShipmentReport(t *testing.T) {
 			&GetShipmentReportParams{
 				Filter: &GetShipmentReportFilter{
 					DeliverySchema:  []string{"fbs", "fbo", "crossborder"},
-					ProcessedAtFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-09-02T17:10:54.861Z"),
-					ProcessedAtTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-02T17:10:54.861Z"),
+					ProcessedAtFrom: core.NewTimeFormat(core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-09-02T17:10:54.861Z"), "2006-01-02T15:04:05Z"),
+					ProcessedAtTo:   core.NewTimeFormat(core.TimeFromString(t, "2006-01-02T15:04:05Z", "2021-11-02T17:10:54.861Z"), "2006-01-02T15:04:05Z"),
 				},
 			},
 			`{
