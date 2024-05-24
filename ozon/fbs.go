@@ -452,6 +452,8 @@ type FinancialDataProduct struct {
 	CommissionsCurrencyCode string `json:"commissions_currency_code"`
 
 	// Services
+	//
+	// Deprecated: The parameter is outdated. To get information on accruals, use the `ListTransactions` method
 	ItemServices MarketplaceServices `json:"item_services"`
 
 	// Currency of your prices. It matches the currency set in the personal account settings

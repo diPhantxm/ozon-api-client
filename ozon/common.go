@@ -723,7 +723,7 @@ const (
 	TransactionItemAdForSupplierLogistic TransactionOperationService = "ItemAdvertisementForSupplierLogistic"
 
 	// product placement service
-	TransactionServiceStorageItem TransactionOperationService = "MarketplaceServiceStorageItem"
+	TransactionServiceStorageItem TransactionOperationService = "OperationMarketplaceServiceStorage"
 
 	// products promotion
 	TransactionMarketingActionCost TransactionOperationService = "MarketplaceMarketingActionCostItem"

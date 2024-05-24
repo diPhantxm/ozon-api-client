@@ -187,7 +187,7 @@ type GetFBSReturnResultReturn struct {
 	// ID of the warehouse the product is being transported to
 	PlaceId int64 `json:"place_id"`
 
-	// Name of the warehouse the product is being transported to
+	// Intermediate return point
 	MovingToPlaceName string `json:"moving_to_place_name"`
 
 	// Delivery cost
