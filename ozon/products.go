@@ -151,7 +151,7 @@ type ProductDetails struct {
 	// SKU of the product that is sold from the seller's warehouse (FBS and rFBS)
 	FBSSKU int64 `json:"fbs_sku,omitempty"`
 
-	// Document generation task number
+	// Product identifier
 	Id int64 `json:"id"`
 
 	// An array of links to images. The images in the array are arranged in the order of their arrangement on the site. If the `primary_image` parameter is not specified, the first image in the list is the main one for the product
@@ -2378,8 +2378,10 @@ type GetRelatedSKUsError struct {
 	Message string `json:"message"`
 }
 
-// You can pass any SKU in the request, even a deleted one.
+// Method for getting a single SKU based on the old SKU FBS and SKU FBO identifiers.
 // The response will contain all SKUs related to the passed ones.
+//
+// The method can handle any SKU, even hidden or deleted.
 //
 // In one request, you can pass up to 200 SKUs.
 func (c Products) GetRelatedSKUs(ctx context.Context, params *GetRelatedSKUsParams) (*GetRelatedSKUsResponse, error) {
