@@ -1278,7 +1278,16 @@ func TestCreateTaskForGeneratingLabel(t *testing.T) {
 			},
 			`{
 				"result": {
-				  "task_id": 5819327210249
+				  "tasks": [
+					{
+					  "task_id": 5819327210248,
+					  "task_type": "big_label"
+					},
+					{
+					  "task_id": 5819327210249,
+					  "task_type": "small_label"
+					}
+				  ]
 				}
 			}`,
 		},
@@ -1310,7 +1319,7 @@ func TestCreateTaskForGeneratingLabel(t *testing.T) {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 		if resp.StatusCode == http.StatusOK {
-			if resp.Result.TaskId == 0 {
+			if len(resp.Result.Tasks) != 0 && resp.Result.Tasks[0].TaskId == 0 {
 				t.Errorf("Task id cannot be 0")
 			}
 		}
