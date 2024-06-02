@@ -251,7 +251,9 @@ func TestGetProductDetails(t *testing.T) {
 					  }
 					],
 					"state_updated_at": "2021-10-21T15:48:03.927309Z"
-				  }
+				  },
+					"is_archived": false,
+					"is_autoarchived": false
 				}
 			}`,
 		},
