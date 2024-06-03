@@ -30,7 +30,7 @@ type GetStocksInfoFilter struct {
 	OfferId []string `json:"offer_id,omitempty"`
 
 	// Filter by the product_id parameter. It is possible to pass a list of values
-	ProductId int64 `json:"product_id,omitempty"`
+	ProductId []int64 `json:"product_id,omitempty"`
 
 	// Filter by product visibility
 	Visibility string `json:"visibility,omitempty"`
@@ -246,6 +246,12 @@ type ProductDetails struct {
 
 	// Product volume weight
 	VolumeWeight float64 `json:"volume_weight"`
+
+	// 'true' if the item is archived manually.
+	IsArchived bool `json:"is_archived"`
+
+	// 'true' if the item is archived automatically.
+	IsArchivedAuto bool `json:"is_autoarchived"`
 }
 
 type ProductDetailCommission struct {

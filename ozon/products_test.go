@@ -27,7 +27,7 @@ func TestGetStocksInfo(t *testing.T) {
 				LastId: "",
 				Filter: GetStocksInfoFilter{
 					OfferId:    []string{"136834"},
-					ProductId:  214887921,
+					ProductId:  []int64{214887921},
 					Visibility: "ALL",
 				},
 			},
@@ -251,7 +251,9 @@ func TestGetProductDetails(t *testing.T) {
 					  }
 					],
 					"state_updated_at": "2021-10-21T15:48:03.927309Z"
-				  }
+				  },
+					"is_archived": false,
+					"is_autoarchived": false
 				}
 			}`,
 		},
