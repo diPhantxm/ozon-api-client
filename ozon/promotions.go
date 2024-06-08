@@ -98,7 +98,7 @@ type AddProductToPromotionParams struct {
 
 type AddProductToPromotionProduct struct {
 	// Product identifier
-	ProductId float64 `json:"produt_id"`
+	ProductId float64 `json:"product_id"`
 
 	// Promotional product price
 	ActionPrice float64 `json:"action_price"`
