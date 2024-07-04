@@ -2065,9 +2065,6 @@ type GetProductPriceInfoResultItemPrice struct {
 	// Price before discounts. Displayed strikethrough on the product description page
 	OldPrice string `json:"old_price"`
 
-	// Price for customers with an Ozon Premium subscription
-	PremiumPrice string `json:"premium_price"`
-
 	// Product price including discounts. This value is shown on the product description page
 	Price string `json:"price"`
 
