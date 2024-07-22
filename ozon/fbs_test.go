@@ -564,6 +564,7 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 				  "order_id": 438764970,
 				  "order_number": "57195475-0050",
 				  "status": "awaiting_packaging",
+				  "substatus": "posting_awaiting_passport_data",
 				  "delivery_method": {
 					"id": 18114520187000,
 					"name": "Ozon Логистика самостоятельно, Москва",

@@ -350,9 +350,6 @@ type FBSCustomer struct {
 	// Delivery address details
 	Address FBSCustomerAddress `json:"address"`
 
-	// Customer e-mail
-	CustomerEmail string `json:"customer_email"`
-
 	// Customer identifier
 	CustomerId int64 `json:"customer_id"`
 
