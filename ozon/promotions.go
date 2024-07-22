@@ -98,7 +98,7 @@ type AddProductToPromotionParams struct {
 
 type AddProductToPromotionProduct struct {
 	// Product identifier
-	ProductId float64 `json:"produt_id"`
+	ProductId float64 `json:"product_id"`
 
 	// Promotional product price
 	ActionPrice float64 `json:"action_price"`
@@ -136,7 +136,7 @@ func (c Promotions) AddToPromotion(ctx context.Context, params *AddProductToProm
 
 	resp := &AddProductToPromotionResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
