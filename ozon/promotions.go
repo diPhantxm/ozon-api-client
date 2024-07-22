@@ -136,7 +136,7 @@ func (c Promotions) AddToPromotion(ctx context.Context, params *AddProductToProm
 
 	resp := &AddProductToPromotionResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
