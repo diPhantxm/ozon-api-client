@@ -809,3 +809,16 @@ const (
 	// reissue of returns at the pick-up point
 	TransactionServiceRedistributionReturnsPVZ TransactionOperationService = "MarketplaceServiceItemRedistributionReturnsPVZ"
 )
+
+type PaymentTypeGroupName string
+
+const (
+	PaymentTypeGroupByCardOnline              PaymentTypeGroupName = "by card online"
+	PaymentTypeGroupOzonCard                  PaymentTypeGroupName = "Ozon Card"
+	PaymentTypeGroupOzonCardAtCheckout        PaymentTypeGroupName = "Ozon Card at checkout"
+	PaymentTypeGroupBySavedBankCardUponPickup PaymentTypeGroupName = "by saved bank card upon pick-up"
+	PaymentTypeGroupFasterPaymentSystem       PaymentTypeGroupName = "Faster payment system"
+	PaymentTypeGroupOzonInstallment           PaymentTypeGroupName = "Ozon Installment"
+	PaymentTypeGroupPaymentToCurrentAccount   PaymentTypeGroupName = "payment to current account"
+	PaymentTypeGroupSberpay                   PaymentTypeGroupName = "Sberpay"
+)

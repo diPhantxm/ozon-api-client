@@ -116,7 +116,7 @@ type GetFBOShipmentsListResultAnalyticsData struct {
 	IsPremium bool `json:"is_premium"`
 
 	// Payment method
-	PaymentTypeGroupName string `json:"payment_type_group_name"`
+	PaymentTypeGroupName PaymentTypeGroupName `json:"payment_type_group_name"`
 
 	// Delivery region
 	Region string `json:"region"`
