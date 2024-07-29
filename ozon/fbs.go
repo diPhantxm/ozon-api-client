@@ -213,7 +213,7 @@ type FBSPostingAnalyticsData struct {
 	IsPremium bool `json:"is_premium"`
 
 	// Payment method
-	PaymentTypeGroupName string `json:"payment_type_group_name"`
+	PaymentTypeGroupName PaymentTypeGroupName `json:"payment_type_group_name"`
 
 	// Delivery region
 	Region string `json:"region"`
@@ -358,7 +358,7 @@ type FBSCustomer struct {
 
 	// Customer phone number.
 	//
-	// Returns an empty string
+	// Returns an empty string ""
 	Phone string `json:"phone"`
 }
 
@@ -563,6 +563,13 @@ type GetFBSShipmentsListFilter struct {
 
 	// Warehouse identifier
 	WarehouseId []int64 `json:"warehouse_id"`
+
+	LastChangedStatusDate GetFBSShipmentsListFilterLastChangeDate `json:"last_changed_status_date"`
+}
+
+type GetFBSShipmentsListFilterLastChangeDate struct {
+	From time.Time `json:"from"`
+	To   time.Time `json:"to"`
 }
 
 type GetFBSShipmentsListWith struct {
@@ -1006,7 +1013,9 @@ type GetShipmentDataByIdentifierResultAddressee struct {
 	// Recipient name
 	Name string `json:"name"`
 
-	// Recipient phone number
+	// Recipient phone number.
+	//
+	// Returns an empty string ""
 	Phone string `json:"phone"`
 }
 
@@ -1061,6 +1070,8 @@ type GetShipmentDataByIdentifierResultCourier struct {
 	Name string `json:"name"`
 
 	// Courier's phone number
+	//
+	// Returns an empty string ""
 	Phone string `json:"phone"`
 }
 
