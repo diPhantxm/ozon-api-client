@@ -808,6 +808,9 @@ const (
 
 	// reissue of returns at the pick-up point
 	TransactionServiceRedistributionReturnsPVZ TransactionOperationService = "MarketplaceServiceItemRedistributionReturnsPVZ"
+
+	// Agregator 3PL Globalagency service tariffication
+	TransactionServiceAgencyFeeAggregator3PLGlobal TransactionOperationService = "OperationMarketplaceAgencyFeeAggregator3PLGlobal "
 )
 
 type PaymentTypeGroupName string
