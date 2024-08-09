@@ -1799,7 +1799,7 @@ type ListGeoRestrictionsRestriction struct {
 	OrderNumber int64 `json:"order_number"`
 }
 
-// Get a list of geo-restrictions for services
+// Deprecated: Get a list of geo-restrictions for services
 func (c Products) ListGeoRestrictions(ctx context.Context, params *ListGeoRestrictionsParams) (*ListGeoRestrictionsResponse, error) {
 	url := "/v1/products/geo-restrictions-catalog-by-filter"
 

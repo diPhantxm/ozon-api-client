@@ -126,24 +126,6 @@ const (
 type SupplyRequestState string
 
 const (
-	// request draft. Only for supplies via vDC
-	Draft SupplyRequestState = "DRAFT"
-
-	// selecting supply options. Only for supplies via vDC
-	SupplyVariantsArranging SupplyRequestState = "SUPPLY_VARIANTS_ARRANGING"
-
-	// no supply options, the request is archived. Only for supplies via vDC
-	HasNoSupplyVariantsArchive SupplyRequestState = "HAS_NO_SUPPLY_VARIANTS_ARCHIVE"
-
-	// no supply options. Only for supplies via vDC
-	HasNoSupplyVariantsNew SupplyRequestState = "HAS_NO_SUPPLY_VARIANTS_NEW"
-
-	// supply being approved. Only for supplies via vDC
-	SupplyVariantsConfirmation SupplyRequestState = "SUPPLY_VARIANTS_CONFIRMATION"
-
-	// time reservation
-	TimeslotBooking SupplyRequestState = "TIMESLOT_BOOKING"
-
 	// filling in the data
 	DATA_FILLING SupplyRequestState = "DATA_FILLING"
 
