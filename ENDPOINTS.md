@@ -4,6 +4,7 @@
 - [x] Product category tree
 - [x] Category characteristics list
 - [x] Characteristics value directory
+- [x] Search characteristics value directory
 
 ## Uploading and updating products
 - [x] Create or update a product

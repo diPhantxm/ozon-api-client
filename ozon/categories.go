@@ -224,3 +224,63 @@ func (c *Categories) AttributesDictionary(ctx context.Context, params *GetAttrib
 
 	return resp, nil
 }
+
+type SearchAttributeDictionaryParams struct {
+	// Characteristics identifier
+	AttributeId int64 `json:"attribute_id"`
+
+	// Category identifier
+	DescriptionCategoryId int64 `json:"description_category_id"`
+
+	// The value to be searched for
+	//  - minimum—2 characters
+	Value string `json:"value"`
+
+	// Number of values in the response:
+	//
+	// 	- maximum—100,
+	// 	- minimum—1.
+	Limit int64 `json:"limit,omitempty"`
+
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
+}
+
+type SearchAttributeDictionaryResponse struct {
+	core.CommonResponse
+
+	// Characteristic values
+	Result []SearchAttributeDictionaryResult `json:"result"`
+}
+
+type SearchAttributeDictionaryResult struct {
+	// Characteristic value identifier
+	Id int64 `json:"id"`
+
+	// Additional description
+	Info string `json:"info"`
+
+	// Image link
+	Picture string `json:"picture"`
+
+	// Product characteristic value
+	Value string `json:"value"`
+}
+
+// Returns found characteristics value directory.
+//
+// To check if an attribute has a nested directory,
+// use the `/v1/description-category/attribute` method.
+func (c *Categories) SearchAttributesDictionary(ctx context.Context, params *SearchAttributeDictionaryParams) (*SearchAttributeDictionaryResponse, error) {
+	url := "/v1/description-category/attribute/values/search"
+
+	resp := &SearchAttributeDictionaryResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
