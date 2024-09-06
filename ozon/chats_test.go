@@ -39,7 +39,7 @@ func TestListChats(t *testing.T) {
 					  "chat_type": "Seller_Support"
 					},
 					"first_unread_message_id": 3000000000118021931,
-					"last_message_id": 30000000001280042740,
+					"last_message_id": 3000000000128004274,
 					"unread_count": 1
 				  }
 				],
