@@ -2,6 +2,7 @@ package ozon
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -53,10 +54,10 @@ type ListChatsChat struct {
 	Chat ListChatsChatData `json:"chat"`
 
 	// Identifier of the first unread chat message
-	FirstUnreadMessageId string `json:"first_unread_message_id"`
+	FirstUnreadMessageId json.Number `json:"first_unread_message_id"`
 
 	// Identifier of the last message in the chat
-	LastMessageId string `json:"last_message_id"`
+	LastMessageId json.Number `json:"last_message_id"`
 
 	// Number of unread messages in the chat
 	UnreadCount int64 `json:"unread_count"`
