@@ -39,27 +39,13 @@ type ListChatsResponse struct {
 	core.CommonResponse
 
 	// Chats data
-	Chats []ListChatsChat `json:"chats"`
+	Chats []ListChatsChatData `json:"chats"`
 
 	// Total number of chats
 	TotalChatsCount int64 `json:"total_chats_count"`
 
 	// Total number of unread messages
 	TotalUnreadCount int64 `json:"total_unread_count"`
-}
-
-type ListChatsChat struct {
-	// Chat data
-	Chat ListChatsChatData `json:"chat"`
-
-	// Identifier of the first unread chat message
-	FirstUnreadMessageId uint64 `json:"first_unread_message_id"`
-
-	// Identifier of the last message in the chat
-	LastMessageId uint64 `json:"last_message_id"`
-
-	// Number of unread messages in the chat
-	UnreadCount int64 `json:"unread_count"`
 }
 
 type ListChatsChatData struct {
@@ -79,6 +65,15 @@ type ListChatsChatData struct {
 
 	// Chat creation date
 	CreatedAt time.Time `json:"created_at"`
+
+	// Identifier of the first unread chat message
+	FirstUnreadMessageId uint64 `json:"first_unread_message_id"`
+
+	// Identifier of the last message in the chat
+	LastMessageId uint64 `json:"last_message_id"`
+
+	// Number of unread messages in the chat
+	UnreadCount int64 `json:"unread_count"`
 }
 
 // Returns information about chats by specified filters
