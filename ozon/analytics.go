@@ -200,6 +200,9 @@ type GetStocksOnWarehousesResultRow struct {
 
 	// Name of the warehouse where the products are stored
 	WarehouseName string `json:"warehouse_name"`
+
+	// Number of days the stock will last based on your average daily sales
+	IDC float64 `json:"idc"`
 }
 
 // Report on stocks and products movement at Ozon warehouses

@@ -747,6 +747,9 @@ type CreateOrUpdateProductItem struct {
 	// Category identifier
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
+	// New category identifier. Specify it if you want to change the current product category
+	NewDescriptinoCategoryId int64 `json:"new_description_category_id"`
+
 	// Marketing color.
 	//
 	// Pass the link to the image in the public cloud storage. The image format is JPG
