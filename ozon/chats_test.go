@@ -32,13 +32,13 @@ func TestListChats(t *testing.T) {
 			`{
 				"chats": [
 				  {
-					"chat_id": "5e767w03-b400-4y1b-a841-75319ca8a5c8",
-					"chat_status": "Opened",
-					"chat_type": "Seller_Support",
-					"created_at": "2022-07-22T08:07:19.581Z",
-					"unread_count": 1,
-					"last_message_id": 3000000000128004274,
-					"first_unread_message_id": 3000000000118021931
+            "chat_id": "5e767w03-b400-4y1b-a841-75319ca8a5c8",
+            "chat_status": "Opened",
+            "chat_type": "Seller_Support",
+            "created_at": "2022-07-22T08:07:19.581Z",
+            "unread_count": 1,
+            "last_message_id": 3000000000128004274,
+            "first_unread_message_id": 3000000000118021931
 				  }
 				],
 				"total_chats_count": 25,
