@@ -1412,9 +1412,6 @@ type GetDescriptionOfProductResult struct {
 	// Product characteristic identifier
 	Id int64 `json:"id"`
 
-	// Identifier for subsequent batch loading of images
-	ImageGroupId string `json:"image_group_id"`
-
 	// Array of links to product images
 	Images []GetDescriptionOfProductResultImage `json:"images"`
 

@@ -1611,7 +1611,6 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						"index": 2
 					  }
 					],
-					"image_group_id": "",
 					"images360": [],
 					"pdf_list": [],
 					"attributes": [
