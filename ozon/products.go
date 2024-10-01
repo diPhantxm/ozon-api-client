@@ -822,6 +822,12 @@ type CreateOrUpdateProductItem struct {
 	//   - IS_NO_CODE_SERVICE
 	ServiceType string `json:"service_type" default:"IS_CODE_SERVICE"`
 
+	// Product type identifier.
+	// You can get values from the type_id parameter in the `/v1/description-category/tree` method response.
+	// When filling this parameter in,
+	// you can leave out the attributes attribute if it has the `id:8229` parameter
+	TypeId int64 `json:"type_id"`
+
 	// VAT rate for the product:
 	//   - 0 — not subject to VAT,
 	//   - 0.1 — 10%,
@@ -1429,6 +1435,9 @@ type GetDescriptionOfProductResult struct {
 
 	// Array of PDF files
 	PDFList []GetDescriptionOfProductResultPDF `json:"pdf_list"`
+
+	// Product type identifier
+	TypeId int64 `json:"type_id"`
 
 	// Weight of product in the package
 	Weight int32 `json:"weight"`
