@@ -722,6 +722,8 @@ const (
 	// picking up products for removal by the seller
 	TransactionServiceReturnFromStock TransactionOperationService = "MarketplaceServiceItemReturnFromStock"
 
+	TransactionServiceStarsMembership TransactionOperationService = "ItemAgentServiceStarsMembership"
+
 	// forwarding trade
 	TransactionItemAdForSupplierLogisticSeller TransactionOperationService = "ItemAdvertisementForSupplierLogisticSeller"
 
@@ -792,7 +794,7 @@ const (
 	TransactionServiceRedistributionReturnsPVZ TransactionOperationService = "MarketplaceServiceItemRedistributionReturnsPVZ"
 
 	// Agregator 3PL Globalagency service tariffication
-	TransactionServiceAgencyFeeAggregator3PLGlobal TransactionOperationService = "OperationMarketplaceAgencyFeeAggregator3PLGlobal "
+	TransactionServiceAgencyFeeAggregator3PLGlobal TransactionOperationService = "OperationMarketplaceAgencyFeeAggregator3PLGlobal"
 )
 
 type PaymentTypeGroupName string
