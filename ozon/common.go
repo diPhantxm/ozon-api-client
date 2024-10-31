@@ -453,6 +453,8 @@ const (
 	ReadyForShipment          GetFBSReturnsFilterStatus = "ready_for_shipment"
 	Disposing                 GetFBSReturnsFilterStatus = "disposing"
 	Disposed                  GetFBSReturnsFilterStatus = "disposed"
+	ArrivedForResale          GetFBSReturnsFilterStatus = "arrived_for_resale"
+	MovingToResale            GetFBSReturnsFilterStatus = "moving_to_resale"
 )
 
 type GetFBOReturnsFilterStatus string
