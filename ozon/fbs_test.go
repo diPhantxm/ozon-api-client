@@ -3130,3 +3130,82 @@ func TestSetShippingDate(t *testing.T) {
 		}
 	}
 }
+
+func TestSplitOrder(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *SplitOrderParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&SplitOrderParams{
+				PostingNumber: "string",
+				Postings: []SplitOrderParamPosting{
+					{
+						Products: []SplitOrderPostingProduct{
+							{
+								ProductId: 1,
+								Quantity:  1,
+							},
+						},
+					},
+				},
+			},
+			`{
+				"parent_posting": {
+				  "posting_number": "string",
+				  "products": [
+					{
+					  "product_id": 0,
+					  "quantity": 0
+					}
+				  ]
+				},
+				"postings": [
+				  {
+					"posting_number": "string",
+					"products": [
+					  {
+						"product_id": 0,
+						"quantity": 0
+					  }
+					]
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&SplitOrderParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().SplitOrder(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &SplitOrderResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

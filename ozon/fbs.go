@@ -3086,3 +3086,55 @@ func (c FBS) SetShippingDate(ctx context.Context, params *SetShippingDateParams)
 
 	return resp, nil
 }
+
+type SplitOrderParams struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Shipments list the order will be split into. You can split one order per one request
+	Postings []SplitOrderParamPosting `json:"postings"`
+}
+
+type SplitOrderParamPosting struct {
+	Products []SplitOrderPostingProduct `json:"products"`
+}
+
+type SplitOrderResponse struct {
+	core.CommonResponse
+
+	// Original shipment details
+	ParentPosting SplitOrderPosting `json:"parent_posting"`
+
+	// List of shipments the order was split into
+	Postings []SplitOrderPosting `json:"postings"`
+}
+
+type SplitOrderPosting struct {
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// List of products in the shipment
+	Products []SplitOrderPostingProduct `json:"products"`
+}
+
+type SplitOrderPostingProduct struct {
+	// FBS product identifier in the Ozon system, SKU
+	ProductId int64 `json:"product_id"`
+
+	// Product quantity
+	Quantity int64 `json:"quantity"`
+}
+
+func (c FBS) SplitOrder(ctx context.Context, params *SplitOrderParams) (*SplitOrderResponse, error) {
+	url := "/v1/posting/fbs/split"
+
+	resp := &SplitOrderResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
