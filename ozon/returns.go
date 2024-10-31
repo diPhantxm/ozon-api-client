@@ -943,7 +943,250 @@ func (c Returns) FBSQuantity(ctx context.Context, params *GetFBSQuantityReturnsP
 
 	resp := &GetFBSQuantityReturnsResponse{}
 
-	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListReturnsParams struct {
+	// Filter
+	Filter *ListReturnsFilter `json:"filter,omitempty"`
+
+	// Number of loaded returns. The maximum value is 500
+	Limit int32 `json:"limit"`
+
+	// Identifier of the last loaded return
+	LastId int64 `json:"last_id"`
+}
+
+type ListReturnsFilter struct {
+	// Filter by return creation date
+	LogisticReturnDate *GetFBSReturnsFilterTimeRange `json:"logistic_return_date"`
+
+	// Filter by storage fees start date
+	StorageTarifficationDate *GetFBSReturnsFilterTimeRange `json:"storage_tariffication_start_date"`
+
+	// Filter by date the return status changed
+	VisualStatusChangeMoment *GetFBSReturnsFilterTimeRange `json:"visual_status_change_moment"`
+
+	// Filter by order identifier
+	OrderId int64 `json:"order_id,omitempty"`
+
+	// Filter by shipment number
+	PostingNumbers []string `json:"posting_numbers,omitempty"`
+
+	// Filter by product name
+	ProductName string `json:"product_name,omitempty"`
+
+	// Filter by product identifier in the seller's system
+	OfferId string `json:"offer_id,omitempty"`
+
+	// Filter by return status
+	VisualStatusName VisualStatus `json:"visual_status_name,omitempty"`
+
+	// Filter by warehouse identifier
+	WarehouseId int64 `json:"warehouse_id,omitempty"`
+
+	// Filter by return label barcode
+	Barcode string `json:"barcode,omitempty"`
+
+	// Filter by delivery scheme: FBS or FBO
+	ReturnSchema string `json:"return_schema,omitempty"`
+}
+
+type ListReturnsResponse struct {
+	core.CommonResponse
+
+	// Returns details
+	Returns []Return `json:"returns"`
+
+	// true, if the seller has other returns
+	HasNext bool `json:"has_next"`
+}
+
+type Return struct {
+	// Product items data
+	Exemplars []ReturnExemplar `json:"exemplars"`
+
+	// Return identifier
+	Id int64 `json:"id"`
+
+	// Company identifier
+	CompanyId int64 `json:"company_id"`
+
+	// Return reason
+	ReturnReasonName string `json:"return_reason_name"`
+
+	// Return type
+	Type string `json:"type"`
+
+	// Return scheme
+	Schema string `json:"schema"`
+
+	// Order identifier
+	OrderId int64 `json:"order_id"`
+
+	// Order number
+	OrderNumber string `json:"order_number"`
+
+	// Warehouse where the return is stored
+	Place ReturnPlace `json:"place"`
+
+	// Warehouse where returns are sent to
+	TargetPlace ReturnPlace `json:"target_place"`
+
+	// Storage details
+	Storage ReturnStorage `json:"storage"`
+
+	// Product details
+	Product ReturnProduct `json:"product"`
+
+	// Return details
+	Logistic ReturnLogistic `json:"logistic"`
+
+	// Return status details
+	Visual ReturnVisual `json:"visual"`
+
+	// Additional information
+	AdditionalInfo ReturnAdditionalInfo `json:"additional_info"`
+
+	// Previous return identifier
+	SourceId int64 `json:"source_id"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Original shipment barcode
+	ClearingId int64 `json:"clearing_id"`
+
+	// Package unit identifier in the Ozon logistics system
+	ReturnClearingId int64 `json:"return_clearing_id"`
+}
+
+type ReturnExemplar struct {
+	// Product identifier
+	Id int64 `json:"id"`
+}
+
+type ReturnPlace struct {
+	// Warehouse identifier
+	Id int64 `json:"id"`
+
+	// Warehouse name
+	Name string `json:"name"`
+
+	// Warehouse address
+	Address string `json:"address"`
+}
+
+type ReturnStorage struct {
+	// Storage cost details
+	Sum ReturnSum `json:"sum"`
+
+	// First day of charging for storage
+	TarifficationsFirstDate time.Time `json:"tariffication_first_date"`
+
+	// Start date for storage fees
+	TarifficationsStartDate time.Time `json:"tariffication_start_date"`
+
+	// Date when the return was ready for handover
+	ArrivedMoment time.Time `json:"arrived_moment"`
+
+	// Number of days the return has been waiting for handover
+	Days int64 `json:"days"`
+
+	// Disposal cost details
+	UtilizationSum ReturnSum `json:"utilization_sum"`
+
+	// Planned disposal date
+	UtilizationForecastDate string `json:"utilization_forecast_date"`
+}
+
+type ReturnSum struct {
+	// Currency
+	CurrencyCode string `json:"currency_code"`
+
+	// Disposal cost
+	Price float64 `json:"price"`
+}
+
+type ReturnProduct struct {
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// product name
+	Name string `json:"name"`
+
+	// Product price details
+	Price ReturnSum `json:"price"`
+
+	// Product cost without commission
+	PriceWithoutCommission ReturnSum `json:"price_without_commission"`
+
+	// Sales commission by category
+	CommissionPercent float64 `json:"commission_percent"`
+
+	// Commission details
+	Commission ReturnSum `json:"commission"`
+}
+
+type ReturnLogistic struct {
+	// Date when the order was placed for technical return
+	TechnicalReturnMoment time.Time `json:"technical_return_moment"`
+
+	// Date when the return arrived to the warehouse or was handed over to the seller
+	FinalMoment time.Time `json:"final_moment"`
+
+	// Date when the seller received compensation for the return
+	CancelledWithCompensationMoment time.Time `json:"cancelled_with_compensation_moment"`
+
+	// Date when the customer returned the product
+	ReturnDate time.Time `json:"return_date"`
+
+	// Return label barcode
+	Barcode string `json:"barcode"`
+}
+
+type ReturnVisual struct {
+	// Return status
+	Status ReturnVisualStatus `json:"status"`
+
+	// Date the return status changed
+	ChangeMoment time.Time `json:"change_moment"`
+}
+
+type ReturnVisualStatus struct {
+	// Return status identifier
+	Id int32 `json:"id"`
+
+	// Return status name
+	DisplayName string `json:"display_name"`
+
+	// System name of the return status
+	SystemName string `json:"sys_name"`
+}
+
+type ReturnAdditionalInfo struct {
+	// true, if the return package is opened
+	IsOpened bool `json:"is_opened"`
+
+	// true, if the return belongs to Super Economy products
+	IsSuperEconom bool `json:"is_super_econom"`
+}
+
+func (c Returns) List(ctx context.Context, params *ListReturnsParams) (*ListReturnsResponse, error) {
+	url := "/v1/returns/list"
+
+	resp := &ListReturnsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}

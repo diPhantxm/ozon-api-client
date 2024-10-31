@@ -1059,3 +1059,153 @@ func TestFBSQuantity(t *testing.T) {
 		}
 	}
 }
+
+func TestListReturns(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListReturnsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListReturnsParams{
+				Filter: &ListReturnsFilter{
+					LogisticReturnDate: &GetFBSReturnsFilterTimeRange{
+						TimeFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+						TimeTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+					},
+					StorageTarifficationDate: &GetFBSReturnsFilterTimeRange{
+						TimeFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+						TimeTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+					},
+					VisualStatusChangeMoment: &GetFBSReturnsFilterTimeRange{
+						TimeFrom: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+						TimeTo:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+					},
+					WarehouseId:  911,
+					ReturnSchema: "FBO",
+					ProductName:  "string",
+				},
+				Limit:  500,
+				LastId: 0,
+			},
+			`{
+				"returns": [
+				  {
+					"exemplars": [
+					  {
+						"id": 1019562967545956
+					  }
+					],
+					"id": 1000015552,
+					"company_id": 3058,
+					"return_reason_name": "Customer refused on receipt: not satisfied with the quality of the product",
+					"type": "FullReturn",
+					"schema": "Fbs",
+					"order_id": 24540784250,
+					"order_number": "58544282-0057",
+					"place": {
+					  "id": 23869688194000,
+					  "name": "СЦ_Львовский_Возвраты",
+					  "address": "Россия, обл. Московская, г. Подольск, промышленная зона Львовский, ул. Московская, д. 69, стр. 5"
+					},
+					"target_place": {
+					  "id": 23869688194000,
+					  "name": "СЦ_Львовский_Возвраты",
+					  "address": "Россия, обл. Московская, г. Подольск, промышленная зона Львовский, ул. Московская, д. 69, стр. 5"
+					},
+					"storage": {
+					  "sum": {
+						"currency_code": "RUB",
+						"price": 1231
+					  },
+					  "tariffication_first_date": "2024-07-30T06:15:48.998146Z",
+					  "tariffication_start_date": "2024-07-29T06:15:48.998146Z",
+					  "arrived_moment": "2024-07-29T06:15:48.998146Z",
+					  "days": 0,
+					  "utilization_sum": {
+						"currency_code": "RUB",
+						"price": 1231
+					  },
+					  "utilization_forecast_date": "2024-07-29T06:15:48.998146Z"
+					},
+					"product": {
+					  "sku": 1100526203,
+					  "offer_id": "81451",
+					  "name": "Кукла Дотти Плачущий младенец Cry Babies Dressy Dotty",
+					  "price": {
+						"currency_code": "RUB",
+						"price": 3318
+					  },
+					  "price_without_commission": {
+						"currency_code": "RUB",
+						"price": 3318
+					  },
+					  "commission_percent": 1.2,
+					  "commission": {
+						"currency_code": "RUB",
+						"price": 2312
+					  }
+					},
+					"logistic": {
+					  "technical_return_moment": "2024-07-29T06:15:48.998146Z",
+					  "final_moment": "2024-07-29T06:15:48.998146Z",
+					  "cancelled_with_compensation_moment": "2024-07-29T06:15:48.998146Z",
+					  "return_date": "2024-07-29T06:15:48.998146Z",
+					  "barcode": "ii5275210303"
+					},
+					"visual": {
+					  "status": {
+						"id": 3,
+						"display_name": "At the pick-up point",
+						"sys_name": "ArrivedAtReturnPlace"
+					  },
+					  "change_moment": "2024-07-29T06:15:48.998146Z"
+					},
+					"additional_info": {
+					  "is_opened": true,
+					  "is_super_econom": false
+					},
+					"source_id": 90426223,
+					"posting_number": "58544282-0057-1",
+					"clearing_id": 21190893156000,
+					"return_clearing_id": null
+				  }
+				],
+				"has_next": false
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListReturnsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Returns().List(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &ListReturnsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
