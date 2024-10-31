@@ -219,3 +219,54 @@ func (c Analytics) GetStocksOnWarehouses(ctx context.Context, params *GetStocksO
 
 	return resp, nil
 }
+
+type GetProductTurnoverParams struct {
+	// Number of values in the response
+	Limit int64 `json:"limit"`
+
+	// Number of elements to skip in the response.
+	//
+	// For example, if offset = 10, the response starts with the 11th element found
+	Offset int32 `json:"offset"`
+
+	// Product identifiers in the Ozon system, SKU
+	SKU []string `json:"sku"`
+}
+
+type GetProductTurnoverResponse struct {
+	core.CommonResponse
+
+	// Products
+	Items []ProductTurnoverItem `json:"items"`
+}
+
+type ProductTurnoverItem struct {
+	// Average daily number of product items sold over the last 60 days
+	Ads float64 `json:"ads"`
+
+	// Product stock, pcs
+	CurrentStock int64 `json:"current_stock"`
+
+	// Number of days the stock will last based on your average daily sales
+	IDC float64 `json:"idc"`
+
+	// Product stock level
+	IDCGrade string `json:"idc_grade"`
+}
+
+// Use the method to get the product turnover rate and the number of days the current stock will last.
+//
+// If you request a list of products by sku, the limit and offset parameters are optional.
+func (c Analytics) GetProductTurnover(ctx context.Context, params *GetProductTurnoverParams) (*GetProductTurnoverResponse, error) {
+	url := "/v1/analytics/turnover/stocks"
+
+	resp := &GetProductTurnoverResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
