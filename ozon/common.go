@@ -809,3 +809,109 @@ const (
 	PaymentTypeGroupPaymentToCurrentAccount   PaymentTypeGroupName = "payment to current account"
 	PaymentTypeGroupSberpay                   PaymentTypeGroupName = "Sberpay"
 )
+
+type VisualStatus string
+
+const (
+	// dispute with the customer has been opened
+	VisualStatusDisputeOpened VisualStatus = "DisputeOpened"
+
+	// pending with the seller
+	VisualStatusOnSellerApproval VisualStatus = "OnSellerApproval"
+
+	// at the pick-up point
+	VisualStatusArrivedAtReturnPlace VisualStatus = "ArrivedAtReturnPlace"
+
+	// pending clarification by the seller
+	VisualStatusOnSellerClarification VisualStatus = "OnSellerClarification"
+
+	// pending clarification by the seller after partial compensation
+	VisualStatusOnSellerClarificationPartial VisualStatus = "OnSellerClarificationAfterPartialCompensation"
+
+	// partial compensation offered
+	VisualStatusOfferedPartial VisualStatus = "OfferedPartialCompensation"
+
+	// refund approved
+	VisualStatusReturnMoneyApproved VisualStatus = "ReturnMoneyApproved"
+
+	// partial compensation provided
+	VisualStatusPartialReturned VisualStatus = "PartialCompensationReturned"
+
+	// refund rejected, dispute isn't opened
+	VisualStatusCancelledDisputeNotOpen VisualStatus = "CancelledDisputeNotOpen"
+
+	// request rejected
+	VisualStatusRejected VisualStatus = "Rejected"
+
+	// request rejected by Ozon
+	VisualStatusCrmRejected VisualStatus = "CrmRejected"
+
+	// request canceled
+	VisualStatusCancelled VisualStatus = "Cancelled"
+
+	// request approved by the seller
+	VisualStatusApproved VisualStatus = "Approved"
+
+	// request approved by Ozon
+	VisualStatusApprovedByOzon VisualStatus = "ApprovedByOzon"
+
+	// seller received the return
+	VisualStatusReceivedBySeller VisualStatus = "ReceivedBySeller"
+
+	// return is on its way to the seller
+	VisualStatusMovingToSeller VisualStatus = "MovingToSeller"
+
+	// seller received the refund
+	VisualStatusReturnCompensated VisualStatus = "ReturnCompensated"
+
+	// courier is taking the return to the seller
+	VisualStatusReturningByCourier VisualStatus = "ReturningByCourier"
+
+	// on disposal
+	VisualStatusUtilizing VisualStatus = "Utilizing"
+
+	// disposed of
+	VisualStatusUtilized VisualStatus = "Utilized"
+
+	// customer received full refund
+	VisualStatusMoneyReturned VisualStatus = "MoneyReturned"
+
+	// partial refund has been approved
+	VisualStatusPartialInProcess VisualStatus = "PartialCompensationInProcess"
+
+	// seller opened a dispute
+	VisualStatusDisputeYouOpened VisualStatus = "DisputeYouOpened"
+
+	// compensation rejected
+	VisualStatusCompensationRejected VisualStatus = "CompensationRejected"
+
+	// support request sent
+	VisualStatusDisputeOpening VisualStatus = "DisputeOpening"
+
+	// awaiting your decision on compensation
+	VisualStatusCompensationOffered VisualStatus = "CompensationOffered"
+
+	// awaiting compensation
+	VisualStatusWaitingCompensation VisualStatus = "WaitingCompensation"
+
+	// an error occurred when sending the support request
+	VisualStatusSendingError VisualStatus = "SendingError"
+
+	// decision period has expired
+	VisualStatusCompensationRejectedBySla VisualStatus = "CompensationRejectedBySla"
+
+	// seller has refused compensation
+	VisualStatusCompensationRejectedBySeller VisualStatus = "CompensationRejectedBySeller"
+
+	// on the way to the Ozon warehouse
+	VisualStatusMovingToOzon VisualStatus = "MovingToOzon"
+
+	// arrived at the Ozon warehouse
+	VisualStatusReturnedToOzon VisualStatus = "ReturnedToOzon"
+
+	// quick refund
+	VisualStatusMoneyReturnedBySystem VisualStatus = "MoneyReturnedBySystem"
+
+	// awaiting shipping
+	VisualStatusWaitingShipment VisualStatus = "WaitingShipment"
+)

@@ -18,11 +18,24 @@ type GetCurrentSellerRatingInfoResponse struct {
 	// Rating groups list
 	Groups []GetCurrentSellerRatingInfoGroup `json:"groups"`
 
+	// Localization index details.
+	// If you had no sales in the last 14 days,
+	// the parameter fields will be empty
+	LocalizationIndex []LocalizationIndex `json:"localization_index"`
+
 	// An indication that the penalty points balance is exceeded
 	PenaltyScoreExceeded bool `json:"penalty_score_exceeded"`
 
 	// An indication that you participate in the Premium program
 	Premium bool `json:"premium"`
+}
+
+type LocalizationIndex struct {
+	// Date of localization index calculation
+	CalculationDate time.Time `json:"calculation_date"`
+
+	// Localization index value
+	LocalizationPercentage int32 `json:"localization_percentage"`
 }
 
 type GetCurrentSellerRatingInfoGroup struct {

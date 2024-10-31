@@ -41,6 +41,12 @@ func TestGetCurrentRatingInfo(t *testing.T) {
 					]
 				  }
 				],
+				"localization_index": [
+					{
+						"calculation_date": "2019-08-24T14:15:22Z",
+						"localization_percentage": 0
+					}
+				],
 				"penalty_score_exceeded": true,
 				"premium": true
 			}`,
