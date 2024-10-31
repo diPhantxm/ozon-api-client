@@ -145,3 +145,67 @@ func TestGetStocksOnWarehouses(t *testing.T) {
 		}
 	}
 }
+
+func TestGetProductTurnover(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductTurnoverParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductTurnoverParams{
+				Limit: 1,
+				SKU:   []string{"string"},
+			},
+			`{
+				"items": [
+				  {
+					"ads": 0,
+					"current_stock": 0,
+					"idc": 0,
+					"idc_grade": "GRADES_NONE"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductTurnoverParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Analytics().GetProductTurnover(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetProductTurnoverResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Items) > int(test.params.Limit) {
+				t.Errorf("Length of items is bigger than limit")
+			}
+		}
+	}
+}
