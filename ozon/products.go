@@ -1762,67 +1762,6 @@ func (c Products) RemoveProductWithoutSKU(ctx context.Context, params *RemovePro
 	return resp, nil
 }
 
-type ListGeoRestrictionsParams struct {
-	// Filter. To get all geo-restrictions, leave names blank and specify true in the only_visible parameter
-	Filter ListGeoRestrictionsFilter `json:"filter"`
-
-	// Order number of geo-restriction from which to output data in the response.
-	//
-	// If you specify 23 in this parameter, the first item in the restrictions list will output order_number = 24.
-	// If you want to get all geo-restrictions, pass 0 in this parameter
-	LastOrderNumber int64 `json:"last_order_number"`
-
-	// Number of items in the response
-	Limit int64 `json:"limit"`
-}
-
-type ListGeoRestrictionsFilter struct {
-	// List with city names
-	Names []string `json:"names"`
-
-	// Value visibility. We recommend always passing true in this parameter
-	OnlyVisible bool `json:"only_visible"`
-}
-
-type ListGeoRestrictionsResponse struct {
-	core.CommonResponse
-
-	// Restrictions
-	Restrictions []ListGeoRestrictionsRestriction `json:"restrictions"`
-}
-
-type ListGeoRestrictionsRestriction struct {
-	// Geo-restriction identifier
-	Id string `json:"id"`
-
-	// Item visibility
-	IsVisible bool `json:"is_visible"`
-
-	// City name
-	Name string `json:"name"`
-
-	// Geo-restriction order number.
-	//
-	// If you specify 23 in the last_order_number parameter in the request,
-	// the first item in the restrictions list will have order_number = 24
-	OrderNumber int64 `json:"order_number"`
-}
-
-// Deprecated: Get a list of geo-restrictions for services
-func (c Products) ListGeoRestrictions(ctx context.Context, params *ListGeoRestrictionsParams) (*ListGeoRestrictionsResponse, error) {
-	url := "/v1/products/geo-restrictions-catalog-by-filter"
-
-	resp := &ListGeoRestrictionsResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
 type UploadActivationCodesParams struct {
 	// Digital activation codes
 	DigitalCodes []string `json:"digital_codes"`
