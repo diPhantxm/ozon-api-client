@@ -3010,3 +3010,73 @@ func TestGetCarriage(t *testing.T) {
 		}
 	}
 }
+
+func TestGetCancellationReasons(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"result": [
+				  {
+					"id": 352,
+					"title": "The products ran out at the seller's warehouse",
+					"type_id": "seller",
+					"is_available_for_cancellation": true
+				  },
+				  {
+					"id": 401,
+					"title": "Seller rejects arbitration",
+					"type_id": "seller",
+					"is_available_for_cancellation": false
+				  },
+				  {
+					"id": 402,
+					"title": "Other (seller's fault)",
+					"type_id": "seller",
+					"is_available_for_cancellation": true
+				  },
+				  {
+					"id": 666,
+					"title": "Return from the delivery service: there is no delivery to the specified region",
+					"type_id": "seller",
+					"is_available_for_cancellation": false
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().GetCancellationReasons(ctx)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetCancellationReasonsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

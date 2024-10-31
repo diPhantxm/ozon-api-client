@@ -3016,3 +3016,38 @@ func (c FBS) GetCarriage(ctx context.Context, params *GetCarriageParams) (*GetCa
 
 	return resp, nil
 }
+
+type GetCancellationReasonsResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result []GetCancellationReasonsResult `json:"result"`
+}
+
+type GetCancellationReasonsResult struct {
+	// Cancellation reasons identifier
+	Id int64 `json:"id"`
+
+	// Shipment cancellation result. true if the request is available for cancellation
+	IsAvailableForCancellation bool `json:"is_available_for_cancellation"`
+
+	// Category name
+	Title string `json:"title"`
+
+	// Shipment cancellation initiator
+	TypeId string `json:"type_id"`
+}
+
+func (c FBS) GetCancellationReasons(ctx context.Context) (*GetCancellationReasonsResponse, error) {
+	url := "/v1/posting/fbo/cancel-reason/list"
+
+	resp := &GetCancellationReasonsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
