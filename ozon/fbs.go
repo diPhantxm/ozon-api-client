@@ -106,6 +106,9 @@ type FBSPosting struct {
 	// Analytics data
 	AnalyticsData FBSPostingAnalyticsData `json:"analytics_data"`
 
+	// Available actions and shipment information
+	AvailableActions []string `json:"available_actions"`
+
 	// Shipment barcodes
 	Barcodes FBSBarcode `json:"barcodes"`
 
@@ -911,6 +914,9 @@ type GetShipmentDataByIdentifierResult struct {
 
 	// Analytics data
 	AnalyticsData GetShipmentDataByIdentifierResultAnalyticsData `json:"analytics_data"`
+
+	// Available actions and shipment information
+	AvailableActions []string `json:"available_actions"`
 
 	// Shipment barcodes
 	Barcodes FBSBarcode `json:"barcodes"`
@@ -3044,6 +3050,35 @@ func (c FBS) GetCancellationReasons(ctx context.Context) (*GetCancellationReason
 	resp := &GetCancellationReasonsResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, nil, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type SetShippingDateParams struct {
+	// New shipping date
+	NewCutoffDate time.Time `json:"new_cutoff_date"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type SetShippingDateResponse struct {
+	core.CommonResponse
+
+	// true if the new date is set
+	Result bool `json:"result"`
+}
+
+func (c FBS) SetShippingDate(ctx context.Context, params *SetShippingDateParams) (*SetShippingDateResponse, error) {
+	url := "/v1/posting/cutoff/set"
+
+	resp := &SetShippingDateResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
