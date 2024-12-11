@@ -42,6 +42,8 @@ type Client struct {
 	strategies    *Strategies
 	barcodes      *Barcodes
 	passes        *Passes
+	clusters      *Clusters
+	quants        *Quants
 }
 
 func (c Client) Analytics() *Analytics {
@@ -124,6 +126,14 @@ func (c Client) Passes() *Passes {
 	return c.passes
 }
 
+func (c Client) Clusters() *Clusters {
+	return c.clusters
+}
+
+func (c Client) Quants() *Quants {
+	return c.quants
+}
+
 type ClientOption func(c *ClientOptions)
 
 func WithHttpClient(httpClient core.HttpClient) ClientOption {
@@ -188,6 +198,8 @@ func NewClient(opts ...ClientOption) *Client {
 		strategies:    &Strategies{client: coreClient},
 		barcodes:      &Barcodes{client: coreClient},
 		passes:        &Passes{client: coreClient},
+		clusters:      &Clusters{client: coreClient},
+		quants:        &Quants{client: coreClient},
 	}
 }
 
@@ -216,5 +228,7 @@ func NewMockClient(handler http.HandlerFunc) *Client {
 		strategies:    &Strategies{client: coreClient},
 		barcodes:      &Barcodes{client: coreClient},
 		passes:        &Passes{client: coreClient},
+		clusters:      &Clusters{client: coreClient},
+		quants:        &Quants{client: coreClient},
 	}
 }
