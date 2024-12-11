@@ -290,108 +290,38 @@ func (c FBO) GetShipmentDetails(ctx context.Context, params *GetShipmentDetailsP
 }
 
 type ListSupplyRequestsParams struct {
-	// Number of the page returned in the request
-	Page int32 `json:"page"`
+	// Filter
+	Filter *ListSupplyRequestsFilter `json:"filter"`
 
-	// Number of elements on the page
-	PageSize int32 `json:"page_size"`
+	// Customizing the display of the requests list
+	Paging *ListSupplyRequestsPaging `json:"paging"`
+}
 
-	// Filter on status of a supply by request
-	States []SupplyRequestState `json:"states"`
+type ListSupplyRequestsFilter struct {
+	States []string `json:"states"`
+}
+
+type ListSupplyRequestsPaging struct {
+	// Supply number from which the list of requests will start
+	FromOrderId int64 `json:"from_supply_order_id"`
+
+	// Number of requests in the response
+	Limit int32 `json:"limit"`
 }
 
 type ListSupplyRequestsResponse struct {
 	core.CommonResponse
 
-	// Indicates that the response contains not the entire array of supply requests:
-	//   - true — make a new request with a different page and page_size values to get information on the remaining requests;
-	//   - false — the entire array of requests for the filter specified in the request was returned in the response
-	HasNext bool `json:"has_next"`
-
-	// Supply requests list
-	SupplyOrders []SupplyRequestCommonResponse `json:"supply_orders"`
-
-	// Total requests number
-	TotalSupplyOrdersCount int32 `json:"total_supply_orders_count"`
-}
-
-type SupplyRequestCommonResponse struct {
-	// Supply request creation date
-	CreatedAt string `json:"created_at"`
-
-	// Local time supply interval
-	LocalTimeslot SupplyRequestCommonResponseLocalTimeslot `json:"local_timeslot"`
-
-	// Date from which you want to bring the supply to the warehouse. Only for supplies via vDC
-	PreferredSupplyDateFrom string `json:"preferred_supply_date_from"`
-
-	// Date by which you want to bring the supply to the warehouse. Only for supplies via vDC
-	PreferredSupplyDateTo string `json:"preferred_supply_date_to"`
-
-	// Your own warehouse from which you'll take the products to the supply warehouse.
-	// Only for supplies via vDC
-	SellerWarehouse SupplyRequestSellerWarehouse `json:"seller_warehouse"`
-
-	// Status of a supply by request
-	State string `json:"state"`
+	// Supply request identifier you last requested
+	LastSupplyOrderId int64 `json:"last_supply_order_id"`
 
 	// Supply request identifier
-	SupplyOrderId int64 `json:"supply_order_id"`
-
-	// Supply request number
-	SupplyOrderNumber string `json:"supply_order_number"`
-
-	// Supply warehouse
-	SupplyWarehouse SupplyRequestCommonResponseSupplyWarehouse `json:"supply_warehouse"`
-
-	// time_left_to_prepare_supply
-	TimeLeftToPrepareSupply int64 `json:"time_left_to_prepare_supply"`
-
-	// Time in seconds left to select the supply option. Only for supplies via vDC
-	TimeLeftToSelectSupplyVariant int64 `json:"time_left_to_select_supply_variant"`
-
-	// total_items_count
-	TotalItemsCount int32 `json:"total_items_count"`
-
-	// Total number of items in the request
-	TotalQuantity int32 `json:"total_quantity"`
+	SupplyOrderId []string `json:"supply_order_id"`
 }
 
-type SupplyRequestSellerWarehouse struct {
-	// Warehouse address
-	Address string `json:"address"`
-
-	// Warehouse name
-	Name string `json:"name"`
-
-	// Warehouse identifier
-	WarehouseId int64 `json:"warehouse_id"`
-}
-
-type SupplyRequestCommonResponseLocalTimeslot struct {
-	// Interval start
-	From string `json:"from"`
-
-	// Interval end
-	To string `json:"to"`
-}
-
-type SupplyRequestCommonResponseSupplyWarehouse struct {
-	// Warehouse address
-	Address string `json:"address"`
-
-	// Warehouse name
-	Name string `json:"name"`
-
-	// Warehouse identifier
-	WarehouseId int64 `json:"warehouse_id"`
-}
-
-// Method for getting a list of supply requests to the Ozon warehouse.
-// Requests with supply both to a specific warehouse and via a virtual
-// distribution center (vDC) are taken into account
+// Requests with supply to a specific warehouse and through a virtual distribution center (vDC) are taken into account
 func (c FBO) ListSupplyRequests(ctx context.Context, params *ListSupplyRequestsParams) (*ListSupplyRequestsResponse, error) {
-	url := "/v1/supply-order/list"
+	url := "/v2/supply-order/list"
 
 	resp := &ListSupplyRequestsResponse{}
 
@@ -405,17 +335,111 @@ func (c FBO) ListSupplyRequests(ctx context.Context, params *ListSupplyRequestsP
 }
 
 type GetSupplyRequestInfoParams struct {
-	// Supply request identifier
-	SupplyOrderId int64 `json:"supply_order_id"`
+	// Supply request identifier in the Ozon system
+	OrderIds []string `json:"order_ids"`
 }
 
 type GetSupplyRequestInfoResponse struct {
 	core.CommonResponse
 
-	SupplyRequestCommonResponse
+	// Supply request details
+	Orders []SupplyOrder `json:"orders"`
 
-	// Driver and car information
-	VehicleInfo GetSupplyRequestInfoVehicle `json:"vehicle_info"`
+	// Warehouse details
+	Warehouses []SupplyWarehouse `json:"warehouses"`
+}
+
+type SupplyOrder struct {
+	// Date of supply request creation
+	CreationDate string `json:"creation_date"`
+
+	// Request source
+	CreationFlow string `json:"creation_flow"`
+
+	// Time remaining in seconds to fill in the supply details. Only for requests from the vDC
+	DataFillingDeadline time.Time `json:"data_filling_deadline_utc"`
+
+	// Supply warehouse identifier
+	DropoffWarehouseId int64 `json:"dropoff_warehouse_id"`
+
+	// Filter by supply status
+	State string `json:"state"`
+
+	// Supply request contents
+	Supplies []Supply `json:"supplies"`
+
+	// Supply request identifier
+	Id int64 `json:"supply_order_id"`
+
+	// Request number
+	OrderNumber string `json:"supply_order_number"`
+
+	// Supply time slot
+	Timeslot []SupplyTimeslot `json:"timeslot"`
+
+	// Driver and vehicle details
+	Vehicle []SupplyVehicle `json:"vehicle"`
+}
+
+type Supply struct {
+	// Supply contents identifier. Used in the /v1/supply-order/bundle method
+	BundleId string `json:"bundle_id"`
+
+	// Storage warehouse identifier
+	StorageWarehouseId int64 `json:"storage_warehouse_id"`
+
+	// Supply identifier
+	Id int64 `json:"supply_id"`
+}
+
+type SupplyTimeslot struct {
+	// Reason why you can't select the supply time slot
+	Reasons []string `json:"can_not_set_reasons"`
+
+	// true, if you can select or edit the supply time slot
+	CanSet bool `json:"can_set"`
+
+	// true, if the characteristic is required
+	IsRequired bool `json:"is_required"`
+
+	Value SupplyTimeslotValue `json:"value"`
+}
+
+type SupplyVehicle struct {
+	// Reason why you can't select the supply time slot
+	Reasons []string `json:"can_not_set_reasons"`
+
+	// true, if you can select or edit the supply time slot
+	CanSet bool `json:"can_set"`
+
+	// true, if the characteristic is required
+	IsRequired bool `json:"is_required"`
+
+	Value []GetSupplyRequestInfoVehicle `json:"value"`
+}
+
+type SupplyTimeslotValue struct {
+	// Supply time slot in local time
+	Timeslot []SupplyTimeslotValueTimeslot `json:"timeslot"`
+
+	// Time zone
+	Timezone []SupplyTimeslotValueTimezone `json:"timezone_info"`
+}
+
+type SupplyTimeslotValueTimeslot struct {
+	// Supply time slot start
+	From time.Time `json:"from"`
+
+	// Supply time slot end
+	To time.Time `json:"to"`
+}
+
+type SupplyTimeslotValueTimezone struct {
+	// Time zone name
+	Name string `json:"iana_name"`
+
+	// Time zone offset from UTC-0 in seconds
+	Offset string `json:"offset"`
 }
 
 type GetSupplyRequestInfoVehicle struct {
@@ -432,11 +456,22 @@ type GetSupplyRequestInfoVehicle struct {
 	VehicleNumber string `json:"vehicle_number"`
 }
 
+type SupplyWarehouse struct {
+	// Warehouse address
+	Address string `json:"address"`
+
+	// Warehouse name
+	Name string `json:"name"`
+
+	// Warehouse identifier
+	Id int64 `json:"warehouse_id"`
+}
+
 // Method for getting detailed information on a supply request.
 // Requests with supply both to a specific warehouse and via a
 // virtual distribution center (vDC) are taken into account
 func (c FBO) GetSupplyRequestInfo(ctx context.Context, params *GetSupplyRequestInfoParams) (*GetSupplyRequestInfoResponse, error) {
-	url := "/v1/supply-order/get"
+	url := "/v2/supply-order/get"
 
 	resp := &GetSupplyRequestInfoResponse{}
 
@@ -556,6 +591,280 @@ func (c FBO) GetWarehouseWorkload(ctx context.Context) (*GetWarehouseWorkloadRes
 	resp := &GetWarehouseWorkloadResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodGet, url, nil, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetSupplyOrdersByStatusParams struct {
+}
+
+type GetSupplyOrdersByStatusResponse struct {
+	core.CommonResponse
+
+	Items []SupplyOrdersByStatus `json:"items"`
+}
+
+type SupplyOrdersByStatus struct {
+	// Number of supply requests in this status
+	Count int32 `json:"count"`
+
+	// Supply status
+	OrderState string `json:"order_state"`
+}
+
+// Returns the number of supply requests in a specific status.
+func (c FBO) GetSupplyOrdersByStatus(ctx context.Context) (*GetSupplyOrdersByStatusResponse, error) {
+	url := "/v1/supply-order/status/counter"
+
+	resp := &GetSupplyOrdersByStatusResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, &GetSupplyOrdersByStatusParams{}, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetSupplyTimeslotsParams struct {
+	// Supply request identifier
+	SupplyOrderId int64 `json:"supply_order_id"`
+}
+
+type GetSupplyTimeslotsResponse struct {
+	core.CommonResponse
+
+	// Supply time slot
+	Timeslots []SupplyTimeslotValueTimeslot `json:"timeslots"`
+
+	// Time zone
+	Timezones []SupplyTimeslotValueTimezone `json:"timezone"`
+}
+
+func (c FBO) GetSupplyTimeslots(ctx context.Context, params *GetSupplyTimeslotsParams) (*GetSupplyTimeslotsResponse, error) {
+	url := "/v1/supply-order/timeslot/get"
+
+	resp := &GetSupplyTimeslotsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type UpdateSupplyTimeslotParams struct {
+	// Supply request identifier
+	SupplyOrderId int64 `json:"supply_order_id"`
+
+	// Supply time slot details
+	Timeslot SupplyTimeslotValueTimeslot `json:"timeslot"`
+}
+
+type UpdateSupplyTimeslotResponse struct {
+	core.CommonResponse
+
+	// Possible errors
+	Errors []string `json:"errors"`
+
+	// Operation identifier
+	OperationId string `json:"operation_id"`
+}
+
+func (c FBO) UpdateSupplyTimeslot(ctx context.Context, params *UpdateSupplyTimeslotParams) (*UpdateSupplyTimeslotResponse, error) {
+	url := "/v1/supply-order/timeslot/update"
+
+	resp := &UpdateSupplyTimeslotResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetSupplyTimeslotStatusParams struct {
+	// Operation identifier
+	OperationId string `json:"operation_id"`
+}
+
+type GetSupplyTimeslotStatusResponse struct {
+	core.CommonResponse
+
+	// Possible errors
+	Errors []string `json:"errors"`
+
+	// Data status
+	Status string `json:"status"`
+}
+
+func (c FBO) GetSupplyTimeslotStatus(ctx context.Context, params *GetSupplyTimeslotStatusParams) (*GetSupplyTimeslotStatusResponse, error) {
+	url := "/v1/supply-order/timeslot/status"
+
+	resp := &GetSupplyTimeslotStatusResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CreatePassParams struct {
+	// Supply request identifier
+	SupplyOrderId int64 `json:"supply_order_id"`
+
+	// Driver and car information
+	Vehicle GetSupplyRequestInfoVehicle `json:"vehicle"`
+}
+
+type CreatePassResponse struct {
+	core.CommonResponse
+
+	// Possible errors
+	Errors []string `json:"error_reasons"`
+
+	// Operation identifier
+	OperationId string `json:"operation_id"`
+}
+
+func (c FBO) CreatePass(ctx context.Context, params *CreatePassParams) (*CreatePassResponse, error) {
+	url := "/v1/supply-order/pass/create"
+
+	resp := &CreatePassResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetPassParams struct {
+	// Operation identifier
+	OperationId string `json:"operation_id"`
+}
+
+type GetPassResponse struct {
+	core.CommonResponse
+
+	// Possible errors
+	Errors []string `json:"errors"`
+
+	// Status of driver and vehicle data entry
+	Result string `json:"result"`
+}
+
+func (c FBO) GetPass(ctx context.Context, params *GetPassParams) (*GetPassResponse, error) {
+	url := "/v1/supply-order/pass/status"
+
+	resp := &GetPassResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetSupplyContentParams struct {
+	// Identifiers of supply contents. Minimum is 1, maximum is 1000. You can get them using the /v2/supply-order/get method
+	BundleIds []string `json:"bundle_ids"`
+
+	// true, to sort in ascending order
+	IsAsc bool `json:"is_asc"`
+
+	// Identifier of the last value on the page
+	LastId string `json:"last_id"`
+
+	// Number of values on the page. Minimum is 1, maximum is 1000
+	Limit int32 `json:"limit"`
+
+	// Search query, for example: by name, article code, or SKU
+	Query string `json:"query"`
+
+	// Sorting by parameters
+	SortField string `json:"sort_field"`
+}
+
+type GetSupplyContentResponse struct {
+	core.CommonResponse
+
+	// List of products in the supply request
+	Items []SupplyContentItem `json:"items"`
+
+	// Quantity of products in the request
+	TotalCount int32 `json:"total_count"`
+
+	// Indication that the response hasn't returned all products
+	HasNext bool `json:"has_next"`
+
+	// Identifier of the last value on the page
+	LastId string `json:"last_id"`
+}
+
+type SupplyContentItem struct {
+	// Link to product image
+	IconPath string `json:"icon_path"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Product items quantity
+	Quantity int32 `json:"quantity"`
+
+	// Barcode
+	Barcode string `json:"barcode"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Quantity of products in one package
+	Quant int32 `json:"quant"`
+
+	// true if the quantity of products in one package can be edited
+	IsQuantEditable bool `json:"is_quant_editable"`
+
+	// Volume of products in liters
+	VolumeInLiters float64 `json:"volume_in_litres"`
+
+	// Volume of all products in liters
+	TotalVolumeInLiters float64 `json:"total_volume_in_litres"`
+
+	// Product article code
+	ContractorItemCode string `json:"contractor_item_code"`
+
+	// Super product label
+	SFBOAttribute string `json:"sfbo_attribute"`
+
+	// Type of wrapper
+	ShipmentType string `json:"shipment_type"`
+}
+
+func (c FBO) GetSupplyContent(ctx context.Context, params *GetSupplyContentParams) (*GetSupplyContentResponse, error) {
+	url := "/v1/supply-order/bundle"
+
+	resp := &GetSupplyContentResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
 	if err != nil {
 		return nil, err
 	}
