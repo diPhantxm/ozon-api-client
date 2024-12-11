@@ -301,36 +301,19 @@ func TestListSupplyRequests(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&ListSupplyRequestsParams{
-				Page:     0,
-				PageSize: 0,
-				States:   []SupplyRequestState{AcceptanceAtStorageWarehouse},
+				Filter: &ListSupplyRequestsFilter{
+					States: []string{"ORDER_STATE_DATA_FILLING"},
+				},
+				Paging: &ListSupplyRequestsPaging{
+					FromOrderId: 0,
+					Limit:       0,
+				},
 			},
 			`{
-				"has_next": true,
-				"supply_orders": [
-				  {
-					"created_at": "string",
-					"local_timeslot": {
-					  "from": "string",
-					  "to": "string"
-					},
-					"preferred_supply_date_from": "string",
-					"preferred_supply_date_to": "string",
-					"state": "string",
-					"supply_order_id": 0,
-					"supply_order_number": "string",
-					"supply_warehouse": {
-					  "address": "string",
-					  "name": "string",
-					  "warehouse_id": 0
-					},
-					"time_left_to_prepare_supply": 0,
-					"time_left_to_select_supply_variant": 0,
-					"total_items_count": 0,
-					"total_quantity": 0
-				  }
-				],
-				"total_supply_orders_count": 0
+				"last_supply_order_id": 0,
+				"supply_order_id": [
+				  "string"
+				]
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -377,39 +360,74 @@ func TestGetSupplyRequestInfo(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetSupplyRequestInfoParams{
-				SupplyOrderId: 0,
+				OrderIds: []string{"string"},
 			},
 			`{
-				"created_at": "string",
-				"local_timeslot": {
-				  "from": "string",
-				  "to": "string"
-				},
-				"preferred_supply_date_from": "string",
-				"preferred_supply_date_to": "string",
-				"seller_warehouse": {
-				  "address": "string",
-				  "name": "string",
-				  "warehouse_id": 0
-				},
-				"state": "string",
-				"supply_order_id": 0,
-				"supply_order_number": "string",
-				"supply_warehouse": {
-				  "address": "string",
-				  "name": "string",
-				  "warehouse_id": 0
-				},
-				"time_left_to_prepare_supply": 0,
-				"time_left_to_select_supply_variant": 0,
-				"total_items_count": 0,
-				"total_quantity": 0,
-				"vehicle_info": {
-				  "driver_name": "string",
-				  "driver_phone": "string",
-				  "vehicle_model": "string",
-				  "vehicle_number": "string"
-				}
+				"orders": [
+				  {
+					"creation_date": "string",
+					"creation_flow": "string",
+					"data_filling_deadline_utc": "2019-08-24T14:15:22Z",
+					"dropoff_warehouse_id": 0,
+					"state": "ORDER_STATE_UNSPECIFIED",
+					"supplies": [
+					  {
+						"bundle_id": "string",
+						"storage_warehouse_id": 0,
+						"supply_id": 0
+					  }
+					],
+					"supply_order_id": 0,
+					"supply_order_number": "string",
+					"timeslot": [
+					  {
+						"can_not_set_reasons": [
+						  "string"
+						],
+						"can_set": true,
+						"is_required": true,
+						"value": {
+						  "timeslot": [
+							{
+							  "from": "2019-08-24T14:15:22Z",
+							  "to": "2019-08-24T14:15:22Z"
+							}
+						  ],
+						  "timezone_info": [
+							{
+							  "iana_name": "string",
+							  "offset": "string"
+							}
+						  ]
+						}
+					  }
+					],
+					"vehicle": [
+					  {
+						"can_not_set_reasons": [
+						  "string"
+						],
+						"can_set": true,
+						"is_required": true,
+						"value": [
+						  {
+							"driver_name": "string",
+							"driver_phone": "string",
+							"vehicle_model": "string",
+							"vehicle_number": "string"
+						  }
+						]
+					  }
+					]
+				  }
+				],
+				"warehouses": [
+				  {
+					"address": "string",
+					"name": "string",
+					"warehouse_id": 0
+				  }
+				]
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -559,6 +577,412 @@ func TestGetWarehouseWorkload(t *testing.T) {
 		}
 
 		compareJsonResponse(t, test.response, &GetWarehouseWorkloadResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetSupplyOrdersByStatus(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			`{
+				"items": [
+				  {
+					"count": 0,
+					"order_state": "ORDER_STATE_UNSPECIFIED"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetSupplyOrdersByStatus(ctx)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetSupplyOrdersByStatusResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetSupplyTimeslots(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetSupplyTimeslotsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetSupplyTimeslotsParams{
+				SupplyOrderId: 0,
+			},
+			`{
+				"timeslots": [
+				  {
+					"from": "2019-08-24T14:15:22Z",
+					"to": "2019-08-24T14:15:22Z"
+				  }
+				],
+				"timezone": [
+				  {
+					"iana_name": "string",
+					"offset": "string"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetSupplyTimeslotsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetSupplyTimeslots(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetSupplyTimeslotsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestUpdateSupplyTimeslot(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UpdateSupplyTimeslotParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UpdateSupplyTimeslotParams{
+				SupplyOrderId: 0,
+				Timeslot: SupplyTimeslotValueTimeslot{
+					From: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+					To:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+				},
+			},
+			`{
+				"errors": [
+				  "UPDATE_TIMESLOT_ERROR_UNSPECIFIED"
+				],
+				"operation_id": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&UpdateSupplyTimeslotParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().UpdateSupplyTimeslot(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &UpdateSupplyTimeslotResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetSupplyTimeslotStatus(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetSupplyTimeslotStatusParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetSupplyTimeslotStatusParams{
+				OperationId: "string",
+			},
+			`{
+				"errors": [
+				  "UPDATE_TIMESLOT_ERROR_UNSPECIFIED"
+				],
+				"status": "STATUS_UNSPECIFIED"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetSupplyTimeslotStatusParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetSupplyTimeslotStatus(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetSupplyTimeslotStatusResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestCreatePass(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreatePassParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreatePassParams{
+				SupplyOrderId: 123,
+				Vehicle: GetSupplyRequestInfoVehicle{
+					DriverName:    "string",
+					DriverPhone:   "string",
+					VehicleModel:  "string",
+					VehicleNumber: "string",
+				},
+			},
+			`{
+				"error_reasons": [
+				  "SET_VEHICLE_ERROR_UNSPECIFIED"
+				],
+				"operation_id": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CreatePassParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().CreatePass(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &CreatePassResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetPass(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetPassParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetPassParams{
+				OperationId: "string",
+			},
+			`{
+				"errors": [
+				  "SET_VEHICLE_ERROR_UNSPECIFIED"
+				],
+				"result": "Unknown"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetPassParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetPass(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetPassResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetSupplyContent(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetSupplyContentParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetSupplyContentParams{
+				BundleIds: []string{"string"},
+				IsAsc:     true,
+				Limit:     0,
+				Query:     "string",
+				SortField: "UNSPECIFIED",
+			},
+			`{
+				"items": [
+				  {
+					"icon_path": "string",
+					"sku": 0,
+					"name": "string",
+					"quantity": 0,
+					"barcode": "string",
+					"product_id": 0,
+					"quant": 0,
+					"is_quant_editable": true,
+					"volume_in_litres": 0,
+					"total_volume_in_litres": 0,
+					"contractor_item_code": "string",
+					"sfbo_attribute": "ITEM_SFBO_ATTRIBUTE_UNSPECIFIED",
+					"shipment_type": "BUNDLE_ITEM_SHIPMENT_TYPE_UNSPECIFIED"
+				  }
+				],
+				"total_count": 0,
+				"has_next": true,
+				"last_id": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetSupplyContentParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetSupplyContent(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetSupplyContentResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
