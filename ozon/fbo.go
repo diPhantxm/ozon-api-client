@@ -872,3 +872,207 @@ func (c FBO) GetSupplyContent(ctx context.Context, params *GetSupplyContentParam
 
 	return resp, nil
 }
+
+type CreateSupplyDraftParams struct {
+	// Clusters identifiers
+	ClusterIds []string `json:"cluster_ids"`
+
+	// Shipping point identifier: pick-up point or sorting center. Only for the type = CREATE_TYPE_CROSSDOCK supply type.
+	DropoffWarehouseId int64 `json:"drop_off_point_warehouse_id"`
+
+	// Products
+	Items []CreateSupplyDraftItem `json:"items"`
+
+	// Supply type
+	Type string `json:"type"`
+}
+
+type CreateSupplyDraftItem struct {
+	// Product quantity
+	Quantity int32 `json:"quantity"`
+
+	// Product identifier
+	SKU int64 `json:"sku"`
+}
+
+type CreateSupplyDraftResponse struct {
+	core.CommonResponse
+
+	// Identifier of the supply request draft
+	OperationId string `json:"operation_id"`
+}
+
+// Create a direct or cross-docking supply request draft and specify the products to supply.
+//
+// You can leave feedback on this method in the comments section to the discussion in the Ozon for dev community
+func (c FBO) CreateSupplyDraft(ctx context.Context, params *CreateSupplyDraftParams) (*CreateSupplyDraftResponse, error) {
+	url := "/v1/draft/create"
+
+	resp := &CreateSupplyDraftResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetSupplyDraftInfoParams struct {
+	// Identifier of the supply request draft
+	OperationId string `json:"operation_id"`
+}
+
+type GetSupplyDraftInfoResponse struct {
+	core.CommonResponse
+
+	// Clusters
+	Clusters []SupplyDraftCluster `json:"clusters"`
+
+	// Identifier of the supply request draft
+	DraftId int64 `json:"draft_id"`
+
+	// Errors
+	Errors []GetSupplyDraftInfoError `json:"errors"`
+
+	// Creation status of the supply request draft
+	Status string `json:"status"`
+}
+
+type SupplyDraftCluster struct {
+	// Cluster identifier
+	Id int64 `json:"cluster_id"`
+
+	// Cluster name
+	Name string `json:"cluster_name"`
+
+	// Warehouses
+	Warehouses []SupplyDraftWarehouse `json:"warehouses"`
+}
+
+type SupplyDraftWarehouse struct {
+	// Warehouse address
+	Address string `json:"address"`
+
+	// Product list bundle
+	BundleIds []SupplyDraftWarehouseBundle `json:"bundle_ids"`
+
+	// Warehouse name
+	Name string `json:"name"`
+
+	// Bundle of products that don't come in a shipment
+	RestrictedBundleId string `json:"restricted_bundle_id"`
+
+	// Warehouse availability
+	Status SupplyDraftWarehouseStatus `json:"status"`
+
+	// Supply warehouses
+	SupplyWarehouse SupplyWarehouse `json:"supply_warehouse"`
+
+	// Warehouse rank in the cluster
+	TotalRank int32 `json:"total_rank"`
+
+	// Warehouse rating
+	TotalScore float64 `json:"total_score"`
+
+	// Estimated delivery time
+	//
+	// Nullable
+	TravelTimeDays *int64 `json:"travel_time_days"`
+
+	// Warehouse identifier
+	Id int64 `json:"warehouse_id"`
+}
+
+type SupplyDraftWarehouseBundle struct {
+	// Bundle identifier
+	Id string `json:"bundle_id"`
+
+	// Indicates that the UTD is to be passed
+	IsDocless bool `json:"is_docless"`
+}
+
+type SupplyDraftWarehouseStatus struct {
+	// Reason why the warehouse isn't available
+	InvalidReason string `json:"invalid_reason"`
+
+	// Warehouse availability
+	IsAvailable bool `json:"is_available"`
+
+	// Warehouse status
+	State string `json:"state"`
+}
+
+type GetSupplyDraftInfoError struct {
+	// Possible errors
+	Message string `json:"error_message"`
+
+	// Validation errors
+	ItemsValidation []GetSupplyDraftInfoValidationError `json:"items_validation"`
+
+	// Unknown clusters identifiers
+	UnknownClusterIds []string `json:"unknown_cluster_ids"`
+}
+
+type GetSupplyDraftInfoValidationError struct {
+	// Error reasons
+	Reasons []string `json:"reasons"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+}
+
+func (c FBO) GetSupplyDraftInfo(ctx context.Context, params *GetSupplyDraftInfoParams) (*GetSupplyDraftInfoResponse, error) {
+	url := "/v1/draft/create/info"
+
+	resp := &GetSupplyDraftInfoResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type CreateSupplyFromDraftParams struct {
+	// Identifier of the supply request draft
+	DraftId int64 `json:"draft_id"`
+
+	// Supply time slot
+	Timeslot CreateSupplyFromDraftTimeslot `json:"timeslot"`
+
+	// Shipping warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+}
+
+type CreateSupplyFromDraftTimeslot struct {
+	// Supply time slot start date
+	FromInTimezone time.Time `json:"from_in_timezone"`
+
+	// Supply time slot end date
+	ToInTimezone time.Time `json:"to_in_timezone"`
+}
+
+type CreateSupplyFromDraftResponse struct {
+	core.CommonResponse
+
+	// Supply request identifier
+	OperationId string `json:"operation_id"`
+}
+
+func (c FBO) CreateSupplyFromDraft(ctx context.Context, params *CreateSupplyFromDraftParams) (*CreateSupplyFromDraftResponse, error) {
+	url := "/v1/draft/supply/create"
+
+	resp := &CreateSupplyFromDraftResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}

@@ -989,3 +989,216 @@ func TestGetSupplyContent(t *testing.T) {
 		}
 	}
 }
+
+func TestCreateSupplyDraft(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreateSupplyDraftParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreateSupplyDraftParams{
+				ClusterIds:         []string{"string"},
+				DropoffWarehouseId: 0,
+				Items: []CreateSupplyDraftItem{
+					{
+						Quantity: 1,
+						SKU:      11,
+					},
+				},
+				Type: "CREATE_TYPE_CROSSDOCK",
+			},
+			`{
+				"operation_id": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CreateSupplyDraftParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().CreateSupplyDraft(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &CreateSupplyDraftResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestGetSupplyDraftInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetSupplyDraftInfoParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetSupplyDraftInfoParams{
+				OperationId: "string",
+			},
+			`{
+				"clusters": [
+				  {
+					"cluster_id": 0,
+					"cluster_name": "string",
+					"warehouses": [
+					  {
+						"address": "string",
+						"bundle_ids": [
+						  {
+							"bundle_id": "string",
+							"is_docless": true
+						  }
+						],
+						"name": "string",
+						"restricted_bundle_id": "string",
+						"status": {
+						  "invalid_reason": "WAREHOUSE_SCORING_INVALID_REASON_UNSPECIFIED",
+						  "is_available": true,
+						  "state": "WAREHOUSE_SCORING_STATUS_FULL_AVAILABLE"
+						},
+						"supply_warehouse": {
+						  "address": "string",
+						  "name": "string",
+						  "warehouse_id": 0
+						},
+						"total_rank": 0,
+						"total_score": 0,
+						"travel_time_days": 0,
+						"warehouse_id": 0
+					  }
+					]
+				  }
+				],
+				"draft_id": 0,
+				"errors": [
+				  {
+					"error_message": "string",
+					"items_validation": [
+					  {
+						"reasons": [
+						  "string"
+						],
+						"sku": 0
+					  }
+					],
+					"unknown_cluster_ids": [
+					  "string"
+					]
+				  }
+				],
+				"status": "CALCULATION_STATUS_FAILED"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetSupplyDraftInfoParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetSupplyDraftInfo(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetSupplyDraftInfoResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
+
+func TestCreateSupplyFromDraft(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *CreateSupplyFromDraftParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&CreateSupplyFromDraftParams{
+				DraftId: 11,
+				Timeslot: CreateSupplyFromDraftTimeslot{
+					FromInTimezone: core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+					ToInTimezone:   core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+				},
+				WarehouseId: 45,
+			},
+			`{
+				"operation_id": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&CreateSupplyFromDraftParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().CreateSupplyFromDraft(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &CreateSupplyFromDraftResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
