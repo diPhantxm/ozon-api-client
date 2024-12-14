@@ -271,3 +271,127 @@ func TestListTransactions(t *testing.T) {
 		}
 	}
 }
+
+func TestMutualSettlements(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode   int
+		headers      map[string]string
+		params       *GetReportParams
+		response     string
+		errorMessage string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetReportParams{
+				Date:     "2024-08",
+				Language: "DEFAULT",
+			},
+			`{
+				"result": {
+				  "code": "string"
+				}
+			}`,
+			"",
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+			"Client-Id and Api-Key headers are required",
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Finance().MutualSettlements(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &ReportResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			if resp.Message != test.errorMessage {
+				t.Errorf("got wrong error message: got: %s, expected: %s", resp.Message, test.errorMessage)
+			}
+		}
+	}
+}
+
+func TestSalesToLegalEntities(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode   int
+		headers      map[string]string
+		params       *GetReportParams
+		response     string
+		errorMessage string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetReportParams{
+				Date:     "2024-08",
+				Language: "DEFAULT",
+			},
+			`{
+				"result": {
+				  "code": "string"
+				}
+			}`,
+			"",
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetReportParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+			"Client-Id and Api-Key headers are required",
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Finance().SalesToLegalEntities(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &ReportResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			if resp.Message != test.errorMessage {
+				t.Errorf("got wrong error message: got: %s, expected: %s", resp.Message, test.errorMessage)
+			}
+		}
+	}
+}

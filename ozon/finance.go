@@ -404,3 +404,57 @@ func (c Finance) ListTransactions(ctx context.Context, params *ListTransactionsP
 
 	return resp, nil
 }
+
+type GetReportParams struct {
+	// Time period in the YYYY-MM format
+	Date string `json:"date"`
+
+	// Response language
+	Language string `json:"language"`
+}
+
+type ReportResponse struct {
+	core.CommonResponse
+
+	// Method result
+	Result ReportResult `json:"result"`
+}
+
+type ReportResult struct {
+	// Unique report identifier
+	Code string `json:"code"`
+}
+
+// Use the method to get mutual settlements report.
+// Matches the Finance → Documents → Analytical reports → Mutual
+// settlements report section in your personal account.
+func (c Finance) MutualSettlements(ctx context.Context, params *GetReportParams) (*ReportResponse, error) {
+	url := "/v1/finance/mutual-settlement"
+
+	resp := &ReportResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+// Use the method to get sales to legal entities report.
+// Matches the Finance → Documents → Legal
+// entities sales register section in your personal account.
+func (c Finance) SalesToLegalEntities(ctx context.Context, params *GetReportParams) (*ReportResponse, error) {
+	url := "/v1/finance/mutual-settlement"
+
+	resp := &ReportResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
