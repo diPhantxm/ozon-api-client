@@ -48,6 +48,9 @@ type GetListOfWarehousesResult struct {
 	// Indication that the warehouse accepts bulky products
 	IsKGT bool `json:"is_kgt"`
 
+	// true if the warehouse handles economy products
+	IsEconomy bool `json:"is_economy"`
+
 	// Indication that warehouse schedule can be changed
 	IsTimetableEditable bool `json:"is_timetable_editable"`
 

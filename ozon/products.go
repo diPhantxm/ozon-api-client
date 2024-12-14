@@ -525,6 +525,14 @@ type UpdateQuantityStockProductsStock struct {
 	// Product identifier
 	ProductId int64 `json:"product_id"`
 
+	// Use parameter if the regular and economy products have the same article code—offer_id = quant_id. To update quantity of the:
+	//
+	// 	- regular product, pass the 1 value;
+	// 	- economy product, pass the size of its MOQ.
+	//
+	// If the regular and economy products have different article codes, don't specify the parameter.
+	QuantSize int64 `json:"quant_size"`
+
 	// Quantity
 	Stock int64 `json:"stock"`
 
@@ -548,6 +556,12 @@ type UpdateQuantityStockProductsResult struct {
 
 	// Product identifier
 	ProductId int64 `json:"product_id"`
+
+	// Shows the quantity of which product type you are updating:
+	//
+	// 	- 1, if you are updating the stock of a regular product
+	// 	- MOQ size, if you are updating the stock of economy product
+	QuantSize int64 `json:"quant_size"`
 
 	// If the request was completed successfully and the stocks are updated — true
 	Updated bool `json:"updated"`
@@ -686,6 +700,14 @@ type UpdatePricesPrice struct {
 
 	// Product identifier
 	ProductId int64 `json:"product_id"`
+
+	// Use parameter if the regular and economy products have the same article code—offer_id = quant_id. To update price of the:
+	//
+	// 	- regular product, pass the 1 value;
+	// 	- economy product, pass the size of its MOQ.
+	//
+	// If the regular and economy products have different article codes, don't specify the parameter.
+	QuantSize int64 `json:"quant_size"`
 }
 
 type UpdatePricesResponse struct {
@@ -964,6 +986,10 @@ type GetListOfProductsResultItem struct {
 	ProductId int64 `json:"product_id"`
 }
 
+// When using the filter by offer_id or product_id identifier, other parameters are not required.
+// Only one identifiers group can be used at a time, not more than 1000 products.
+//
+// If you do not use identifiers for display, specify limit and last_id in subsequent requests.
 func (c Products) GetListOfProducts(ctx context.Context, params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
 	url := "/v2/product/list"
 

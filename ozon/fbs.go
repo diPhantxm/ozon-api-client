@@ -53,6 +53,11 @@ type ListUnprocessedShipmentsFilter struct {
 	// Delivery method identifier
 	DeliveryMethodId []int64 `json:"delivery_method_id"`
 
+	// Specify true to get only MOQ shipments.
+	//
+	// The default value is false, the response contains all shipments
+	IsQuantum bool `json:"is_quantum"`
+
 	// Filter for shipments delivered from partner warehouse (FBP). You can pass one of the following values:
 	//
 	// Default value is all.
@@ -543,6 +548,11 @@ type GetFBSShipmentsListFilter struct {
 
 	// Order identifier
 	OrderId int64 `json:"order_id"`
+
+	// Specify true to get only MOQ shipments.
+	//
+	// The default value is false, the response contains all shipments
+	IsQuantum bool `json:"is_quantum"`
 
 	// Delivery service identifier
 	ProviderId []int64 `json:"provider_id"`
