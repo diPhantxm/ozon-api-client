@@ -179,3 +179,65 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 		}
 	}
 }
+
+func TestListForShipping(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListForShippingParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListForShippingParams{
+				FilterBySupplyType: []string{"CREATE_TYPE_UNKNOWN"},
+				Search:             "string",
+			},
+			`{
+				"search": [
+				  {
+					"address": "string",
+					"coordinates": {
+					  "latitude": 0,
+					  "longitude": 0
+					},
+					"name": "string",
+					"warehouse_id": 0,
+					"warehouse_type": "WAREHOUSE_TYPE_UNKNOWN"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListForShippingParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Warehouses().ListForShipping(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &ListForShippingResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

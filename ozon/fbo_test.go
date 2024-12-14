@@ -1202,3 +1202,75 @@ func TestCreateSupplyFromDraft(t *testing.T) {
 		}
 	}
 }
+
+func TestGetDraftTimeslots(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetDraftTimeslotsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetDraftTimeslotsParams{
+				DraftId:      123,
+				DateFrom:     core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+				DateTo:       core.TimeFromString(t, "2006-01-02T15:04:05Z", "2019-08-24T14:15:22Z"),
+				WarehouseIds: []string{"ddd456"},
+			},
+			`{
+				"drop_off_warehouse_timeslots": [
+				  {
+					"current_time_in_timezone": "2019-08-24T14:15:22Z",
+					"days": [
+					  {
+						"date_in_timezone": "2019-08-24T14:15:22Z",
+						"timeslots": [
+						  {
+							"from_in_timezone": "2019-08-24T14:15:22Z",
+							"to_in_timezone": "2019-08-24T14:15:22Z"
+						  }
+						]
+					  }
+					],
+					"drop_off_warehouse_id": 0,
+					"warehouse_timezone": "string"
+				  }
+				],
+				"requested_date_from": "2019-08-24T14:15:22Z",
+				"requested_date_to": "2019-08-24T14:15:22Z"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetDraftTimeslotsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBO().GetDraftTimeslots(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetDraftTimeslotsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}

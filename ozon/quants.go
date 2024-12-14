@@ -3,6 +3,7 @@ package ozon
 import (
 	"context"
 	"net/http"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -175,6 +176,175 @@ func (q Quants) List(ctx context.Context, params *ListQuantsParams) (*ListQuants
 	url := "/v1/quant/list"
 
 	resp := &ListQuantsResponse{}
+
+	response, err := q.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetQuantParams struct {
+	// MOQ inventory identifier
+	QuantId int64 `json:"inv_quant_id"`
+}
+
+type GetQuantResponse struct {
+	core.CommonResponse
+
+	// MOQ information
+	Result []GetQuantResult `json:"result"`
+}
+
+type GetQuantResult struct {
+	// Available actions
+	AvailableActions []string `json:"available_actions"`
+
+	// Date until which the leftover stock amount must be specified
+	AwaitingStockDueDate time.Time `json:"awaiting_stock_due_date"`
+
+	// Shipment cancellation reason
+	CancelReason CancelReason `json:"cancel_reason"`
+
+	// Current number of shipments in the MOQ
+	CurrentPostingsCount int64 `json:"current_postings_count"`
+
+	// Time until which the MOQ must be assembled
+	Cutoff time.Time `json:"cutoff"`
+
+	// Delivery method name
+	DeliveryMethodName string `json:"delivery_method_name"`
+
+	// Destination point identifier
+	DestinationPlaceId int64 `json:"destination_place_id"`
+
+	// Destination point name
+	DestinationPlaceName string `json:"destination_place_name"`
+
+	// MOQ filling percentage
+	FillingPercent float32 `json:"filling_percent"`
+
+	// Date when the shipments start to get canceled if the MOQ isn't reserved
+	FirstPostingCancellationDate time.Time `json:"first_posting_cancellation_date"`
+
+	// MOQ identifier
+	Id int64 `json:"id"`
+
+	// MOQ inventory identifier
+	QuantId int64 `json:"inv_quant_id"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Shipments
+	Postings []GetQuantResultPosting `json:"postings"`
+
+	// Link to product photo
+	ProductPictureURL string `json:"product_picture_url"`
+
+	// Total price of products in the MOQ
+	ProductsPrice float32 `json:"products_price"`
+
+	// Start date of MOQ filling
+	QuantumStartDate time.Time `json:"quantum_start_date"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Product name
+	SKUName string `json:"sku_name"`
+
+	// MOQ statuses
+	Status string `json:"status"`
+
+	// Required number of products in the MOQ
+	TargetPostingsCount int64 `json:"target_postings_count"`
+
+	// Delivery service name
+	TPLProviderName string `json:"tpl_provider_name"`
+
+	// MOQ type: box or pallet
+	Type string `json:"type"`
+
+	// Warehouse identifier
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
+}
+
+type GetQuantResultPosting struct {
+	// Shipment cancellation reason
+	CancelReason CancelReason `json:"cancel_reason"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Total price of products in the MOQ
+	ProductsPrice float32 `json:"products_price"`
+
+	// Status text
+	StatusAlias string `json:"status_alias"`
+
+	// Status identifier
+	StatusId int64 `json:"status_id"`
+}
+
+func (q Quants) Get(ctx context.Context, params *GetQuantParams) (*GetQuantResponse, error) {
+	url := "/v1/quant/get"
+
+	resp := &GetQuantResponse{}
+
+	response, err := q.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ShipQuantParams struct {
+	// MOQ inventory identifier
+	QuantId int64 `json:"quant_id"`
+}
+
+type ShipQuantResponse struct {
+	core.CommonResponse
+}
+
+func (q Quants) Ship(ctx context.Context, params *ShipQuantParams) (*ShipQuantResponse, error) {
+	url := "/v1/quant/ship"
+
+	resp := &ShipQuantResponse{}
+
+	response, err := q.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type StatusQuantParams struct {
+	// MOQ inventory identifier
+	QuantId int64 `json:"inv_quant_id"`
+}
+
+type StatusQuantResponse struct {
+	core.CommonResponse
+
+	// MOQ statuses
+	Status string `json:"status"`
+}
+
+func (q Quants) Status(ctx context.Context, params *StatusQuantParams) (*StatusQuantResponse, error) {
+	url := "/v1/quant/ship"
+
+	resp := &StatusQuantResponse{}
 
 	response, err := q.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {

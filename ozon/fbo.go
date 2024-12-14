@@ -1076,3 +1076,77 @@ func (c FBO) CreateSupplyFromDraft(ctx context.Context, params *CreateSupplyFrom
 
 	return resp, nil
 }
+
+type GetDraftTimeslotsParams struct {
+	// Start date of the available supply time slots period
+	DateFrom time.Time `json:"date_from"`
+
+	// End date of the available supply time slots period
+	//
+	// The maximum period is 28 days from the current date
+	DateTo time.Time `json:"date_to"`
+
+	// Identifier of the supply request draft
+	DraftId int64 `json:"draft_id"`
+
+	// The warehouses identifiers for which supply time slots are required
+	WarehouseIds []string `json:"warehouse_ids"`
+}
+
+type GetDraftTimeslotsResponse struct {
+	core.CommonResponse
+
+	// Warehouses supply time slots
+	DropoffWarehouseTimeslots []DraftTimeslot `json:"drop_off_warehouse_timeslots"`
+
+	// Start date of the necessary period
+	RequestedDateFrom time.Time `json:"requested_date_from"`
+
+	// End date of the necessary period
+	RequestedDateTo time.Time `json:"requested_date_to"`
+}
+
+type DraftTimeslot struct {
+	// Current time in the warehouse time zone
+	CurrentTimeInTimezone time.Time `json:"current_time_in_timezone"`
+
+	// Supply time slots by dates
+	Days []DraftTimeslotDay `json:"days"`
+
+	// Warehouse identifier
+	DropoffWarehouseId int64 `json:"drop_off_warehouse_id"`
+
+	// Warehouse time zone
+	WarehouseTimezone string `json:"warehouse_timezone"`
+}
+
+type DraftTimeslotDay struct {
+	// Supply time slots date
+	DateInTimezone time.Time `json:"date_in_timezone"`
+
+	// Supply time slots details
+	Timeslots []DraftTimeslotDayTimeslot `json:"timeslots"`
+}
+
+type DraftTimeslotDayTimeslot struct {
+	// Supply time slot start date
+	FromInTimezone time.Time `json:"from_in_timezone"`
+
+	// Supply time slot end date
+	ToInTimezone time.Time `json:"to_in_timezone"`
+}
+
+// Available supply time slots at final shipping warehouses
+func (c FBO) GetDraftTimeslots(ctx context.Context, params *GetDraftTimeslotsParams) (*GetDraftTimeslotsResponse, error) {
+	url := "/v1/draft/timeslot/info"
+
+	resp := &GetDraftTimeslotsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
