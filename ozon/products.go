@@ -736,8 +736,8 @@ type UpdatePricesResultError struct {
 }
 
 // Allows you to change a price of one or more products.
-// You can change prices for 1000 products in one request.
-// To reset old_price, set 0 for this parameter
+// The price of each product can be updated no more than 10 times per hour.
+// To reset old_price, set 0 for this parameter.
 func (c Products) UpdatePrices(ctx context.Context, params *UpdatePricesParams) (*UpdatePricesResponse, error) {
 	url := "/v1/product/import/prices"
 
