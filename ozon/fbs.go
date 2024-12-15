@@ -186,6 +186,44 @@ type FBSPosting struct {
 
 	// Shipment tracking number
 	TrackingNumber string `json:"tracking_number"`
+
+	// Details on shipping rate
+	Tariffication []FBSPostingTariffication `json:"tariffication"`
+
+	// Economy product identifier
+	QuantumId int64 `json:"quantum_id"`
+}
+
+type FBSPostingTariffication struct {
+	// Current shipping rate as a percentage
+	CurrentTariffRate float64 `json:"current_tariff_rate"`
+
+	// Type of shipping rate adjustment: discount or surcharge
+	CurrentTariffType string `json:"current_tariff_type"`
+
+	// Current amount of discount or surcharge
+	CurrentTariffCharge string `json:"current_tariff_charge"`
+
+	// Currency of the amount
+	CurrencyTariffCurrencyCode string `json:"current_tariff_charge_currency_code"`
+
+	// Percentage by which the shipping rate is adjusted
+	// after the time specified in the next_tariff_starts_at parameter
+	NextTariffRate float64 `json:"next_tariff_rate"`
+
+	// The adjustment type applied to the shipping rate
+	// after the time specified in the next_tariff_starts_at parameter:
+	// discount or surcharge
+	NextTariffType string `json:"next_tariff_type"`
+
+	// Discount or surcharge amount applied during the next shipping rate adjustment step
+	NextTariffCharge string `json:"next_tariff_charge"`
+
+	// Date and time when the new shipping rate is applied
+	NextTariffStartsAt time.Time `json:"next_tariff_starts_at"`
+
+	// New shipping rate currency
+	NextTariffCurrencyCode string `json:"next_tariff_charge_currency_code"`
 }
 
 type FBSPostingAddressee struct {
@@ -1015,6 +1053,9 @@ type GetShipmentDataByIdentifierResult struct {
 
 	// Shipment tracking number
 	TrackingNumber string `json:"tracking_number"`
+
+	// Details on shipping rate
+	Tariffication []FBSPostingTariffication `json:"tariffication"`
 }
 
 type GetShipmentDataByIdentifierResultAdditionalData struct {
@@ -2203,6 +2244,12 @@ type AvailableFreightsListResult struct {
 
 	// Number of already packaged shipments
 	MandatoryPackagedCount int32 `json:"mandatory_packaged_count"`
+
+	// Recommended local time of shipping to the pick-up point
+	RecommendedTimeLocal string `json:"recommended_time_local"`
+
+	// Time zone offset of the recommended shipping time from UTC-0 in minutes
+	RecommendedTimeUTCOffset int32 `json:"recommended_time_utc_offset_in_minutes"`
 
 	// Delivery service icon link
 	TPLProviderIconURL string `json:"tpl_provider_icon_url"`
