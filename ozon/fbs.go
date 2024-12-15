@@ -2541,20 +2541,11 @@ type CancelSendingResponse struct {
 
 // Use this method if you cannot send some of the products from the shipment.
 //
-// If you are using the rFBS scheme, you have the following cancellation reason identifiers (`cancel_reason_id`) available:
-//
-// 352—product is out of stock;
-// 400—only defective products left;
-// 401—cancellation from arbitration;
-// 402—other reason;
-// 665—the customer did not pick the order;
-// 666—delivery is not available in the region;
-// 667—order was lost by the delivery service.
-// The last 4 reasons are available for shipments in the "Delivering" and "Courier on the way" statuses.
+// To get the cancel_reason_id cancellation reason identifiers
+// when working with the FBS or rFBS schemes,
+// use the /v2/posting/fbs/cancel-reason/list method.
 //
 // You can't cancel presumably delivered orders.
-//
-// If `cancel_reason_id` parameter value is 402, fill the `cancel_reason_message` field.
 func (c FBS) CancelSending(ctx context.Context, params *CancelSendingParams) (*CancelSendingResponse, error) {
 	url := "/v2/posting/fbs/product/cancel"
 

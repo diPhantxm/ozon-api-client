@@ -333,7 +333,7 @@ const (
 	ServiceProcessingIdentifiedSurplus          DetailsServiceItemName = "MarketplaceServiceProcessingIdentifiedSurplus"
 	ServiceProcessingIdentifiedDiscrepancies    DetailsServiceItemName = "MarketplaceServiceProcessingIdentifiedDiscrepancies"
 	ServiceItemInternetSiteAdvertising          DetailsServiceItemName = "MarketplaceServiceItemInternetSiteAdvertising"
-	ServiceItemPremiumSubscribtion              DetailsServiceItemName = "MarketplaceServiceItemPremiumSubscribtion"
+	ServiceItemPremiumSubscribtion              DetailsServiceItemName = "MarketplaceServiceItemSubscribtionPremium"
 	AgencyFeeAggregator3PLGlobalItem            DetailsServiceItemName = "MarketplaceAgencyFeeAggregator3PLGlobalItem"
 )
 
@@ -561,6 +561,12 @@ const (
 
 	// financial report
 	ReportTypeSellerFinance ReportType = "SELLER_FINANCE"
+
+	// report on sales to legal entities
+	ReportTypeDocB2BSales ReportType = "DOCUMENT_B2B_SALES"
+
+	// settlement report
+	ReportTypeMutualSettlement ReportType = "MUTUAL_SETTLEMENT"
 )
 
 type ReportInfoStatus string
