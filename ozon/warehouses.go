@@ -48,6 +48,9 @@ type GetListOfWarehousesResult struct {
 	// Indication that the warehouse accepts bulky products
 	IsKGT bool `json:"is_kgt"`
 
+	// true if the warehouse handles economy products
+	IsEconomy bool `json:"is_economy"`
+
 	// Indication that warehouse schedule can be changed
 	IsTimetableEditable bool `json:"is_timetable_editable"`
 
@@ -180,6 +183,61 @@ func (c Warehouses) GetListOfDeliveryMethods(ctx context.Context, params *GetLis
 	url := "/v1/delivery-method/list"
 
 	resp := &GetListOfDeliveryMethodsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListForShippingParams struct {
+	// Supply type
+	FilterBySupplyType []string `json:"filter_by_supply_type"`
+
+	// Search by warehouse name. To search for pick-up points, specify the full name
+	Search string `json:"search"`
+}
+
+type ListForShippingResponse struct {
+	core.CommonResponse
+
+	// Warehouse search result
+	Search []ListForShippingSearch `json:"search"`
+}
+
+type ListForShippingSearch struct {
+	// Warehouse address
+	Address string `json:"address"`
+
+	// Warehouse coordinates
+	Coordinates Coordinates `json:"coordinates"`
+
+	// Warehouse name
+	Name string `json:"name"`
+
+	// Identifier of the warehouse, pick-up point, or sorting center
+	WarehouseId int64 `json:"warehouse_id"`
+
+	// Type of warehouse, pick-up point, or sorting center
+	WarehouseType string `json:"warehouse_type"`
+}
+
+type Coordinates struct {
+	// Latitude
+	Latitude float64 `json:"latitude"`
+
+	// Longitude
+	Longitude float64 `json:"longitude"`
+}
+
+// Get a list of warehouses, sorting centers and pick-up points available for cross-docking, and direct supplies.
+func (c Warehouses) ListForShipping(ctx context.Context, params *ListForShippingParams) (*ListForShippingResponse, error) {
+	url := "/v1/warehouse/fbo/list"
+
+	resp := &ListForShippingResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {

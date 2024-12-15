@@ -2686,3 +2686,159 @@ func TestGetRelatedSKUs(t *testing.T) {
 		}
 	}
 }
+
+func TestEconomyInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetEconomyInfoParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetEconomyInfoParams{
+				QuantCode: []string{"321", "322"},
+			},
+			`{
+				"items": [
+				  {
+					"offer_id": "string",
+					"product_id": 0,
+					"quant_info": {
+					  "quants": [
+						{
+						  "barcodes_extended": [
+							{
+							  "barcode": "string",
+							  "error": "string",
+							  "status": "string"
+							}
+						  ],
+						  "dimensions": {
+							"depth": 0,
+							"height": 0,
+							"weight": 0,
+							"width": 0
+						  },
+						  "marketing_price": {
+							"price": "string",
+							"seller_price": "string"
+						  },
+						  "min_price": "string",
+						  "old_price": "string",
+						  "price": "string",
+						  "quant_code": "string",
+						  "quant_sice": 0,
+						  "shipment_type": "string",
+						  "sku": 0,
+						  "statuses": {
+							"state_description": "string",
+							"state_name": "string",
+							"state_sys_name": "string",
+							"state_tooltip": "string"
+						  }
+						}
+					  ]
+					}
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetEconomyInfoParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().EconomyInfo(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		compareJsonResponse(t, test.response, &GetEconomyInfoResponse{})
+	}
+}
+
+func TestListEconomy(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListEconomyProductsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListEconomyProductsParams{
+				Cursor:     "string",
+				Limit:      10,
+				Visibility: "ALL",
+			},
+			`{
+				"cursor": "string",
+				"products": [
+				  {
+					"offer_id": "string",
+					"product_id": 0,
+					"quants": [
+					  {
+						"quant_code": "string",
+						"quant_size": 0
+					  }
+					]
+				  }
+				],
+				"total_items": 0
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListEconomyProductsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().ListEconomy(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		compareJsonResponse(t, test.response, &ListEconomyProductsResponse{})
+	}
+}
