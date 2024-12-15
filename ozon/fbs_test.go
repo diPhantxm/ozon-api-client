@@ -66,6 +66,7 @@ func TestListUnprocessedShipments(t *testing.T) {
 						"cancellation_initiator": ""
 					  },
 					  "customer": null,
+					  "quantum_id": 0,
 					  "products": [
 						{
 						  "currency_code": "RUB",
@@ -146,7 +147,20 @@ func TestListUnprocessedShipments(t *testing.T) {
 					  "requirements": {
 						"products_requiring_gtd": [],
 						"products_requiring_country": []
-					  }
+					  },
+					  "tariffication": [
+						{
+						  "current_tariff_rate": 0,
+						  "current_tariff_type": "",
+						  "current_tariff_charge": "",
+						  "current_tariff_charge_currency_code": "",
+						  "next_tariff_rate": 0,
+						  "next_tariff_type": "",
+						  "next_tariff_charge": "",
+						  "next_tariff_starts_at": "2023-11-13T08:05:57.657Z",
+						  "next_tariff_charge_currency_code": ""
+						}
+					  ]
 					}
 				  ],
 				  "count": 55
@@ -264,11 +278,25 @@ func TestGetFBSShipmentsList(t *testing.T) {
 					  "analytics_data": null,
 					  "financial_data": null,
 					  "is_express": false,
+					  "quantum_id": 0,
 					  "requirements": {
 						"products_requiring_gtd": [],
 						"products_requiring_country": [],
 						"products_requiring_mandatory_mark": []
-					  }
+					  },
+					  "tariffication": [
+						{
+						  "current_tariff_rate": 0,
+						  "current_tariff_type": "",
+						  "current_tariff_charge": "",
+						  "current_tariff_charge_currency_code": "",
+						  "next_tariff_rate": 0,
+						  "next_tariff_type": "",
+						  "next_tariff_charge": "",
+						  "next_tariff_starts_at": "2023-11-13T08:05:57.657Z",
+						  "next_tariff_charge_currency_code": ""
+						}
+					  ]
 					}
 				  ],
 				  "has_next": true
@@ -616,7 +644,20 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 					"products_requiring_gtd": [],
 					"products_requiring_country": []
 				  },
-				  "product_exemplars": null
+				  "product_exemplars": null,
+				  "tariffication": [
+					{
+					  "current_tariff_rate": 0,
+					  "current_tariff_type": "",
+					  "current_tariff_charge": "",
+					  "current_tariff_charge_currency_code": "",
+					  "next_tariff_rate": 0,
+					  "next_tariff_type": "",
+					  "next_tariff_charge": "",
+					  "next_tariff_starts_at": "2023-11-13T08:05:57.657Z",
+					  "next_tariff_charge_currency_code": ""
+					}
+				  ]
 				}
 			}`,
 		},
@@ -1883,6 +1924,8 @@ func TestAvailableFreightsList(t *testing.T) {
 					"has_entrusted_acceptance": true,
 					"mandatory_postings_count": 0,
 					"mandatory_packaged_count": 0,
+					"recommended_time_local": "string",
+					"recommended_time_utc_offset_in_minutes": 0,
 					"tpl_provider_icon_url": "string",
 					"tpl_provider_name": "string",
 					"warehouse_city": "string",
