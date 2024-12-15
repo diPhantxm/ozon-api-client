@@ -1200,9 +1200,11 @@ type CreateProductByOzonIDResult struct {
 	UnmatchedSKUList []int64 `json:"unmatched_sku_list"`
 }
 
-// Creates a product by the specified Ozon ID. The number of products is unlimited.
+// The method creates a copy of the product description page with the specified SKU.
 //
-// It's not possible to update products using Ozon ID
+// You cannot create a copy if the seller has prohibited the copying of their PDPs.
+//
+// It's not possible to update products using SKU.
 func (c Products) CreateProductByOzonID(ctx context.Context, params *CreateProductByOzonIDParams) (*CreateProductByOzonIDResponse, error) {
 	url := "/v1/product/import-by-sku"
 
