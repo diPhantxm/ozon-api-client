@@ -2374,3 +2374,183 @@ func (c Products) GetRelatedSKUs(ctx context.Context, params *GetRelatedSKUsPara
 
 	return resp, nil
 }
+
+type GetEconomyInfoParams struct {
+	// List of MOQs with products
+	QuantCode []string `json:"quant_code"`
+}
+
+type GetEconomyInfoResponse struct {
+	core.CommonResponse
+
+	// Economy products
+	Items []EconomyInfoItem `json:"items"`
+}
+
+type EconomyInfoItem struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// MOQ information
+	QuantInfo EconomyInfoItemQuants `json:"quant_info"`
+}
+
+type EconomyInfoItemQuants struct {
+	Quants []EconomyInfoItemQuant `json:"quants"`
+}
+
+type EconomyInfoItemQuant struct {
+	// Barcodes information
+	BarcodesExtended []EconomyInfoItemQuantBarcode `json:"barcodes_extended"`
+
+	// Dimensions
+	Dimensions DimensionsMM `json:"dimensions"`
+
+	// Marketing prices
+	MarketingPrice EconomyInfoItemQuantMarketingPrice `json:"marketing_price"`
+
+	// Minimum price specified by the seller
+	MinPrice string `json:"min_price"`
+
+	// The strikethrough price specified by the seller
+	OldPrice string `json:"old_price"`
+
+	// The selling price specified by the seller
+	Price string `json:"price"`
+
+	// Economy product identifier
+	QuantCode string `json:"quant_code"`
+
+	// MOQ size
+	QuantSize int64 `json:"quant_sice"`
+
+	// Product delivery type
+	ShipmentType string `json:"shipment_type"`
+
+	// Product SKU
+	SKU int64 `json:"sku"`
+
+	// Statuses descriptions
+	Statuses EconomyInfoItemQuantStatus `json:"statuses"`
+}
+
+type EconomyInfoItemQuantBarcode struct {
+	// Barcode
+	Barcode string `json:"barcode"`
+
+	// Error when receiving the barcode
+	Error string `json:"error"`
+
+	// Barcode status
+	Status string `json:"status"`
+}
+
+type DimensionsMM struct {
+	// Depth, mm
+	Depth int64 `json:"depth"`
+
+	// Height, mm
+	Height int64 `json:"height"`
+
+	// Weight, g
+	Weight int64 `json:"weight"`
+
+	// Width, mm
+	Width int64 `json:"width"`
+}
+
+type EconomyInfoItemQuantMarketingPrice struct {
+	// Selling price
+	Price string `json:"price"`
+
+	// Price specified by the seller
+	SellerPrice string `json:"seller_price"`
+}
+
+type EconomyInfoItemQuantStatus struct {
+	// Status description
+	StateDescription string `json:"state_description"`
+
+	// Status name
+	StateName string `json:"state_name"`
+
+	// System name of the status
+	StateSysName string `json:"state_sys_name"`
+
+	// Tooltip with current product status details
+	StateTooltip string `json:"state_tooltip"`
+}
+
+func (c Products) EconomyInfo(ctx context.Context, params *GetEconomyInfoParams) (*GetEconomyInfoResponse, error) {
+	url := "/v1/product/quant/info"
+
+	resp := &GetEconomyInfoResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListEconomyProductsParams struct {
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
+
+	// Maximum number of values in the response
+	Limit int64 `json:"limit"`
+
+	// Filter by product visibility
+	Visibility string `json:"visibility"`
+}
+
+type ListEconomyProductsResponse struct {
+	core.CommonResponse
+
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
+
+	// Economy products
+	Products []EconomyProduct `json:"products"`
+
+	// Leftover stock in all warehouses
+	TotalItems int32 `json:"total_items"`
+}
+
+type EconomyProduct struct {
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Product MOQs list
+	Quants []EconomyProductQuant `json:"quants"`
+}
+
+type EconomyProductQuant struct {
+	// MOQ identifier
+	QuantCode string `json:"quant_code"`
+
+	// MOQ size
+	QuantSize int64 `json:"quant_size"`
+}
+
+func (c Products) ListEconomy(ctx context.Context, params *ListEconomyProductsParams) (*ListEconomyProductsResponse, error) {
+	url := "/v1/product/quant/list"
+
+	resp := &ListEconomyProductsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
