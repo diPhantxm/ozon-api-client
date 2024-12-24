@@ -1798,15 +1798,12 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 		params     *GetDescriptionOfProductParamsV4
 		response   string
 	}{
-		// Test OK
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetDescriptionOfProductParamsV4{
 				Filter: GetDescriptionOfProductFilterV4{
-					ProductId:  []string{"213761435"},
-					OfferId:    []string{"testtest5"},
-					Sku:        []string{"123495432"},
+					ProductId:  []string{"330186294"},
 					Visibility: "ALL",
 				},
 				Limit:         100,
@@ -1815,14 +1812,46 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 			`{
 				"result": [
 				  {
-					"id": 213761435,
-					"offer_id": "testtest5",
-					"sku": "123495432",
-					"name": "Sample Product"
+					"id": 330186294,
+					"barcode": "OZN653473453",
+					"name": "PC ЮКОМС Ryzen 7 5700G ...",
+					"offer_id": "ju-cas2-r5700g-bl",
+					"height": 360,
+					"depth": 420,
+					"width": 220,
+					"dimension_unit": "mm",
+					"weight": 4500,
+					"weight_unit": "g",
+					"description_category_id": 17028619,
+					"type_id": 91476,
+					"primary_image": "https://cdn1.ozone.ru/s3/multimedia-1-3/7084786431.jpg",
+					"model_info": {
+					  "model_id": 379410772,
+					  "count": 126
+					},
+					"images": [
+					  "https://cdn1.ozone.ru/s3/multimedia-1-0/7084786428.jpg",
+					  "https://cdn1.ozone.ru/s3/multimedia-1-k/7084786304.jpg"
+					],
+					"pdf_list": [],
+					"attributes": [
+					  {
+						"id": 85,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 971195426,
+							"value": "ЮКОМС"
+						  }
+						]
+					  }
+					],
+					"complex_attributes": [],
+					"color_image": ""
 				  }
 				],
 				"total": 1,
-				"last_id": "someLastIdV4"
+				"last_id": ""
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -1838,7 +1867,11 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+		c := NewMockClient(core.NewMockHttpHandler(
+			test.statusCode,
+			test.response,
+			test.headers,
+		))
 
 		ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
 		defer cancel()
@@ -1849,16 +1882,18 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 			continue
 		}
 
-		// Проверка структуры ответа
-		compareJsonResponse(t, test.response, &GetDescriptionOfProductResponse{})
+		// Сравниваем JSON-ответ, как в вашем проекте
+		compareJsonResponse(t, test.response, &GetDescriptionOfProductResponseV4{})
 
 		if resp.StatusCode != test.statusCode {
-			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+			t.Errorf("wrong status code: got: %d, want: %d", resp.StatusCode, test.statusCode)
 		}
 
-		// Дополнительная проверка для успешного статуса
-		if resp.StatusCode == http.StatusOK && len(resp.Result) == 0 {
-			t.Error("expected non-empty result")
+		if test.statusCode == http.StatusOK {
+			// Доппроверки: например, должен быть хотя бы 1 элемент
+			if len(resp.Result) == 0 {
+				t.Error("expected non-empty result in success case")
+			}
 		}
 	}
 }

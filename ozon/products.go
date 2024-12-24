@@ -1558,12 +1558,11 @@ func (c Products) GetDescriptionOfProduct(ctx context.Context, params *GetDescri
 	return resp, nil
 }
 
-// V4-фильтр с полем sku
 type GetDescriptionOfProductFilterV4 struct {
-	ProductId  []string `json:"product_id"`
-	OfferId    []string `json:"offer_id"`
-	Sku        []string `json:"sku"`
-	Visibility string   `json:"visibility"`
+	ProductId  []string `json:"product_id,omitempty"`
+	OfferId    []string `json:"offer_id,omitempty"`
+	Sku        []string `json:"sku,omitempty"`
+	Visibility string   `json:"visibility,omitempty"`
 }
 
 type GetDescriptionOfProductParamsV4 struct {
@@ -1574,11 +1573,68 @@ type GetDescriptionOfProductParamsV4 struct {
 	SortDirection string                          `json:"sort_dir,omitempty"`
 }
 
-// GetDescriptionOfProductV4 отправляет запрос к /v4/product/info/attributes
-func (c Products) GetDescriptionOfProductV4(ctx context.Context, params *GetDescriptionOfProductParamsV4) (*GetDescriptionOfProductResponse, error) {
+type GetDescriptionOfProductResponseV4 struct {
+	core.CommonResponse
+
+	Result []GetDescriptionOfProductResultV4 `json:"result"`
+	Total  int32                             `json:"total"`
+	LastId string                            `json:"last_id"`
+}
+
+type GetDescriptionOfProductResultV4 struct {
+	Id                    int64  `json:"id"`
+	Barcode               string `json:"barcode"`
+	Name                  string `json:"name"`
+	OfferId               string `json:"offer_id"`
+	Height                int32  `json:"height"`
+	Depth                 int32  `json:"depth"`
+	Width                 int32  `json:"width"`
+	DimensionUnit         string `json:"dimension_unit"`
+	Weight                int32  `json:"weight"`
+	WeightUnit            string `json:"weight_unit"`
+	DescriptionCategoryId int64  `json:"description_category_id"`
+	TypeId                int64  `json:"type_id"`
+	PrimaryImage          string `json:"primary_image"`
+
+	// Доп. структура для "model_info"
+	ModelInfo *ModelInfo `json:"model_info,omitempty"`
+
+	Images  []string `json:"images"`
+	PDFList []string `json:"pdf_list"`
+
+	Attributes        []AttributeV4        `json:"attributes"`
+	ComplexAttributes []ComplexAttributeV4 `json:"complex_attributes"`
+	ColorImage        string               `json:"color_image"`
+}
+
+type ModelInfo struct {
+	ModelId int64 `json:"model_id"`
+	Count   int64 `json:"count"`
+}
+
+type AttributeV4 struct {
+	Id        int64              `json:"id"`
+	ComplexId int64              `json:"complex_id"`
+	Values    []AttributeValueV4 `json:"values"`
+}
+
+type AttributeValueV4 struct {
+	DictionaryValueId int64  `json:"dictionary_value_id"`
+	Value             string `json:"value"`
+}
+
+type ComplexAttributeV4 struct {
+	Id        int64              `json:"id,omitempty"`
+	ComplexId int64              `json:"complex_id,omitempty"`
+	Values    []AttributeValueV4 `json:"values,omitempty"`
+}
+
+// /v4/product/info/attributes
+func (c Products) GetDescriptionOfProductV4(ctx context.Context, params *GetDescriptionOfProductParamsV4) (*GetDescriptionOfProductResponseV4, error) {
 	url := "/v4/product/info/attributes"
 
-	resp := &GetDescriptionOfProductResponse{}
+	resp := &GetDescriptionOfProductResponseV4{}
+
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
 		return nil, err
