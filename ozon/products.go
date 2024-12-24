@@ -1558,6 +1558,36 @@ func (c Products) GetDescriptionOfProduct(ctx context.Context, params *GetDescri
 	return resp, nil
 }
 
+// V4-фильтр с полем sku
+type GetDescriptionOfProductFilterV4 struct {
+	ProductId  []string `json:"product_id"`
+	OfferId    []string `json:"offer_id"`
+	Sku        []string `json:"sku"`
+	Visibility string   `json:"visibility"`
+}
+
+type GetDescriptionOfProductParamsV4 struct {
+	Filter        GetDescriptionOfProductFilterV4 `json:"filter"`
+	LastId        string                          `json:"last_id,omitempty"`
+	Limit         int64                           `json:"limit,omitempty"`
+	SortBy        string                          `json:"sort_by,omitempty"`
+	SortDirection string                          `json:"sort_dir,omitempty"`
+}
+
+// GetDescriptionOfProductV4 отправляет запрос к /v4/product/info/attributes
+func (c Products) GetDescriptionOfProductV4(ctx context.Context, params *GetDescriptionOfProductParamsV4) (*GetDescriptionOfProductResponse, error) {
+	url := "/v4/product/info/attributes"
+
+	resp := &GetDescriptionOfProductResponse{}
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
 type GetProductDescriptionParams struct {
 	// Product identifier in the seller's system
 	OfferId string `json:"offer_id"`

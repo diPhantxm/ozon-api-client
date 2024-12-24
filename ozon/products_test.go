@@ -1789,6 +1789,80 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 	}
 }
 
+func TestGetDescriptionOfProductV4(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetDescriptionOfProductParamsV4
+		response   string
+	}{
+		// Test OK
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetDescriptionOfProductParamsV4{
+				Filter: GetDescriptionOfProductFilterV4{
+					ProductId:  []string{"213761435"},
+					OfferId:    []string{"testtest5"},
+					Sku:        []string{"123495432"},
+					Visibility: "ALL",
+				},
+				Limit:         100,
+				SortDirection: "ASC",
+			},
+			`{
+				"result": [
+				  {
+					"id": 213761435,
+					"offer_id": "testtest5",
+					"sku": "123495432",
+					"name": "Sample Product"
+				  }
+				],
+				"total": 1,
+				"last_id": "someLastIdV4"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetDescriptionOfProductParamsV4{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
+		defer cancel()
+
+		resp, err := c.Products().GetDescriptionOfProductV4(ctx, test.params)
+		if err != nil {
+			t.Errorf("unexpected error: %v", err)
+			continue
+		}
+
+		// Проверка структуры ответа
+		compareJsonResponse(t, test.response, &GetDescriptionOfProductResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		// Дополнительная проверка для успешного статуса
+		if resp.StatusCode == http.StatusOK && len(resp.Result) == 0 {
+			t.Error("expected non-empty result")
+		}
+	}
+}
+
 func TestGetProductDescription(t *testing.T) {
 	t.Parallel()
 
