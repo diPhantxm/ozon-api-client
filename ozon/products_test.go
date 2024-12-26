@@ -1795,14 +1795,14 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
-		params     *GetDescriptionOfProductParamsV4
+		params     *GetDescriptionOfProductsParams
 		response   string
 	}{
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&GetDescriptionOfProductParamsV4{
-				Filter: GetDescriptionOfProductFilterV4{
+			&GetDescriptionOfProductsParams{
+				Filter: GetDescriptionOfProductsFilter{
 					ProductId:  []string{"330186294"},
 					Visibility: "ALL",
 				},
@@ -1858,7 +1858,7 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 		{
 			http.StatusUnauthorized,
 			map[string]string{},
-			&GetDescriptionOfProductParamsV4{},
+			&GetDescriptionOfProductsParams{},
 			`{
 				"code": 16,
 				"message": "Client-Id and Api-Key headers are required"
@@ -1876,21 +1876,19 @@ func TestGetDescriptionOfProductV4(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
 		defer cancel()
 
-		resp, err := c.Products().GetDescriptionOfProductV4(ctx, test.params)
+		resp, err := c.Products().GetDescriptionOfProducts(ctx, test.params)
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)
 			continue
 		}
 
-		// Сравниваем JSON-ответ, как в вашем проекте
-		compareJsonResponse(t, test.response, &GetDescriptionOfProductResponseV4{})
+		compareJsonResponse(t, test.response, &GetDescriptionOfProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("wrong status code: got: %d, want: %d", resp.StatusCode, test.statusCode)
 		}
 
 		if test.statusCode == http.StatusOK {
-			// Доппроверки: например, должен быть хотя бы 1 элемент
 			if len(resp.Result) == 0 {
 				t.Error("expected non-empty result in success case")
 			}
