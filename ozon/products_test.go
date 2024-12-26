@@ -1789,6 +1789,113 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 	}
 }
 
+func TestGetDescriptionOfProductV4(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetDescriptionOfProductsParams
+		response   string
+	}{
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetDescriptionOfProductsParams{
+				Filter: GetDescriptionOfProductsFilter{
+					ProductId:  []string{"330186294"},
+					Visibility: "ALL",
+				},
+				Limit:         100,
+				SortDirection: "ASC",
+			},
+			`{
+				"result": [
+				  {
+					"id": 330186294,
+					"barcode": "OZN653473453",
+					"name": "PC ЮКОМС Ryzen 7 5700G ...",
+					"offer_id": "ju-cas2-r5700g-bl",
+					"height": 360,
+					"depth": 420,
+					"width": 220,
+					"dimension_unit": "mm",
+					"weight": 4500,
+					"weight_unit": "g",
+					"description_category_id": 17028619,
+					"type_id": 91476,
+					"primary_image": "https://cdn1.ozone.ru/s3/multimedia-1-3/7084786431.jpg",
+					"model_info": {
+					  "model_id": 379410772,
+					  "count": 126
+					},
+					"images": [
+					  "https://cdn1.ozone.ru/s3/multimedia-1-0/7084786428.jpg",
+					  "https://cdn1.ozone.ru/s3/multimedia-1-k/7084786304.jpg"
+					],
+					"pdf_list": [],
+					"attributes": [
+					  {
+						"id": 85,
+						"complex_id": 0,
+						"values": [
+						  {
+							"dictionary_value_id": 971195426,
+							"value": "ЮКОМС"
+						  }
+						]
+					  }
+					],
+					"complex_attributes": [],
+					"color_image": ""
+				  }
+				],
+				"total": 1,
+				"last_id": ""
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetDescriptionOfProductsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(
+			test.statusCode,
+			test.response,
+			test.headers,
+		))
+
+		ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
+		defer cancel()
+
+		resp, err := c.Products().GetDescriptionOfProducts(ctx, test.params)
+		if err != nil {
+			t.Errorf("unexpected error: %v", err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetDescriptionOfProductsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("wrong status code: got: %d, want: %d", resp.StatusCode, test.statusCode)
+		}
+
+		if test.statusCode == http.StatusOK {
+			if len(resp.Result) == 0 {
+				t.Error("expected non-empty result in success case")
+			}
+		}
+	}
+}
+
 func TestGetProductDescription(t *testing.T) {
 	t.Parallel()
 

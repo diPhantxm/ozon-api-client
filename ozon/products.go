@@ -1558,6 +1558,92 @@ func (c Products) GetDescriptionOfProduct(ctx context.Context, params *GetDescri
 	return resp, nil
 }
 
+type GetDescriptionOfProductsFilter struct {
+	ProductId  []string `json:"product_id,omitempty"`
+	OfferId    []string `json:"offer_id,omitempty"`
+	Sku        []string `json:"sku,omitempty"`
+	Visibility string   `json:"visibility,omitempty"`
+}
+
+type GetDescriptionOfProductsParams struct {
+	Filter        GetDescriptionOfProductsFilter `json:"filter"`
+	LastId        string                         `json:"last_id,omitempty"`
+	Limit         int64                          `json:"limit,omitempty"`
+	SortBy        string                         `json:"sort_by,omitempty"`
+	SortDirection string                         `json:"sort_dir,omitempty"`
+}
+
+type GetDescriptionOfProductsResponse struct {
+	core.CommonResponse
+
+	Result []GetDescriptionOfProductsResult `json:"result"`
+	Total  int32                            `json:"total"`
+	LastId string                           `json:"last_id"`
+}
+
+type GetDescriptionOfProductsResult struct {
+	Id                    int64  `json:"id"`
+	Barcode               string `json:"barcode"`
+	Name                  string `json:"name"`
+	OfferId               string `json:"offer_id"`
+	Height                int32  `json:"height"`
+	Depth                 int32  `json:"depth"`
+	Width                 int32  `json:"width"`
+	DimensionUnit         string `json:"dimension_unit"`
+	Weight                int32  `json:"weight"`
+	WeightUnit            string `json:"weight_unit"`
+	DescriptionCategoryId int64  `json:"description_category_id"`
+	TypeId                int64  `json:"type_id"`
+	PrimaryImage          string `json:"primary_image"`
+
+	// new "model_info" structure
+	ModelInfo *ModelInfo `json:"model_info,omitempty"`
+
+	Images  []string `json:"images"`
+	PDFList []string `json:"pdf_list"`
+
+	Attributes        []GetDescriptionOfProductsAttribute        `json:"attributes"`
+	ComplexAttributes []GetDescriptionOfProductsComplexAttribute `json:"complex_attributes"`
+	ColorImage        string                                     `json:"color_image"`
+}
+
+type ModelInfo struct {
+	ModelId int64 `json:"model_id"`
+	Count   int64 `json:"count"`
+}
+
+type GetDescriptionOfProductsAttribute struct {
+	Id        int64                                    `json:"id"`
+	ComplexId int64                                    `json:"complex_id"`
+	Values    []GetDescriptionOfProductsAttributeValue `json:"values"`
+}
+
+type GetDescriptionOfProductsAttributeValue struct {
+	DictionaryValueId int64  `json:"dictionary_value_id"`
+	Value             string `json:"value"`
+}
+
+type GetDescriptionOfProductsComplexAttribute struct {
+	Id        int64                                    `json:"id,omitempty"`
+	ComplexId int64                                    `json:"complex_id,omitempty"`
+	Values    []GetDescriptionOfProductsAttributeValue `json:"values,omitempty"`
+}
+
+// /v4/product/info/attributes
+func (c Products) GetDescriptionOfProducts(ctx context.Context, params *GetDescriptionOfProductsParams) (*GetDescriptionOfProductsResponse, error) {
+	url := "/v4/product/info/attributes"
+
+	resp := &GetDescriptionOfProductsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
 type GetProductDescriptionParams struct {
 	// Product identifier in the seller's system
 	OfferId string `json:"offer_id"`
