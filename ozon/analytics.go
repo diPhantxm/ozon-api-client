@@ -270,3 +270,73 @@ func (c Analytics) GetProductTurnover(ctx context.Context, params *GetProductTur
 
 	return resp, nil
 }
+
+type GetStockManagementParams struct {
+	// GetStockManagementFilter
+	Filter GetStockManagementFilter `json:"filter"`
+
+	// Number of values in the response
+	Limit int32 `json:"limit,omitempty"`
+
+	// Number of elements to skip in the response
+	Offset int32 `json:"offset,omitempty"`
+}
+
+type GetStockManagementFilter struct {
+	// Product identifiers in the Ozon system, SKU
+	SKUs []string `json:"skus"`
+
+	// The type of item in stock
+	StockTypes string `json:"stock_types"`
+
+	// Warehouse identifiers
+	WarehouseIds []string `json:"warehouse_ids"`
+}
+
+type GetStockManagementResponse struct {
+	core.CommonResponse
+
+	// Products
+	Items []StockItem `json:"items"`
+}
+
+type StockItem struct {
+	// Stock of defective products, pcs
+	DefectCount int64 `json:"defect_stock_count"`
+
+	// Stock of near-expired products, pcs
+	ExpiringCount int64 `json:"expiring_stock_count"`
+
+	// Product name
+	ProductName string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Stock of valid products
+	ValidCount int64 `json:"valid_stock_count"`
+
+	// Stock of products that waiting for documents
+	WaitingDocsCount int64 `json:"waitingdocs_stock_count"`
+
+	// Warehouse name
+	WarehouseName string `json:"warehouse_name"`
+}
+
+// Use the method to find out how many product items are left in stock
+func (c Analytics) Stock(ctx context.Context, params *GetStockManagementParams) (*GetStockManagementResponse, error) {
+	url := "/v1/analytics/manage/stocks"
+
+	resp := &GetStockManagementResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
