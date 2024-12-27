@@ -3252,3 +3252,63 @@ func TestSplitOrder(t *testing.T) {
 		}
 	}
 }
+
+func TestListUnpaidProducts(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ListUnpaidProductsParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ListUnpaidProductsParams{
+				Cursor: "hCGiPPopcBFMgMErdzaCEpzQfinuPyEhUoSmBMADuoFAhBjXeA==",
+				Limit:  1000,
+			},
+			`{
+				"products": [
+				  {
+					"product_id": 145123054,
+					"offer_id": "10032",
+					"quantity": 1,
+					"name": "Телевизор LG",
+					"image_url": "https://cdn1.ozon.ru/multimedia/10741275.jpg"
+				  }
+				],
+				"cursor": "hCGiPPopcBFMgMErdzaCEpzQfinuPyEhUoSmBMADuoFAhBjXeA=="
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ListUnpaidProductsParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ListUnpaidProducts(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &ListUnpaidProductsResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
