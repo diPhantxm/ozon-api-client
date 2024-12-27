@@ -237,7 +237,7 @@ type FBSPostingAddressee struct {
 }
 
 type FBSPostingAnalyticsData struct {
-	// Delivery city
+	// Delivery city. Only for rFBS shipments
 	City string `json:"city"`
 
 	// Delivery start date and time
@@ -261,7 +261,7 @@ type FBSPostingAnalyticsData struct {
 	// Payment method
 	PaymentTypeGroupName PaymentTypeGroupName `json:"payment_type_group_name"`
 
-	// Delivery region
+	// Delivery region. Only for rFBS shipments
 	Region string `json:"region"`
 
 	// Delivery service
@@ -1077,7 +1077,7 @@ type GetShipmentDataByIdentifierResultAddressee struct {
 }
 
 type GetShipmentDataByIdentifierResultAnalyticsData struct {
-	// Delivery city
+	// Delivery city. Only for rFBS shipments
 	City string `json:"city"`
 
 	// Delivery start date and time
@@ -1100,7 +1100,7 @@ type GetShipmentDataByIdentifierResultAnalyticsData struct {
 	// Payment method
 	PaymentTypeGroupName string `json:"payment_type_group_name"`
 
-	// Delivery region
+	// Delivery region. Only for rFBS shipments
 	Region string `json:"region"`
 
 	// Delivery service
