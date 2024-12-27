@@ -463,8 +463,15 @@ type GetReturnsReportsFilter struct {
 	// Order delivery scheme: fbs — delivery from seller's warehouse
 	DeliverySchema string `json:"delivery_schema"`
 
-	// Order identifier
-	OrderId int64 `json:"order_id"`
+	// Date from which the data is displayed in the report.
+	//
+	// Available for the last three months only
+	DateFrom time.Time `json:"date_from"`
+
+	// Date up to which the data is displayed in the report.
+	//
+	// Available for the last three months only
+	DateTo time.Time `json:"date_to"`
 
 	// Order status
 	Status string `json:"status"`
@@ -473,20 +480,13 @@ type GetReturnsReportsFilter struct {
 type GetReturnsReportResponse struct {
 	core.CommonResponse
 
-	// Method result
-	Result GetReturnReportResult `json:"result"`
-}
-
-type GetReturnReportResult struct {
 	// Unique report identifier. The report is available for downloading within 3 days after making a request.
 	Code string `json:"code"`
 }
 
-// The report contains information about returned products that were accepted from the customer, ready for pickup, or delivered to the seller.
-//
-// The method is only suitable for orders shipped from the seller's warehouse
+// Method for getting a report on FBO and FBS returns
 func (c Reports) GetReturns(ctx context.Context, params *GetReturnsReportParams) (*GetReturnsReportResponse, error) {
-	url := "/v1/report/returns/create"
+	url := "/v2/report/returns/create"
 
 	resp := &GetReturnsReportResponse{}
 
