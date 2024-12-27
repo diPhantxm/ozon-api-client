@@ -13,8 +13,11 @@ type Finance struct {
 }
 
 type ReportOnSoldProductsParams struct {
-	// Time period in the `YYYY-MM` format
-	Date string `json:"date"`
+	// Month
+	Month int32 `json:"month"`
+
+	// Year
+	Year int32 `json:"year"`
 }
 
 type ReportOnSoldProductsResponse struct {
@@ -34,7 +37,7 @@ type ReportonSoldProductsResult struct {
 
 type ReportOnSoldProductsResultHeader struct {
 	// Report ID
-	Id string `json:"num"`
+	Id string `json:"number"`
 
 	// Report generation date
 	DocDate string `json:"doc_date"`
@@ -43,10 +46,10 @@ type ReportOnSoldProductsResultHeader struct {
 	ContractDate string `json:"contract_date"`
 
 	// Offer agreement number
-	ContractNum string `json:"contract_num"`
+	ContractNum string `json:"contract_number"`
 
 	// Currency of your prices
-	CurrencyCode string `json:"currency_code"`
+	CurrencySysName string `json:"currency_sys_name"`
 
 	// Amount to accrue
 	DocAmount float64 `json:"doc_amount"`
@@ -64,13 +67,13 @@ type ReportOnSoldProductsResultHeader struct {
 	PayerName string `json:"payer_name"`
 
 	// Recipient's TIN
-	RecipientINN string `json:"rcv_inn"`
+	RecipientINN string `json:"receiver_inn"`
 
 	// Recipient's Tax Registration Reason Code (KPP)
-	RecipientKPP string `json:"rcv_kpp"`
+	RecipientKPP string `json:"receiver_kpp"`
 
 	// Recipient's name
-	RecipientName string `json:"rcv_name"`
+	RecipientName string `json:"receiver_name"`
 
 	// Period start in the report
 	StartDate string `json:"start_date"`
@@ -81,13 +84,28 @@ type ReportOnSoldProductsResultHeader struct {
 
 type ReportOnSoldProductsResultRow struct {
 	// Row number
-	RowNumber int32 `json:"row_number"`
+	RowNumber int32 `json:"rowNumber"`
 
-	// Product ID
-	ProductId int64 `json:"product_id"`
+	// Product Information
+	Item ReturnOnSoldProduct `json:"item"`
 
+	// Commission including the quantity of products, discounts and extra charges.
+	// Ozon compensates it for the returned products
+	ReturnCommission ReturnCommission `json:"return_commission"`
+
+	// Percentage of sales commission by category
+	CommissionRatio float64 `json:"commission_ratio"`
+
+	// Delivery fee
+	DeliveryCommission ReturnCommission `json:"delivery_commission"`
+
+	// Seller's discounted price
+	SellerPricePerInstance float64 `json:"seller_price_per_instance"`
+}
+
+type ReturnOnSoldProduct struct {
 	// Product name
-	ProductName string `json:"product_name"`
+	ProductName string `json:"name"`
 
 	// Product barcode
 	Barcode string `json:"barcode"`
@@ -95,58 +113,39 @@ type ReportOnSoldProductsResultRow struct {
 	// Product identifier in the seller's system
 	OfferId string `json:"offer_id"`
 
-	// Sales commission by category
-	CommissionPercent float64 `json:"commission_percent"`
+	SKU int64 `json:"sku"`
+}
 
-	// Seller's price with their discount
-	Price float64 `json:"price"`
+type ReturnCommission struct {
+	// Amount
+	Amount float64 `json:"amount"`
 
-	// Selling price: the price at which the customer purchased the product. For sold products
-	PriceSale float64 `json:"price_sale"`
-
-	// Sold for amount.
-	//
-	// Sold products cost considering the quantity and regional coefficients. Calculation is made by the sale_amount price
-	SaleAmount float64 `json:"sale_amount"`
+	// Points for discounts
+	Bonus float64 `json:"bonus"`
 
 	// Commission for sold products, including discounts and extra charges
-	SaleCommission float64 `json:"sale_commission"`
+	Commission float64 `json:"commission"`
 
-	// Extra charge at the expense of Ozon.
-	//
-	// Amount that Ozon will compensate the seller if the Ozon discount is greater than or equal to the sales commission
-	SaleDiscount float64 `json:"sale_discount"`
+	// Additional payment at the expense of Ozon
+	Compensation float64 `json:"compensation"`
 
-	// Total accrual for the products sold.
-	//
-	// Amount after deduction of sales commission, application of discounts and extra charges
-	SalePriceSeller float64 `json:"sale_price_seller"`
+	// Price per item
+	PricePerInstance float64 `json:"price_per_instance"`
 
-	// Quantity of products sold at the price_sale price
-	SaleQuantity int32 `json:"sale_qty"`
+	// Product quantity
+	Quantity int32 `json:"quantity"`
 
-	// Price at which the customer purchased the product. For returned products
-	ReturnSale float64 `json:"return_sale"`
+	// Ozon referral fee
+	StandardFee float64 `json:"standard_fee"`
 
-	// Cost of returned products, taking into account the quantity and regional coefficients.
-	// Calculation is carried out at the return_sale price
-	ReturnAmount float64 `json:"return_amount"`
+	// Payouts on partner loyalty mechanics: green prices
+	BankCoinvestment float64 `json:"bank_coinvestment"`
 
-	// Commission including the quantity of products, discounts and extra charges.
-	// Ozon compensates it for the returned products
-	ReturnCommission float64 `json:"return_commission"`
+	// Payouts on partner loyalty mechanics: stars
+	Stars float64 `json:"stars"`
 
-	// Extra charge at the expense of Ozon.
-	//
-	// Amount of the discount at the expense of Ozon on returned products.
-	// Ozon will compensate it to the seller if the Ozon discount is greater than or equal to the sales commission
-	ReturnDiscount float64 `json:"return_discount"`
-
-	// Amount charged to the seller for returned products after deducing sales commissions, applying discounts and extra charges
-	ReturnPriceSeller float64 `json:"return_price_seller"`
-
-	// Quantity of returned products
-	ReturnQuantity int32 `json:"return_qty"`
+	// Total accrual
+	Total float64 `json:"total"`
 }
 
 // Returns information on products sold and returned within a month. Canceled or non-purchased products are not included.

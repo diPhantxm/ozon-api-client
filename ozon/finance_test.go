@@ -23,52 +23,67 @@ func TestReportOnSoldProducts(t *testing.T) {
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&ReportOnSoldProductsParams{
-				Date: "2022-09",
+				Month: 9,
+				Year:  2022,
 			},
 			`{
-                "result": {
-                    "header": {
-                        "doc_date": "2022-09-22",
-                        "num": "string",
-                        "start_date": "2022-09-02",
-                        "stop_date": "2022-09-22",
-                        "contract_date": "2022-09-02",
-                        "contract_num": "string",
-                        "payer_name": "string",
-                        "payer_inn": "string",
-                        "payer_kpp": "string",
-                        "rcv_name": "string",
-                        "rcv_inn": "string",
-                        "rcv_kpp": "string",
-                        "doc_amount": 1,
-                        "vat_amount": 1,
-                        "currency_code": "string"
-                    },
-                    "rows": [
-                    {
-                        "row_number": 0,
-                        "product_id": 0,
-                        "product_name": "string",
-                        "offer_id": "string",
-                        "barcode": "string",
-                        "price": 0,
-                        "commission_percent": 0,
-                        "price_sale": 0,
-                        "sale_qty": 0,
-                        "sale_amount": 0,
-                        "sale_discount": 0,
-                        "sale_commission": 0,
-                        "sale_price_seller": 0,
-                        "return_sale": 0,
-                        "return_qty": 0,
-                        "return_amount": 0,
-                        "return_discount": 0,
-                        "return_commission": 0,
-                        "return_price_seller": 0
-                    }
-                    ]
-                }
-            }`,
+				"result": {
+				  "header": {
+					"contract_date": "string",
+					"contract_number": "string",
+					"currency_sys_name": "string",
+					"doc_amount": 0,
+					"doc_date": "string",
+					"number": "string",
+					"payer_inn": "string",
+					"payer_kpp": "string",
+					"payer_name": "string",
+					"receiver_inn": "string",
+					"receiver_kpp": "string",
+					"receiver_name": "string",
+					"start_date": "string",
+					"stop_date": "string",
+					"vat_amount": 0
+				  },
+				  "rows": [
+					{
+					  "commission_ratio": 0,
+					  "delivery_commission": {
+						"amount": 0,
+						"bonus": 0,
+						"commission": 0,
+						"compensation": 0,
+						"price_per_instance": 0,
+						"quantity": 0,
+						"standard_fee": 0,
+						"bank_coinvestment": 0,
+						"stars": 0,
+						"total": 0
+					  },
+					  "item": {
+						"barcode": "string",
+						"name": "string",
+						"offer_id": "string",
+						"sku": 0
+					  },
+					  "return_commission": {
+						"amount": 0,
+						"bonus": 0,
+						"commission": 0,
+						"compensation": 0,
+						"price_per_instance": 0,
+						"quantity": 0,
+						"standard_fee": 0,
+						"bank_coinvestment": 0,
+						"stars": 0,
+						"total": 0
+					  },
+					  "rowNumber": 0,
+					  "seller_price_per_instance": 0
+					}
+				  ]
+				}
+			}`,
 			"",
 		},
 		// Test No Client-Id or Api-Key
