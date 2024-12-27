@@ -209,3 +209,71 @@ func TestGetProductTurnover(t *testing.T) {
 		}
 	}
 }
+
+func TestGetStock(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetStockManagementParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetStockManagementParams{
+				Limit:  1,
+				Offset: 0,
+				Filter: GetStockManagementFilter{
+					StockTypes: "STOCK_TYPE_VALID",
+					SKUs: []string{
+						"string",
+					},
+				},
+			},
+			`{
+				"items": [
+				  {
+					"defect_stock_count": 0,
+					"expiring_stock_count": 0,
+					"name": "string",
+					"offer_id": "string",
+					"sku": 0,
+					"valid_stock_count": 0,
+					"waitingdocs_stock_count": 0,
+					"warehouse_name": "string"
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetStockManagementParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Analytics().Stock(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetStockManagementResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
