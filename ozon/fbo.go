@@ -101,9 +101,6 @@ type GetFBOShipmentsListResultAdditionalData struct {
 }
 
 type GetFBOShipmentsListResultAnalyticsData struct {
-	// Delivery city
-	City string `json:"city"`
-
 	// Delivery method
 	DeliveryType string `json:"delivery_type"`
 
@@ -117,9 +114,6 @@ type GetFBOShipmentsListResultAnalyticsData struct {
 
 	// Payment method
 	PaymentTypeGroupName PaymentTypeGroupName `json:"payment_type_group_name"`
-
-	// Delivery region
-	Region string `json:"region"`
 
 	// Warehouse identifier
 	WarehouseId int64 `json:"warehouse_id"`
@@ -247,9 +241,6 @@ type GetShipmentDetailsResultAdditionalData struct {
 }
 
 type GetShipmentDetailsResultAnalyticsData struct {
-	// Delivery city
-	City string `json:"city"`
-
 	// Delivery method
 	DeliveryType string `json:"delivery_type"`
 
@@ -263,9 +254,6 @@ type GetShipmentDetailsResultAnalyticsData struct {
 
 	// Payment method
 	PaymentTypeGroupName string `json:"payment_type_group_name"`
-
-	// Delivery region
-	Region string `json:"region"`
 
 	// Warehouse identifier
 	WarehouseId int64 `json:"warehouse_id"`
