@@ -58,8 +58,6 @@ func TestGetFBOShipmentsList(t *testing.T) {
 					  }
 					],
 					"analytics_data": {
-					  "region": "РОСТОВСКАЯ ОБЛАСТЬ",
-					  "city": "Ростов-на-Дону",
 					  "delivery_type": "PVZ",
 					  "is_premium": false,
 					  "payment_type_group_name": "Карты оплаты",
@@ -191,8 +189,6 @@ func TestGetShipmentDetails(t *testing.T) {
 					}
 				  ],
 				  "analytics_data": {
-					"region": "МОСКВА",
-					"city": "Москва",
 					"delivery_type": "Courier",
 					"is_premium": false,
 					"payment_type_group_name": "Карты оплаты",
