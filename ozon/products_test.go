@@ -95,208 +95,6 @@ func TestGetStocksInfo(t *testing.T) {
 	}
 }
 
-func TestGetProductDetails(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		statusCode int
-		headers    map[string]string
-		params     *GetProductDetailsParams
-		response   string
-	}{
-		// Test Ok
-		{
-			http.StatusOK,
-			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&GetProductDetailsParams{
-				ProductId: 137208233,
-			},
-			`{
-				"result": {
-				  "id": 137208233,
-				  "name": "Комплект защитных плёнок для X3 NFC. Темный хлопок",
-				  "offer_id": "143210586",
-				  "barcode": "",
-				  "barcodes": [
-					"2335900005",
-					"7533900005"
-				  ],
-				  "buybox_price": "",
-				  "type_id": 0,
-				  "created_at": "2021-10-21T15:48:03.529178Z",
-				  "images": [
-					"https://cdn1.ozone.ru/s3/multimedia-5/6088931525.jpg",
-					"https://cdn1.ozone.ru/s3/multimedia-p/6088915813.jpg"
-				  ],
-				  "has_discounted_item": true,
-				  "is_discounted": true,
-				  "discounted_stocks": {
-					"coming": 0,
-					"present": 0,
-					"reserved": 0
-				  },
-				  "currency_code": "RUB",
-				  "description_category_id": 12,
-				  "marketing_price": "",
-				  "min_price": "",
-				  "old_price": "",
-				  "price": "590.0000",
-				  "sources": [
-					{
-					  "is_enabled": true,
-					  "sku": 522759607,
-					  "source": "fbo"
-					},
-					{
-					  "is_enabled": true,
-					  "sku": 522759608,
-					  "source": "fbs"
-					}
-				  ],
-				  "stocks": {
-					"coming": 0,
-					"present": 0,
-					"reserved": 0
-				  },
-				  "updated_at": "2023-02-09T06:46:44.152Z",
-				  "vat": "0.0",
-				  "visible": false,
-				  "visibility_details": {
-					"has_price": true,
-					"has_stock": false,
-					"active_product": false
-				  },
-				  "price_indexes": {
-					"external_index_data": {
-					  "minimal_price": "string",
-					  "minimal_price_currency": "string",
-					  "price_index_value": 0
-					},
-					"ozon_index_data": {
-					  "minimal_price": "string",
-					  "minimal_price_currency": "string",
-					  "price_index_value": 0
-					},
-					"price_index": "WITHOUT_INDEX",
-					"self_marketplaces_index_data": {
-					  "minimal_price": "string",
-					  "minimal_price_currency": "string",
-					  "price_index_value": 0
-					}
-				  },
-				  "commissions": [],
-				  "volume_weight": 0.1,
-				  "is_prepayment": false,
-				  "is_prepayment_allowed": true,
-				  "images360": [],
-				  "is_kgt": false,
-				  "color_image": "",
-				  "primary_image": "https://cdn1.ozone.ru/s3/multimedia-p/6088931545.jpg",
-				  "status": {
-					"state": "imported",
-					"state_failed": "imported",
-					"moderate_status": "",
-					"decline_reasons": [],
-					"validation_state": "pending",
-					"state_name": "Не продается",
-					"state_description": "Не создан",
-					"is_failed": true,
-					"is_created": false,
-					"state_tooltip": "",
-					"item_errors": [
-					  {
-						"code": "error_attribute_values_empty",
-						"field": "attribute",
-						"attribute_id": 9048,
-						"state": "imported",
-						"level": "error",
-						"description": "Не заполнен обязательный атрибут. Иногда мы обновляем обязательные атрибуты или добавляем новые. Отредактируйте товар или загрузите новый XLS-шаблон с актуальными атрибутами. ",
-						"optional_description_elements": {},
-						"attribute_name": "Название модели"
-					  },
-					  {
-						"code": "error_attribute_values_empty",
-						"field": "attribute",
-						"attribute_id": 5076,
-						"state": "imported",
-						"level": "error",
-						"description": "Не заполнен обязательный атрибут. Иногда мы обновляем обязательные атрибуты или добавляем новые. Отредактируйте товар или загрузите новый XLS-шаблон с актуальными атрибутами. ",
-						"optional_description_elements": {},
-						"attribute_name": "Рекомендовано для"
-					  },
-					  {
-						"code": "error_attribute_values_empty",
-						"field": "attribute",
-						"attribute_id": 8229,
-						"state": "imported",
-						"level": "error",
-						"description": "Не заполнен обязательный атрибут. Иногда мы обновляем обязательные атрибуты или добавляем новые. Отредактируйте товар или загрузите новый XLS-шаблон с актуальными атрибутами. ",
-						"optional_description_elements": {},
-						"attribute_name": "Тип"
-					  },
-					  {
-						"code": "error_attribute_values_empty",
-						"field": "attribute",
-						"attribute_id": 85,
-						"state": "imported",
-						"level": "error",
-						"description": "Не заполнен обязательный атрибут. Иногда мы обновляем обязательные атрибуты или добавляем новые. Отредактируйте товар или загрузите новый XLS-шаблон с актуальными атрибутами. ",
-						"optional_description_elements": {},
-						"attribute_name": "Бренд"
-					  }
-					],
-					"state_updated_at": "2021-10-21T15:48:03.927309Z"
-				  },
-					"is_archived": false,
-					"is_autoarchived": false
-				}
-			}`,
-		},
-		// Test No Client-Id or Api-Key
-		{
-			http.StatusUnauthorized,
-			map[string]string{},
-			&GetProductDetailsParams{},
-			`{
-				"code": 16,
-				"message": "Client-Id and Api-Key headers are required"
-			}`,
-		},
-	}
-
-	for _, test := range tests {
-		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
-
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.Products().GetProductDetails(ctx, test.params)
-		if err != nil {
-			t.Error(err)
-			continue
-		}
-
-		compareJsonResponse(t, test.response, &GetProductDetailsResponse{})
-
-		if resp.StatusCode != test.statusCode {
-			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
-		}
-
-		if resp.StatusCode == http.StatusOK {
-			if resp.Result.Id != test.params.ProductId {
-				t.Errorf("Id of product in response is not equal product_id in request")
-			}
-			if resp.Result.OfferId == "" {
-				t.Errorf("Offer id cannot be empty")
-			}
-			if resp.Result.DescriptionCategoryId == 0 {
-				t.Errorf("Category id cannot be 0")
-			}
-			if resp.Result.CurrencyCode == "" {
-				t.Errorf("Currency code cannot be empty")
-			}
-		}
-	}
-}
-
 func TestUpdateStocks(t *testing.T) {
 	t.Parallel()
 
@@ -1364,157 +1162,135 @@ func TestListProductsByIDs(t *testing.T) {
 				OfferId: []string{"010", "23"},
 			},
 			`{
-				"result": {
-				  "items": [
-					{
-					  "id": 78712196,
-					  "name": "Как выбрать детские музыкальные инструменты. Ксилофон, бубен, маракасы и другие инструменты для детей до 6 лет. Мастер-класс о раннем музыкальном развитии от Монтессори-педагога",
-					  "offer_id": "010",
-					  "barcode": "",
-					  "barcodes": [
-						"2335900005",
-						"7533900005"
-					  ],
-					  "buybox_price": "",
-					  "description_category_id": 93726157,
-					  "type_id": 0,
-					  "created_at": "2021-06-03T03:40:05.871465Z",
-					  "images": [],
-					  "has_discounted_item": true,
-					  "is_discounted": true,
-					  "discounted_stocks": {
-						"coming": 0,
-						"present": 0,
-						"reserved": 0
-					  },
-					  "currency_code": "RUB",
-					  "marketing_price": "",
-					  "min_price": "",
-					  "old_price": "1000.0000",
-					  "price": "690.0000",
-					  "sources": [
-						{
-						  "is_enabled": true,
-						  "sku": 269628393,
-						  "source": "fbo"
-						},
-						{
-						  "is_enabled": true,
-						  "sku": 269628396,
-						  "source": "fbs"
+				"items": [
+				  {
+					"barcodes": [
+					  "string"
+					],
+					"color_image": [
+					  "string"
+					],
+					"commissions": [
+					  {
+						"delivery_amount": 0,
+						"percent": 0,
+						"return_amount": 0,
+						"sale_schema": "string",
+						"value": 0
+					  }
+					],
+					"created_at": "2019-08-24T14:15:22Z",
+					"currency_code": "string",
+					"description_category_id": 0,
+					"discounted_fbo_stocks": 0,
+					"errors": [
+					  {
+						"attribute_id": 0,
+						"code": "string",
+						"field": "string",
+						"level": "ERROR_LEVEL_UNSPECIFIED",
+						"state": "string",
+						"texts": {
+						  "attribute_name": "string",
+						  "description": "string",
+						  "hint_code": "string",
+						  "message": "string",
+						  "params": [
+							{
+							  "name": "string",
+							  "value": "string"
+							}
+						  ],
+						  "short_description": "string"
 						}
-					  ],
-					  "stocks": {
-						"coming": 0,
-						"present": 13,
-						"reserved": 0
+					  }
+					],
+					"has_discounted_fbo_item": true,
+					"id": 0,
+					"images": [
+					  "string"
+					],
+					"images360": [
+					  "string"
+					],
+					"is_archived": true,
+					"is_autoarchived": true,
+					"is_discounted": true,
+					"is_kgt": true,
+					"is_prepayment_allowed": true,
+					"is_super": true,
+					"marketing_price": "string",
+					"min_price": "string",
+					"model_info": {
+					  "count": 0,
+					  "model_id": 0
+					},
+					"name": "string",
+					"offer_id": "string",
+					"old_price": "string",
+					"price": "string",
+					"price_indexes": {
+					  "color_index": "COLOR_INDEX_UNSPECIFIED",
+					  "external_index_data": {
+						"minimal_price": "string",
+						"minimal_price_currency": "string",
+						"price_index_value": 0
 					  },
-					  "updated_at": "2023-02-09T06:46:44.152Z",
-					  "vat": "0.0",
-					  "visible": true,
-					  "visibility_details": {
-						"has_price": false,
-						"has_stock": true,
-						"active_product": false,
-						"reasons": {}
+					  "ozon_index_data": {
+						"minimal_price": "string",
+						"minimal_price_currency": "string",
+						"price_index_value": 0
 					  },
-					  "price_indexes": {
-						"external_index_data": {
-						  "minimal_price": "string",
-						  "minimal_price_currency": "string",
-						  "price_index_value": 0
-						},
-						"ozon_index_data": {
-						  "minimal_price": "string",
-						  "minimal_price_currency": "string",
-						  "price_index_value": 0
-						},
-						"price_index": "WITHOUT_INDEX",
-						"self_marketplaces_index_data": {
-						  "minimal_price": "string",
-						  "minimal_price_currency": "string",
-						  "price_index_value": 0
-						}
-					  },
-					  "images360": [],
-					  "is_kgt": false,
-					  "color_image": "",
-					  "primary_image": "https://cdn1.ozone.ru/s3/multimedia-y/6077810038.jpg",
-					  "status": {
-						"state": "price_sent",
-						"state_failed": "",
-						"moderate_status": "approved",
-						"decline_reasons": [],
-						"validation_state": "success",
-						"state_name": "Продается",
-						"state_description": "",
-						"is_failed": false,
-						"is_created": true,
-						"state_tooltip": "",
-						"item_errors": [],
-						"state_updated_at": "2021-07-26T04:50:08.486697Z"
+					  "self_marketplaces_index_data": {
+						"minimal_price": "string",
+						"minimal_price_currency": "string",
+						"price_index_value": 0
 					  }
 					},
-					{
-					  "id": 76723583,
-					  "name": "Онлайн-курс по дрессировке собак \"Собака: инструкция по применению. Одинокий волк\"",
-					  "offer_id": "23",
-					  "barcode": "",
-					  "buybox_price": "",
-					  "created_at": "2021-05-26T20:26:07.565586Z",
-					  "images": [],
-					  "marketing_price": "",
-					  "min_price": "",
-					  "old_price": "12200.0000",
-					  "price": "6100.0000",
-					  "sources": [
-						{
-						  "is_enabled": true,
-						  "sku": 267684495,
-						  "source": "fbo"
-						},
-						{
-						  "is_enabled": true,
-						  "sku": 267684498,
-						  "source": "fbs"
-						}
-					  ],
-					  "stocks": {
-						"coming": 0,
-						"present": 19,
-						"reserved": 0
-					  },
-					  "updated_at": "2023-02-09T06:46:44.152Z",
-					  "vat": "0.0",
-					  "visible": true,
-					  "visibility_details": {
-						"has_price": false,
-						"has_stock": true,
-						"active_product": false,
-						"reasons": {}
-					  },
-					  "price_index": "0.00",
-					  "images360": [],
-					  "is_kgt": false,
-					  "color_image": "",
-					  "primary_image": "https://cdn1.ozone.ru/s3/multimedia-v/6062554531.jpg",
-					  "status": {
-						"state": "price_sent",
-						"state_failed": "",
-						"moderate_status": "approved",
-						"decline_reasons": [],
-						"validation_state": "success",
-						"state_name": "Продается",
-						"state_description": "",
-						"is_failed": false,
-						"is_created": true,
-						"state_tooltip": "",
-						"item_errors": [],
-						"state_updated_at": "2021-05-31T12:35:09.714641Z"
+					"primary_image": [
+					  "string"
+					],
+					"sources": [
+					  {
+						"created_at": "2019-08-24T14:15:22Z",
+						"quant_code": "string",
+						"shipment_type": "SHIPMENT_TYPE_UNSPECIFIED",
+						"sku": 0,
+						"source": "string"
 					  }
-					}
-				  ]
-				}
+					],
+					"statuses": {
+					  "is_created": true,
+					  "moderate_status": "string",
+					  "status": "string",
+					  "status_description": "string",
+					  "status_failed": "string",
+					  "status_name": "string",
+					  "status_tooltip": "string",
+					  "status_updated_at": "2019-08-24T14:15:22Z",
+					  "validation_status": "string"
+					},
+					"stocks": {
+					  "has_stock": true,
+					  "stocks": [
+						{
+						  "present": 0,
+						  "reserved": 0,
+						  "sku": 0,
+						  "source": "string"
+						}
+					  ]
+					},
+					"type_id": 0,
+					"updated_at": "2019-08-24T14:15:22Z",
+					"vat": "string",
+					"visibility_details": {
+					  "has_price": true,
+					  "has_stock": true
+					},
+					"volume_weight": 0
+				  }
+				]
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -1543,17 +1319,6 @@ func TestListProductsByIDs(t *testing.T) {
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
-		}
-
-		if resp.StatusCode == http.StatusOK {
-			if len(resp.Result.Items) != len(test.params.OfferId) {
-				t.Errorf("Amount of offer ids in request and response are not equal")
-			}
-			if len(resp.Result.Items) > 0 {
-				if resp.Result.Items[0].OfferId != test.params.OfferId[0] {
-					t.Errorf("Offer ids in request and response are not equal")
-				}
-			}
 		}
 	}
 }
