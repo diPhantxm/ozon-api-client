@@ -305,10 +305,10 @@ type ListTransactionsResult struct {
 	// Transactions infromation
 	Operations []ListTransactionsResultOperation `json:"operations"`
 
-	// Number of pages
+	// Number of pages. If 0, there are no more pages
 	PageCount int64 `json:"page_count"`
 
-	// Number of products
+	// Number of transactions on all pages. If 0, there are no more transactions
 	RowCount int64 `json:"row_count"`
 }
 
