@@ -152,7 +152,7 @@ type ReturnCommission struct {
 //
 // Report is returned no later than the 5th day of the next month
 func (c Finance) ReportOnSoldProducts(ctx context.Context, params *ReportOnSoldProductsParams) (*ReportOnSoldProductsResponse, error) {
-	url := "/v1/finance/realization"
+	url := "/v2/finance/realization"
 
 	resp := &ReportOnSoldProductsResponse{}
 
