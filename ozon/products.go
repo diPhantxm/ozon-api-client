@@ -13,13 +13,11 @@ type Products struct {
 }
 
 type GetStocksInfoParams struct {
-	// Identifier of the last value on the page. Leave this field blank in the first request.
-	//
-	// To get the next values, specify last_id from the response of the previous request.
-	LastId string `json:"last_id"`
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
 
-	// Number of values per page. Minimum is 1, maximum is 1000
-	Limit int64 `json:"limit"`
+	// Limit on number of entries in a reply. Default value is 1000. Maximum value is 1000
+	Limit int32 `json:"limit"`
 
 	// Filter by product
 	Filter GetStocksInfoFilter `json:"filter"`
@@ -34,20 +32,24 @@ type GetStocksInfoFilter struct {
 
 	// Filter by product visibility
 	Visibility string `json:"visibility,omitempty"`
+
+	// Products at the “Economy” tariff
+	WithQuant GetStocksInfoFilterWithQuant `json:"with_quant"`
+}
+
+type GetStocksInfoFilterWithQuant struct {
+	// Active economy products
+	Created bool `json:"created"`
+
+	// Economy products in all statuses
+	Exists bool `json:"exists"`
 }
 
 type GetStocksInfoResponse struct {
 	core.CommonResponse
 
-	// Method Result
-	Result GetStocksInfoResult `json:"result"`
-}
-
-type GetStocksInfoResult struct {
-	// Identifier of the last value on the page
-	//
-	// To get the next values, specify the recieved value in the next request in the last_id parameter
-	LastId string `json:"last_id"`
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
 
 	// The number of unique products for which information about stocks is displayed
 	Total int32 `json:"total"`
@@ -76,6 +78,12 @@ type GetStocksInfoResultItemStock struct {
 
 	// Warehouse type
 	Type string `json:"type" default:"ALL"`
+
+	// Packaging type
+	ShipmentType string `json:"shipment_type"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 }
 
 // Returns information about the quantity of products in stock:
@@ -84,7 +92,7 @@ type GetStocksInfoResultItemStock struct {
 //
 // * how many are reserved by customers.
 func (c Products) GetStocksInfo(ctx context.Context, params *GetStocksInfoParams) (*GetStocksInfoResponse, error) {
-	url := "/v3/product/info/stocks"
+	url := "/v4/product/info/stocks"
 
 	resp := &GetStocksInfoResponse{}
 

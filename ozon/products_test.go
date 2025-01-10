@@ -24,7 +24,7 @@ func TestGetStocksInfo(t *testing.T) {
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetStocksInfoParams{
 				Limit:  100,
-				LastId: "",
+				Cursor: "",
 				Filter: GetStocksInfoFilter{
 					OfferId:    []string{"136834"},
 					ProductId:  []int64{214887921},
@@ -32,28 +32,23 @@ func TestGetStocksInfo(t *testing.T) {
 				},
 			},
 			`{
-				"result": {
-				  "items": [
-					{
-					  "product_id": 214887921,
-					  "offer_id": "136834",
-					  "stocks": [
-						{
-						  "type": "fbs",
-						  "present": 170,
-						  "reserved": 0
-						},
-						{
-						  "type": "fbo",
-						  "present": 0,
-						  "reserved": 0
-						}
-					  ]
-					}
-				  ],
-				  "total": 1,
-				  "last_id": "anVsbA=="
-				}
+				"cursor": "string",
+				"items": [
+				  {
+					"offer_id": "string",
+					"product_id": 123,
+					"stocks": [
+					  {
+						"present": 0,
+						"reserved": 0,
+						"shipment_type": "SHIPMENT_TYPE_GENERAL",
+						"sku": 0,
+						"type": "string"
+					  }
+					]
+				  }
+				],
+				"total": 0
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -85,14 +80,14 @@ func TestGetStocksInfo(t *testing.T) {
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			if len(resp.Result.Items) > int(test.params.Limit) {
+			if len(resp.Items) > int(test.params.Limit) {
 				t.Errorf("Amount of items in response cannot be bigger than limit")
 			}
-			if len(resp.Result.Items) > 0 {
-				if resp.Result.Items[0].ProductId == 0 {
+			if len(resp.Items) > 0 {
+				if resp.Items[0].ProductId == 0 {
 					t.Errorf("Product id cannot be 0")
 				}
-				if resp.Result.Items[0].OfferId == "" {
+				if resp.Items[0].OfferId == "" {
 					t.Errorf("Offer id cannot be empty")
 				}
 			}
