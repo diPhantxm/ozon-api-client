@@ -1290,18 +1290,23 @@ func TestCheckImageUploadingStatus(t *testing.T) {
 				ProductId: []int64{123456},
 			},
 			`{
-				"result": {
-				  "pictures": [
-					{
-					  "is_360": true,
-					  "is_color": true,
-					  "is_primary": true,
-					  "product_id": 123456,
-					  "state": "string",
-					  "url": "string"
-					}
-				  ]
-				}
+				"items": [
+				  {
+					"product_id": 123456,
+					"primary_photo": [
+					  "string"
+					],
+					"photo": [
+					  "string"
+					],
+					"color_photo": [
+					  "string"
+					],
+					"photo_360": [
+					  "string"
+					]
+				  }
+				]
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -1326,15 +1331,15 @@ func TestCheckImageUploadingStatus(t *testing.T) {
 			continue
 		}
 
-		compareJsonResponse(t, test.response, &ProductInfoResponse{})
+		compareJsonResponse(t, test.response, &CheckImageUploadingStatusResponse{})
 
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			if len(resp.Result.Pictures) > 0 {
-				if resp.Result.Pictures[0].ProductId != test.params.ProductId[0] {
+			if len(resp.Items) > 0 {
+				if resp.Items[0].ProductId != test.params.ProductId[0] {
 					t.Errorf("Product ids in request and response are not equal")
 				}
 			}

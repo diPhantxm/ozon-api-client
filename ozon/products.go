@@ -1321,11 +1321,35 @@ type CheckImageUploadingStatusParams struct {
 	ProductId []int64 `json:"product_id"`
 }
 
-// Check products images uploading status
-func (c Products) CheckImageUploadingStatus(ctx context.Context, params *CheckImageUploadingStatusParams) (*ProductInfoResponse, error) {
-	url := "/v1/product/pictures/info"
+type CheckImageUploadingStatusResponse struct {
+	core.CommonResponse
 
-	resp := &ProductInfoResponse{}
+	// Product images
+	Items []CheckImageUploadingStatusItem `json:"items"`
+}
+
+type CheckImageUploadingStatusItem struct {
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Main image link
+	PrimaryPhoto []string `json:"primary_photo"`
+
+	// Links to product photos
+	Photo []string `json:"photo"`
+
+	// Links to uploaded color samples
+	ColorPhoto []string `json:"color_photo"`
+
+	// 360 images links
+	Photo360 []string `json:"photo_360"`
+}
+
+// Check products images uploading status
+func (c Products) CheckImageUploadingStatus(ctx context.Context, params *CheckImageUploadingStatusParams) (*CheckImageUploadingStatusResponse, error) {
+	url := "/v2/product/pictures/info"
+
+	resp := &CheckImageUploadingStatusResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
