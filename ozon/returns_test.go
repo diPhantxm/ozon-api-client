@@ -823,10 +823,10 @@ func TestFBSQuantity(t *testing.T) {
 				},
 			},
 			`{
-				"company_id": 0,
 				"drop_off_points": [
 				  {
 					"address": "string",
+					"box_count": 0,
 					"id": 0,
 					"name": "string",
 					"pass_info": {
@@ -835,6 +835,7 @@ func TestFBSQuantity(t *testing.T) {
 					},
 					"place_id": 0,
 					"returns_count": 0,
+					"utc_offset": "string",
 					"warehouses_ids": [
 					  "string"
 					]
@@ -963,7 +964,8 @@ func TestListReturns(t *testing.T) {
 					  "commission": {
 						"currency_code": "RUB",
 						"price": 2312
-					  }
+					  },
+					  "quantity": 1
 					},
 					"logistic": {
 					  "technical_return_moment": "2024-07-29T06:15:48.998146Z",
