@@ -667,9 +667,6 @@ type GetFBSQuantityReturnsPagination struct {
 type GetFBSQuantityReturnsResponse struct {
 	core.CommonResponse
 
-	// Seller identifier
-	CompanyId int64 `json:"company_id"`
-
 	DropoffPoints []GetFBSQuantityDropoffPoint `json:"drop_off_points"`
 
 	// true if there are any other points where sellers have orders waiting
@@ -697,6 +694,12 @@ type GetFBSQuantityDropoffPoint struct {
 
 	// Seller's warehouses identifiers
 	WarehouseIds []string `json:"warehouses_ids"`
+
+	// Number of boxes in drop-off point
+	BoxCount int32 `json:"box_count"`
+
+	// Time zone offset of the shipping time from UTC-0
+	UTCOffset string `json:"utc_offset"`
 }
 
 type GetFBSQuantityDropoffPointPassInfo struct {
@@ -904,6 +907,9 @@ type ReturnProduct struct {
 
 	// Commission details
 	Commission ReturnSum `json:"commission"`
+
+	// Product quantity
+	Quantity int32 `json:"quantity"`
 }
 
 type ReturnLogistic struct {

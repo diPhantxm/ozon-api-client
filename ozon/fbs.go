@@ -237,7 +237,7 @@ type FBSPostingAddressee struct {
 }
 
 type FBSPostingAnalyticsData struct {
-	// Delivery city
+	// Delivery city. Only for rFBS shipments
 	City string `json:"city"`
 
 	// Delivery start date and time
@@ -261,7 +261,7 @@ type FBSPostingAnalyticsData struct {
 	// Payment method
 	PaymentTypeGroupName PaymentTypeGroupName `json:"payment_type_group_name"`
 
-	// Delivery region
+	// Delivery region. Only for rFBS shipments
 	Region string `json:"region"`
 
 	// Delivery service
@@ -1077,7 +1077,7 @@ type GetShipmentDataByIdentifierResultAddressee struct {
 }
 
 type GetShipmentDataByIdentifierResultAnalyticsData struct {
-	// Delivery city
+	// Delivery city. Only for rFBS shipments
 	City string `json:"city"`
 
 	// Delivery start date and time
@@ -1100,7 +1100,7 @@ type GetShipmentDataByIdentifierResultAnalyticsData struct {
 	// Payment method
 	PaymentTypeGroupName string `json:"payment_type_group_name"`
 
-	// Delivery region
+	// Delivery region. Only for rFBS shipments
 	Region string `json:"region"`
 
 	// Delivery service
@@ -3177,6 +3177,54 @@ func (c FBS) SplitOrder(ctx context.Context, params *SplitOrderParams) (*SplitOr
 	url := "/v1/posting/fbs/split"
 
 	resp := &SplitOrderResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type ListUnpaidProductsParams struct {
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
+
+	// Number of values in the response
+	Limit int32 `json:"limit,omitempty"`
+}
+
+type ListUnpaidProductsResponse struct {
+	core.CommonResponse
+
+	Products []UnpaidProduct `json:"products"`
+
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
+}
+
+type UnpaidProduct struct {
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Product quantity, pcs
+	Quantity int32 `json:"quantity"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Link to product image
+	ImageURL string `json:"image_url"`
+}
+
+func (c FBS) ListUnpaidProducts(ctx context.Context, params *ListUnpaidProductsParams) (*ListUnpaidProductsResponse, error) {
+	url := "/v1/posting/unpaid-legal/product/list"
+
+	resp := &ListUnpaidProductsResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {

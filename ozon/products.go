@@ -13,13 +13,11 @@ type Products struct {
 }
 
 type GetStocksInfoParams struct {
-	// Identifier of the last value on the page. Leave this field blank in the first request.
-	//
-	// To get the next values, specify last_id from the response of the previous request.
-	LastId string `json:"last_id"`
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
 
-	// Number of values per page. Minimum is 1, maximum is 1000
-	Limit int64 `json:"limit"`
+	// Limit on number of entries in a reply. Default value is 1000. Maximum value is 1000
+	Limit int32 `json:"limit"`
 
 	// Filter by product
 	Filter GetStocksInfoFilter `json:"filter"`
@@ -34,20 +32,24 @@ type GetStocksInfoFilter struct {
 
 	// Filter by product visibility
 	Visibility string `json:"visibility,omitempty"`
+
+	// Products at the “Economy” tariff
+	WithQuant GetStocksInfoFilterWithQuant `json:"with_quant"`
+}
+
+type GetStocksInfoFilterWithQuant struct {
+	// Active economy products
+	Created bool `json:"created"`
+
+	// Economy products in all statuses
+	Exists bool `json:"exists"`
 }
 
 type GetStocksInfoResponse struct {
 	core.CommonResponse
 
-	// Method Result
-	Result GetStocksInfoResult `json:"result"`
-}
-
-type GetStocksInfoResult struct {
-	// Identifier of the last value on the page
-	//
-	// To get the next values, specify the recieved value in the next request in the last_id parameter
-	LastId string `json:"last_id"`
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
 
 	// The number of unique products for which information about stocks is displayed
 	Total int32 `json:"total"`
@@ -76,6 +78,12 @@ type GetStocksInfoResultItemStock struct {
 
 	// Warehouse type
 	Type string `json:"type" default:"ALL"`
+
+	// Packaging type
+	ShipmentType string `json:"shipment_type"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 }
 
 // Returns information about the quantity of products in stock:
@@ -84,7 +92,7 @@ type GetStocksInfoResultItemStock struct {
 //
 // * how many are reserved by customers.
 func (c Products) GetStocksInfo(ctx context.Context, params *GetStocksInfoParams) (*GetStocksInfoResponse, error) {
-	url := "/v3/product/info/stocks"
+	url := "/v4/product/info/stocks"
 
 	resp := &GetStocksInfoResponse{}
 
@@ -97,28 +105,7 @@ func (c Products) GetStocksInfo(ctx context.Context, params *GetStocksInfoParams
 	return resp, nil
 }
 
-type GetProductDetailsParams struct {
-	// Product identifier in the seller's system
-	OfferId string `json:"offer_id,omitempty"`
-
-	// Product identifier
-	ProductId int64 `json:"product_id,omitempty"`
-
-	// Product identifier in the Ozon system, SKU
-	SKU int64 `json:"sku,omitempty"`
-}
-
-type GetProductDetailsResponse struct {
-	core.CommonResponse
-
-	// Request results
-	Result ProductDetails `json:"result"`
-}
-
 type ProductDetails struct {
-	// Barcode
-	Barcode string `json:"barcode"`
-
 	// All product barcodes
 	Barcodes []string `json:"barcodes"`
 
@@ -130,11 +117,20 @@ type ProductDetails struct {
 	// Category identifier
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
+	// Markdown product stocks at the Ozon warehouse
+	DiscountedFBOStocks int32 `json:"discounted_fbo_stocks"`
+
+	// Details on errors when creating or validating a product
+	Errors []ProductDetailsError `json:"errors"`
+
+	// Indication that the product has similar markdown products at the Ozon warehouse
+	HasDiscountedFBOItem bool `json:"has_discounted_fbo_item"`
+
 	// Product type identifier
 	TypeId int64 `json:"type_id"`
 
 	// Marketing color
-	ColorImage string `json:"color_image"`
+	ColorImage []string `json:"color_image"`
 
 	// Commission fees details
 	Commissions []ProductDetailCommission `json:"commissions"`
@@ -158,7 +154,7 @@ type ProductDetails struct {
 	Images []string `json:"images"`
 
 	// Main product image
-	PrimaryImage string `json:"primary_image"`
+	PrimaryImage []string `json:"primary_image"`
 
 	// Array of 360 images
 	Images360 []string `json:"images360"`
@@ -252,20 +248,112 @@ type ProductDetails struct {
 
 	// 'true' if the item is archived automatically.
 	IsArchivedAuto bool `json:"is_autoarchived"`
+
+	// Product status details
+	Statuses ProductDetailsStatus `json:"statuses"`
+
+	// Product model details
+	ModelInfo ProductDetailsModelInfo `json:"model_info"`
+
+	// Indication of a super product
+	IsSuper bool `json:"is_super"`
+}
+
+type ProductDetailsError struct {
+	// Characteristic identifier
+	AttributeId int64 `json:"attribute_id"`
+
+	// Error code
+	Code string `json:"code"`
+
+	// Field in which the error occurred
+	Field string `json:"field"`
+
+	// Error level description
+	Level string `json:"level"`
+
+	// Status of the product with the error
+	State string `json:"state"`
+
+	// Error description
+	Texts ProductDetailsErrorText `json:"texts"`
+}
+
+type ProductDetailsErrorText struct {
+	// Attribute name
+	AttributeName string `json:"attribute_name"`
+
+	// Error description
+	Description string `json:"description"`
+
+	// Error code in the Ozon system
+	HintCode string `json:"hint_code"`
+
+	// Error message
+	Message string `json:"message"`
+
+	// Short description of the error
+	ShortDescription string `json:"short_description"`
+
+	// Parameters in which the error occurred
+	Params []NameValue `json:"params"`
+}
+
+type NameValue struct {
+	Name string `json:"name"`
+
+	Value string `json:"value"`
+}
+
+type ProductDetailsStatus struct {
+	// true, if the product is created correctly
+	IsCreated bool `json:"is_created"`
+
+	// Moderation status
+	ModerateStatus string `json:"moderate_status"`
+
+	// Product status
+	Status string `json:"status"`
+
+	// Product status description
+	Description string `json:"status_description"`
+
+	// Status of the product where the error occurred
+	Failed string `json:"status_failed"`
+
+	// Product status name
+	Name string `json:"status_name"`
+
+	// Status description
+	Tooltip string `json:"status_tooltip"`
+
+	// Time of the last status change
+	UpdatedAt time.Time `json:"status_updated_at"`
+
+	// Validation status
+	ValidationStatus string `json:"validation_status"`
+}
+
+type ProductDetailsModelInfo struct {
+	// Number of products in the response
+	Count int64 `json:"count"`
+
+	// Identifier of the product model
+	ModelId int64 `json:"model_id"`
 }
 
 type ProductDetailCommission struct {
 	// Delivery cost
-	DeliveryAmount float64 `json:"deliveryAmount"`
+	DeliveryAmount float64 `json:"delivery_amount"`
 
 	// Commission percentage
 	Percent float64 `json:"percent"`
 
 	// Return cost
-	ReturnAmount float64 `json:"returnAmount"`
+	ReturnAmount float64 `json:"return_amount"`
 
 	// Sale scheme
-	SaleSchema string `json:"saleSchema"`
+	SaleSchema string `json:"sale_schema"`
 
 	// Commission fee amount
 	Value float64 `json:"value"`
@@ -278,8 +366,8 @@ type ProductDetailPriceIndex struct {
 	// Competitors' product price on Ozon
 	OzonIndexData ProductDetailPriceIndexOzon `json:"ozon_index_data"`
 
-	// Resulting price index of the product
-	PriceIndex string `json:"price_index"`
+	// Types of price index
+	ColorIndex string `json:"color_index"`
 
 	// Price of your product on other marketplaces
 	SelfMarketplaceIndexData ProductDetailPriceIndexSelfMarketplace `json:"self_marketplaces_index_data"`
@@ -357,25 +445,42 @@ type ProductDetailStatus struct {
 }
 
 type ProductDetailSource struct {
-	// Indication that the source is taken into account when calculating the market value
-	IsEnabled bool `json:"is_enabled"`
+	// Product creation date
+	CreatedAt time.Time `json:"created_at"`
 
 	// Product identifier in the Ozon system, SKU
 	SKU int64 `json:"sku"`
 
 	// Link to the source
 	Source string `json:"source"`
+
+	// Package type
+	ShipmentType string `json:"shipment_type"`
+
+	// List of MOQs with products
+	QuantCode string `json:"quant_code"`
 }
 
 type ProductDetailStock struct {
-	// Supply expected
-	Coming int32 `json:"coming"`
+	// true, if there are stocks at the warehouses
+	HasStock bool `json:"has_stock"`
+
+	// Status of product stocks
+	Stocks []ProductDetailStockStock `json:"stocks"`
+}
+
+type ProductDetailStockStock struct {
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 
 	// Currently at the warehouse
 	Present int32 `json:"present"`
 
 	// Reserved
 	Reserved int32 `json:"reserved"`
+
+	// Sales scheme
+	Source string `json:"source"`
 }
 
 type ProductDetailVisibilityDetails struct {
@@ -428,24 +533,6 @@ type GetProductDetailsResponseItemError struct {
 
 	// Additional fields for error description
 	OptionalDescriptionElements map[string]string `json:"optional_description_elements"`
-}
-
-// Get product details
-//
-// Check a minimum product price with all promotions applied in your personal account.
-// The min_price parameter from the method response is in development and returns 0
-func (c Products) GetProductDetails(ctx context.Context, params *GetProductDetailsParams) (*GetProductDetailsResponse, error) {
-	url := "/v2/product/info"
-
-	resp := &GetProductDetailsResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
 }
 
 type UpdateStocksParams struct {
@@ -1313,11 +1400,35 @@ type CheckImageUploadingStatusParams struct {
 	ProductId []int64 `json:"product_id"`
 }
 
-// Check products images uploading status
-func (c Products) CheckImageUploadingStatus(ctx context.Context, params *CheckImageUploadingStatusParams) (*ProductInfoResponse, error) {
-	url := "/v1/product/pictures/info"
+type CheckImageUploadingStatusResponse struct {
+	core.CommonResponse
 
-	resp := &ProductInfoResponse{}
+	// Product images
+	Items []CheckImageUploadingStatusItem `json:"items"`
+}
+
+type CheckImageUploadingStatusItem struct {
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+
+	// Main image link
+	PrimaryPhoto []string `json:"primary_photo"`
+
+	// Links to product photos
+	Photo []string `json:"photo"`
+
+	// Links to uploaded color samples
+	ColorPhoto []string `json:"color_photo"`
+
+	// 360 images links
+	Photo360 []string `json:"photo_360"`
+}
+
+// Check products images uploading status
+func (c Products) CheckImageUploadingStatus(ctx context.Context, params *CheckImageUploadingStatusParams) (*CheckImageUploadingStatusResponse, error) {
+	url := "/v2/product/pictures/info"
+
+	resp := &CheckImageUploadingStatusResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
@@ -1342,11 +1453,6 @@ type ListProductsByIDsParams struct {
 type ListProductsByIDsResponse struct {
 	core.CommonResponse
 
-	// Request results
-	Result ListProductsByIDsResult `json:"result"`
-}
-
-type ListProductsByIDsResult struct {
 	// Data array
 	Items []ProductDetails `json:"items"`
 }
@@ -1357,7 +1463,7 @@ type ListProductsByIDsResult struct {
 //
 // For each shipment in the items array the fields match the ones recieved in the /v2/product/info method
 func (c Products) ListProductsByIDs(ctx context.Context, params *ListProductsByIDsParams) (*ListProductsByIDsResponse, error) {
-	url := "/v2/product/info/list"
+	url := "/v3/product/info/list"
 
 	resp := &ListProductsByIDsResponse{}
 

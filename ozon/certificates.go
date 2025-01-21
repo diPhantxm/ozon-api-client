@@ -99,11 +99,6 @@ type ListOfCertifiedCategoriesParams struct {
 type ListOfCertifiedCategoriesResponse struct {
 	core.CommonResponse
 
-	// Method result
-	Result ListOfCertifiedCategoriesResult `json:"result"`
-}
-
-type ListOfCertifiedCategoriesResult struct {
 	// Certified categories details
 	Certification []ListOfCertifiedCategoriesResultCert `json:"certification"`
 
@@ -112,16 +107,25 @@ type ListOfCertifiedCategoriesResult struct {
 }
 
 type ListOfCertifiedCategoriesResultCert struct {
+	// Identifier of the certified category
+	CategoryId int64 `json:"category_id"`
+
 	// Category name
 	CategoryName string `json:"category_name"`
 
 	// Indication of a mandatory category
 	IsRequired bool `json:"is_required"`
+
+	// Type identifier of the certified category
+	TypeId int64 `json:"type_id"`
+
+	// Name of the type of certified category
+	TypeName string `json:"type_name"`
 }
 
 // List of certified categories
 func (c Certificates) ListOfCertifiedCategories(ctx context.Context, params *ListOfCertifiedCategoriesParams) (*ListOfCertifiedCategoriesResponse, error) {
-	url := "/v1/product/certification/list"
+	url := "/v2/product/certification/list"
 
 	resp := &ListOfCertifiedCategoriesResponse{}
 

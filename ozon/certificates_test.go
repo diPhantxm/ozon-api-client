@@ -151,15 +151,16 @@ func TestListOfCertifiedCategories(t *testing.T) {
 				PageSize: 100,
 			},
 			`{
-				"result": {
-				  "certification": [
-					{
-					  "is_required": true,
-					  "category_name": "Витаминно-минеральные комплексы для взрослых"
-					}
-				  ],
-				  "total": 1
-				}
+				"certification": [
+				  {
+					"category_id": 0,
+					"category_name": "string",
+					"is_required": true,
+					"type_id": 0,
+					"type_name": "string"
+				  }
+				],
+				"total": 1
 			}`,
 		},
 		// Test No Client-Id or Api-Key

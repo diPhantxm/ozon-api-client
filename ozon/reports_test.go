@@ -380,9 +380,7 @@ func TestGetReturnsReport(t *testing.T) {
 				},
 			},
 			`{
-				"result": {
-				  "code": "d55f4517-8347-4e24-9d93-d6e736c1c07c"
-				}
+				"code": "REPORT_seller_products_924336_1720170405_a9ea2f27-a473-4b13-99f9-d0cfcb5b1a69"
 			}`,
 		},
 		// Test No Client-Id or Api-Key
@@ -407,16 +405,12 @@ func TestGetReturnsReport(t *testing.T) {
 			continue
 		}
 
-		compareJsonResponse(t, test.response, &GetReturnsReportResponse{})
-
 		if resp.StatusCode != test.statusCode {
 			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			if resp.Result.Code == "" {
-				t.Errorf("Code cannot be empty")
-			}
+			compareJsonResponse(t, test.response, &GetReturnsReportResponse{})
 		}
 	}
 }
