@@ -8,8 +8,6 @@ A Ozon Seller API client written in Golang
 
 Read full [documentation](https://docs.ozon.ru/api/seller/en/#tag/Introduction)
 
-You can check [list of supported endpoints](ENDPOINTS.md)
-
 ## How to start
 ### API
 Get Client-Id and Api-Key in your seller profile [here](https://seller.ozon.ru/app/settings/api-keys?locale=en)
@@ -91,8 +89,3 @@ func main() {
 	}
 }
 ```
-
-## Contribution
-If you need some endpoints ASAP, create an issue and list all the endpoints. I will add them to library soon.
-
-Or you can implement them and contribute to the project. Contribution to the project is welcome. 
