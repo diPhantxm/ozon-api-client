@@ -3312,3 +3312,118 @@ func TestListUnpaidProducts(t *testing.T) {
 		}
 	}
 }
+
+func TestChangeShipmentComposition(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *ChangeShipmentCompositionParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&ChangeShipmentCompositionParams{
+				CarriageId:     10,
+				PostingNumbers: []string{"something"},
+			},
+			`{
+				"result": [
+				  {
+					"error": "string",
+					"posting_number": "something",
+					"result": true
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&ChangeShipmentCompositionParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().ChangeShipmentComposition(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &ChangeShipmentCompositionResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+		if resp.StatusCode == http.StatusOK {
+			if len(resp.Result) > 0 {
+				if resp.Result[0].PostingNumber != test.params.PostingNumbers[0] {
+					t.Errorf("posting numbers are different. Expected: %s, got: %s", test.params.PostingNumbers[0], resp.Result[0].PostingNumber)
+				}
+			}
+		}
+	}
+}
+
+func TestDeleteShipment(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *DeleteShipmentParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&DeleteShipmentParams{
+				CarriageId: 10,
+			},
+			`{
+				"error": "string",
+				"carriage_status": "string"
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&DeleteShipmentParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.FBS().DeleteShipment(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &DeleteShipmentResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
