@@ -2053,10 +2053,8 @@ type GetProductPriceInfoParams struct {
 	// Filter by product
 	Filter GetProductPriceInfoFilter `json:"filter"`
 
-	// Identifier of the last value on page.
-	//
-	// To get the next values, specify the recieved value in the next request in the `last_id` parameter
-	LastId string `json:"last_id"`
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
 
 	// Number of values per page. Minimum is 1, maximum is 1000
 	Limit int32 `json:"limit"`
@@ -2076,7 +2074,6 @@ type GetProductPriceInfoFilter struct {
 type GetProductPriceInfoResponse struct {
 	core.CommonResponse
 
-	// Result
 	Result GetProductPriceInfoResult `json:"result"`
 }
 
@@ -2084,10 +2081,8 @@ type GetProductPriceInfoResult struct {
 	// Products list
 	Items []GetProductPriceInfoResultItem `json:"items"`
 
-	// Identifier of the last value on page. Leave this field blank in the first request.
-	//
-	// To get the next values, specify last_id from the response of the previous request
-	LastId string `json:"last_id"`
+	// Cursor for the next data sample
+	Cursor string `json:"cursor"`
 
 	// Products number in the list
 	Total int32 `json:"total"`
@@ -2108,11 +2103,6 @@ type GetProductPriceInfoResultItem struct {
 
 	// Product price
 	Price GetProductPriceInfoResultItemPrice `json:"price"`
-
-	// Deprected: price index
-	//
-	// Use PriceIndexes instead
-	PriceIndex string `json:"price_index"`
 
 	// Product price indexes
 	PriceIndexes GetProductPriceInfoResultItemPriceIndexes `json:"price_indexes"`
@@ -2201,11 +2191,11 @@ type GetProductPriceInfoResultItemMarketingActionsAction struct {
 	// Date and time when the seller's promotion ends
 	DateTo time.Time `json:"date_to"`
 
-	// Discount on the seller's promotion
-	DiscountValue string `json:"discount_value"`
-
 	// Promotion name
 	Title string `json:"title"`
+
+	// Discount on the seller's promotion
+	Value float64 `json:"value"`
 }
 
 type GetProductPriceInfoResultItemPrice struct {
@@ -2216,72 +2206,50 @@ type GetProductPriceInfoResultItemPrice struct {
 	CurrencyCode string `json:"currency_code"`
 
 	// Product price including all promotion discounts. This value will be indicated on the Ozon storefront
-	MarketingPrice string `json:"marketing_price"`
+	MarketingPrice float64 `json:"marketing_price"`
 
 	// Product price with seller's promotions applied
-	MarketingSellerPrice string `json:"marketing_seller_price"`
+	MarketingSellerPrice float64 `json:"marketing_seller_price"`
 
 	// Minimum price for similar products on Ozon
-	MinOzonPrice string `json:"min_ozon_price"`
+	MinOzonPrice float64 `json:"min_ozon_price"`
 
 	// Minimum product price with all promotions applied
-	MinPrice string `json:"min_price"`
+	MinPrice float64 `json:"min_price"`
 
 	// Price before discounts. Displayed strikethrough on the product description page
-	OldPrice string `json:"old_price"`
+	OldPrice float64 `json:"old_price"`
 
 	// Product price including discounts. This value is shown on the product description page
-	Price string `json:"price"`
+	Price float64 `json:"price"`
 
 	// Retailer price
-	RetailPrice string `json:"retail_price"`
+	RetailPrice float64 `json:"retail_price"`
 
 	// Product VAT rate
-	VAT string `json:"vat"`
+	VAT float64 `json:"vat"`
 }
 
 type GetProductPriceInfoResultItemPriceIndexes struct {
+	// Resulting price index of the product
+	ColorIndex string `json:"color_index"`
+
 	// Competitors' product price on other marketplaces
-	ExternalIndexData GetProductPriceInfoResultItemPriceIndexesExternal `json:"external_index_data"`
+	ExternalIndexData GetProductPriceInfoResultItemPriceIndexesValue `json:"external_index_data"`
 
 	// Competitors' product price on Ozon
-	OzonIndexData GetProductPriceInfoResultItemPriceIndexesOzon `json:"ozon_index_data"`
-
-	// Resulting price index of the product
-	PriceIndex string `json:"price_index"`
+	OzonIndexData GetProductPriceInfoResultItemPriceIndexesValue `json:"ozon_index_data"`
 
 	// Price of your product on other marketplaces
-	SelfMarketplaceIndexData GetProductPriceInfoResultItemPriceIndexesSelfMarketplace `json:"self_marketplaces_index_data"`
+	SelfMarketplaceIndexData GetProductPriceInfoResultItemPriceIndexesValue `json:"self_marketplaces_index_data"`
 }
 
-type GetProductPriceInfoResultItemPriceIndexesExternal struct {
-	// Minimum competitors' product price on other marketplaces
-	MinimalPrice string `json:"minimal_price"`
-
-	// Price currency
-	MinimalPriceCurrency string `json:"minimal_price_currency"`
-
-	// Price index value
-	PriceIndexValue float64 `json:"price_index_value"`
-}
-
-type GetProductPriceInfoResultItemPriceIndexesOzon struct {
-	// Minimum competitors' product price on Ozon
-	MinimalPrice string `json:"minimal_price"`
-
-	// Price currency
-	MinimalPriceCurrency string `json:"minimal_price_currency"`
-
-	// Price index value
-	PriceIndexValue float64 `json:"price_index_value"`
-}
-
-type GetProductPriceInfoResultItemPriceIndexesSelfMarketplace struct {
+type GetProductPriceInfoResultItemPriceIndexesValue struct {
 	// Minimum price of your product on other marketplaces
-	MinimalPrice string `json:"minimal_price"`
+	MinimalPrice float64 `json:"min_price"`
 
 	// Price currency
-	MinimalPriceCurrency string `json:"minimal_price_currency"`
+	MinimalPriceCurrency string `json:"min_price_currency"`
 
 	// Price index value
 	PriceIndexValue float64 `json:"price_index_value"`
@@ -2293,7 +2261,7 @@ type GetProductPriceInfoResultItemPriceIndexesSelfMarketplace struct {
 // The `fbo_direct_flow_trans_max_amount` and `fbo_direct_flow_trans_min_amount` parameters
 // from the method response are in development and return 0
 func (c Products) GetProductPriceInfo(ctx context.Context, params *GetProductPriceInfoParams) (*GetProductPriceInfoResponse, error) {
-	url := "/v4/product/info/prices"
+	url := "/v5/product/info/prices"
 
 	resp := &GetProductPriceInfoResponse{}
 

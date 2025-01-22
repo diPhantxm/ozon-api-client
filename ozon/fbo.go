@@ -472,64 +472,6 @@ func (c FBO) GetSupplyRequestInfo(ctx context.Context, params *GetSupplyRequestI
 	return resp, nil
 }
 
-type ListProductsInSupplyRequestParams struct {
-	// Number of the page returned in the query
-	Page int32 `json:"page"`
-
-	// Number of elements on the page
-	PageSize int32 `json:"page_size"`
-
-	// Supply request identifier
-	SupplyOrderId int64 `json:"supply_order_id"`
-}
-
-type ListProductsInSupplyRequestResponse struct {
-	core.CommonResponse
-
-	// Indicates that the response contains not the entire array of supply requests:
-	//   - true — make a new request with a different page and page_size values to get the remaining products;
-	//   - false — the entire array of product was returned in the response
-	HasNext bool `json:"has_next"`
-
-	// Products list
-	Items []ListProductsInSupplyRequestItem `json:"items"`
-
-	// Total number of products in the request
-	TotalItemsCount int32 `json:"total_items_count"`
-}
-
-type ListProductsInSupplyRequestItem struct {
-	// Link to product image
-	IconPath string `json:"icon_path"`
-
-	// Product name
-	Name string `json:"name"`
-
-	// Product ID
-	OfferId string `json:"offer_id"`
-
-	// Product quantity
-	Quantity int64 `json:"quantity"`
-
-	// Product identifier in the Ozon system, SKU
-	SKU int64 `json:"sku"`
-}
-
-// List of products in the sullpy request
-func (c FBO) ListProductsInSupplyRequest(ctx context.Context, params *ListProductsInSupplyRequestParams) (*ListProductsInSupplyRequestResponse, error) {
-	url := "/v1/supply-order/items"
-
-	resp := &ListProductsInSupplyRequestResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
 type GetWarehouseWorkloadResponse struct {
 	core.CommonResponse
 
