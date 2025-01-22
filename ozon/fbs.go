@@ -3234,3 +3234,72 @@ func (c FBS) ListUnpaidProducts(ctx context.Context, params *ListUnpaidProductsP
 
 	return resp, nil
 }
+
+type ChangeShipmentCompositionParams struct {
+	// Freight identifier
+	CarriageId int64 `json:"carriage_id"`
+
+	// Current list of shipments
+	PostingNumbers []string `json:"posting_numbers"`
+}
+
+type ChangeShipmentCompositionResponse struct {
+	core.CommonResponse
+
+	Result []ChangeShipmentCompositionResult `json:"result"`
+}
+
+type ChangeShipmentCompositionResult struct {
+	// Error message
+	Error string `json:"error"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+
+	// Request processing result. true if the request was executed successfully
+	Result bool `json:"result"`
+}
+
+// Method overwrites the list of orders in the shipment. Pass only orders in the awaiting_deliver status and ones which are ready for shipping.
+func (c FBS) ChangeShipmentComposition(ctx context.Context, params *ChangeShipmentCompositionParams) (*ChangeShipmentCompositionResponse, error) {
+	url := "/v1/carriage/set-postings"
+
+	resp := &ChangeShipmentCompositionResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type DeleteShipmentParams struct {
+	// Freight identifier
+	CarriageId int64 `json:"carriage_id"`
+}
+
+type DeleteShipmentResponse struct {
+	core.CommonResponse
+
+	// Error message
+	Error string `json:"error"`
+
+	// Carriage status
+	Status string `json:"carriage_status"`
+}
+
+func (c FBS) DeleteShipment(ctx context.Context, params *DeleteShipmentParams) (*DeleteShipmentResponse, error) {
+	url := "/v1/carriage/cancel"
+
+	resp := &DeleteShipmentResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
