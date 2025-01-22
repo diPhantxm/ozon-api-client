@@ -2139,66 +2139,72 @@ func TestGetProductPriceInfo(t *testing.T) {
 			},
 			`{
 				"result": {
+				  "cursor": "string",
 				  "items": [
 					{
 					  "acquiring": 0,
-					  "product_id": 243686911,
+					  "commissions": {
+						"fbo_deliv_to_customer_amount": 14.75,
+						"fbo_direct_flow_trans_max_amount": 46.5,
+						"fbo_direct_flow_trans_min_amount": 31,
+						"fbo_return_flow_amount": 50,
+						"fbs_deliv_to_customer_amount": 60,
+						"fbs_direct_flow_trans_max_amount": 61.5,
+						"fbs_direct_flow_trans_min_amount": 41,
+						"fbs_first_mile_max_amount": 25,
+						"fbs_first_mile_min_amount": 0,
+						"fbs_return_flow_amount": 40,
+						"sales_percent_fbo": 15,
+						"sales_percent_fbs": 0
+					  },
+					  "marketing_actions": {
+						"actions": [
+						  {
+							"date_from": "2024-12-13T06:49:37.591Z",
+							"date_to": "2024-12-13T06:49:37.591Z",
+							"title": "string",
+							"value": 0
+						  }
+						],
+						"current_period_from": "2024-12-13T06:49:37.591Z",
+						"current_period_to": "2024-12-13T06:49:37.591Z",
+						"ozon_actions_exist": true
+					  },
 					  "offer_id": "356792",
 					  "price": {
+						"auto_action_enabled": true,
 						"currency_code": "RUB",
-						"price": "499.0000",
-						"old_price": "579.0000",
-						"retail_price": "",
-						"vat": "0.200000",
-						"min_ozon_price": "",
-						"marketing_price": "",
-						"marketing_seller_price": "",
-						"auto_action_enabled": true
+						"marketing_price": 0,
+						"marketing_seller_price": 0,
+						"min_price": 0,
+						"old_price": 579,
+						"price": 499,
+						"retail_price": 0,
+						"vat": 0.2
 					  },
 					  "price_indexes": {
+						"color_index": "WITHOUT_INDEX",
 						"external_index_data": {
-						  "minimal_price": "string",
-						  "minimal_price_currency": "string",
+						  "min_price": 0,
+						  "min_price_currency": "string",
 						  "price_index_value": 0
 						},
 						"ozon_index_data": {
-						  "minimal_price": "string",
-						  "minimal_price_currency": "string",
+						  "min_price": 0,
+						  "min_price_currency": "string",
 						  "price_index_value": 0
 						},
-						"price_index": "WITHOUT_INDEX",
 						"self_marketplaces_index_data": {
-						  "minimal_price": "string",
-						  "minimal_price_currency": "string",
+						  "min_price": 0,
+						  "min_price_currency": "string",
 						  "price_index_value": 0
 						}
 					  },
-					  "commissions": {
-						"sales_percent": 15,
-						"sales_percent_fbo": 15,
-						"sales_percent_fbs": 0,
-						"fbo_fulfillment_amount": 0,
-						"fbo_direct_flow_trans_min_amount": 31,
-						"fbo_direct_flow_trans_max_amount": 46.5,
-						"fbo_deliv_to_customer_amount": 14.75,
-						"fbo_return_flow_amount": 50,
-						"fbo_return_flow_trans_min_amount": 21.7,
-						"fbo_return_flow_trans_max_amount": 21.7,
-						"fbs_first_mile_min_amount": 0,
-						"fbs_first_mile_max_amount": 25,
-						"fbs_direct_flow_trans_min_amount": 41,
-						"fbs_direct_flow_trans_max_amount": 61.5,
-						"fbs_deliv_to_customer_amount": 60,
-						"fbs_return_flow_amount": 40,
-						"fbs_return_flow_trans_min_amount": 41,
-						"fbs_return_flow_trans_max_amount": 61.5
-					  },
-					  "marketing_actions": null,
+					  "product_id": 243686911,
 					  "volume_weight": 0
 					}
 				  ],
-				  "total": 1,
-				  "last_id": "ceVуbA=="
+				  "total": 0
 				}
 			}`,
 		},
