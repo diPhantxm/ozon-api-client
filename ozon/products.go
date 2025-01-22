@@ -795,6 +795,9 @@ type UpdatePricesPrice struct {
 	//
 	// If the regular and economy products have different article codes, don't specify the parameter.
 	QuantSize int64 `json:"quant_size"`
+
+	// VAT rate for the product
+	VAT VAT `json:"vat"`
 }
 
 type UpdatePricesResponse struct {
@@ -937,11 +940,8 @@ type CreateOrUpdateProductItem struct {
 	// you can leave out the attributes attribute if it has the `id:8229` parameter
 	TypeId int64 `json:"type_id"`
 
-	// VAT rate for the product:
-	//   - 0 — not subject to VAT,
-	//   - 0.1 — 10%,
-	//   - 0.2 — 20%
-	VAT string `json:"vat"`
+	// VAT rate for the product
+	VAT VAT `json:"vat"`
 
 	// Product weight with the package. The limit value is 1000 kilograms or a corresponding converted value in other measurement units
 	Weight int32 `json:"weight"`
@@ -1266,11 +1266,8 @@ type CreateProductsByOzonIDItem struct {
 	// Product identifier in the Ozon system, SKU
 	SKU int64 `json:"sku"`
 
-	// VAT rate for the product:
-	//   - 0 — not subject to VAT,
-	//   - 0.1 — 10%,
-	//   - 0.2 — 20%
-	VAT string `json:"vat"`
+	// VAT rate for the product
+	VAT VAT `json:"vat"`
 }
 
 type CreateProductByOzonIDResponse struct {
