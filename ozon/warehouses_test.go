@@ -127,7 +127,8 @@ func TestGetListOfDeliveryMethods(t *testing.T) {
 					"template_id": 0,
 					"warehouse_id": 15588127982000,
 					"created_at": "2019-04-04T15:22:31.048202Z",
-					"updated_at": "2021-08-15T10:21:44.854209Z"
+					"updated_at": "2021-08-15T10:21:44.854209Z",
+					"sla_cut_in": 1440
 				  }
 				],
 				"has_next": false

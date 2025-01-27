@@ -161,6 +161,9 @@ type GetListOfDeliveryMethodsResult struct {
 	// Delivery service identifier
 	ProviderId int64 `json:"provider_id"`
 
+	// Minimum time to package an order in minutes according to warehouse settings
+	SLACutIn int64 `json:"sla_cut_in"`
+
 	// Delivery method status:
 	//   - NEW—created,
 	//   - EDITED—being edited,

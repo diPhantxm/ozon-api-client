@@ -923,3 +923,13 @@ const (
 	// awaiting shipping
 	VisualStatusWaitingShipment VisualStatus = "WaitingShipment"
 )
+
+type VAT string
+
+const (
+	VAT0   VAT = "0"
+	VAT005 VAT = "0.05"
+	VAT007 VAT = "0.07"
+	VAT01  VAT = "0.1"
+	VAT02  VAT = "0.2"
+)
