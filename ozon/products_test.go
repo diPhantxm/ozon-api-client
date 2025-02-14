@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -531,13 +532,15 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 func TestGetListOfProducts(t *testing.T) {
 	t.Parallel()
 
+	testTimeout := 5 * time.Second
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
 		params     *GetListOfProductsParams
 		response   string
 	}{
-		// Test Ok
+		// Test OK
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
@@ -555,7 +558,18 @@ func TestGetListOfProducts(t *testing.T) {
 				  "items": [
 					{
 					  "product_id": 223681945,
-					  "offer_id": "136748"
+					  "offer_id": "136748",
+					  "has_fbo_stocks": false,
+					  "has_fbs_stocks": true,
+					  "archived": false,
+					  "is_discounted": true,
+					  "quants": [
+						{
+						  "warehouse_id": 123,
+						  "quantity": 50,
+						  "reserved": 10
+						}
+					  ]
 					}
 				  ],
 				  "total": 1,
@@ -578,7 +592,9 @@ func TestGetListOfProducts(t *testing.T) {
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
+		defer cancel()
+
 		resp, err := c.Products().GetListOfProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
@@ -604,6 +620,10 @@ func TestGetListOfProducts(t *testing.T) {
 				}
 				if resp.Result.Items[0].ProductId == 0 {
 					t.Errorf("Product id cannot be 0")
+				}
+				// Optional: check we successfully parse quants
+				if len(resp.Result.Items[0].Quants) == 0 {
+					t.Errorf("Expected some quants, got none")
 				}
 			}
 		}
