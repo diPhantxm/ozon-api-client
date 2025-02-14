@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	core "github.com/diphantxm/ozon-api-client"
 )
@@ -531,6 +532,8 @@ func TestCreateOrUpdateProduct(t *testing.T) {
 func TestGetListOfProducts(t *testing.T) {
 	t.Parallel()
 
+	testTimeout := 5 * time.Second
+
 	tests := []struct {
 		statusCode int
 		headers    map[string]string
@@ -543,41 +546,46 @@ func TestGetListOfProducts(t *testing.T) {
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetListOfProductsParams{
 				Filter: GetListOfProductsFilter{
-					// Even though the official v3 example doesn't show these, we keep them if needed
-					OfferId:    []string{"u-power-1"},
-					ProductId:  []int64{245950717},
+					OfferId:    []string{"136748"},
+					ProductId:  []int64{223681945},
 					Visibility: "ALL",
 				},
 				LastId: "",
-				Limit:  10,
+				Limit:  100,
 			},
 			`{
-                "result": {
-                  "items": [
-                    {
-                      "product_id": 245950717,
-                      "offer_id": "u-power-1",
-                      "has_fbo_stocks": false,
-                      "has_fbs_stocks": true,
-                      "archived": false,
-                      "is_discounted": false,
-                      "quants": []
-                    }
-                  ],
-                  "total": 1,
-                  "last_id": "WzI0NTk1MDcxNywyNDU5NTA3MTdd"
-                }
-            }`,
+				"result": {
+				  "items": [
+					{
+					  "product_id": 223681945,
+					  "offer_id": "136748",
+					  "has_fbo_stocks": false,
+					  "has_fbs_stocks": true,
+					  "archived": false,
+					  "is_discounted": true,
+					  "quants": [
+						{
+						  "warehouse_id": 123,
+						  "quantity": 50,
+						  "reserved": 10
+						}
+					  ]
+					}
+				  ],
+				  "total": 1,
+				  "last_id": "bnVсbA=="
+				}
+			}`,
 		},
-		// Test Unauthorized (no Client-Id or Api-Key)
+		// Test No Client-Id or Api-Key
 		{
 			http.StatusUnauthorized,
 			map[string]string{},
 			&GetListOfProductsParams{},
 			`{
-                "code": 16,
-                "message": "Client-Id and Api-Key headers are required"
-            }`,
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
 		},
 	}
 
@@ -592,6 +600,7 @@ func TestGetListOfProducts(t *testing.T) {
 			t.Error(err)
 			continue
 		}
+
 		compareJsonResponse(t, test.response, &GetListOfProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
@@ -600,7 +609,7 @@ func TestGetListOfProducts(t *testing.T) {
 
 		if resp.StatusCode == http.StatusOK {
 			if len(resp.Result.Items) != int(resp.Result.Total) {
-				t.Errorf("Length of items is not equal to total")
+				t.Errorf("Length of items is not equal total")
 			}
 			if resp.Result.Total > int32(test.params.Limit) {
 				t.Errorf("Length of items is bigger than limit")
@@ -611,6 +620,10 @@ func TestGetListOfProducts(t *testing.T) {
 				}
 				if resp.Result.Items[0].ProductId == 0 {
 					t.Errorf("Product id cannot be 0")
+				}
+				// Optional: check we successfully parse quants
+				if len(resp.Result.Items[0].Quants) == 0 {
+					t.Errorf("Expected some quants, got none")
 				}
 			}
 		}
