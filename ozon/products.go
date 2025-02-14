@@ -1021,64 +1021,50 @@ func (c Products) CreateOrUpdateProduct(ctx context.Context, params *CreateOrUpd
 	return resp, nil
 }
 
+// GetListOfProductsParams reflects the new /v3/product/list request body.
+// The "principle is the same": filter, last_id, limit. OfferId/ProductId remain optional
+// if the new endpoint still supports them. For the minimal example, we keep them
+// but only "visibility" is shown in the official request body example.
 type GetListOfProductsParams struct {
-	// Filter by product
 	Filter GetListOfProductsFilter `json:"filter"`
-
-	// Identifier of the last value on the page. Leave this field blank in the first request.
-	//
-	// To get the next values, specify last_id from the response of the previous request
-	LastId string `json:"last_id"`
-
-	// Number of values per page. Minimum is 1, maximum is 1000
-	Limit int64 `json:"limit"`
+	LastId string                  `json:"last_id"`
+	Limit  int64                   `json:"limit"`
 }
 
 type GetListOfProductsFilter struct {
-	// Filter by the offer_id parameter. You can pass a list of values in this parameter
-	OfferId []string `json:"offer_id"`
-
-	// Filter by the product_id parameter. You can pass a list of values in this parameter
-	ProductId []int64 `json:"product_id"`
-
-	// Filter by product visibility
-	Visibility string `json:"visibility"`
+	// The v3 documentation example only explicitly shows "visibility",
+	// but we preserve offer_id/product_id if you still need them.
+	OfferId    []string `json:"offer_id,omitempty"`
+	ProductId  []int64  `json:"product_id,omitempty"`
+	Visibility string   `json:"visibility,omitempty"`
 }
 
+// GetListOfProductsResponse reflects the new /v3/product/list response structure.
+// It still has "result" with "items", "total", "last_id", plus new item fields.
 type GetListOfProductsResponse struct {
 	core.CommonResponse
-
-	// Result
 	Result GetListOfProductsResult `json:"result"`
 }
 
 type GetListOfProductsResult struct {
-	// Products list
-	Items []GetListOfProductsResultItem `json:"items"`
-
-	// Identifier of the last value on the page.
-	//
-	// To get the next values, specify the recieved value in the next request in the last_id parameter
-	LastId string `json:"last_id"`
-
-	// Total number of products
-	Total int32 `json:"total"`
+	Items  []GetListOfProductsResultItem `json:"items"`
+	Total  int32                         `json:"total"`
+	LastId string                        `json:"last_id"`
 }
 
 type GetListOfProductsResultItem struct {
-	// Product identifier in the seller's system
-	OfferId string `json:"offer_id"`
-
-	// Product ID
-	ProductId int64 `json:"product_id"`
+	ProductId    int64         `json:"product_id"`
+	OfferId      string        `json:"offer_id"`
+	HasFboStocks bool          `json:"has_fbo_stocks"`
+	HasFbsStocks bool          `json:"has_fbs_stocks"`
+	Archived     bool          `json:"archived"`
+	IsDiscounted bool          `json:"is_discounted"`
+	Quants       []interface{} `json:"quants"`
 }
 
-// When using the filter by offer_id or product_id identifier, other parameters are not required.
-// Only one identifiers group can be used at a time, not more than 1000 products.
-//
-// If you do not use identifiers for display, specify limit and last_id in subsequent requests.
+// GetListOfProducts calls the new /v3/product/list endpoint.
 func (c Products) GetListOfProducts(ctx context.Context, params *GetListOfProductsParams) (*GetListOfProductsResponse, error) {
-	url := "/v2/product/list"
+	url := "/v3/product/list"
 
 	resp := &GetListOfProductsResponse{}
 

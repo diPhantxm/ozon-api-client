@@ -537,54 +537,61 @@ func TestGetListOfProducts(t *testing.T) {
 		params     *GetListOfProductsParams
 		response   string
 	}{
-		// Test Ok
+		// Test OK
 		{
 			http.StatusOK,
 			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
 			&GetListOfProductsParams{
 				Filter: GetListOfProductsFilter{
-					OfferId:    []string{"136748"},
-					ProductId:  []int64{223681945},
+					// Even though the official v3 example doesn't show these, we keep them if needed
+					OfferId:    []string{"u-power-1"},
+					ProductId:  []int64{245950717},
 					Visibility: "ALL",
 				},
 				LastId: "",
-				Limit:  100,
+				Limit:  10,
 			},
 			`{
-				"result": {
-				  "items": [
-					{
-					  "product_id": 223681945,
-					  "offer_id": "136748"
-					}
-				  ],
-				  "total": 1,
-				  "last_id": "bnVсbA=="
-				}
-			}`,
+                "result": {
+                  "items": [
+                    {
+                      "product_id": 245950717,
+                      "offer_id": "u-power-1",
+                      "has_fbo_stocks": false,
+                      "has_fbs_stocks": true,
+                      "archived": false,
+                      "is_discounted": false,
+                      "quants": []
+                    }
+                  ],
+                  "total": 1,
+                  "last_id": "WzI0NTk1MDcxNywyNDU5NTA3MTdd"
+                }
+            }`,
 		},
-		// Test No Client-Id or Api-Key
+		// Test Unauthorized (no Client-Id or Api-Key)
 		{
 			http.StatusUnauthorized,
 			map[string]string{},
 			&GetListOfProductsParams{},
 			`{
-				"code": 16,
-				"message": "Client-Id and Api-Key headers are required"
-			}`,
+                "code": 16,
+                "message": "Client-Id and Api-Key headers are required"
+            }`,
 		},
 	}
 
 	for _, test := range tests {
 		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
 
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
+		defer cancel()
+
 		resp, err := c.Products().GetListOfProducts(ctx, test.params)
 		if err != nil {
 			t.Error(err)
 			continue
 		}
-
 		compareJsonResponse(t, test.response, &GetListOfProductsResponse{})
 
 		if resp.StatusCode != test.statusCode {
@@ -593,7 +600,7 @@ func TestGetListOfProducts(t *testing.T) {
 
 		if resp.StatusCode == http.StatusOK {
 			if len(resp.Result.Items) != int(resp.Result.Total) {
-				t.Errorf("Length of items is not equal total")
+				t.Errorf("Length of items is not equal to total")
 			}
 			if resp.Result.Total > int32(test.params.Limit) {
 				t.Errorf("Length of items is bigger than limit")
