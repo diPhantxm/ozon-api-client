@@ -2740,3 +2740,107 @@ func TestListEconomy(t *testing.T) {
 		compareJsonResponse(t, test.response, &ListEconomyProductsResponse{})
 	}
 }
+
+func TestUpdatePriceRelevanceTimer(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *UpdatePriceRelevanceTimerParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&UpdatePriceRelevanceTimerParams{
+				ProductIds: []string{"string"},
+			},
+			`{}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&UpdatePriceRelevanceTimerParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().UpdatePriceRelevanceTimer(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		compareJsonResponse(t, test.response, &UpdatePriceRelevanceTimerResponse{})
+	}
+}
+
+func TestStatusPriceRelevanceTimer(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *StatusPriceRelevanceTimerParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&StatusPriceRelevanceTimerParams{
+				ProductIds: []string{"string"},
+			},
+			`{
+				"statuses": [
+				  {
+					"expired_at": "2019-08-24T14:15:22Z",
+					"min_price_for_auto_actions_enabled": true,
+					"product_id": 0
+				  }
+				]
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&StatusPriceRelevanceTimerParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Products().StatusPriceRelevanceTimer(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+
+		compareJsonResponse(t, test.response, &StatusPriceRelevanceTimerResponse{})
+	}
+}

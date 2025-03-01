@@ -749,6 +749,12 @@ type UpdatePricesPrice struct {
 	// By default, the passed value is RUB, Russian ruble
 	CurrencyCode string `json:"currency_code"`
 
+	// true, if Ozon takes into account
+	// the minimum price when creating promotions.
+	// If you don't pass anything,
+	// the status of the price accounting remains the same
+	MinPriceForAutoActionsEnabled bool `json:"min_price_for_auto_actions_enabled"`
+
 	// Minimum product price with all promotions applied
 	MinPrice string `json:"min_price"`
 
@@ -2737,6 +2743,66 @@ func (c Products) ListEconomy(ctx context.Context, params *ListEconomyProductsPa
 	url := "/v1/product/quant/list"
 
 	resp := &ListEconomyProductsResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type UpdatePriceRelevanceTimerParams struct {
+	// List of product identifiers
+	ProductIds []string `json:"product_ids"`
+}
+
+type UpdatePriceRelevanceTimerResponse struct {
+	core.CommonResponse
+}
+
+func (c Products) UpdatePriceRelevanceTimer(ctx context.Context, params *UpdatePriceRelevanceTimerParams) (*UpdatePriceRelevanceTimerResponse, error) {
+	url := "/v1/product/action/timer/update"
+
+	resp := &UpdatePriceRelevanceTimerResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type StatusPriceRelevanceTimerParams struct {
+	// List of product identifiers
+	ProductIds []string `json:"product_ids"`
+}
+
+type StatusPriceRelevanceTimerResponse struct {
+	core.CommonResponse
+
+	Statuses []PriceRelevanceTimerStatus `json:"statuses"`
+}
+
+type PriceRelevanceTimerStatus struct {
+	// Timer end time
+	ExpiredAt time.Time `json:"expired_at"`
+
+	// true, if Ozon takes into account the minimum price when creating promotions
+	MinPriceForAutoActionsEnabled bool `json:"min_price_for_auto_actions_enabled"`
+
+	// Product identifier
+	ProductId int64 `json:"product_id"`
+}
+
+// Get status of timer you've set
+func (c Products) StatusPriceRelevanceTimer(ctx context.Context, params *StatusPriceRelevanceTimerParams) (*StatusPriceRelevanceTimerResponse, error) {
+	url := "/v1/product/action/timer/update"
+
+	resp := &StatusPriceRelevanceTimerResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {

@@ -725,7 +725,7 @@ func (c Returns) FBSQuantity(ctx context.Context, params *GetFBSQuantityReturnsP
 }
 
 type ListReturnsParams struct {
-	// Filter
+	// Filters. Use only one filter per request. Otherwise it returns an error
 	Filter *ListReturnsFilter `json:"filter,omitempty"`
 
 	// Number of loaded returns. The maximum value is 500
@@ -748,7 +748,7 @@ type ListReturnsFilter struct {
 	// Filter by order identifier
 	OrderId int64 `json:"order_id,omitempty"`
 
-	// Filter by shipment number
+	// Filter by shipment number. Pass no more than 50 postings
 	PostingNumbers []string `json:"posting_numbers,omitempty"`
 
 	// Filter by product name
