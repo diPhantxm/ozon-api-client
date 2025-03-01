@@ -361,16 +361,30 @@ func TestGetSupplyRequestInfo(t *testing.T) {
 			`{
 				"orders": [
 				  {
+					"can_cancel": true,
 					"creation_date": "string",
 					"creation_flow": "string",
 					"data_filling_deadline_utc": "2019-08-24T14:15:22Z",
 					"dropoff_warehouse_id": 0,
+					"is_econom": true,
+					"is_super_fbo": true,
+					"is_virtual": true,
+					"product_super_fbo": true,
 					"state": "ORDER_STATE_UNSPECIFIED",
 					"supplies": [
 					  {
 						"bundle_id": "string",
 						"storage_warehouse_id": 0,
-						"supply_id": 0
+						"supply_id": 0,
+						"supply_state": "SUPPLY_STATE_UNSPECIFIED",
+						"supply_tags": [
+						  {
+							"is_evsd_required": true,
+							"is_jewelry": true,
+							"is_marking_possible": true,
+							"is_marking_required": true
+						  }
+						]
 					  }
 					],
 					"supply_order_id": 0,

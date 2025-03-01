@@ -338,6 +338,9 @@ type GetSupplyRequestInfoResponse struct {
 }
 
 type SupplyOrder struct {
+	// true if the supply request can be canceled
+	CanCancel bool `json:"can_cancel"`
+
 	// Date of supply request creation
 	CreationDate string `json:"creation_date"`
 
@@ -349,6 +352,18 @@ type SupplyOrder struct {
 
 	// Supply warehouse identifier
 	DropoffWarehouseId int64 `json:"dropoff_warehouse_id"`
+
+	// true if the supply request contains Super Economy products
+	IsEconom bool `json:"is_econom"`
+
+	// true if the seller has Super supplies enabled
+	IsSuperFBO bool `json:"is_super_fbo"`
+
+	// true if the supply request is virtual
+	IsVirtual bool `json:"is_virtual"`
+
+	// true if the supply request contains Super products
+	ProductSuperFBO bool `json:"product_super_fbo"`
 
 	// Filter by supply status
 	State string `json:"state"`
@@ -373,11 +388,31 @@ type Supply struct {
 	// Supply contents identifier. Used in the /v1/supply-order/bundle method
 	BundleId string `json:"bundle_id"`
 
+	// Filter by supply status
+	SupplyState string `json:"supply_state"`
+
 	// Storage warehouse identifier
 	StorageWarehouseId int64 `json:"storage_warehouse_id"`
 
+	// Product tags in the supply request
+	SupplyTags []SupplyTag `json:"supply_tags"`
+
 	// Supply identifier
 	Id int64 `json:"supply_id"`
+}
+
+type SupplyTag struct {
+	// true if the supply request contains products certified in the Mercury system
+	IsEVSDRequired bool `json:"is_evsd_required"`
+
+	// true if the supply request contains jewelry
+	IsJewelry bool `json:"is_jewelry"`
+
+	// true if the supply request contains products for which labeling is possible
+	IsMarkingPossible bool `json:"is_marking_possible"`
+
+	// true if the supply request contains products for which labeling is mandatory
+	IsMarkingRequired bool `json:"is_marking_required"`
 }
 
 type SupplyTimeslot struct {
