@@ -1498,7 +1498,7 @@ func (c FBS) ChangeStatusToSendBySeller(ctx context.Context, params *ChangeStatu
 }
 
 type PassShipmentToShippingParams struct {
-	// Shipment identifier
+	// Shipment identifier. The maximum number of values in one request is 100
 	PostingNumber []string `json:"posting_number"`
 }
 
