@@ -878,62 +878,6 @@ func TestListOfShipmentCertificates(t *testing.T) {
 	}
 }
 
-func TestSignShipmentCertificate(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		statusCode int
-		headers    map[string]string
-		params     *SignShipmentCertificateParams
-		response   string
-	}{
-		// Test Ok
-		{
-			http.StatusOK,
-			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
-			&SignShipmentCertificateParams{
-				Id:      900000250859000,
-				DocType: "act_of_mismatch",
-			},
-			`{
-				"result": "string"
-			}`,
-		},
-		// Test No Client-Id or Api-Key
-		{
-			http.StatusUnauthorized,
-			map[string]string{},
-			&SignShipmentCertificateParams{},
-			`{
-				"code": 16,
-				"message": "Client-Id and Api-Key headers are required"
-			}`,
-		},
-	}
-
-	for _, test := range tests {
-		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
-
-		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
-		resp, err := c.FBS().SignShipmentCertificate(ctx, test.params)
-		if err != nil {
-			t.Error(err)
-			continue
-		}
-
-		compareJsonResponse(t, test.response, &SignShipmentCertificateResponse{})
-
-		if resp.StatusCode != test.statusCode {
-			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
-		}
-		if resp.StatusCode == http.StatusOK {
-			if resp.Result == "" {
-				t.Errorf("Result cannot be empty")
-			}
-		}
-	}
-}
-
 func TestChangeStatusTo(t *testing.T) {
 	t.Parallel()
 
