@@ -1080,3 +1080,82 @@ func (c FBO) GetDraftTimeslots(ctx context.Context, params *GetDraftTimeslotsPar
 
 	return resp, nil
 }
+
+type CancelSuppyOrderParams struct {
+	// Supply request identifier
+	OrderId int64 `json:"order_id"`
+}
+
+type CancelSuppyOrderResponse struct {
+	core.CommonResponse
+
+	// Operation identifier for canceling the request
+	OperationId string `json:"operation_id"`
+}
+
+// Cancel supply request
+func (c FBO) CancelSuppyOrder(ctx context.Context, params *CancelSuppyOrderParams) (*CancelSuppyOrderResponse, error) {
+	url := "/v1/supply-order/cancel"
+
+	resp := &CancelSuppyOrderResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type StatusCancelledSupplyOrderParams struct {
+	// Operation identifier for canceling the supply request
+	OperationId string `json:"operation_id"`
+}
+
+type StatusCancelledSupplyOrderResponse struct {
+	core.CommonResponse
+
+	// Reason why the supply request can't be canceled
+	ErrorReasons []string `json:"error_reasons"`
+
+	// Details on supply request cancellation
+	Result StatusCancelledSupplyOrderResult `json:"result"`
+
+	// Cancellation status of the supply request
+	Status string `json:"status"`
+}
+
+type StatusCancelledSupplyOrderResult struct {
+	// true, if supply request is canceled
+	IsOrderCancelled bool `json:"is_order_cancelled"`
+
+	// List of canceled supplies
+	Supplies []StatusCancelledSupplyOrderSupply `json:"supplies"`
+}
+
+type StatusCancelledSupplyOrderSupply struct {
+	// Reason why supplies can't be canceled
+	ErrorReasons []string `json:"error_reasons"`
+
+	// true, if supply is canceled
+	IsSupplyCancelled bool `json:"is_supply_cancelled"`
+
+	// Supply identifier
+	SupplyId int64 `json:"supply_id"`
+}
+
+// Get status of canceled supply request
+func (c FBO) StatusCancelledSupplyOrder(ctx context.Context, params *StatusCancelledSupplyOrderParams) (*StatusCancelledSupplyOrderResponse, error) {
+	url := "/v1/supply-order/cancel/status"
+
+	resp := &StatusCancelledSupplyOrderResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodGet, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
