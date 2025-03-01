@@ -1387,9 +1387,9 @@ type ProductInfoResultPicture struct {
 	// Image uploading status.
 	//
 	// If the `/v1/product/pictures/import` method was called, the response will always be imported—image not processed.
-	// To see the final status, call the `/v1/product/pictures/info` method after about 10 seconds.
+	// To see the final status, call the `/v2/product/pictures/info` method after about 10 seconds.
 	//
-	// If you called the `/v1/product/pictures/info` method, one of the statuses will appear:
+	// If you called the `/v2/product/pictures/info` method, one of the statuses will appear:
 	//   - uploaded — image uploaded;
 	//   - pending — image was not uploaded
 	State string `json:"state"`
