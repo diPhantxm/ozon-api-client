@@ -154,6 +154,9 @@ type FBSPosting struct {
 	// Number of the parent shipment which split resulted in the current shipment
 	ParentPostingNumber string `json:"parent_posting_number"`
 
+	// Date and time of successful verification of the courier code
+	PickupCodeVerifiedAt time.Time `json:"pickup_code_verified_at"`
+
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
@@ -1016,6 +1019,9 @@ type GetShipmentDataByIdentifierResult struct {
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
+	// Date and time of successful verification of the courier code
+	PickupCodeVerifiedAt time.Time `json:"pickup_code_verified_at"`
+
 	// Information on products and their instances.
 	//
 	// The response contains the field product_exemplars, if the attribute with.product_exemplars = true is passed in the request
@@ -1026,6 +1032,9 @@ type GetShipmentDataByIdentifierResult struct {
 
 	// Delivery service status
 	ProviderStatus string `json:"provider_status"`
+
+	// Previous sub-status of the shipment
+	PreviousSubstatus string `json:"previous_substatus"`
 
 	// Information on lifting service. Only relevant for bulky products
 	// with a delivery by a third-party or integrated service
@@ -3262,6 +3271,36 @@ func (c FBS) DeleteShipment(ctx context.Context, params *DeleteShipmentParams) (
 	url := "/v1/carriage/cancel"
 
 	resp := &DeleteShipmentResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type VerifyCourierCodeParams struct {
+	// Courier code
+	PickupCode string `json:"pickup_code"`
+
+	// Shipment number
+	PostingNumber string `json:"posting_number"`
+}
+
+type VerifyCourierCodeResponse struct {
+	core.CommonResponse
+
+	// true, if the code is correct
+	Valid bool `json:"valid"`
+}
+
+// Use this method to verify the courier code when handing over realFBS Express shipments
+func (c FBS) VerifyCourierCode(ctx context.Context, params *VerifyCourierCodeParams) (*VerifyCourierCodeResponse, error) {
+	url := "/v1/posting/fbs/pick-up-code/verify"
+
+	resp := &VerifyCourierCodeResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {
