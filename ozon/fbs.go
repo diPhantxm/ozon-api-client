@@ -1405,38 +1405,6 @@ func (c FBS) ListOfShipmentCertificates(ctx context.Context, params *ListOfShipm
 	return resp, nil
 }
 
-type SignShipmentCertificateParams struct {
-	// Certificate identifier
-	Id int64 `json:"id"`
-
-	// Type of shipment certificate:
-	//   - act_of_mismatch — discrepancy certificate,
-	//   - act_of_excess — surplus certificate
-	DocType string `json:"doc_type"`
-}
-
-type SignShipmentCertificateResponse struct {
-	core.CommonResponse
-
-	// Request processing
-	Result string `json:"result"`
-}
-
-// Signs shipment certificates electronically via the electronic documents (ED) system of Ozon logistics
-func (c FBS) SignShipmentCertificate(ctx context.Context, params *SignShipmentCertificateParams) (*SignShipmentCertificateResponse, error) {
-	url := "/v2/posting/fbs/digital/act/document-sign"
-
-	resp := &SignShipmentCertificateResponse{}
-
-	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
-	if err != nil {
-		return nil, err
-	}
-	response.CopyCommonResponse(&resp.CommonResponse)
-
-	return resp, nil
-}
-
 type ChangeStatusToParams struct {
 	// Shipment identifier
 	PostingNumber []string `json:"posting_number"`
