@@ -236,7 +236,9 @@ type Coordinates struct {
 	Longitude float64 `json:"longitude"`
 }
 
-// Get a list of warehouses, sorting centers and pick-up points available for cross-docking, and direct supplies.
+// Use the method to find sorting centres, pick-up points, and drop-off points available for cross-docking and direct supplies.
+//
+// You can view the addresses of all points on the map and in a table in the Knowledge Base.
 func (c Warehouses) ListForShipping(ctx context.Context, params *ListForShippingParams) (*ListForShippingResponse, error) {
 	url := "/v1/warehouse/fbo/list"
 

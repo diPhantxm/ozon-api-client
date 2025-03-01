@@ -713,16 +713,16 @@ func (c FBO) GetPass(ctx context.Context, params *GetPassParams) (*GetPassRespon
 }
 
 type GetSupplyContentParams struct {
-	// Identifiers of supply contents. Minimum is 1, maximum is 1000. You can get them using the /v2/supply-order/get method
+	// Identifiers of supply contents. You can get them using the /v2/supply-order/get method.
 	BundleIds []string `json:"bundle_ids"`
 
 	// true, to sort in ascending order
 	IsAsc bool `json:"is_asc"`
 
-	// Identifier of the last value on the page
+	// Identifier of the last SKU value on the page.
 	LastId string `json:"last_id"`
 
-	// Number of values on the page. Minimum is 1, maximum is 1000
+	// Number of products on the page.
 	Limit int32 `json:"limit"`
 
 	// Search query, for example: by name, article code, or SKU
@@ -891,7 +891,7 @@ type SupplyDraftWarehouse struct {
 	// Warehouse name
 	Name string `json:"name"`
 
-	// Bundle of products that don't come in a shipment
+	// Bundle of products that don't come in a shipment. Use the parameter in the /v1/supply-order/bundle method to get details.
 	RestrictedBundleId string `json:"restricted_bundle_id"`
 
 	// Warehouse availability
@@ -916,7 +916,7 @@ type SupplyDraftWarehouse struct {
 }
 
 type SupplyDraftWarehouseBundle struct {
-	// Bundle identifier
+	// Bundle identifier. Use the parameter in the /v1/supply-order/bundle method to get details
 	Id string `json:"bundle_id"`
 
 	// Indicates that the UTD is to be passed
