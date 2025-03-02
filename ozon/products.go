@@ -1567,6 +1567,9 @@ type GetDescriptionOfProductResult struct {
 	// Barcode
 	Barcode string `json:"barcode"`
 
+	// All product's barcodes
+	Barcodes []string `json:"barcodes"`
+
 	// Category identifier
 	DescriptionCategoryId int64 `json:"description_category_id"`
 
@@ -1592,7 +1595,10 @@ type GetDescriptionOfProductResult struct {
 	Id int64 `json:"id"`
 
 	// Array of links to product images
-	Images []GetDescriptionOfProductResultImage `json:"images"`
+	Images []string `json:"images"`
+
+	// Model Information
+	ModelInfo GetDescriptionOfProductModelInfo `json:"model_info"`
 
 	// Array of 360 images
 	Images360 []GetDescriptionOfProductResultImage360 `json:"images360"`
@@ -1605,6 +1611,12 @@ type GetDescriptionOfProductResult struct {
 
 	// Array of PDF files
 	PDFList []GetDescriptionOfProductResultPDF `json:"pdf_list"`
+
+	// Link to the main product image
+	PrimaryImage string `json:"primary_image"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
 
 	// Product type identifier
 	TypeId int64 `json:"type_id"`
@@ -1619,9 +1631,17 @@ type GetDescriptionOfProductResult struct {
 	Width int32 `json:"width"`
 }
 
+type GetDescriptionOfProductModelInfo struct {
+	// Model Identifier
+	ModelId int64 `json:"model_id"`
+
+	// Quantity of combined model products
+	Count int64 `json:"count"`
+}
+
 type GetDescriptionOfProductResultAttr struct {
 	// Characteristic identifier
-	AttributeId int64 `json:"attribute_id"`
+	AttributeId int64 `json:"id"`
 
 	// Identifier of the characteristic that supports nested properties.
 	// For example, the "Processor" characteristic has nested characteristics "Manufacturer" and "L2 Cache".
@@ -1664,12 +1684,6 @@ type GetDescriptionOfProductResultComplexAttrValue struct {
 
 	// Product characteristic value
 	Value string `json:"value"`
-}
-
-type GetDescriptionOfProductResultImage struct {
-	Default  bool   `json:"default"`
-	FileName string `json:"file_name"`
-	Index    int64  `json:"index"`
 }
 
 type GetDescriptionOfProductResultImage360 struct {
