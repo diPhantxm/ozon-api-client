@@ -88,7 +88,8 @@ type GetListOfWarehousesResultFirstMile struct {
 	FirstMileType string `json:"first_mile_type"`
 }
 
-// You do not need to specify any parameters in the request. Your company will be identified by the Warehouses ID
+// Method returns the list of FBS and rFBS warehouses.
+// To get the list of FBO warehouses, use the /v1/cluster/list method.
 func (c Warehouses) GetListOfWarehouses(ctx context.Context) (*GetListOfWarehousesResponse, error) {
 	url := "/v1/warehouse/list"
 

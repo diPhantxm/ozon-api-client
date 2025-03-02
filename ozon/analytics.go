@@ -200,12 +200,9 @@ type GetStocksOnWarehousesResultRow struct {
 
 	// Name of the warehouse where the products are stored
 	WarehouseName string `json:"warehouse_name"`
-
-	// Number of days the stock will last based on your average daily sales
-	IDC float64 `json:"idc"`
 }
 
-// Report on stocks and products movement at Ozon warehouses
+// Method for getting a report on leftover stocks and products movement at Ozon warehouses
 func (c Analytics) GetStocksOnWarehouses(ctx context.Context, params *GetStocksOnWarehousesParams) (*GetStocksOnWarehousesResponse, error) {
 	url := "/v2/analytics/stock_on_warehouses"
 
@@ -331,6 +328,117 @@ func (c Analytics) Stock(ctx context.Context, params *GetStockManagementParams) 
 	url := "/v1/analytics/manage/stocks"
 
 	resp := &GetStockManagementResponse{}
+
+	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
+	if err != nil {
+		return nil, err
+	}
+	response.CopyCommonResponse(&resp.CommonResponse)
+
+	return resp, nil
+}
+
+type GetProductQueriesParams struct {
+	// Date when analytics generation starts
+	DateFrom string `json:"date_from"`
+
+	//Date when analytics generation ends
+	DateTo string `json:"date_to"`
+
+	// Number of page returned in the request
+	Page int32 `json:"page"`
+
+	// Number of items on the pag
+	PageSize int32 `json:"page_size"`
+
+	// List of SKUs—product identifiers in the Ozon system.
+	// Analytics on requests is returned for them.
+	// Maximum value is 1,000 SKUs
+	SKUs []string `json:"skus"`
+
+	// Parameter by which products are sorted
+	SortBy string `json:"sort_by"`
+
+	// Sorting direction
+	SortDir string `json:"sort_dir"`
+}
+
+type GetProductQueriesResponse struct {
+	core.CommonResponse
+
+	// Period for which the analytics is generated
+	AnalyticsPeriod AnalyticsPeriod `json:"analytics_period"`
+
+	// Product list
+	Items []GetProductQueriesItem `json:"items"`
+
+	// Number of pages
+	PageCount int64 `json:"page_count"`
+
+	// Total number of queries
+	Total int64 `json:"total"`
+}
+
+type AnalyticsPeriod struct {
+	// Date when analytics generation starts
+	DateFrom string `json:"date_from"`
+
+	// Date when analytics generation ends
+	DateTo string `json:"date_to"`
+}
+
+type GetProductQueriesItem struct {
+	// Category name
+	Category string `json:"category"`
+
+	// Currency
+	Currency string `json:"currency"`
+
+	// Sales by queries
+	GMV float64 `json:"gmv"`
+
+	// Product name
+	Name string `json:"name"`
+
+	// Product identifier in the seller's system
+	OfferId string `json:"offer_id"`
+
+	// Average product position. Available only with the Premium or Premium Plus subscription, otherwise the field returns empty
+	Position float64 `json:"position"`
+
+	// Product identifier in the Ozon system, SKU
+	SKU int64 `json:"sku"`
+
+	// Number of customers who searched for your product on Ozon
+	UniqueSearchUsers int64 `json:"unique_search_users"`
+
+	// Number of customers who have seen your product on Ozon.
+	// Available only with the Premium or Premium Plus subscription,
+	// otherwise the field returns empty
+	UniqueViewUsers int64 `json:"unique_view_users"`
+
+	// Conversion from product views.
+	// Available only with the Premium or Premium Plus subscription,
+	// otherwise the field returns empty
+	ViewConversion float64 `json:"view_conversion"`
+}
+
+// Use the method to get data about your product queries.
+// Full analytics is available with the Premium and Premium Plus subscription.
+// Without subscription, you can see a part of the metrics.
+// The method is similar to the Products in Search → Queries for my product tab in your personal account.
+//
+// You can view analytics by queries for certain dates.
+// To do this, specify the interval in the date_from and date_to fields.
+// Data for the last month are available in any interval except for
+// three days from the current date because these days the calculation is performed.
+// Analytics for dates later than a month ago is available only with
+// the Premium and Premium Plus subscription, and only by weeks.
+// Specify the date_from parameter in the request
+func (c Analytics) GetProductQueries(ctx context.Context, params *GetProductQueriesParams) (*GetProductQueriesResponse, error) {
+	url := "/v1/analytics/product-queries"
+
+	resp := &GetProductQueriesResponse{}
 
 	response, err := c.client.Request(ctx, http.MethodPost, url, params, resp, nil)
 	if err != nil {

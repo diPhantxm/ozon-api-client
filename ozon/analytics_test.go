@@ -277,3 +277,74 @@ func TestGetStock(t *testing.T) {
 		}
 	}
 }
+
+func TestGetProductQueries(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		statusCode int
+		headers    map[string]string
+		params     *GetProductQueriesParams
+		response   string
+	}{
+		// Test Ok
+		{
+			http.StatusOK,
+			map[string]string{"Client-Id": "my-client-id", "Api-Key": "my-api-key"},
+			&GetProductQueriesParams{
+				Page:     1,
+				PageSize: 10,
+				SKUs:     []string{"string"},
+			},
+			`{
+				"analytics_period": {
+				  "date_from": "string",
+				  "date_to": "string"
+				},
+				"items": [
+				  {
+					"category": "string",
+					"currency": "string",
+					"gmv": 0,
+					"name": "string",
+					"offer_id": "string",
+					"position": 0,
+					"sku": 0,
+					"unique_search_users": 0,
+					"unique_view_users": 0,
+					"view_conversion": 0
+				  }
+				],
+				"page_count": 0,
+				"total": 0
+			}`,
+		},
+		// Test No Client-Id or Api-Key
+		{
+			http.StatusUnauthorized,
+			map[string]string{},
+			&GetProductQueriesParams{},
+			`{
+				"code": 16,
+				"message": "Client-Id and Api-Key headers are required"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		c := NewMockClient(core.NewMockHttpHandler(test.statusCode, test.response, test.headers))
+
+		ctx, _ := context.WithTimeout(context.Background(), testTimeout)
+		resp, err := c.Analytics().GetProductQueries(ctx, test.params)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		compareJsonResponse(t, test.response, &GetProductQueriesResponse{})
+
+		if resp.StatusCode != test.statusCode {
+			t.Errorf("got wrong status code: got: %d, expected: %d", resp.StatusCode, test.statusCode)
+		}
+	}
+}
