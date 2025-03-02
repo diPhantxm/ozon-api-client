@@ -362,11 +362,7 @@ type ListTransactionsResultOperationItem struct {
 }
 
 type ListTransactionsResultOperationPosting struct {
-	// Delivery scheme:
-	//   - FBO — delivery to Ozon warehouse
-	//   - FBS — delivery from seller's warehouse
-	//   - RFBS — delivery service of seller's choice
-	//   - Crossborder — delivery from abroad
+	// Delivery scheme
 	DeliverySchema string `json:"delivery_schema"`
 
 	// Date the product was accepted for processing
