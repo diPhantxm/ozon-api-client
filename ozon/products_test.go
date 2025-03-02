@@ -1370,37 +1370,33 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 				  {
 					"id": 213761435,
 					"barcode": "",
-					"description_category_id": 17038062,
+					"barcodes": [
+					  "123124123",
+					  "123342455"
+					],
 					"name": "Пленка защитная для Xiaomi Redmi Note 10 Pro 5G",
 					"offer_id": "21470",
+					"type_id": 124572394,
 					"height": 10,
 					"depth": 210,
 					"width": 140,
 					"dimension_unit": "mm",
 					"weight": 50,
 					"weight_unit": "g",
+					"primary_image": "https://cdn1.ozone.ru/s3/multimedia-4/6804736960.jpg",
+					"sku": 423434534,
+					"model_info": {
+					  "model_id": 43445453,
+					  "count": 4
+					},
 					"images": [
-					  {
-						"file_name": "https://cdn1.ozone.ru/s3/multimedia-f/6190456071.jpg",
-						"default": true,
-						"index": 0
-					  },
-					  {
-						"file_name": "https://cdn1.ozone.ru/s3/multimedia-7/6190456099.jpg",
-						"default": false,
-						"index": 1
-					  },
-					  {
-						"file_name": "https://cdn1.ozone.ru/s3/multimedia-9/6190456065.jpg",
-						"default": false,
-						"index": 2
-					  }
+					  "https://cdn1.ozone.ru/s3/multimedia-4/6804736960.jpg",
+					  "https://cdn1.ozone.ru/s3/multimedia-j/6835412647.jpg"
 					],
-					"images360": [],
 					"pdf_list": [],
 					"attributes": [
 					  {
-						"attribute_id": 5219,
+						"id": 5219,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1410,7 +1406,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 11051,
+						"id": 11051,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1420,7 +1416,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 10100,
+						"id": 10100,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1430,7 +1426,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 11794,
+						"id": 11794,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1440,7 +1436,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 9048,
+						"id": 9048,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1450,7 +1446,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 5076,
+						"id": 5076,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1460,7 +1456,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 9024,
+						"id": 9024,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1470,7 +1466,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 10015,
+						"id": 10015,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1480,7 +1476,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 85,
+						"id": 85,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1490,7 +1486,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 9461,
+						"id": 9461,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1500,7 +1496,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 4180,
+						"id": 4180,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1510,7 +1506,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 4191,
+						"id": 4191,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1520,7 +1516,7 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 						]
 					  },
 					  {
-						"attribute_id": 8229,
+						"id": 8229,
 						"complex_id": 0,
 						"values": [
 						  {
@@ -1531,7 +1527,8 @@ func TestGetDescriptionOfProduct(t *testing.T) {
 					  }
 					],
 					"complex_attributes": [],
-					"color_image": ""
+					"color_image": "",
+					"description_category_id": 71107562
 				  }
 				],
 				"total": 1,
