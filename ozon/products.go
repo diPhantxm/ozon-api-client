@@ -1687,7 +1687,7 @@ type GetDescriptionOfProductResultPDF struct {
 
 // Returns a product characteristics description by product identifier. You can search for the product by `offer_id` or `product_id`
 func (c Products) GetDescriptionOfProduct(ctx context.Context, params *GetDescriptionOfProductParams) (*GetDescriptionOfProductResponse, error) {
-	url := "/v3/products/info/attributes"
+	url := "/v4/product/info/attributes"
 
 	resp := &GetDescriptionOfProductResponse{}
 
