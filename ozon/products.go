@@ -758,6 +758,9 @@ type UpdatePricesPrice struct {
 	// Minimum product price with all promotions applied
 	MinPrice string `json:"min_price"`
 
+	// Product cost price
+	NetPrice string `json:"net_price"`
+
 	// Product identifier in the seller's system
 	OfferId string `json:"offer_id"`
 
