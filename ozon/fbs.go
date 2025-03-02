@@ -240,7 +240,7 @@ type FBSPostingAddressee struct {
 }
 
 type FBSPostingAnalyticsData struct {
-	// Delivery city. Only for rFBS shipments
+	// Delivery city. Only for rFBS shipments and sellers from CIS countries
 	City string `json:"city"`
 
 	// Delivery start date and time
@@ -1113,7 +1113,7 @@ type GetShipmentDataByIdentifierResultAddressee struct {
 }
 
 type GetShipmentDataByIdentifierResultAnalyticsData struct {
-	// Delivery city. Only for rFBS shipments
+	// Delivery city. Only for rFBS shipments and sellers from CIS countries
 	City string `json:"city"`
 
 	// Delivery start date and time
