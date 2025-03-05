@@ -2159,7 +2159,7 @@ func TestGetProductPriceInfo(t *testing.T) {
 				  "cursor": "string",
 				  "items": [
 					{
-					  "acquiring": 0,
+					  "acquiring": 0.5,
 					  "commissions": {
 						"fbo_deliv_to_customer_amount": 14.75,
 						"fbo_direct_flow_trans_max_amount": 46.5,

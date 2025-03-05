@@ -2130,10 +2130,6 @@ type GetProductPriceInfoFilter struct {
 type GetProductPriceInfoResponse struct {
 	core.CommonResponse
 
-	Result GetProductPriceInfoResult `json:"result"`
-}
-
-type GetProductPriceInfoResult struct {
 	// Products list
 	Items []GetProductPriceInfoResultItem `json:"items"`
 
@@ -2146,7 +2142,7 @@ type GetProductPriceInfoResult struct {
 
 type GetProductPriceInfoResultItem struct {
 	// Maximum acquiring fee
-	Acquiring int32 `json:"acquiring"`
+	Acquiring float64 `json:"acquiring"`
 
 	// Commissions information
 	Commissions GetProductPriceInfoResultItemCommission `json:"commissions"`
