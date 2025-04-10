@@ -212,16 +212,22 @@ func TestChatHistory(t *testing.T) {
 				"has_next": true,
 				"messages": [
 				  {
+					"context": {
+					  "order_number": "123456789",
+					  "sku": "987654321"
+					},
+					"created_at": "2019-08-24T14:15:22Z",
+					"data": [
+					  "Здравствуйте, у меня вопрос по вашему товару \"Стекло защитное для смартфонов\", артикул 11223. Подойдет ли он на данную [ модель ](https://www.ozon.ru/product/smartfon-samsung-galaxy-a03s-4-64-gb-chernyy) телефона?"
+					],
+					"is_image": true,
+					"is_read": true,
 					"message_id": "3000000000817031942",
+					"moderate_image_status": "SUCCESS",
 					"user": {
 					  "id": "115568",
 					  "type": "Сustomer"
-					},
-					"created_at": "2022-07-18T20:58:04.528Z",
-					"is_read": true,
-					"data": [
-					  "Здравствуйте, у меня вопрос по вашему товару \"Стекло защитное для смартфонов\", артикул 11223. Подойдет ли он на данную [ модель ](https://www.ozon.ru/product/smartfon-samsung-galaxy-a03s-4-64-gb-chernyy) телефона?"
-					]
+					}
 				  }
 				]
 			}`,

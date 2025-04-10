@@ -480,6 +480,10 @@ type GetReturnsReportsFilter struct {
 type GetReturnsReportResponse struct {
 	core.CommonResponse
 
+	Result GetReturnsReportResult `json:"result"`
+}
+
+type GetReturnsReportResult struct {
 	// Unique report identifier. The report is available for downloading within 3 days after making a request.
 	Code string `json:"code"`
 }

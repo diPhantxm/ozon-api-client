@@ -380,7 +380,9 @@ func TestGetReturnsReport(t *testing.T) {
 				},
 			},
 			`{
-				"code": "REPORT_seller_products_924336_1720170405_a9ea2f27-a473-4b13-99f9-d0cfcb5b1a69"
+				"result": {
+				  "code": "REPORT_seller_products_924336_1720170405_a9ea2f27-a473-4b13-99f9-d0cfcb5b1a69"
+				}
 			}`,
 		},
 		// Test No Client-Id or Api-Key
