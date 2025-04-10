@@ -189,11 +189,15 @@ type ChatHistoryResponse struct {
 }
 
 type ChatHistoryMessage struct {
+	Context *ChatHistoryContext `json:"context,omitempty"`
+
 	// Message creation date
 	CreatedAt time.Time `json:"created_at"`
 
 	// Array with message content in Markdown format
 	Data []string `json:"data"`
+
+	IsImage bool `json:"is_image"`
 
 	// Indication of the read message
 	IsRead bool `json:"is_read"`
@@ -201,8 +205,15 @@ type ChatHistoryMessage struct {
 	// Message identifier
 	MessageId string `json:"message_id"`
 
+	ModarateImageStatus string `json:"moderate_image_status"`
+
 	// Chat participant identifier
 	User ChatHistoryMessageUser `json:"user"`
+}
+
+type ChatHistoryContext struct {
+	OrderNumber string `json:"order_number"`
+	SKU         string `json:"sku"`
 }
 
 type ChatHistoryMessageUser struct {
