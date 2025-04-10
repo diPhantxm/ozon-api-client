@@ -164,12 +164,18 @@ type ChatHistoryParams struct {
 	// The default value is `Backward`. You can set the number of messages in the limit parameter
 	Direction string `json:"direction" default:"Backward"`
 
+	Filter *ChatHistoryFilter `json:"filter,omitempty"`
+
 	// Identifier of the message from which the chat history will be displayed.
 	// Default value is the last visible message
 	FromMessageId string `json:"from_message_id"`
 
 	// Number of messages in the response. The default value is 50. The maximum value is 1000
 	Limit int64 `json:"limit" default:"50"`
+}
+
+type ChatHistoryFilter struct {
+	MessageIds []string `json:"message_ids"`
 }
 
 type ChatHistoryResponse struct {
@@ -214,7 +220,7 @@ type ChatHistoryMessageUser struct {
 
 // Returns the history of chat messages. By default messages are shown from newest to oldest.
 func (c Chats) History(ctx context.Context, params *ChatHistoryParams) (*ChatHistoryResponse, error) {
-	url := "/v2/chat/history"
+	url := "/v3/chat/history"
 
 	resp := &ChatHistoryResponse{}
 
