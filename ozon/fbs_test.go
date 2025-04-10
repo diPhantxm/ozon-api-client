@@ -58,6 +58,11 @@ func TestListUnprocessedShipments(t *testing.T) {
 					  "in_process_at": "2021-08-25T10:48:38Z",
 					  "shipment_date": "2021-08-26T10:00:00Z",
 					  "delivering_date": null,
+					  "optional": {
+						"products_with_possible_mandatory_mark": [
+						  0
+						]
+					  },
 					  "cancellation": {
 						"cancel_reason_id": 0,
 						"cancel_reason": "",
@@ -71,12 +76,12 @@ func TestListUnprocessedShipments(t *testing.T) {
 					  "products": [
 						{
 						  "currency_code": "RUB",
+						  "is_blr_traceable": true,
 						  "price": "1259",
 						  "offer_id": "УТ-0001365",
 						  "name": "Мяч, цвет: черный, 5 кг",
 						  "sku": 140048123,
-						  "quantity": 1,
-						  "mandatory_mark": []
+						  "quantity": 1
 						}
 					  ],
 					  "addressee": null,
@@ -255,6 +260,11 @@ func TestGetFBSShipmentsList(t *testing.T) {
 					  "in_process_at": "2022-05-13T07:07:32Z",
 					  "shipment_date": "2022-05-13T10:00:00Z",
 					  "delivering_date": null,
+					  "optional": {
+						"products_with_possible_mandatory_mark": [
+						  0
+						]
+					  },
 					  "cancellation": {
 						"cancel_reason_id": 0,
 						"cancel_reason": "",
@@ -267,12 +277,12 @@ func TestGetFBSShipmentsList(t *testing.T) {
 					  "products": [
 						{
 						  "currency_code": "RUB",
+						  "is_blr_traceable": true,
 						  "price": "1390.000000",
 						  "offer_id": "205953",
 						  "name": " Электронный конструктор PinLab Позитроник",
 						  "sku": 358924380,
-						  "quantity": 1,
-						  "mandatory_mark": []
+						  "quantity": 1
 						}
 					  ],
 					  "addressee": null,
@@ -303,7 +313,7 @@ func TestGetFBSShipmentsList(t *testing.T) {
 				  ],
 				  "has_next": true
 				}
-				}`,
+			}`,
 		},
 		// Test No Client-Id or Api-Key
 		{
@@ -531,8 +541,7 @@ func TestGetShipmentDataByBarcode(t *testing.T) {
 					  "offer_id": "250-7898-1",
 					  "name": "Кофе ароматизированный \"Шоколадный апельсин\" 250 гр",
 					  "sku": 180550365,
-					  "quantity": 1,
-					  "mandatory_mark": []
+					  "quantity": 1
 					}
 				  ],
 				  "barcodes": null,
@@ -621,6 +630,11 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 				  "delivering_date": null,
 				  "provider_status": "",
 				  "delivery_price": "",
+				  "optional": {
+					"products_with_possible_mandatory_mark": [
+					  0
+					]
+				  },
 				  "cancellation": {
 					"cancel_reason_id": 0,
 					"cancel_reason": "",
@@ -634,12 +648,12 @@ func TestGetShipmentDataByIdentifier(t *testing.T) {
 				  "products": [
 					{
 					  "currency_code": "RUB",
+					  "is_blr_traceable": true,
 					  "price": "279.0000",
 					  "offer_id": "250-7898-1",
 					  "name": "Кофе ароматизированный \"Шоколадный апельсин\" 250 гр",
 					  "sku": 180550365,
 					  "quantity": 1,
-					  "mandatory_mark": [],
 					  "dimensions": {
 						"height": "40.00",
 						"length": "240.00",

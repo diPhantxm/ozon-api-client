@@ -195,6 +195,14 @@ type FBSPosting struct {
 
 	// Economy product identifier
 	QuantumId int64 `json:"quantum_id"`
+
+	// List of products with additional characteristics
+	Optional FBSPostingOptional `json:"optional"`
+}
+
+type FBSPostingOptional struct {
+	// List of products with optional labeling
+	ProductsWithPossibleMandatoryMark []int `json:"products_with_possible_mandatory_mark"`
 }
 
 type FBSPostingTariffication struct {
@@ -373,9 +381,6 @@ type FBSRequirements struct {
 }
 
 type PostingProduct struct {
-	// Mandatory product labeling
-	MandatoryMark []string `json:"mandatory_mark"`
-
 	// Product name
 	Name string `json:"name"`
 
@@ -393,6 +398,9 @@ type PostingProduct struct {
 
 	// Product identifier in the Ozon system, SKU
 	SKU int64 `json:"sku"`
+
+	// Product traceability attribute
+	IsBLRTraceable bool `json:"is_blr_traceable"`
 }
 
 type FBSCustomer struct {
@@ -1043,6 +1051,9 @@ type GetShipmentDataByIdentifierResult struct {
 	// Number of the parent shipment which split resulted in the current shipment
 	ParentPostingNumber string `json:"parent_posting_number"`
 
+	// List of products with additional characteristics
+	Optional GetShipmentDataByIdentifierOptional `json:"optional"`
+
 	// Shipment number
 	PostingNumber string `json:"posting_number"`
 
@@ -1092,6 +1103,11 @@ type GetShipmentDataByIdentifierResult struct {
 
 	// Details on shipping rate
 	Tariffication []FBSPostingTariffication `json:"tariffication"`
+}
+
+type GetShipmentDataByIdentifierOptional struct {
+	// List of products with optional labeling
+	ProductsWithPossibleMandatoryMark []int `json:"products_with_possible_mandatory_mark"`
 }
 
 type GetShipmentDataByIdentifierResultAdditionalData struct {
