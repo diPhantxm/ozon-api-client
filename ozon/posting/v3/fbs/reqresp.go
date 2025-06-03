@@ -160,30 +160,29 @@ type ListResponseResultPostingTariffication struct {
 }
 
 type ListResponseResultPosting struct {
-	PostingNumber        string                                   `json:"posting_number"`
-	OrderID              int64                                    `json:"order_id"`
-	OrderNumber          string                                   `json:"order_number"`
-	PickupCodeVerifiedAt time.Time                                `json:"pickup_code_verified_at"`
-	Status               string                                   `json:"status"`
-	Substatus            string                                   `json:"substatus"`
-	DeliveryMethod       ListResponseResultPostingDeliveryMethod  `json:"delivery_method"`
-	TrackingNumber       string                                   `json:"tracking_number"`
-	TplIntegrationType   string                                   `json:"tpl_integration_type"`
-	InProcessAt          time.Time                                `json:"in_process_at"`
-	ShipmentDate         time.Time                                `json:"shipment_date"`
-	DeliveringDate       *string                                  `json:"delivering_date"`
-	Optional             ListResponseResultPostingOptional        `json:"optional"`
-	Cancellation         ListResponseResultPostingCancellation    `json:"cancellation"`
-	Customer             *ListResponseResultPostingCustomer       `json:"customer"`
-	Products             []ListResponseResultPostingProduct       `json:"products"`
-	Addressee            *ListResponseResultPostingAdressee       `json:"addressee"`
-	Barcodes             *ListResponseResultPostingBarcode        `json:"barcodes"`
-	AnalyticsData        *ListResponseResultPostingAnalyticsData  `json:"analytics_data"`
-	FinancialData        *ListResponseResultPostingFinancialData  `json:"financial_data"`
-	IsExpress            bool                                     `json:"is_express"`
-	QuantumID            int64                                    `json:"quantum_id"`
-	Requirements         ListResponseResultPostingRequirement     `json:"requirements"`
-	Tariffication        []ListResponseResultPostingTariffication `json:"tariffication"`
+	PostingNumber        string                                  `json:"posting_number"`
+	OrderID              int64                                   `json:"order_id"`
+	OrderNumber          string                                  `json:"order_number"`
+	PickupCodeVerifiedAt time.Time                               `json:"pickup_code_verified_at"`
+	Status               string                                  `json:"status"`
+	Substatus            string                                  `json:"substatus"`
+	DeliveryMethod       ListResponseResultPostingDeliveryMethod `json:"delivery_method"`
+	TrackingNumber       string                                  `json:"tracking_number"`
+	TplIntegrationType   string                                  `json:"tpl_integration_type"`
+	InProcessAt          time.Time                               `json:"in_process_at"`
+	ShipmentDate         time.Time                               `json:"shipment_date"`
+	DeliveringDate       *string                                 `json:"delivering_date"`
+	Optional             ListResponseResultPostingOptional       `json:"optional"`
+	Cancellation         ListResponseResultPostingCancellation   `json:"cancellation"`
+	Customer             *ListResponseResultPostingCustomer      `json:"customer"`
+	Products             []ListResponseResultPostingProduct      `json:"products"`
+	Addressee            *ListResponseResultPostingAdressee      `json:"addressee"`
+	Barcodes             *ListResponseResultPostingBarcode       `json:"barcodes"`
+	AnalyticsData        *ListResponseResultPostingAnalyticsData `json:"analytics_data"`
+	FinancialData        *ListResponseResultPostingFinancialData `json:"financial_data"`
+	IsExpress            bool                                    `json:"is_express"`
+	QuantumID            int64                                   `json:"quantum_id"`
+	Requirements         ListResponseResultPostingRequirement    `json:"requirements"`
 }
 
 type ListResponseResult struct {
