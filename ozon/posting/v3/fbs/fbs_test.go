@@ -84,20 +84,7 @@ func TestList_Success(t *testing.T) {
           "products_requiring_country": [],
           "products_requiring_mandatory_mark": [],
           "products_requiring_jw_uin": []
-        },
-        "tariffication": [
-          {
-            "current_tariff_rate": 0,
-            "current_tariff_type": "",
-            "current_tariff_charge": "",
-            "current_tariff_charge_currency_code": "",
-            "next_tariff_rate": 0,
-            "next_tariff_type": "",
-            "next_tariff_charge": "",
-            "next_tariff_starts_at": "2023-11-13T08:05:57.657Z",
-            "next_tariff_charge_currency_code": ""
-          }
-        ]
+        }
       }
     ],
     "has_next": true
@@ -200,19 +187,6 @@ func TestList_Success(t *testing.T) {
 							ProductsRequiringCountry:       []string{},
 							ProductsRequiringMandatoryMark: []string{},
 							ProductsRequiringJwUin:         []string{},
-						},
-						Tariffication: []fbs.ListResponseResultPostingTariffication{
-							{
-								CurrentTariffRate:               0,
-								CurrentTariffType:               "",
-								CurrentTariffCharge:             "",
-								CurrentTariffChargeCurrencyCode: "",
-								NextTariffRate:                  0,
-								NextTariffType:                  "",
-								NextTariffCharge:                "",
-								NextTariffStartsAt:              time.Date(2023, 11, 13, 8, 5, 57, 657000000, time.UTC),
-								NextTariffChargeCurrencyCode:    "",
-							},
 						},
 					},
 				},
