@@ -78,13 +78,7 @@ func TestList_Success(t *testing.T) {
         "analytics_data": null,
         "financial_data": null,
         "is_express": false,
-        "quantum_id": 0,
-        "requirements": {
-          "products_requiring_gtd": [],
-          "products_requiring_country": [],
-          "products_requiring_mandatory_mark": [],
-          "products_requiring_jw_uin": []
-        }
+        "quantum_id": 0
       }
     ],
     "has_next": true
@@ -182,12 +176,6 @@ func TestList_Success(t *testing.T) {
 						FinancialData: nil,
 						IsExpress:     false,
 						QuantumID:     0,
-						Requirements: fbs.ListResponseResultPostingRequirement{
-							ProductsRequiringGtd:           []string{},
-							ProductsRequiringCountry:       []string{},
-							ProductsRequiringMandatoryMark: []string{},
-							ProductsRequiringJwUin:         []string{},
-						},
 					},
 				},
 				HasNext: true,
