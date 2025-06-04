@@ -182,7 +182,6 @@ type ListResponseResultPosting struct {
 	FinancialData        *ListResponseResultPostingFinancialData `json:"financial_data"`
 	IsExpress            bool                                    `json:"is_express"`
 	QuantumID            int64                                   `json:"quantum_id"`
-	Requirements         ListResponseResultPostingRequirement    `json:"requirements"`
 }
 
 type ListResponseResult struct {
