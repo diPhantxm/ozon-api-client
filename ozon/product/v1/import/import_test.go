@@ -134,7 +134,7 @@ func TestPrices_Success(t *testing.T) {
 					require.Equal(t, "https://api-seller.ozon.ru/v1/product/import/prices", test.FullURL(r))
 					require.Equal(t, test.ApiKey, r.Header.Get(auth.APIKeyHeader))
 					require.Equal(t, test.ClientID, r.Header.Get(auth.ClientIDHeader))
-					require.Equal(t, `{"prices":[{"auto_action_enabled":"UNKNOWN","currency_code":"RUB","min_price":"800","offer_id":"","old_price":"0","price":"1448","price_strategy_enabled":"UNKNOWN","product_id":1386}]}`, test.Body(t, r))
+					require.Equal(t, `{"prices":[{"auto_action_enabled":"UNKNOWN","currency_code":"RUB","min_price":"800","net_price":"100","offer_id":"","old_price":"0","price":"1448","price_strategy_enabled":"UNKNOWN","product_id":1386}]}`, test.Body(t, r))
 
 					return &http.Response{
 						StatusCode: http.StatusOK,
@@ -164,6 +164,7 @@ func TestPrices_Success(t *testing.T) {
 				AutoActionEnabled:    _import.PricesRequestPriceAutoActionEnabledUNKNOWN,
 				CurrencyCode:         _import.PricesRequestPriceCurrencyCodeRUB,
 				MinPrice:             "800",
+				NetPrice:             "100",
 				OfferID:              "",
 				OldPrice:             "0",
 				Price:                "1448",

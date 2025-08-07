@@ -66,6 +66,7 @@ type PricesRequestPrice struct {
 	AutoActionEnabled    PricesRequestPriceAutoActionEnabled    `json:"auto_action_enabled"`
 	CurrencyCode         PricesRequestPriceCurrencyCode         `json:"currency_code"`
 	MinPrice             string                                 `json:"min_price"`
+	NetPrice             string                                 `json:"net_price"`
 	OfferID              string                                 `json:"offer_id"`
 	OldPrice             string                                 `json:"old_price"`
 	Price                string                                 `json:"price"`
