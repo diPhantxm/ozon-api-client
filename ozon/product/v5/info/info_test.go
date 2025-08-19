@@ -3,10 +3,11 @@ package info_test
 import (
 	"bytes"
 	"context"
-	"github.com/andmetoo/ozon-api-client/ozon/product/v5/info"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/andmetoo/ozon-api-client/ozon/product/v5/info"
 
 	"github.com/andmetoo/ozon-api-client/internal/auth"
 	"github.com/andmetoo/ozon-api-client/internal/test"
@@ -165,17 +166,17 @@ func TestPrices_Success(t *testing.T) {
 				PriceIndexes: info.PricesResponseItemPriceIndexes{
 					ColorIndex: info.PricesResponseItemPriceIndexesColorIndexWITHOUTINDEX,
 					ExternalIndexData: info.PricesResponseItemPriceIndexesExternalIndexData{
-						MinPrice:         0,
+						MinPrice:         0.0,
 						MinPriceCurrency: "string",
 						PriceIndexValue:  0,
 					},
 					OzonIndexData: info.PricesResponseItemPriceIndexesOzonIndexData{
-						MinPrice:         0,
+						MinPrice:         0.0,
 						MinPriceCurrency: "string",
 						PriceIndexValue:  0,
 					},
 					SelfMarketplacesIndexData: info.PricesResponseItemPriceIndexesSelfMarketplacesIndexData{
-						MinPrice:         0,
+						MinPrice:         0.0,
 						MinPriceCurrency: "string",
 						PriceIndexValue:  0,
 					},

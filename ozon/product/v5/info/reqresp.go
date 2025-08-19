@@ -54,19 +54,19 @@ type PricesResponseItemPrice struct {
 }
 
 type PricesResponseItemPriceIndexesExternalIndexData struct {
-	MinPrice         int     `json:"min_price"`
+	MinPrice         float64 `json:"min_price"`
 	MinPriceCurrency string  `json:"min_price_currency"`
 	PriceIndexValue  float64 `json:"price_index_value"`
 }
 
 type PricesResponseItemPriceIndexesOzonIndexData struct {
-	MinPrice         int     `json:"min_price"`
+	MinPrice         float64 `json:"min_price"`
 	MinPriceCurrency string  `json:"min_price_currency"`
 	PriceIndexValue  float64 `json:"price_index_value"`
 }
 
 type PricesResponseItemPriceIndexesSelfMarketplacesIndexData struct {
-	MinPrice         int     `json:"min_price"`
+	MinPrice         float64 `json:"min_price"`
 	MinPriceCurrency string  `json:"min_price_currency"`
 	PriceIndexValue  float64 `json:"price_index_value"`
 }
